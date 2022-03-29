@@ -159,25 +159,25 @@
 //拉取直播流
 - (void)fetchLivingStream
 {
-//    __weak typeof(self) weakSelf = self;
-//    if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
-//
-//        return;
-//    }
-//    if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeVOD] || [_room.liveroomType isEqualToString:kLiveBroadCastingTypeAgoraVOD]) {
-//        NSURL *pushUrl = [NSURL URLWithString:[[_room.liveroomExt objectForKey:@"play"] objectForKey:@"m3u8"]];
-//        if (!pushUrl) {
-//            pushUrl = [NSURL URLWithString:[[_room.liveroomExt objectForKey:@"play"] objectForKey:@"rtmp"]];
-//            [self startPLayVideoStream:pushUrl];
-//        } else {
-//            [self startPlayVodStream:pushUrl];
-//        }
-//        return;
-//    }
-//    [EaseHttpManager.sharedInstance getLiveRoomPullStreamUrlWithRoomId:_room.chatroomId completion:^(NSString *pullStreamStr) {
-//        NSURL *pullStreamUrl = [NSURL URLWithString:pullStreamStr];
-//        [weakSelf startPLayVideoStream:pullStreamUrl];
-//    }];
+    __weak typeof(self) weakSelf = self;
+    if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
+
+        return;
+    }
+    if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeVOD] || [_room.liveroomType isEqualToString:kLiveBroadCastingTypeAgoraVOD]) {
+        NSURL *pushUrl = [NSURL URLWithString:[[_room.liveroomExt objectForKey:@"play"] objectForKey:@"m3u8"]];
+        if (!pushUrl) {
+            pushUrl = [NSURL URLWithString:[[_room.liveroomExt objectForKey:@"play"] objectForKey:@"rtmp"]];
+            [self startPLayVideoStream:pushUrl];
+        } else {
+            [self startPlayVodStream:pushUrl];
+        }
+        return;
+    }
+    [EaseHttpManager.sharedInstance getLiveRoomPullStreamUrlWithRoomId:_room.chatroomId completion:^(NSString *pullStreamStr) {
+        NSURL *pullStreamUrl = [NSURL URLWithString:pullStreamStr];
+        [weakSelf startPLayVideoStream:pullStreamUrl];
+    }];
 }
 
 

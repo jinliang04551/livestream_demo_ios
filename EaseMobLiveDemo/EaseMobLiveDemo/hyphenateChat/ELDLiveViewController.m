@@ -1,12 +1,12 @@
 //
-//  EasePublishViewController.m
+//  ALSLiveViewController.m
+//  EaseMobLiveDemo
 //
-//  Created by EaseMob on 16/6/3.
-//  Copyright © 2016年 zmw. All rights reserved.
+//  Created by liu001 on 2022/3/25.
+//  Copyright © 2022 zmw. All rights reserved.
 //
 
-#import "EasePublishViewController.h"
-
+#import "ELDLiveViewController.h"
 #import "SDImageCache.h"
 #import "SDWebImageDownloader.h"
 #import "EaseChatView.h"
@@ -40,7 +40,7 @@
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface EasePublishViewController () <EaseChatViewDelegate,UITextViewDelegate,EMChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,EMClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate>
+@interface ELDLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,EMChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,EMClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate>
 {
     BOOL _isload;
     BOOL _isShutDown;
@@ -89,7 +89,7 @@
 
 @end
 
-@implementation EasePublishViewController
+@implementation ELDLiveViewController
 
 - (instancetype)initWithLiveRoom:(EaseLiveRoom*)room
 {
@@ -166,7 +166,6 @@
 {
     [self.chatview endEditing:YES];
 }
-
 
 //检测来电
 - (void)monitorCall
@@ -516,7 +515,7 @@
         make.center.equalTo(self.view);
     }];
     __weak EaseFinishLiveView *weakFinishView = finishView;
-    __weak EasePublishViewController *weakSelf = self;
+    ELD_WS
     [finishView setDoneCompletion:^(BOOL isFinish) {
         if (isFinish) {
             _isFinishBroadcast = YES;
@@ -564,8 +563,7 @@
 
 - (void)didClickFinishButton
 {
-    __weak EasePublishViewController *weakSelf = self;
-    
+    ELD_WS
     dispatch_block_t block = ^{
         [weakSelf.chatview leaveChatroomWithIsCount:NO
                                          completion:^(BOOL success) {
@@ -804,7 +802,8 @@ extern bool isAllTheSilence;
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner
 {
-    __weak EasePublishViewController *weakSelf = self;
+    ELD_WS
+
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"聊天室创建者有更新:%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
         

@@ -20,19 +20,21 @@
 }
 
 @property (nonatomic, strong) UIImageView *headImageView;
+@property (nonatomic, strong) UIImageView *liveWatcherCountBgImageView;
 @property (nonatomic, strong) UIImageView *liveImageView;
 @property (nonatomic, strong) UIView *broadcastView;
 @property (nonatomic, strong) UIView *liveFooter;
 @property (nonatomic, strong) UIView *liveHeader;
-@property (nonatomic, strong) UILabel *textLable;
-@property (nonatomic, strong) UILabel *numLabel;
-@property (nonatomic, strong) UILabel *statusLabel;
-@property (nonatomic, strong) UILabel *descLabel;
+@property (nonatomic, strong) UILabel *roomTitleLabel;
+@property (nonatomic, strong) UILabel *liveroomNameLabel;
+@property (nonatomic, strong) UILabel *watchNumberLabel;
+@property (nonatomic, strong) UILabel *liveStreamerNameLabel;
 
 @property (nonatomic, strong) UIView *studioOccupancy;//直播间正直播
 
-@property (nonatomic, strong) CAGradientLayer *livingGl;
 @property (nonatomic, strong) CAGradientLayer *broadcastGl;
+
+@property (nonatomic, strong) UIImageView *liveStreamerImageView;
 
 @end
 
@@ -43,86 +45,68 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self.contentView addSubview:self.liveImageView];
-        [self.liveImageView addSubview:self.liveHeader];
-        [self.liveImageView addSubview:self.liveFooter];
-        [self.liveImageView addSubview:self.studioOccupancy];//正在直播
-        [self.liveImageView addSubview:self.broadcastView];//开播
-        [self.liveFooter addSubview:self.textLable];
-        [self.liveFooter addSubview:self.descLabel];
-        [_descLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.liveFooter).offset(-5);
-            make.height.equalTo(@12);
-            make.width.equalTo(@35);
-            make.top.equalTo(self.liveFooter).offset(2);
-        }];
-        [self.liveFooter addSubview:self.numLabel];
-        [_numLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.descLabel.mas_left);
-            make.top.equalTo(self.liveFooter).offset(2);
-            make.left.equalTo(self.textLable.mas_right);
-            make.height.equalTo(@12);
-        }];
     }
     return self;
 }
 
-- (UILabel*)textLable
+- (UILabel*)roomTitleLabel
 {
-    if (_textLable == nil) {
-        _textLable = [[UILabel alloc] init];
-        _textLable.frame = CGRectMake(8.f, 0, CGRectGetWidth(self.frame)/2, 14.f);
-        _textLable.font = [UIFont systemFontOfSize:10.f];
-        _textLable.textColor = [UIColor whiteColor];
-        _textLable.textAlignment = NSTextAlignmentLeft;
-        _textLable.layer.masksToBounds = YES;
-        _textLable.shadowColor = [UIColor blackColor];
-        _textLable.shadowOffset = CGSizeMake(1, 1);
+    if (_roomTitleLabel == nil) {
+        _roomTitleLabel = [[UILabel alloc] init];
+        _roomTitleLabel.frame = CGRectMake(8.f, 0, CGRectGetWidth(self.frame)/2, 14.f);
+        _roomTitleLabel.font = [UIFont systemFontOfSize:10.f];
+        _roomTitleLabel.textColor = [UIColor whiteColor];
+        _roomTitleLabel.textAlignment = NSTextAlignmentLeft;
+        _roomTitleLabel.layer.masksToBounds = YES;
+        _roomTitleLabel.shadowColor = [UIColor blackColor];
+        _roomTitleLabel.shadowOffset = CGSizeMake(1, 1);
     }
-    return _textLable;
+    return _roomTitleLabel;
 }
 
-- (UILabel*)numLabel
+- (UILabel*)liveroomNameLabel
 {
-    if (_numLabel == nil) {
-        _numLabel = [[UILabel alloc] init];
-        _numLabel.font = [UIFont systemFontOfSize:14.f];
-        _numLabel.textColor = [UIColor whiteColor];
-        _numLabel.textAlignment = NSTextAlignmentLeft;
-        _numLabel.backgroundColor = [UIColor clearColor];
-        _numLabel.shadowColor = [UIColor blackColor];
-        _numLabel.shadowOffset = CGSizeMake(1, 1);
-        _numLabel.textAlignment = NSTextAlignmentRight;
+    if (_liveroomNameLabel == nil) {
+        _liveroomNameLabel = [[UILabel alloc] init];
+        _liveroomNameLabel.font = [UIFont systemFontOfSize:14.0f];
+        _liveroomNameLabel.textColor = [UIColor whiteColor];
+        _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
+        _liveroomNameLabel.backgroundColor = [UIColor clearColor];
+        _liveroomNameLabel.shadowColor = [UIColor blackColor];
+        _liveroomNameLabel.shadowOffset = CGSizeMake(1, 1);
+        _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
+        _liveroomNameLabel.text = @"Chats Casually";
     }
-    return _numLabel;
+    return _liveroomNameLabel;
 }
 
-- (UILabel *)descLabel
+- (UILabel *)liveStreamerNameLabel
 {
-    if (_descLabel == nil) {
-        _descLabel = [[UILabel alloc] init];
-        _descLabel.font = [UIFont systemFontOfSize:9.f];
-        _descLabel.textColor = [UIColor whiteColor];
-        _descLabel.textAlignment = NSTextAlignmentRight;
-        _descLabel.backgroundColor = [UIColor clearColor];
-        _descLabel.shadowColor = [UIColor blackColor];
-        _descLabel.shadowOffset = CGSizeMake(1, 1);
-        _descLabel.text = @"正在看";
+    if (_liveStreamerNameLabel == nil) {
+        _liveStreamerNameLabel = [[UILabel alloc] init];
+        _liveStreamerNameLabel.font = [UIFont systemFontOfSize:10.f];
+        _liveStreamerNameLabel.textColor = [UIColor whiteColor];
+        _liveStreamerNameLabel.textAlignment = NSTextAlignmentRight;
+        _liveStreamerNameLabel.backgroundColor = [UIColor clearColor];
+        _liveStreamerNameLabel.shadowColor = [UIColor blackColor];
+        _liveStreamerNameLabel.shadowOffset = CGSizeMake(1, 1);
+        _liveStreamerNameLabel.text = @"Paulo Apollo";
     }
-    return _descLabel;
+    return _liveStreamerNameLabel;
 }
 
-- (UILabel*)statusLabel
+- (UILabel*)watchNumberLabel
 {
-    if (_statusLabel == nil) {
-        _statusLabel = [[UILabel alloc] init];
-        _statusLabel.font = [UIFont systemFontOfSize:12.f];
-        _statusLabel.textColor = [UIColor whiteColor];
-        _statusLabel.textAlignment = NSTextAlignmentLeft;
-        _statusLabel.shadowColor = [UIColor blackColor];
-        _statusLabel.shadowOffset = CGSizeMake(1, 1);
-        _statusLabel.text = @"正在直播";
+    if (_watchNumberLabel == nil) {
+        _watchNumberLabel = [[UILabel alloc] init];
+        _watchNumberLabel.font = [UIFont systemFontOfSize:12.f];
+        _watchNumberLabel.textColor = [UIColor whiteColor];
+        _watchNumberLabel.textAlignment = NSTextAlignmentLeft;
+        _watchNumberLabel.shadowColor = [UIColor blackColor];
+        _watchNumberLabel.shadowOffset = CGSizeMake(1, 1);
+        _watchNumberLabel.text = @"32K";
     }
-    return _statusLabel;
+    return _watchNumberLabel;
 }
 
 - (UIView*)liveFooter
@@ -130,30 +114,62 @@
     if (_liveFooter == nil) {
         _liveFooter = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.frame) - kLabelDefaultHeight, CGRectGetWidth(self.frame), kLabelDefaultHeight)];
         _liveFooter.backgroundColor = [UIColor clearColor];
+        
+        [_liveFooter addSubview:self.liveroomNameLabel];
+        [_liveFooter addSubview:self.liveStreamerImageView];
+        [_liveFooter addSubview:self.liveStreamerNameLabel];
+
+        [self.liveStreamerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.liveFooter).offset(-kEaseLiveDemoPadding);
+            make.left.equalTo(_liveFooter).offset(kEaseLiveDemoPadding);
+        }];
+
+        [self.liveStreamerNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.liveStreamerImageView);
+            make.left.equalTo(self.liveStreamerImageView.mas_right).offset(kEaseLiveDemoPadding * 0.5);
+            make.height.equalTo(@12);
+        }];
+        
+        [self.liveroomNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.liveStreamerImageView.mas_top).offset(-2.0);
+            make.left.equalTo(self.liveStreamerImageView);
+            make.right.equalTo(_liveFooter);
+//            make.height.equalTo(@12);
+        }];
+        
     }
     return _liveFooter;
 }
 
+
 - (UIView*)liveHeader
 {
     if (_liveHeader == nil) {
-        _liveHeader = [[UIView alloc] initWithFrame:CGRectMake(8.f, 8.f, 75.f, 18.f)];
+        _liveHeader = [[UIView alloc] initWithFrame:CGRectMake(8.f, 8.f, 75.f, 14.0f)];
         _liveHeader.backgroundColor = [UIColor clearColor];
-        _liveHeader.layer.cornerRadius = 9;
-        [_liveHeader.layer addSublayer:self.livingGl];
+        _liveHeader.layer.cornerRadius = 7.0f;
+        _liveHeader.clipsToBounds = YES;
+        [_liveHeader addSubview:self.liveWatcherCountBgImageView];
         [_liveHeader addSubview:self.headImageView];
+        [_liveHeader addSubview:self.watchNumberLabel];
+
+        [self.liveWatcherCountBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_liveHeader);
+        }];
+
         [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@12.f);
-            make.left.equalTo(_liveHeader.mas_left).offset(3.f);
-            make.top.equalTo(_liveHeader.mas_top).offset(3.f);
+            make.centerY.equalTo(_liveHeader);
+            make.width.height.equalTo(@6.0);
+            make.left.equalTo(_liveHeader.mas_left).offset(5.f);
         }];
-        [_liveHeader addSubview:self.statusLabel];
-        [self.statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.equalTo(@60.f);
-            make.height.equalTo(@18.f);
+        
+        [self.watchNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.headImageView);
             make.left.equalTo(self.headImageView.mas_right).offset(5.f);
-            make.top.equalTo(_liveHeader.mas_top);
+            make.right.equalTo(_liveHeader).offset(-5.0f);
         }];
+        _liveHeader.backgroundColor = UIColor.yellowColor;
+        
     }
     return _liveHeader;
 }
@@ -161,21 +177,43 @@
 - (UIImageView*)headImageView
 {
     if (_headImageView == nil) {
-        _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-living"]];
+        _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Live_watch"]];
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
         _headImageView.layer.masksToBounds = YES;
     }
     return _headImageView;
 }
 
-- (UIImageView*)liveImageView
-{
+
+- (UIImageView *)liveWatcherCountBgImageView {
+    if (_liveWatcherCountBgImageView == nil) {
+        _liveWatcherCountBgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LiveStreamer_watch_bg"]];
+        _liveWatcherCountBgImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _liveWatcherCountBgImageView.layer.masksToBounds = YES;
+    }
+    return _liveWatcherCountBgImageView;
+}
+
+- (UIImageView*)liveImageView {
     if (_liveImageView == nil) {
         _liveImageView = [[UIImageView alloc] init];
         _liveImageView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
         _liveImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _liveImageView.layer.cornerRadius = 16.0f;
         _liveImageView.layer.masksToBounds = YES;
         _liveImageView.backgroundColor = RGBACOLOR(200, 200, 200, 1);
+        
+        [_liveImageView addSubview:self.liveHeader];
+        [_liveImageView addSubview:self.liveFooter];
+        [_liveImageView addSubview:self.studioOccupancy];//正在直播
+        [_liveImageView addSubview:self.broadcastView];//开播
+        
+        [self.liveHeader mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_liveImageView).offset(8.0f);
+            make.left.equalTo(_liveImageView).offset(8.0f);
+        }];
+        
+        
     }
     return _liveImageView;
 }
@@ -237,19 +275,6 @@
     return _studioOccupancy;
 }
 
-- (CAGradientLayer *)livingGl{
-    if(_livingGl == nil){
-        _livingGl = [CAGradientLayer layer];
-        _livingGl.frame = CGRectMake(0,0,_liveHeader.frame.size.width,_liveHeader.frame.size.height);
-        _livingGl.startPoint = CGPointMake(0.76, 0.84);
-        _livingGl.endPoint = CGPointMake(0.26, 0.14);
-        _livingGl.colors = @[(__bridge id)[UIColor colorWithRed:90/255.0 green:93/255.0 blue:208/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:4/255.0 green:174/255.0 blue:240/255.0 alpha:1.0].CGColor];
-        _livingGl.locations = @[@(0), @(1.0f)];
-        _livingGl.cornerRadius = 9;
-    }
-    
-    return _livingGl;
-}
 
 - (CAGradientLayer *)broadcastGl{
     if(_broadcastGl == nil){
@@ -264,9 +289,19 @@
     return _broadcastGl;
 }
 
+- (UIImageView *)liveStreamerImageView {
+    if (_liveStreamerImageView == nil) {
+        _liveStreamerImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LiveStreamer"]];
+        _liveStreamerImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _liveStreamerImageView.layer.masksToBounds = YES;
+    }
+    return _liveStreamerImageView;
+}
+
 - (void)setLiveRoom:(EaseLiveRoom*)room liveBehavior:(kTabbarItemBehavior)liveBehavior
 {
-    _textLable.text = room.title;
+    self.liveroomNameLabel.text = room.title;
+    
     if (room.coverPictureUrl.length > 0) {
         
         UIImage *image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:room.coverPictureUrl];
@@ -297,7 +332,7 @@
     } else {
         _liveImageView.image = [UIImage imageNamed:@"default_back_image"];
     }
-    _numLabel.text = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
+    _liveroomNameLabel.text = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
     
     //判断房间状态
     if (liveBehavior == kTabbarItemTag_Live) {

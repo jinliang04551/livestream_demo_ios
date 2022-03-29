@@ -17,6 +17,9 @@
 #import "EaseSettingsViewController.h"
 #import "EaseDefaultDataHelper.h"
 #import "EaseBroadCastTabViewController.h"
+#import "ELDLiveListViewController.h"
+#import "ELDLiveViewController.h"
+
 
 #define IS_iPhoneX (\
 {\
@@ -31,12 +34,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 @interface EaseMainViewController () <UITabBarDelegate>
 {
+    ELDLiveListViewController *_liveListVC;
     EaseBroadCastTabViewController *_broadCastTabViewController;
-    EaseLiveTVListViewController *_liveTVListViewController;
-    EaseLiveTVListViewController *_broadCastViewController;
-    EaseSettingsViewController *_settingsViewController;
+    EaseSettingsViewController *_settingVC;
     CGFloat broadCastBtnScale;//比例
 }
+
 @property (nonatomic, strong) UIView *addView;
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
@@ -51,26 +54,27 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     if ([UIDevice currentDevice].systemVersion.floatValue >= 7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    if (@available(iOS 15.0, *)) {
-        UINavigationBarAppearance * bar = [UINavigationBarAppearance new];
-        bar.backgroundColor = [UIColor whiteColor];
-        bar.backgroundEffect = nil;
-        self.navigationController.navigationBar.scrollEdgeAppearance = bar;
-                self.navigationController.navigationBar.standardAppearance = bar;
-        
-        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
-        UIColor* color = [UIColor blackColor];
-        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
-        self.navigationController.navigationBar.titleTextAttributes = dict;
-    }else{
-        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
-        UIColor* color = [UIColor blackColor];
-        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
-        self.navigationController.navigationBar.titleTextAttributes = dict;
-    }
+    
+//    if (@available(iOS 15.0, *)) {
+//        UINavigationBarAppearance * bar = [UINavigationBarAppearance new];
+//        bar.backgroundColor = [UIColor whiteColor];
+//        bar.backgroundEffect = nil;
+//        self.navigationController.navigationBar.scrollEdgeAppearance = bar;
+//                self.navigationController.navigationBar.standardAppearance = bar;
+//
+//        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
+//        UIColor* color = [UIColor blackColor];
+//        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
+//        self.navigationController.navigationBar.titleTextAttributes = dict;
+//    }else{
+//        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
+//        UIColor* color = [UIColor blackColor];
+//        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
+//        self.navigationController.navigationBar.titleTextAttributes = dict;
+//    }
     
     broadCastBtnScale = 0.9;
-    [self setupSubviews];
+    [self loadViewControllers];
     [self fetchLiveroomStatus];
 }
 
@@ -95,35 +99,41 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    self.title = @"环信直播聊天室";
-    NSInteger tag = item.tag;
-    UIView *tmpView = nil;
-    if (tag == kTabbarItemTag_Live) {
-        tmpView = _broadCastTabViewController.view;
-    } else if (tag == kTabbarItemTag_Broadcast) {
-        //tmpView = broadCastViewController.view;
-    } else if (tag == kTabbarItemTag_Settings) {
-        self.title = @"设置";
-        tmpView = _settingsViewController.view;
-    }
+//    self.title = @"环信直播聊天室";
+//    NSInteger tag = item.tag;
+//    UIView *tmpView = nil;
+//    if (tag == kTabbarItemTag_Live) {
+//        tmpView = _broadCastTabViewController.view;
+//    } else if (tag == kTabbarItemTag_Broadcast) {
+//        //tmpView = broadCastViewController.view;
+//    } else if (tag == kTabbarItemTag_Settings) {
+//        self.title = @"设置";
+//        tmpView = _settingVC.view;
+//    }
+//
+//    if (self.addView == tmpView) {
+//        return;
+//    } else {
+//        [self.addView removeFromSuperview];
+//        self.addView = nil;
+//    }
+//
+//    self.addView = tmpView;
+//    if (self.addView) {
+//        //[self.view addSubview:self.addView];
+//        [self.view insertSubview:self.addView belowSubview:self.broadCastBtn];
+//        [self.addView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view);
+//            make.left.equalTo(self.view);
+//            make.right.equalTo(self.view);
+//            make.bottom.equalTo(self.tabBar.mas_top);
+//        }];
+//    }
     
-    if (self.addView == tmpView) {
-        return;
-    } else {
-        [self.addView removeFromSuperview];
-        self.addView = nil;
-    }
-    
-    self.addView = tmpView;
-    if (self.addView) {
-        //[self.view addSubview:self.addView];
-        [self.view insertSubview:self.addView belowSubview:self.broadCastBtn];
-        [self.addView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view);
-            make.left.equalTo(self.view);
-            make.right.equalTo(self.view);
-            make.bottom.equalTo(self.tabBar.mas_top);
-        }];
+    if (item.tag == 10001) {
+        
+    }else {
+        
     }
 }
 
@@ -133,9 +143,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     self.tabBar = [[UITabBar alloc] init];
     self.tabBar.delegate = self;
     self.tabBar.translucent = NO;
-    self.tabBar.backgroundColor = [UIColor whiteColor];
-    [self.tabBar setTintColor:kDefaultSystemBgColor];
+    self.tabBar.backgroundColor = ViewControllerBgBlackColor;
+    [self.tabBar setTintColor:UIColor.yellowColor];
     [self.tabBar setBarTintColor:[UIColor whiteColor]];
+    
     [self.view addSubview:self.tabBar];
     [self.tabBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).offset(-EMVIEWBOTTOMMARGIN);
@@ -144,15 +155,15 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         make.height.mas_equalTo(50);
     }];
     
-    UIView *lineView = [[UIView alloc] init];
-    lineView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    [self.tabBar addSubview:lineView];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tabBar.mas_top);
-        make.left.equalTo(self.tabBar.mas_left);
-        make.right.equalTo(self.tabBar.mas_right);
-        make.height.equalTo(@1);
-    }];
+//    UIView *lineView = [[UIView alloc] init];
+//    lineView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+//    [self.tabBar addSubview:lineView];
+//    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.tabBar.mas_top);
+//        make.left.equalTo(self.tabBar.mas_left);
+//        make.right.equalTo(self.tabBar.mas_right);
+//        make.height.equalTo(@1);
+//    }];
     
     [self _setupChildController];
     [self.view addSubview:self.broadCastBtn];
@@ -167,12 +178,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 {
     if (_broadCastBtn == nil) {
         _broadCastBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_broadCastBtn setImage:[UIImage imageNamed:@"Logo"] forState:UIControlStateNormal];
-        [_broadCastBtn setImageEdgeInsets:UIEdgeInsetsMake(2, 2, 2, 2)];
-        _broadCastBtn.layer.cornerRadius = 35;
-        _broadCastBtn.backgroundColor = [UIColor whiteColor];
+        [_broadCastBtn setImage:[UIImage imageNamed:@"strat_live_stream"] forState:UIControlStateNormal];
         [_broadCastBtn addTarget:self action:@selector(broadCastFeedBack:) forControlEvents:UIControlEventTouchDown];
         [_broadCastBtn addTarget:self action:@selector(createBroadcastRoom) forControlEvents:UIControlEventTouchUpInside];
+        _broadCastBtn.layer.cornerRadius = 35;
+
     }
     return _broadCastBtn;
 }
@@ -186,46 +196,98 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 - (void)createBroadcastRoom
 {
-//    EaseCreateLiveViewController *createLiveView = [[EaseCreateLiveViewController alloc] init];
-//    createLiveView.modalPresentationStyle = 0;
-//    [self presentViewController:createLiveView animated:YES completion:nil];
-    //[self.navigationController pushViewController:createLiveView animated:NO];
+//    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
     
-    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
+    ELDLiveViewController *createLiveVC = [[ELDLiveViewController alloc] init];
     [self presentViewController:createLiveVC animated:true completion:nil];
 }
 
-- (void)_setupChildController
+- (void)loadViewControllers
 {
-    _broadCastTabViewController = [[EaseBroadCastTabViewController alloc]init];
-    UITabBarItem *liveItem = [self _setupTabBarItemWithTitle:nil imgName:@"icon-liveList-unSelected" selectedImgName:@"icon-liveList-selected" tag:kTabbarItemTag_Live];
-    _broadCastTabViewController.tabBarItem = liveItem;
-    [self addChildViewController:_broadCastTabViewController];
-    /*
-    _liveTVListViewController = [[EaseLiveTVListViewController alloc] initWithBehavior:kTabbarItemTag_Live];//看直播
-    UITabBarItem *liveItem = [self _setupTabBarItemWithTitle:nil imgName:@"icon-liveList-unSelected" selectedImgName:@"icon-liveList-selected" tag:kTabbarItemTag_Live];
-    _liveTVListViewController.tabBarItem = liveItem;
-    [self addChildViewController:_liveTVListViewController];*/
+    _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBroadCastingTypeLIVE];
+
+    _liveListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
+                                                   image:[ImageWithName(@"Channel_normal")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                           selectedImage:[ImageWithName(@"Channels_focus")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    _liveListVC.tabBarItem.tag = 10001;
+
     
-    /*_broadCastViewController = [[EaseLiveTVListViewController alloc] initWithBehavior:kTabbarItemTag_Broadcast]; //开播
-    UITabBarItem *borderCastItem = [self _setupTabBarItemWithTitle:nil imgName:@"Logo" selectedImgName:@"Logo" tag:kTabbarItemTag_Broadcast];
-    broadCastViewController.tabBarItem = liveItem;
-    [self addChildViewController:broadCastViewController];*/
     
-    _settingsViewController = [[EaseSettingsViewController alloc]init];
-    UITabBarItem *settingsItem = [self _setupTabBarItemWithTitle:nil imgName:@"icon-setting-unSelected" selectedImgName:@"icon-setting-selected" tag:kTabbarItemTag_Settings];
-    _settingsViewController.tabBarItem = liveItem;
-    [self addChildViewController:_settingsViewController];
-    
-    self.viewControllers = @[_broadCastTabViewController,_settingsViewController];
-    
+    _settingVC = [[EaseSettingsViewController alloc] init];
+    _settingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
+                                                   image:[ImageWithName(@"Channel_normal")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                           selectedImage:[ImageWithName(@"Channels_focus")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    _settingVC.tabBarItem.tag = 10002;
+
     //占位item
     UITabBarItem *blankBar = [[UITabBarItem alloc]init];
     blankBar.enabled = NO;
-    [self.tabBar setItems:@[liveItem,blankBar,settingsItem]];
-    self.tabBar.selectedItem = liveItem;
-    [self tabBar:self.tabBar didSelectItem:liveItem];
+      
+    UINavigationController* nav1 = [[UINavigationController alloc] initWithRootViewController:_liveListVC];
+    UINavigationController* nav2 = [[UINavigationController alloc] initWithRootViewController:_settingVC];
+    
+    self.viewControllers = @[nav1, nav2];
+    
+    [self customTabbar];
+    
+    [self.view addSubview:self.broadCastBtn];
+    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tabBar.mas_top).offset(-30);
+        make.centerX.equalTo(self.view);
+    }];
+
 }
+
+
+- (void)customTabbar {
+    UIImageView *ima = [[UIImageView alloc] initWithImage:ImageWithName(@"TabbarBg")];
+    ima.frame = CGRectMake(0,0,self.view.frame.size.width, 49);
+    
+    UIView *alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ima.frame.size.width,ima.frame.size.height)];
+    alphaView.alpha = 0.0;
+    [self.tabBar insertSubview:ima atIndex:0];
+
+    self.tabBar.opaque = YES;
+    [self.tabBar insertSubview:ima atIndex:0];
+}
+
+    
+- (void)_setupChildController
+{
+    _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBroadCastingTypeLIVE];
+
+    _liveListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
+                                                   image:[ImageWithName(@"Channel_normal")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                           selectedImage:[ImageWithName(@"Channels_focus")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    _liveListVC.tabBarItem.tag = 10001;
+
+    
+    
+    _settingVC = [[EaseSettingsViewController alloc] init];
+    _settingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
+                                                   image:[ImageWithName(@"Channel_normal")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                           selectedImage:[ImageWithName(@"Channels_focus")
+                                                          imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    _settingVC.tabBarItem.tag = 10002;
+
+    //占位item
+    UITabBarItem *blankBar = [[UITabBarItem alloc]init];
+    blankBar.enabled = NO;
+    
+    [self.tabBar setItems:@[_liveListVC.tabBarItem,blankBar,_settingVC.tabBarItem]];
+    self.tabBar.selectedItem = _liveListVC.tabBarItem;
+    [self tabBar:self.tabBar didSelectItem:_liveListVC.tabBarItem];
+    
+    [self customTabbar];
+}
+
 
 - (UITabBarItem *)_setupTabBarItemWithTitle:(NSString *)aTitle
                                     imgName:(NSString *)aImgName
@@ -235,9 +297,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     UITabBarItem *retItem = [[UITabBarItem alloc] initWithTitle:aTitle image:[UIImage imageNamed:aImgName] selectedImage:[[UIImage imageNamed:aSelectedImgName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     retItem.tag = aTag;
-    /*
-    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIFont systemFontOfSize:14], NSFontAttributeName, [UIColor lightGrayColor],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
-    [retItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, [UIColor colorWithRed:45 / 255.0 green:116 / 255.0 blue:215 / 255.0 alpha:1.0], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];*/
+ 
     return retItem;
 }
 /*

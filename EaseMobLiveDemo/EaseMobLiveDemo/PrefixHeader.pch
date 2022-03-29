@@ -46,7 +46,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kLiveBroadCastingTypeAgoraInteractionVOD @"agora_interaction_vod"
 #define kLiveBroadCastingTypeAgoraCNDVOD @"agora_cdn_vod"
 
-//#define kLiveBroadCastingTypeLIVE @"live"
 #define kLiveBroadCastingTypeLIVE kLiveBoardCastingTypeAGORA_CND_LIVE
 #define kLiveBroadCastingTypeAGORA_SPEED_LIVE @"agora_speed_live"
 #define kLiveBroadCastingTypeAGORA_INTERACTION_LIVE @"agora_interaction_live"
@@ -60,5 +59,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import "UIView+Position.h"
     #import "UIViewController+HUD.h"
     #import "EaseHttpManager.h"
+    #import <Masonry/Masonry.h>
+    #import "ALSAppStyle.h"
+    #import "EaseLiveDemoDefine.h"
+    #import "EaseLiveColorDefine.h"
 
 #endif

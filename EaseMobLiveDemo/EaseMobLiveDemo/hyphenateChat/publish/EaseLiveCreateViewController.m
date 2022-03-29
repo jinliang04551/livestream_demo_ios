@@ -150,6 +150,7 @@
         completion(room,success);
     }];
 }
+
 -(void)modifyLiveRoomStatus:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion{
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在更新直播..." toView:self.view];
     __weak MBProgressHUD *weakHud = hud;

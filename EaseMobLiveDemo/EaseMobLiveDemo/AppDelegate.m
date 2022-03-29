@@ -13,6 +13,8 @@
 #import "EaseTransitionViewController.h"
 #import <PLMediaStreamingKit/PLMediaStreamingKit.h>
 
+#import "ALSAppStyle.h"
+
 @interface AppDelegate ()
 
 @end
@@ -20,6 +22,9 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [ALSAppStyle shareAppStyle];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStateChange:)
                                                  name:@"loginStateChange"
@@ -29,17 +34,12 @@
                                              selector:@selector(autoRegistAccount)
                                                  name:@"autoRegistAccount"
                                                object:nil];
-    
-    if ([UIDevice currentDevice].systemVersion.floatValue >= 7.0) {
-        [[UINavigationBar appearance] setBarTintColor:kDefaultSystemBgColor];
-        [[UINavigationBar appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:RGBACOLOR(255, 255, 255, 1), NSForegroundColorAttributeName, [UIFont systemFontOfSize:20.f weight:0], NSFontAttributeName, nil]];
-    }
-    
+        
     //初始化环信sdk
     [self initHyphenateChatSDK];
     //初始化七牛sdk
     [PLStreamingEnv initEnv];
+    
     return YES;
 }
 
@@ -48,10 +48,8 @@
     BOOL loginSuccess = [notification.object boolValue];
     if (loginSuccess) {//登录成功加载主窗口控制器
         EaseMainViewController *main = [[EaseMainViewController alloc] init];
-        UINavigationController *navigationController = nil;
-        navigationController = [[UINavigationController alloc] initWithRootViewController:main];
         _mainVC = main;
-        self.window.rootViewController = navigationController;
+        self.window.rootViewController = main;
     }
     else{//登录失败加载登录页面控制器
         _mainVC = nil;

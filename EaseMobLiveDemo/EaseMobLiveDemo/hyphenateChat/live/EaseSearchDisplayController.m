@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic) kTabbarItemBehavior tabBarBehavior; //tabbar行为：看直播/开播/设置
+@property (nonatomic, strong) UILabel *prompt;
 
 @end
 
@@ -53,24 +54,17 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.hidesBackButton = YES;
     [self.navigationItem setTitleView:self.searchBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:ImageWithName(@"back_icon_white") style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     
     [self.searchBar becomeFirstResponder];
 }
 
-- (UISearchBar*)searchBar
-{
-    if (_searchBar == nil) {
-        _searchBar = [[UISearchBar alloc] init];
-        _searchBar.showsCancelButton = YES;
-        _searchBar.placeholder = NSLocalizedString(@"search.placeholder", @"Input Room ID");
-        _searchBar.delegate = self;
-        _searchBar.searchBarStyle = UISearchBarStyleDefault;
-        _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _searchBar.translucent = YES;
-        _searchBar.tintColor = [UIColor whiteColor];
-    }
-    return _searchBar;
+
+#pragma mark private method
+- (void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -184,16 +178,17 @@
         [self.resultsSource removeAllObjects];
         [self.collectionView reloadData];
     } else {
-//        __weak typeof(self) weakSelf = self;
-//        [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.searchSource searchText:searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
-//            if (results) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [weakSelf.resultsSource removeAllObjects];
-//                    [weakSelf.resultsSource addObjectsFromArray:results];
-//                    [weakSelf.collectionView reloadData];
-//                });
-//            }
-//        }];
+        
+        ELD_WS
+        [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.searchSource searchText:searchText collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
+            if (results) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.resultsSource removeAllObjects];
+                    [weakSelf.resultsSource addObjectsFromArray:results];
+                    [weakSelf.collectionView reloadData];
+                });
+            }
+        }];
     }
 }
 
@@ -237,5 +232,64 @@
     [searchBar resignFirstResponder];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+
+#pragma mark getter and setter
+//- (UISearchBar*)searchBar
+//{
+//    if (_searchBar == nil) {
+//        _searchBar = [[UISearchBar alloc] init];
+//        _searchBar.showsCancelButton = YES;
+//        _searchBar.placeholder = NSLocalizedString(@"search.placeholder", @"Input Room ID");
+//        _searchBar.delegate = self;
+//        _searchBar.searchBarStyle = UISearchBarStyleDefault;
+//        _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//        _searchBar.translucent = YES;
+//        _searchBar.tintColor = [UIColor whiteColor];
+//    }
+//    return _searchBar;
+//}
+
+- (UISearchBar*)searchBar
+{
+    if (_searchBar == nil) {
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kSearchBarHeight)];
+        _searchBar.placeholder = @"Search";
+        _searchBar.delegate = self;
+        _searchBar.showsCancelButton = NO;
+        _searchBar.backgroundColor = UIColor.blackColor;
+        [_searchBar setTintColor:UIColor.whiteColor];
+
+        [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(10, 0)];
+        
+        [_searchBar setImage:ImageWithName(@"searchBar_icon") forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+        UITextField *searchField = [_searchBar valueForKey:@"searchField"];
+          if (searchField) {
+                  if (@available(iOS 13.0, *)){
+                      _searchBar.searchTextField.backgroundColor= COLOR_HEX(0x212226);
+                  }else{
+                      searchField.backgroundColor = COLOR_HEX(0x212226);
+                  }
+
+              searchField.layer.cornerRadius = kSearchBarHeight * 0.5;
+              searchField.layer.masksToBounds = YES;
+              searchField.textColor = UIColor.whiteColor;
+          }
+    }
+    return _searchBar;
+}
+
+#pragma mark - getter
+- (UILabel *)prompt {
+    if (_prompt == nil) {
+        _prompt = UILabel.new;
+        _prompt.textColor = COLOR_HEX(0xFFFFFF);
+        _prompt.font = NFont(20.0);
+        _prompt.textAlignment = NSTextAlignmentLeft;
+        _prompt.text = @"Stream Channels";
+    }
+    return _prompt;
+}
+
 
 @end
