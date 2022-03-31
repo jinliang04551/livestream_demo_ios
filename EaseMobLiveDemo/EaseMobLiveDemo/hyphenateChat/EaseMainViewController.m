@@ -18,7 +18,9 @@
 #import "EaseDefaultDataHelper.h"
 #import "EaseBroadCastTabViewController.h"
 #import "ELDLiveListViewController.h"
-#import "ELDLiveViewController.h"
+#import "ELDLiveContainerViewController.h"
+#import "ELDSettingViewController.h"
+
 
 
 #define IS_iPhoneX (\
@@ -34,9 +36,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 @interface EaseMainViewController () <UITabBarDelegate>
 {
-    ELDLiveListViewController *_liveListVC;
     EaseBroadCastTabViewController *_broadCastTabViewController;
-    EaseSettingsViewController *_settingVC;
+    ELDLiveListViewController *_liveListVC;
+    ELDSettingViewController *_settingVC;
     CGFloat broadCastBtnScale;//比例
 }
 
@@ -198,7 +200,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 {
 //    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
     
-    ELDLiveViewController *createLiveVC = [[ELDLiveViewController alloc] init];
+    ELDLiveContainerViewController *createLiveVC = [[ELDLiveContainerViewController alloc] init];
     [self presentViewController:createLiveVC animated:true completion:nil];
 }
 
@@ -215,7 +217,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
     
     
-    _settingVC = [[EaseSettingsViewController alloc] init];
+    _settingVC = [[ELDSettingViewController alloc] init];
     _settingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
                                                    image:[ImageWithName(@"Channel_normal")
                                                           imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]

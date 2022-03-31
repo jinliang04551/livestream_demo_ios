@@ -74,6 +74,7 @@
     }]];
     [self presentViewController:coverAlert animated:true completion:nil];
 }
+
 - (IBAction)backAction:(UIButton *)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
@@ -208,4 +209,5 @@
     [_liveNameTextField resignFirstResponder];
     return true;
 }
+
 @end

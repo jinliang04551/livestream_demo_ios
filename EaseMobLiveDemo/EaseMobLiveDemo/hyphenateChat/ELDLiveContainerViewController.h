@@ -1,5 +1,5 @@
 //
-//  ELDPreLivingView.h
+//  ELDLiveContainerViewController.h
 //  EaseMobLiveDemo
 //
 //  Created by liu001 on 2022/3/29.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ELDPreLivingView : UIView
+@interface ELDLiveContainerViewController : UIViewController
 
 @end
 

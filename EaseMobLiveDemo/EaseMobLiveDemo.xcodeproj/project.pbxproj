@@ -224,11 +224,30 @@
 		C08DFC3327F2E96A00862ADF /* searchBar_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3127F2E96900862ADF /* searchBar_icon@2x.png */; };
 		C08DFC3627F2EFA300862ADF /* live_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3427F2EFA300862ADF /* live_close@2x.png */; };
 		C08DFC3727F2EFA300862ADF /* live_close@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3527F2EFA300862ADF /* live_close@3x.png */; };
-		C08DFC3A27F2FD0100862ADF /* ELDPreLivingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC3927F2FD0100862ADF /* ELDPreLivingView.m */; };
 		C08DFC3D27F2FD9A00862ADF /* Live_edit_name@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3B27F2FD9A00862ADF /* Live_edit_name@2x.png */; };
 		C08DFC3E27F2FD9A00862ADF /* Live_edit_name@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3C27F2FD9A00862ADF /* Live_edit_name@3x.png */; };
 		C08DFC4127F3039F00862ADF /* camera_flip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC3F27F3039F00862ADF /* camera_flip@2x.png */; };
 		C08DFC4227F3039F00862ADF /* camera_flip@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC4027F3039F00862ADF /* camera_flip@3x.png */; };
+		C08DFC4527F31BFA00862ADF /* ELDLiveContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */; };
+		C08DFC4927F54EDB00862ADF /* setting_edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC4727F54EDB00862ADF /* setting_edit@2x.png */; };
+		C08DFC4A27F54EDB00862ADF /* setting_edit@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC4827F54EDB00862ADF /* setting_edit@3x.png */; };
+		C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */; };
+		C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC4E27F565A800862ADF /* UIAlertAction+Custom.m */; };
+		C08DFC5427F5884000862ADF /* about_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC5227F5884000862ADF /* about_icon@3x.png */; };
+		C08DFC5527F5884000862ADF /* about_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC5327F5884000862ADF /* about_icon@2x.png */; };
+		C08DFC5B27F58A4D00862ADF /* ACDCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */; };
+		C08DFC5C27F58A4D00862ADF /* ACDInfoDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */; };
+		C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */; };
+		C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC6127F58C0F00862ADF /* ELDEditUserInfoViewController.m */; };
+		C08DFC6827F592F300862ADF /* ELDUserHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */; };
+		C08DFC6B27F59A0E00862ADF /* photo_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6927F59A0E00862ADF /* photo_icon@2x.png */; };
+		C08DFC6C27F59A0E00862ADF /* photo_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6A27F59A0E00862ADF /* photo_icon@3x.png */; };
+		C08DFC6F27F5AB2800862ADF /* gray_right_arrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6D27F5AB2800862ADF /* gray_right_arrow@3x.png */; };
+		C08DFC7027F5AB2800862ADF /* gray_right_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6E27F5AB2800862ADF /* gray_right_arrow@2x.png */; };
+		C08DFC7327F5AFD100862ADF /* ELDUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7127F5AFD000862ADF /* ELDUtil.m */; };
+		C08DFC7627F5B20E00862ADF /* ACDTitleDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */; };
+		C08DFC7927F5C2F500862ADF /* nav_left_arrow_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */; };
+		C08DFC7A27F5C2F500862ADF /* nav_left_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */; };
 		C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */; };
 		C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */; };
 		C08E8F2D27EDC20800DE47C4 /* livelist_placeHolder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2B27EDC20800DE47C4 /* livelist_placeHolder@3x.png */; };
@@ -572,12 +591,41 @@
 		C08DFC3127F2E96900862ADF /* searchBar_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "searchBar_icon@2x.png"; path = "live/searchBar_icon@2x.png"; sourceTree = "<group>"; };
 		C08DFC3427F2EFA300862ADF /* live_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_close@2x.png"; sourceTree = "<group>"; };
 		C08DFC3527F2EFA300862ADF /* live_close@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_close@3x.png"; sourceTree = "<group>"; };
-		C08DFC3827F2FD0100862ADF /* ELDPreLivingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDPreLivingView.h; sourceTree = "<group>"; };
-		C08DFC3927F2FD0100862ADF /* ELDPreLivingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDPreLivingView.m; sourceTree = "<group>"; };
 		C08DFC3B27F2FD9A00862ADF /* Live_edit_name@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live_edit_name@2x.png"; sourceTree = "<group>"; };
 		C08DFC3C27F2FD9A00862ADF /* Live_edit_name@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Live_edit_name@3x.png"; sourceTree = "<group>"; };
 		C08DFC3F27F3039F00862ADF /* camera_flip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_flip@2x.png"; sourceTree = "<group>"; };
 		C08DFC4027F3039F00862ADF /* camera_flip@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera_flip@3x.png"; sourceTree = "<group>"; };
+		C08DFC4327F31BFA00862ADF /* ELDLiveContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveContainerViewController.h; sourceTree = "<group>"; };
+		C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveContainerViewController.m; sourceTree = "<group>"; };
+		C08DFC4727F54EDB00862ADF /* setting_edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_edit@2x.png"; sourceTree = "<group>"; };
+		C08DFC4827F54EDB00862ADF /* setting_edit@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "setting_edit@3x.png"; sourceTree = "<group>"; };
+		C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDPreLivingViewController.h; sourceTree = "<group>"; };
+		C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDPreLivingViewController.m; sourceTree = "<group>"; };
+		C08DFC4E27F565A800862ADF /* UIAlertAction+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertAction+Custom.m"; sourceTree = "<group>"; };
+		C08DFC4F27F565A800862ADF /* UIAlertAction+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertAction+Custom.h"; sourceTree = "<group>"; };
+		C08DFC5127F5661E00862ADF /* EaseLiveCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveCategory.h; sourceTree = "<group>"; };
+		C08DFC5227F5884000862ADF /* about_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_icon@3x.png"; sourceTree = "<group>"; };
+		C08DFC5327F5884000862ADF /* about_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_icon@2x.png"; sourceTree = "<group>"; };
+		C08DFC5727F58A4D00862ADF /* ACDCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDCustomCell.h; sourceTree = "<group>"; };
+		C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDCustomCell.m; sourceTree = "<group>"; };
+		C08DFC5927F58A4D00862ADF /* ACDInfoDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDInfoDetailCell.h; sourceTree = "<group>"; };
+		C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDInfoDetailCell.m; sourceTree = "<group>"; };
+		C08DFC5D27F58BF400862ADF /* ELDSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDSettingViewController.h; sourceTree = "<group>"; };
+		C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDSettingViewController.m; sourceTree = "<group>"; };
+		C08DFC6027F58C0F00862ADF /* ELDEditUserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDEditUserInfoViewController.h; sourceTree = "<group>"; };
+		C08DFC6127F58C0F00862ADF /* ELDEditUserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDEditUserInfoViewController.m; sourceTree = "<group>"; };
+		C08DFC6627F592F300862ADF /* ELDUserHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDUserHeaderView.h; sourceTree = "<group>"; };
+		C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDUserHeaderView.m; sourceTree = "<group>"; };
+		C08DFC6927F59A0E00862ADF /* photo_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_icon@2x.png"; sourceTree = "<group>"; };
+		C08DFC6A27F59A0E00862ADF /* photo_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo_icon@3x.png"; sourceTree = "<group>"; };
+		C08DFC6D27F5AB2800862ADF /* gray_right_arrow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray_right_arrow@3x.png"; sourceTree = "<group>"; };
+		C08DFC6E27F5AB2800862ADF /* gray_right_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray_right_arrow@2x.png"; sourceTree = "<group>"; };
+		C08DFC7127F5AFD000862ADF /* ELDUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDUtil.m; sourceTree = "<group>"; };
+		C08DFC7227F5AFD100862ADF /* ELDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDUtil.h; sourceTree = "<group>"; };
+		C08DFC7427F5B20D00862ADF /* ACDTitleDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDTitleDetailCell.h; sourceTree = "<group>"; };
+		C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDTitleDetailCell.m; sourceTree = "<group>"; };
+		C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@3x.png"; sourceTree = "<group>"; };
+		C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@2x.png"; sourceTree = "<group>"; };
 		C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDAnimationController.h; sourceTree = "<group>"; };
 		C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDAnimationController.m; sourceTree = "<group>"; };
 		C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@2x.png"; sourceTree = "<group>"; };
@@ -665,8 +713,9 @@
 		3C9E3153260C7B4100CC3E3F /* hyphenateChat */ = {
 			isa = PBXGroup;
 			children = (
+				C08DFC5627F5899700862ADF /* Cell */,
 				3C9E31DF260C7B4200CC3E3F /* 3rdparty */,
-				3C9E3157260C7B4100CC3E3F /* category */,
+				3C9E3157260C7B4100CC3E3F /* Category */,
 				3C9E326D260C7B4300CC3E3F /* EaseBaseViewController.h */,
 				3C9E3172260C7B4200CC3E3F /* EaseBaseViewController.m */,
 				3C9E3173260C7B4200CC3E3F /* EaseLoginViewController.h */,
@@ -684,14 +733,16 @@
 				C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */,
 				C08E8F4427EDDB0500DE47C4 /* ELDLiveViewController.h */,
 				C08E8F4527EDDB0500DE47C4 /* ELDLiveViewController.m */,
+				C08DFC4327F31BFA00862ADF /* ELDLiveContainerViewController.h */,
+				C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */,
 				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
 				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
-				C08DFC3827F2FD0100862ADF /* ELDPreLivingView.h */,
-				C08DFC3927F2FD0100862ADF /* ELDPreLivingView.m */,
-				3C9E317E260C7B4200CC3E3F /* live */,
-				3C9E318B260C7B4200CC3E3F /* model */,
-				3C9E3174260C7B4200CC3E3F /* publish */,
-				3C9E31EB260C7B4200CC3E3F /* resource */,
+				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
+				C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */,
+				3C9E317E260C7B4200CC3E3F /* Live */,
+				3C9E318B260C7B4200CC3E3F /* Model */,
+				3C9E3174260C7B4200CC3E3F /* Publish */,
+				3C9E31EB260C7B4200CC3E3F /* Resource */,
 				C08E8F2527EB37DA00DE47C4 /* Setting */,
 				3C9E3160260C7B4100CC3E3F /* util */,
 				3C9E3197260C7B4200CC3E3F /* view */,
@@ -708,24 +759,29 @@
 			path = EaseMediaStream;
 			sourceTree = "<group>";
 		};
-		3C9E3157260C7B4100CC3E3F /* category */ = {
+		3C9E3157260C7B4100CC3E3F /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				3C9E3158260C7B4100CC3E3F /* UIView+Position.m */,
 				3C9E3159260C7B4100CC3E3F /* NSDictionary+SafeValue.h */,
-				3C9E315A260C7B4100CC3E3F /* UIViewController+HUD.m */,
-				3C9E315B260C7B4100CC3E3F /* UIImage+Color.h */,
-				3C9E315C260C7B4100CC3E3F /* UIViewController+HUD.h */,
 				3C9E315D260C7B4100CC3E3F /* NSDictionary+SafeValue.m */,
-				3C9E315E260C7B4100CC3E3F /* UIView+Position.h */,
+				C08DFC4F27F565A800862ADF /* UIAlertAction+Custom.h */,
+				C08DFC4E27F565A800862ADF /* UIAlertAction+Custom.m */,
+				3C9E315B260C7B4100CC3E3F /* UIImage+Color.h */,
 				3C9E315F260C7B4100CC3E3F /* UIImage+Color.m */,
+				3C9E315E260C7B4100CC3E3F /* UIView+Position.h */,
+				3C9E3158260C7B4100CC3E3F /* UIView+Position.m */,
+				3C9E315C260C7B4100CC3E3F /* UIViewController+HUD.h */,
+				3C9E315A260C7B4100CC3E3F /* UIViewController+HUD.m */,
+				C08DFC5127F5661E00862ADF /* EaseLiveCategory.h */,
 			);
-			path = category;
+			path = Category;
 			sourceTree = "<group>";
 		};
 		3C9E3160260C7B4100CC3E3F /* util */ = {
 			isa = PBXGroup;
 			children = (
+				C08DFC7227F5AFD100862ADF /* ELDUtil.h */,
+				C08DFC7127F5AFD000862ADF /* ELDUtil.m */,
 				3C9E3166260C7B4100CC3E3F /* EaseCustomMessageHelper.h */,
 				3C9E316C260C7B4100CC3E3F /* EaseCustomMessageHelper.m */,
 				3C9E3167260C7B4100CC3E3F /* EaseDefaultDataHelper.h */,
@@ -744,7 +800,7 @@
 			path = util;
 			sourceTree = "<group>";
 		};
-		3C9E3174260C7B4200CC3E3F /* publish */ = {
+		3C9E3174260C7B4200CC3E3F /* Publish */ = {
 			isa = PBXGroup;
 			children = (
 				3C9E3179260C7B4200CC3E3F /* EaseCreateLiveViewController.h */,
@@ -759,10 +815,10 @@
 				3C9E3175260C7B4200CC3E3F /* EaseTextField.h */,
 				3C9E317B260C7B4200CC3E3F /* EaseTextField.m */,
 			);
-			path = publish;
+			path = Publish;
 			sourceTree = "<group>";
 		};
-		3C9E317E260C7B4200CC3E3F /* live */ = {
+		3C9E317E260C7B4200CC3E3F /* Live */ = {
 			isa = PBXGroup;
 			children = (
 				3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */,
@@ -778,10 +834,10 @@
 				3C9E3186260C7B4200CC3E3F /* EaseSettingsViewController.h */,
 				3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */,
 			);
-			path = live;
+			path = Live;
 			sourceTree = "<group>";
 		};
-		3C9E318B260C7B4200CC3E3F /* model */ = {
+		3C9E318B260C7B4200CC3E3F /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				3C9E3357260C800000CC3E3F /* EaseBoradCastCard.h */,
@@ -791,7 +847,7 @@
 				3C9E3359260C800100CC3E3F /* EaseLiveSession.h */,
 				3C9E3354260C800000CC3E3F /* EaseLiveSession.m */,
 			);
-			path = model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		3C9E3197260C7B4200CC3E3F /* view */ = {
@@ -947,18 +1003,19 @@
 			path = SlimeRefresh;
 			sourceTree = "<group>";
 		};
-		3C9E31EB260C7B4200CC3E3F /* resource */ = {
+		3C9E31EB260C7B4200CC3E3F /* Resource */ = {
 			isa = PBXGroup;
 			children = (
 				3C9E31EC260C7B4200CC3E3F /* image */,
 				3C9E3263260C7B4300CC3E3F /* iconfront */,
 			);
-			path = resource;
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		3C9E31EC260C7B4200CC3E3F /* image */ = {
 			isa = PBXGroup;
 			children = (
+				C08DFC4627F54E9000862ADF /* Setting */,
 				C08DFC3127F2E96900862ADF /* searchBar_icon@2x.png */,
 				C08DFC3027F2E96900862ADF /* searchBar_icon@3x.png */,
 				C08DFC2C27F2B86A00862ADF /* back_icon_white@2x.png */,
@@ -1130,13 +1187,49 @@
 				C08DFC2327F1CC4300862ADF /* ELDNoDataPlaceHolderView.m */,
 				C08DFC2527F1D18C00862ADF /* ELDHintGoLiveView.h */,
 				C08DFC2627F1D18C00862ADF /* ELDHintGoLiveView.m */,
+				C08DFC6627F592F300862ADF /* ELDUserHeaderView.h */,
+				C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		C08DFC4627F54E9000862ADF /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */,
+				C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */,
+				C08DFC5327F5884000862ADF /* about_icon@2x.png */,
+				C08DFC5227F5884000862ADF /* about_icon@3x.png */,
+				C08DFC6927F59A0E00862ADF /* photo_icon@2x.png */,
+				C08DFC6A27F59A0E00862ADF /* photo_icon@3x.png */,
+				C08DFC4727F54EDB00862ADF /* setting_edit@2x.png */,
+				C08DFC4827F54EDB00862ADF /* setting_edit@3x.png */,
+				C08DFC6E27F5AB2800862ADF /* gray_right_arrow@2x.png */,
+				C08DFC6D27F5AB2800862ADF /* gray_right_arrow@3x.png */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		C08DFC5627F5899700862ADF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C08DFC7427F5B20D00862ADF /* ACDTitleDetailCell.h */,
+				C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */,
+				C08DFC5727F58A4D00862ADF /* ACDCustomCell.h */,
+				C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */,
+				C08DFC5927F58A4D00862ADF /* ACDInfoDetailCell.h */,
+				C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		C08E8F2527EB37DA00DE47C4 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				C08DFC5D27F58BF400862ADF /* ELDSettingViewController.h */,
+				C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */,
+				C08DFC6027F58C0F00862ADF /* ELDEditUserInfoViewController.h */,
+				C08DFC6127F58C0F00862ADF /* ELDEditUserInfoViewController.m */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1313,6 +1406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08DFC7927F5C2F500862ADF /* nav_left_arrow_white@3x.png in Resources */,
 				3C9E32C8260C7B4300CC3E3F /* coverImage@2x.png in Resources */,
 				3C9E3311260C7B4300CC3E3F /* ic_Gift@3x.png in Resources */,
 				3C9E32E2260C7B4300CC3E3F /* Logo@2x.png in Resources */,
@@ -1339,6 +1433,7 @@
 				3C9E331E260C7B4400CC3E3F /* avatat_5@3x.png in Resources */,
 				C08E8F4927EDE1FA00DE47C4 /* live_camera@2x.png in Resources */,
 				3C9E332A260C7B4400CC3E3F /* demo.css in Resources */,
+				C08DFC5427F5884000862ADF /* about_icon@3x.png in Resources */,
 				3C9E32BA260C7B4300CC3E3F /* gift.dog@2x.png in Resources */,
 				3C9E3309260C7B4300CC3E3F /* default_back_image@3x.png in Resources */,
 				3C9E3329260C7B4400CC3E3F /* rapidBroadCast@3x.png in Resources */,
@@ -1379,6 +1474,8 @@
 				D2F4E26D1D12C8AB00BB7E1A /* Images.xcassets in Resources */,
 				3C9E32CD260C7B4300CC3E3F /* chat@2x.png in Resources */,
 				C08DFC1727F1AFB200862ADF /* LiveStreamer@2x.png in Resources */,
+				C08DFC7027F5AB2800862ADF /* gray_right_arrow@2x.png in Resources */,
+				C08DFC5527F5884000862ADF /* about_icon@2x.png in Resources */,
 				3C9E330E260C7B4300CC3E3F /* gift.rings@3x.png in Resources */,
 				3C9E32DD260C7B4300CC3E3F /* giftrecord@2x.png in Resources */,
 				C08DFC2027F1B08A00862ADF /* LiveStreamer_watch_bg@2x.png in Resources */,
@@ -1406,7 +1503,9 @@
 				3C9E32C7260C7B4300CC3E3F /* webRefreshButton@2x.png in Resources */,
 				3C9E32F2260C7B4300CC3E3F /* avatat_2@3x.png in Resources */,
 				3C9E32B3260C7B4300CC3E3F /* sr_refresh.png in Resources */,
+				C08DFC4927F54EDB00862ADF /* setting_edit@2x.png in Resources */,
 				3C9E32B9260C7B4300CC3E3F /* kick@2x.png in Resources */,
+				C08DFC7A27F5C2F500862ADF /* nav_left_arrow_white@2x.png in Resources */,
 				3C9E32DB260C7B4300CC3E3F /* admin@2x.png in Resources */,
 				3C9E3308260C7B4300CC3E3F /* avatat_4@3x.png in Resources */,
 				3C9E330D260C7B4300CC3E3F /* avatat_6@3x.png in Resources */,
@@ -1460,6 +1559,7 @@
 				F5D6F695277B1456000F3FD2 /* interactionBroadCast@3x.png in Resources */,
 				3C9E32CE260C7B4300CC3E3F /* default_back_image@2x.png in Resources */,
 				3C9E32D6260C7B4300CC3E3F /* like@2x.png in Resources */,
+				C08DFC6C27F59A0E00862ADF /* photo_icon@3x.png in Resources */,
 				C08E8F3027EDC36900DE47C4 /* hintLive@2x.png in Resources */,
 				3C9E332E260C7B4400CC3E3F /* iconfont.svg in Resources */,
 				F5EB0FDF274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib in Resources */,
@@ -1467,10 +1567,13 @@
 				E96F3D8A1C17FE410099718A /* Default-568h@2x.png in Resources */,
 				F5D6F693277B144E000F3FD2 /* interactionBroadCast@2x.png in Resources */,
 				3C9E32D8260C7B4300CC3E3F /* ic_chat@2x.png in Resources */,
+				C08DFC6F27F5AB2800862ADF /* gray_right_arrow@3x.png in Resources */,
 				3C9E3306260C7B4300CC3E3F /* icon-backAction@3x.png in Resources */,
 				3C9E330B260C7B4300CC3E3F /* list@3x.png in Resources */,
+				C08DFC4A27F54EDB00862ADF /* setting_edit@3x.png in Resources */,
 				3C9E3304260C7B4300CC3E3F /* icon-liveList-unSelected@3x.png in Resources */,
 				3C9E3312260C7B4400CC3E3F /* gift.box@3x.png in Resources */,
+				C08DFC6B27F59A0E00862ADF /* photo_icon@2x.png in Resources */,
 				3C9E332D260C7B4400CC3E3F /* iconfont.ttf in Resources */,
 				C08DFC2A27F1D52500862ADF /* goLive_button_bg@3x.png in Resources */,
 				3C9E32CB260C7B4300CC3E3F /* live@2x.png in Resources */,
@@ -1578,14 +1681,16 @@
 				3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */,
 				3C9E32B1260C7B4300CC3E3F /* EaseBarrageFlyView.m in Sources */,
 				3C9E32A3260C7B4300CC3E3F /* EaseLiveCastView.m in Sources */,
-				C08DFC3A27F2FD0100862ADF /* ELDPreLivingView.m in Sources */,
 				3C9E3276260C7B4300CC3E3F /* EaseEmojiHelper.m in Sources */,
 				3C9E32AA260C7B4300CC3E3F /* EaseEmoticonView.m in Sources */,
 				3C9E3277260C7B4300CC3E3F /* RealtimeSearchUtil.m in Sources */,
 				3C9E3283260C7B4300CC3E3F /* EaseAboutHuanxinViewController.m in Sources */,
 				D2F4E2721D12C8AB00BB7E1A /* main.m in Sources */,
+				C08DFC7327F5AFD100862ADF /* ELDUtil.m in Sources */,
+				C08DFC6827F592F300862ADF /* ELDUserHeaderView.m in Sources */,
 				C08DFC2427F1CC4300862ADF /* ELDNoDataPlaceHolderView.m in Sources */,
 				C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */,
+				C08DFC4527F31BFA00862ADF /* ELDLiveContainerViewController.m in Sources */,
 				3C9E3287260C7B4300CC3E3F /* EaseSearchDisplayController.m in Sources */,
 				3C9E3284260C7B4300CC3E3F /* EaseLiveTVListViewController.m in Sources */,
 				3C9E335A260C800100CC3E3F /* EaseLiveSession.m in Sources */,
@@ -1596,6 +1701,7 @@
 				3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */,
 				F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */,
 				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
+				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
 				3C9E329B260C7B4300CC3E3F /* JPGiftOperation.m in Sources */,
 				3C9E3295260C7B4300CC3E3F /* JPGiftCountLabel.m in Sources */,
 				3C9E32A4260C7B4300CC3E3F /* EaseGiftListView.m in Sources */,
@@ -1616,8 +1722,10 @@
 				3C9E329E260C7B4300CC3E3F /* EaseGiftConfirmView.m in Sources */,
 				3C9E32A9260C7B4300CC3E3F /* EaseBaseSubView.m in Sources */,
 				3C9E3279260C7B4300CC3E3F /* EaseCustomMessageHelper.m in Sources */,
+				C08DFC5B27F58A4D00862ADF /* ACDCustomCell.m in Sources */,
 				3C9E327E260C7B4300CC3E3F /* EaseBaseViewController.m in Sources */,
 				3C9E3290260C7B4300CC3E3F /* EaseAudienceBehaviorView.m in Sources */,
+				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */,
 				3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */,
 				3C9E3274260C7B4300CC3E3F /* EaseHttpManager.m in Sources */,
@@ -1631,16 +1739,20 @@
 				3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */,
 				3C9E3273260C7B4300CC3E3F /* UIImage+Color.m in Sources */,
 				3C9E32B4260C7B4300CC3E3F /* SRRefreshView.m in Sources */,
+				C08DFC7627F5B20E00862ADF /* ACDTitleDetailCell.m in Sources */,
 				3C9E32A7260C7B4300CC3E3F /* EaseLiveCollectionViewCell.m in Sources */,
 				3C9E3275260C7B4300CC3E3F /* EMEmoticonGroup.m in Sources */,
+				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
 				3C9E32A5260C7B4300CC3E3F /* EaseGiftCell.m in Sources */,
 				C08E8F4327EDD9CA00DE47C4 /* ELDLoadingView.m in Sources */,
 				3C9E3270260C7B4300CC3E3F /* UIView+Position.m in Sources */,
 				3C9E3296260C7B4300CC3E3F /* JPGiftShowManager.m in Sources */,
 				3C9E32B5260C7B4300CC3E3F /* SRSlimeView.m in Sources */,
 				3C9E3278260C7B4300CC3E3F /* EaseDefaultDataHelper.m in Sources */,
+				C08DFC5C27F58A4D00862ADF /* ACDInfoDetailCell.m in Sources */,
 				D2F4E23E1D12C8AB00BB7E1A /* AppDelegate.m in Sources */,
 				3C9E32A6260C7B4300CC3E3F /* EaseChatCell.m in Sources */,
+				C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */,
 				3C9E335B260C800100CC3E3F /* EaseBoradCastCard.m in Sources */,
 				3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */,
 				3C9E32B0260C7B4300CC3E3F /* EaseHeartFlyView.m in Sources */,

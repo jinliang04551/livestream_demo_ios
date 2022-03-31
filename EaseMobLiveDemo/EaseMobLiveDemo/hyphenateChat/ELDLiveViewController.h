@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLiveViewController : UIViewController
+
 - (instancetype)initWithLiveRoom:(EaseLiveRoom*)room;
 
 @property (nonatomic, copy) void (^finishBroadcastCompletion)(BOOL isFinish);

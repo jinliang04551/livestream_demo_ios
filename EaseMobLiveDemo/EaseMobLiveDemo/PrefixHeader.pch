@@ -55,13 +55,14 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #ifdef __OBJC__
 
     #import <HyphenateChat/HyphenateChat.h>
-    #import "MBProgressHUD+Add.h"
-    #import "UIView+Position.h"
-    #import "UIViewController+HUD.h"
     #import "EaseHttpManager.h"
     #import <Masonry/Masonry.h>
+    #import "MBProgressHUD+Add.h"
     #import "ALSAppStyle.h"
     #import "EaseLiveDemoDefine.h"
     #import "EaseLiveColorDefine.h"
+    #import "EaseLiveRoom.h"
+    #import "EaseLiveCategory.h"
+    #import "ELDUtil.h"
 
 #endif

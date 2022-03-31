@@ -48,7 +48,6 @@
 @property (nonatomic, strong) UIButton *liveButton;
 @property (nonatomic) kTabbarItemBehavior tabBarBehavior; //tabbar行为：看直播/开播
 
-@property (nonatomic, strong) UILabel *prompt;
 
 @end
 
@@ -241,18 +240,6 @@
 }
 
 #pragma mark - getter
-- (UILabel *)prompt {
-    if (_prompt == nil) {
-        _prompt = UILabel.new;
-        _prompt.textColor = COLOR_HEX(0xFFFFFF);
-        _prompt.font = NFont(20.0);
-        _prompt.textAlignment = NSTextAlignmentLeft;
-        _prompt.text = @"Stream Channels";
-    }
-    return _prompt;
-}
-
-
 - (UIBarButtonItem*)searchBarItem
 {
     if (_searchBarItem == nil) {

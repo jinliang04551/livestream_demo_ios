@@ -15,7 +15,7 @@ typedef enum : NSInteger{
 }kTabbarItemBehavior;
 
 @interface EaseBaseViewController : UIViewController
-
+@property (nonatomic, strong) UILabel *prompt;
 @property (nonatomic, strong) UIButton *backButton;
 
 - (void)backAction;

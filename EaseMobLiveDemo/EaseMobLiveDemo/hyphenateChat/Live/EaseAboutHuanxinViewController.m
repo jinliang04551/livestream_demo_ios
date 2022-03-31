@@ -18,6 +18,7 @@
 
 @interface EaseAboutHuanxinViewController ()<WKNavigationDelegate,WKUIDelegate>
 
+
 @property (nonatomic, strong) WKWebView *webView;
 
 //网页加载进度视图
