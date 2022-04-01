@@ -123,6 +123,8 @@
     }
 }
 
+
+
 - (void)changeAvatarAction {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Change Cover" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     

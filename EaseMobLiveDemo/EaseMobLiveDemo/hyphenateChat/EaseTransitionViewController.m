@@ -73,7 +73,7 @@ NSString *defaultPwd = @"000000";//默认密码
                           [ud setObject:[EMClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
                           [ud synchronize];
                           [[EMClient sharedClient].options setIsAutoLogin:YES];
-                          [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@YES];
+                          [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
                      }
                  });
              }];

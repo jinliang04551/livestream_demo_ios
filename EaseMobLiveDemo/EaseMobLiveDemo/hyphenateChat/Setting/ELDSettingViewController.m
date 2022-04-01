@@ -24,7 +24,7 @@
 @property (nonatomic, strong) UITableView *table;
 @property (nonatomic, strong) ACDInfoDetailCell *aboutCell;
 @property (nonatomic, strong) UIButton *editButton;
-
+@property (nonatomic, strong) EMUserInfo *userInfo;
 
 @end
 
@@ -39,7 +39,8 @@
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+    [self fetchUserInfo];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -63,15 +64,30 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.editButton];
 }
 
+- (void)fetchUserInfo {
+    [[EMClient.sharedClient userInfoManager] fetchUserInfoById:@[@""] completion:^(NSDictionary *aUserDatas, EMError *aError) {
+        if(!aError) {
+            self.userInfo = [aUserDatas objectForKey:[EMClient sharedClient].currentUsername];
+            if(self.userInfo && self.userInfo.avatarUrl) {
+                NSURL* url = [NSURL URLWithString:self.userInfo.avatarUrl];
+                [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"")];
+                self.userHeaderView.nameLabel.text = self.userInfo.nickname;
+            }
+        }
+
+    }];
+}
+
 #pragma mark public method
 - (void)goAboutPage {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com/about"]];
 }
 
 - (void)goEditUserInfoPage {
-    ELDEditUserInfoViewController *about = [[ELDEditUserInfoViewController alloc] init];
-    about.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:about animated:YES];
+    ELDEditUserInfoViewController *vc = [[ELDEditUserInfoViewController alloc] init];
+    vc.userInfo = self.userInfo;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table view data source

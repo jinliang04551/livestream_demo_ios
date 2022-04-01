@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDEditUserInfoViewController : EaseBaseViewController
+@property (nonatomic, strong) EMUserInfo *userInfo;
 
 @end
 

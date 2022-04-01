@@ -11,6 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDUserHeaderView : UIView
+@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) UILabel *nameLabel;
+
 @property (nonatomic, copy) void (^tapHeaderViewBlock)(void);
 - (instancetype)initWithFrame:(CGRect)frame
                    isEditable:(BOOL)isEditable;

@@ -61,8 +61,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import "ALSAppStyle.h"
     #import "EaseLiveDemoDefine.h"
     #import "EaseLiveColorDefine.h"
+    #import "EaseLiveDemoNotification.h"
     #import "EaseLiveRoom.h"
     #import "EaseLiveCategory.h"
     #import "ELDUtil.h"
+    #import <SDWebImage/UIImageView+WebCache.h>
 
 #endif

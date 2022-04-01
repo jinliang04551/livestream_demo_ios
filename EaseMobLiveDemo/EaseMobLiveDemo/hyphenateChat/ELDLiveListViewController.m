@@ -523,7 +523,7 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"退出中..." toView:nil];
     [[EMClient sharedClient] logout:NO];
     [hud hideAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }
 
 #pragma mark - notification

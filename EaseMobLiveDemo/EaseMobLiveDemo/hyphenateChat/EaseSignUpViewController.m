@@ -184,7 +184,7 @@
                      [ud setObject:[EMClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
                      [ud synchronize];
                      [[EMClient sharedClient].options setIsAutoLogin:YES];
-                     [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@YES];
+                     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
                  } else {
                      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.title.tips", @"Tips") message:NSLocalizedString(@"login.signup.succeed", @"Sign up succeed") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"alert.cancelButton.title", @"Ok"), nil];
                      [alert show];

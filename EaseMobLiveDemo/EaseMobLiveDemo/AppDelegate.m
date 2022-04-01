@@ -27,7 +27,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStateChange:)
-                                                 name:@"loginStateChange"
+                                                 name:ELDloginStateChange
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -85,14 +85,14 @@
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }
 
 - (void)userAccountDidRemoveFromServer
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已被从服务器端移除" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alertView show];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@NO];
+    [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

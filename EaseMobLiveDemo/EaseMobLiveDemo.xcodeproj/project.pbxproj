@@ -626,6 +626,7 @@
 		C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDTitleDetailCell.m; sourceTree = "<group>"; };
 		C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@3x.png"; sourceTree = "<group>"; };
 		C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@2x.png"; sourceTree = "<group>"; };
+		C08DFC7B27F6A07F00862ADF /* EaseLiveDemoNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoNotification.h; sourceTree = "<group>"; };
 		C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDAnimationController.h; sourceTree = "<group>"; };
 		C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDAnimationController.m; sourceTree = "<group>"; };
 		C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@2x.png"; sourceTree = "<group>"; };
@@ -1286,6 +1287,7 @@
 				D2F4E2081D12C8AB00BB7E1A /* main.m */,
 				C08DFC0C27F15E8B00862ADF /* EaseLiveDemoDefine.h */,
 				C08DFC1427F18D6900862ADF /* EaseLiveColorDefine.h */,
+				C08DFC7B27F6A07F00862ADF /* EaseLiveDemoNotification.h */,
 				D2F4E2391D12C8AB00BB7E1A /* PrefixHeader.pch */,
 				D2E368241D3C7EFF00B1C90C /* Localizable.strings */,
 			);
@@ -1967,7 +1969,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.live;
 				PRODUCT_NAME = "环信聊天室";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = easemob_enterprise_demo_live_distribution;
+				PROVISIONING_PROFILE_SPECIFIER = easemob_enterprise_wildcard_distribution;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

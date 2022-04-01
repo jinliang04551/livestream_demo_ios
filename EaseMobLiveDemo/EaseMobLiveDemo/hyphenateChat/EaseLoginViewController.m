@@ -158,7 +158,7 @@
                 [ud setObject:[EMClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
                 [ud synchronize];
                 [[EMClient sharedClient].options setIsAutoLogin:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"loginStateChange" object:@YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
             } else {
                 NSString *alertTitle = NSLocalizedString(@"login.failed", @"Login failed");
                 switch (error.code)

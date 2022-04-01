@@ -12,11 +12,8 @@
 
 @interface ELDUserHeaderView ()
 @property (nonatomic, strong) UIImageView *photoImageView;
-@property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIView *alphaView;
 @property (nonatomic, assign) BOOL isEditable;
-
 
 @end
 
