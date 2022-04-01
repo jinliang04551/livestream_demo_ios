@@ -7,10 +7,11 @@
 //
 
 #import "ELDSettingViewController.h"
-#import "ACDInfoDetailCell.h"
+#import "ELDInfoDetailCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ELDEditUserInfoViewController.h"
 #import "ELDUserHeaderView.h"
+#import "ELDAboutViewController.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -22,7 +23,7 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) ELDUserHeaderView *userHeaderView;
 @property (nonatomic, strong) UITableView *table;
-@property (nonatomic, strong) ACDInfoDetailCell *aboutCell;
+@property (nonatomic, strong) ELDInfoDetailCell *aboutCell;
 @property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) EMUserInfo *userInfo;
 
@@ -79,8 +80,10 @@
 }
 
 #pragma mark public method
-- (void)goAboutPage {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.easemob.com/about"]];
+- (void)goAboutPage {    
+    ELDAboutViewController *vc = [[ELDAboutViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)goEditUserInfoPage {
@@ -144,8 +147,8 @@
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = ViewControllerBgBlackColor;
         _table.tableHeaderView = [self headerView];
-        [_table registerClass:[ACDInfoDetailCell class] forCellReuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
-        _table.rowHeight = [ACDInfoDetailCell height];
+        [_table registerClass:[ELDInfoDetailCell class] forCellReuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
+        _table.rowHeight = [ELDInfoDetailCell height];
     }
     return _table;
 }
@@ -172,9 +175,9 @@
 }
 
 
-- (ACDInfoDetailCell *)aboutCell {
+- (ELDInfoDetailCell *)aboutCell {
     if (_aboutCell == nil) {
-        _aboutCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _aboutCell = [[ELDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
         _aboutCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_aboutCell.iconImageView setImage:ImageWithName(@"about_icon")];
         _aboutCell.nameLabel.text= @"About";

@@ -235,8 +235,8 @@
 		C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC4E27F565A800862ADF /* UIAlertAction+Custom.m */; };
 		C08DFC5427F5884000862ADF /* about_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC5227F5884000862ADF /* about_icon@3x.png */; };
 		C08DFC5527F5884000862ADF /* about_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC5327F5884000862ADF /* about_icon@2x.png */; };
-		C08DFC5B27F58A4D00862ADF /* ACDCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */; };
-		C08DFC5C27F58A4D00862ADF /* ACDInfoDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */; };
+		C08DFC5B27F58A4D00862ADF /* ELDCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5827F58A4D00862ADF /* ELDCustomCell.m */; };
+		C08DFC5C27F58A4D00862ADF /* ELDInfoDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5A27F58A4D00862ADF /* ELDInfoDetailCell.m */; };
 		C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */; };
 		C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC6127F58C0F00862ADF /* ELDEditUserInfoViewController.m */; };
 		C08DFC6827F592F300862ADF /* ELDUserHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */; };
@@ -245,9 +245,10 @@
 		C08DFC6F27F5AB2800862ADF /* gray_right_arrow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6D27F5AB2800862ADF /* gray_right_arrow@3x.png */; };
 		C08DFC7027F5AB2800862ADF /* gray_right_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC6E27F5AB2800862ADF /* gray_right_arrow@2x.png */; };
 		C08DFC7327F5AFD100862ADF /* ELDUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7127F5AFD000862ADF /* ELDUtil.m */; };
-		C08DFC7627F5B20E00862ADF /* ACDTitleDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */; };
+		C08DFC7627F5B20E00862ADF /* ELDTitleDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7527F5B20E00862ADF /* ELDTitleDetailCell.m */; };
 		C08DFC7927F5C2F500862ADF /* nav_left_arrow_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */; };
 		C08DFC7A27F5C2F500862ADF /* nav_left_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */; };
+		C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */; };
 		C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */; };
 		C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */; };
 		C08E8F2D27EDC20800DE47C4 /* livelist_placeHolder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2B27EDC20800DE47C4 /* livelist_placeHolder@3x.png */; };
@@ -606,10 +607,10 @@
 		C08DFC5127F5661E00862ADF /* EaseLiveCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveCategory.h; sourceTree = "<group>"; };
 		C08DFC5227F5884000862ADF /* about_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_icon@3x.png"; sourceTree = "<group>"; };
 		C08DFC5327F5884000862ADF /* about_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about_icon@2x.png"; sourceTree = "<group>"; };
-		C08DFC5727F58A4D00862ADF /* ACDCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDCustomCell.h; sourceTree = "<group>"; };
-		C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDCustomCell.m; sourceTree = "<group>"; };
-		C08DFC5927F58A4D00862ADF /* ACDInfoDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDInfoDetailCell.h; sourceTree = "<group>"; };
-		C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDInfoDetailCell.m; sourceTree = "<group>"; };
+		C08DFC5727F58A4D00862ADF /* ELDCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDCustomCell.h; sourceTree = "<group>"; };
+		C08DFC5827F58A4D00862ADF /* ELDCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDCustomCell.m; sourceTree = "<group>"; };
+		C08DFC5927F58A4D00862ADF /* ELDInfoDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDInfoDetailCell.h; sourceTree = "<group>"; };
+		C08DFC5A27F58A4D00862ADF /* ELDInfoDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDInfoDetailCell.m; sourceTree = "<group>"; };
 		C08DFC5D27F58BF400862ADF /* ELDSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDSettingViewController.h; sourceTree = "<group>"; };
 		C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDSettingViewController.m; sourceTree = "<group>"; };
 		C08DFC6027F58C0F00862ADF /* ELDEditUserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDEditUserInfoViewController.h; sourceTree = "<group>"; };
@@ -622,11 +623,13 @@
 		C08DFC6E27F5AB2800862ADF /* gray_right_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gray_right_arrow@2x.png"; sourceTree = "<group>"; };
 		C08DFC7127F5AFD000862ADF /* ELDUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDUtil.m; sourceTree = "<group>"; };
 		C08DFC7227F5AFD100862ADF /* ELDUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDUtil.h; sourceTree = "<group>"; };
-		C08DFC7427F5B20D00862ADF /* ACDTitleDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDTitleDetailCell.h; sourceTree = "<group>"; };
-		C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDTitleDetailCell.m; sourceTree = "<group>"; };
+		C08DFC7427F5B20D00862ADF /* ELDTitleDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDTitleDetailCell.h; sourceTree = "<group>"; };
+		C08DFC7527F5B20E00862ADF /* ELDTitleDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDTitleDetailCell.m; sourceTree = "<group>"; };
 		C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@3x.png"; sourceTree = "<group>"; };
 		C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_left_arrow_white@2x.png"; sourceTree = "<group>"; };
 		C08DFC7B27F6A07F00862ADF /* EaseLiveDemoNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoNotification.h; sourceTree = "<group>"; };
+		C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDAboutViewController.m; sourceTree = "<group>"; };
+		C08DFC7D27F6DA2A00862ADF /* ELDAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDAboutViewController.h; sourceTree = "<group>"; };
 		C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDAnimationController.h; sourceTree = "<group>"; };
 		C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDAnimationController.m; sourceTree = "<group>"; };
 		C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@2x.png"; sourceTree = "<group>"; };
@@ -1214,12 +1217,12 @@
 		C08DFC5627F5899700862ADF /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				C08DFC7427F5B20D00862ADF /* ACDTitleDetailCell.h */,
-				C08DFC7527F5B20E00862ADF /* ACDTitleDetailCell.m */,
-				C08DFC5727F58A4D00862ADF /* ACDCustomCell.h */,
-				C08DFC5827F58A4D00862ADF /* ACDCustomCell.m */,
-				C08DFC5927F58A4D00862ADF /* ACDInfoDetailCell.h */,
-				C08DFC5A27F58A4D00862ADF /* ACDInfoDetailCell.m */,
+				C08DFC7427F5B20D00862ADF /* ELDTitleDetailCell.h */,
+				C08DFC7527F5B20E00862ADF /* ELDTitleDetailCell.m */,
+				C08DFC5727F58A4D00862ADF /* ELDCustomCell.h */,
+				C08DFC5827F58A4D00862ADF /* ELDCustomCell.m */,
+				C08DFC5927F58A4D00862ADF /* ELDInfoDetailCell.h */,
+				C08DFC5A27F58A4D00862ADF /* ELDInfoDetailCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1229,6 +1232,8 @@
 			children = (
 				C08DFC5D27F58BF400862ADF /* ELDSettingViewController.h */,
 				C08DFC5E27F58BF400862ADF /* ELDSettingViewController.m */,
+				C08DFC7D27F6DA2A00862ADF /* ELDAboutViewController.h */,
+				C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */,
 				C08DFC6027F58C0F00862ADF /* ELDEditUserInfoViewController.h */,
 				C08DFC6127F58C0F00862ADF /* ELDEditUserInfoViewController.m */,
 			);
@@ -1724,9 +1729,10 @@
 				3C9E329E260C7B4300CC3E3F /* EaseGiftConfirmView.m in Sources */,
 				3C9E32A9260C7B4300CC3E3F /* EaseBaseSubView.m in Sources */,
 				3C9E3279260C7B4300CC3E3F /* EaseCustomMessageHelper.m in Sources */,
-				C08DFC5B27F58A4D00862ADF /* ACDCustomCell.m in Sources */,
+				C08DFC5B27F58A4D00862ADF /* ELDCustomCell.m in Sources */,
 				3C9E327E260C7B4300CC3E3F /* EaseBaseViewController.m in Sources */,
 				3C9E3290260C7B4300CC3E3F /* EaseAudienceBehaviorView.m in Sources */,
+				C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */,
 				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */,
 				3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */,
@@ -1741,7 +1747,7 @@
 				3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */,
 				3C9E3273260C7B4300CC3E3F /* UIImage+Color.m in Sources */,
 				3C9E32B4260C7B4300CC3E3F /* SRRefreshView.m in Sources */,
-				C08DFC7627F5B20E00862ADF /* ACDTitleDetailCell.m in Sources */,
+				C08DFC7627F5B20E00862ADF /* ELDTitleDetailCell.m in Sources */,
 				3C9E32A7260C7B4300CC3E3F /* EaseLiveCollectionViewCell.m in Sources */,
 				3C9E3275260C7B4300CC3E3F /* EMEmoticonGroup.m in Sources */,
 				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
@@ -1751,7 +1757,7 @@
 				3C9E3296260C7B4300CC3E3F /* JPGiftShowManager.m in Sources */,
 				3C9E32B5260C7B4300CC3E3F /* SRSlimeView.m in Sources */,
 				3C9E3278260C7B4300CC3E3F /* EaseDefaultDataHelper.m in Sources */,
-				C08DFC5C27F58A4D00862ADF /* ACDInfoDetailCell.m in Sources */,
+				C08DFC5C27F58A4D00862ADF /* ELDInfoDetailCell.m in Sources */,
 				D2F4E23E1D12C8AB00BB7E1A /* AppDelegate.m in Sources */,
 				3C9E32A6260C7B4300CC3E3F /* EaseChatCell.m in Sources */,
 				C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */,

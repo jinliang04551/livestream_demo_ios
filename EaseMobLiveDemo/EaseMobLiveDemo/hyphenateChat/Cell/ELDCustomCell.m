@@ -6,15 +6,15 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDCustomCell.h"
+#import "ELDCustomCell.h"
 
-@interface ACDCustomCell ()
+@interface ELDCustomCell ()
 @property (nonatomic, strong) UIView* bottomLine;
 @property (nonatomic, strong)UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 
-@implementation ACDCustomCell
+@implementation ELDCustomCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

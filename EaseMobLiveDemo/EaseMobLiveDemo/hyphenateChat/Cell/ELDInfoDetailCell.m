@@ -6,9 +6,9 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDInfoDetailCell.h"
+#import "ELDInfoDetailCell.h"
 
-@implementation ACDInfoDetailCell
+@implementation ELDInfoDetailCell
 
 - (void)prepare {
     self.contentView.backgroundColor = ViewControllerBgBlackColor;

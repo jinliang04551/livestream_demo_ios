@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDCustomCell : UITableViewCell
+@interface ELDCustomCell : UITableViewCell
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong, readonly) UIView* bottomLine;

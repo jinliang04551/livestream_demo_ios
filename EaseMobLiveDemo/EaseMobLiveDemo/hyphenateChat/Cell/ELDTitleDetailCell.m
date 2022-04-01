@@ -6,9 +6,9 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDTitleDetailCell.h"
+#import "ELDTitleDetailCell.h"
 
-@implementation ACDTitleDetailCell
+@implementation ELDTitleDetailCell
 
 - (void)prepare {
     

@@ -7,11 +7,11 @@
 //
 
 #import "ELDEditUserInfoViewController.h"
-#import "ACDInfoDetailCell.h"
+#import "ELDInfoDetailCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ELDEditUserInfoViewController.h"
 #import "ELDUserHeaderView.h"
-#import "ACDTitleDetailCell.h"
+#import "ELDTitleDetailCell.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -53,7 +53,6 @@
 - (void)setupNavbar {
     [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
     self.navigationItem.leftBarButtonItem = [ELDUtil customLeftButtonItem:@"Edit Profile" action:@selector(backAction) actionTarget:self];
-    
 }
 
 #pragma mark actions
@@ -252,9 +251,9 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ACDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+    ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
     if (cell == nil) {
-        cell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+        cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
@@ -326,8 +325,8 @@
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = ViewControllerBgBlackColor;
         _table.tableHeaderView = [self headerView];
-        [_table registerClass:[ACDInfoDetailCell class] forCellReuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
-        _table.rowHeight = [ACDInfoDetailCell height];
+        [_table registerClass:[ELDInfoDetailCell class] forCellReuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
+        _table.rowHeight = [ELDInfoDetailCell height];
     }
     return _table;
 }
