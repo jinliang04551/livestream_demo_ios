@@ -54,7 +54,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 #ifdef __OBJC__
 
-    #import <HyphenateChat/HyphenateChat.h>
+    #import <AgoraChat/AgoraChat.h>
     #import "EaseHttpManager.h"
     #import <Masonry/Masonry.h>
     #import "MBProgressHUD+Add.h"

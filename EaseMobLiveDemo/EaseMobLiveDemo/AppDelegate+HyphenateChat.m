@@ -8,7 +8,7 @@
 #import "AppDelegate+HyphenateChat.h"
 #import "EaseDefaultDataHelper.h"
 
-#import <HyphenateChat/EMOptions+PrivateDeploy.h>
+#import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 
 NSArray<NSString*> *nickNameArray;//本地昵称库
 
@@ -18,7 +18,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
 
 - (void)initHyphenateChatSDK
 {
-    EMOptions *options = [EMOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
     /*
     [options setEnableDnsConfig:NO];
     [options setRestServer:@"a1-hsb.easemob.com"];
@@ -35,7 +35,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     options.isAutoAcceptGroupInvitation = NO;
     options.enableConsoleLog = YES;
     
-    [[EMClient sharedClient] initializeSDKWithOptions:options];
+    [[AgoraChatClient sharedClient] initializeSDKWithOptions:options];
     
     [self _setupAppDelegateNotifications];
     
@@ -45,7 +45,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     
     anchorInfoDic = [[NSMutableDictionary alloc]initWithCapacity:16];//初始化本地直播间主播昵称库
 
-    BOOL isAutoLogin = [EMClient sharedClient].isAutoLogin;
+    BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;
     if (isAutoLogin) {
         [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
     } else {
@@ -56,7 +56,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
         }
     }
     
-    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
 }
 
 - (void)_initNickNameArray
@@ -89,12 +89,12 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
 
 - (void)appDidEnterBackgroundNotif:(NSNotification*)notif
 {
-    [[EMClient sharedClient] applicationDidEnterBackground:notif.object];
+    [[AgoraChatClient sharedClient] applicationDidEnterBackground:notif.object];
 }
 
 - (void)appWillEnterForeground:(NSNotification*)notif
 {
-    [[EMClient sharedClient] applicationWillEnterForeground:notif.object];
+    [[AgoraChatClient sharedClient] applicationWillEnterForeground:notif.object];
 }
 
 #pragma mark - register apns
@@ -128,7 +128,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[EMClient sharedClient] bindDeviceToken:deviceToken];
+        [[AgoraChatClient sharedClient] bindDeviceToken:deviceToken];
     });
 }
 

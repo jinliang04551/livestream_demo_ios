@@ -62,7 +62,7 @@
     } else if (indexPath.row == 1) {
         
         cell.nameLabel.attributedText = [self titleAttribute:@"SDK Version"];
-        NSString *detailContent = [NSString stringWithFormat:@"V:%@",[[EMClient sharedClient] version]];
+        NSString *detailContent = [NSString stringWithFormat:@"V:%@",[[AgoraChatClient sharedClient] version]];
         cell.detailLabel.attributedText = [self detailAttribute:detailContent];
     }else if (indexPath.row == 2) {
         

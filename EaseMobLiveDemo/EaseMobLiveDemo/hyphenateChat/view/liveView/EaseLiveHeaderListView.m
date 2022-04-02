@@ -176,7 +176,7 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectMemberListButton:currentMemberList:)]) {
         BOOL isOwner = NO;
-        if (_room && [_room.anchor isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if (_room && [_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             isOwner = YES;
         }
         [self.delegate didSelectMemberListButton:isOwner currentMemberList:[_room.currentMemberList mutableCopy]];

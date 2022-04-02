@@ -225,7 +225,7 @@ extern BOOL isAllTheSilence;
             [self.adminView addSubview:self.muteListBtn];
             [self.adminView addSubview:self.selectLine];
             [self.adminView addSubview:self.line];
-            [_currentMemberList insertObject:EMClient.sharedClient.currentUsername atIndex:0];
+            [_currentMemberList insertObject:AgoraChatClient.sharedClient.currentUsername atIndex:0];
         }
         if (_isOwner) {
             [_adminListBtn setTitle:[NSString stringWithFormat:@"成员(%lu)",(unsigned long)[_currentMemberList count]] forState:UIControlStateNormal];
@@ -361,7 +361,7 @@ extern BOOL isAllTheSilence;
         [self _loadMemberList:YES];
         __weak EaseAdminView *weakSelf = self;
         _adminTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            _chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroomId error:nil];
+            _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroomId error:nil];
             [weakSelf _loadMemberList:YES];
             [weakSelf _tableViewDidFinishTriggerHeader:YES reload:YES tableView:_adminTableView];
         }];
@@ -497,7 +497,7 @@ extern NSArray<NSString*> *nickNameArray;
             cell.anchorIdentity.hidden = YES;
         }
         cell.textLabel.text = [self getNicknameWithId:tempUsername];
-        if ([tempUsername isEqualToString:_liveroom.anchor] && [tempUsername isEqualToString:EMClient.sharedClient.currentUsername]){
+        if ([tempUsername isEqualToString:_liveroom.anchor] && [tempUsername isEqualToString:AgoraChatClient.sharedClient.currentUsername]){
             cell.muteSwitch.hidden = NO;
             cell.clickButton.hidden = NO;
             cell.textLabel.text = [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];
@@ -505,7 +505,7 @@ extern NSArray<NSString*> *nickNameArray;
             cell.muteSwitch.hidden = YES;
             cell.clickButton.hidden = YES;
         }
-        if ([tempUsername isEqualToString:EMClient.sharedClient.currentUsername]) {
+        if ([tempUsername isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
             cell.textLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
         }
         __weak typeof(self) weakSelf = self;
@@ -535,12 +535,12 @@ extern NSArray<NSString*> *nickNameArray;
             cell = [[EaseAdminCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         NSString *realUsername = [_whitelist objectAtIndex:indexPath.row];
-        if ([realUsername isEqualToString:EMClient.sharedClient.currentUsername]) {
+        if ([realUsername isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
             cell.textLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
         } else {
             cell.textLabel.text = [self getNicknameWithId:realUsername];
         }
-        if ([realUsername isEqualToString:EMClient.sharedClient.currentUsername]) {
+        if ([realUsername isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
             [cell.clickButton setTitle:@"" forState:UIControlStateNormal];
             cell.clickButton.userInteractionEnabled = false;
         }else{
@@ -562,11 +562,11 @@ extern NSArray<NSString*> *nickNameArray;
         NSString *username = [_currentMemberList objectAtIndex:indexPath.row];
         if ([username isEqualToString:_liveroom.anchor]) {
             cell.imageView.image = [UIImage imageNamed:[anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_AVATAR]];
-            if ([username isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if ([username isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 cell.imageView.image = [UIImage imageNamed:@"default_anchor_avatar"];
             }
         } else {
-            if ([username isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if ([username isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 cell.imageView.image = [UIImage imageNamed:@"default_anchor_avatar"];
             }
         }
@@ -646,9 +646,9 @@ extern NSArray<NSString*> *nickNameArray;
         __weak EaseAdminView *weakSelf = self;
         MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@..." ,NSLocalizedString(@"profile.admin.remove", @"Remove")] toView:self];
         __weak MBProgressHUD *weakHud = hud;
-        [[EMClient sharedClient].roomManager removeAdmin:username
+        [[AgoraChatClient sharedClient].roomManager removeAdmin:username
                                             fromChatroom:_chatroomId
-                                              completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                              completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                                   if (!aError) {
                                                       _chatroom = aChatroom;
                                                       [weakSelf _loadMemberList:YES];
@@ -666,13 +666,13 @@ extern NSArray<NSString*> *nickNameArray;
 - (void)allTheSilence:(BOOL)isAllTheSilence
 {
     if (isAllTheSilence) {
-        [[EMClient sharedClient].roomManager muteAllMembersFromChatroom:_liveroom.roomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager muteAllMembersFromChatroom:_liveroom.roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             if (!aError) {
                 
             }
         }];
     } else {
-        [[EMClient sharedClient].roomManager unmuteAllMembersFromChatroom:_liveroom.roomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager unmuteAllMembersFromChatroom:_liveroom.roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             if (!aError) {
                 
             }
@@ -688,9 +688,9 @@ extern NSArray<NSString*> *nickNameArray;
     __weak EaseAdminView *weakSelf = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@..." ,NSLocalizedString(@"profile.mute.cancel", @"Cancel")] toView:self];
     __weak MBProgressHUD *weakHud = hud;
-    [[EMClient sharedClient].roomManager unmuteMembers:@[username]
+    [[AgoraChatClient sharedClient].roomManager unmuteMembers:@[username]
                                           fromChatroom:_liveroom.roomId
-                                            completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                            completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                                 if (!aError) {
                                                     [weakSelf.muteTableView beginUpdates];
                                                     [weakSelf.muteList removeObjectAtIndex:btn.tag];
@@ -715,9 +715,9 @@ extern NSArray<NSString*> *nickNameArray;
     __weak EaseAdminView *weakSelf = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"从白名单移除"] toView:self];
     __weak MBProgressHUD *weakHud = hud;
-    [[EMClient sharedClient].roomManager removeWhiteListMembers:@[username]
+    [[AgoraChatClient sharedClient].roomManager removeWhiteListMembers:@[username]
                                            fromChatroom:_liveroom.roomId
-                                             completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                             completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                                  if (!aError) {
                                                      [weakSelf.whitelistTableView beginUpdates];
                                                      [weakSelf.whitelist removeObjectAtIndex:btn.tag];
@@ -786,7 +786,7 @@ extern NSArray<NSString*> *nickNameArray;
 - (void)_loadMemberList:(BOOL)isHeader
 {
     __weak typeof(self) weakself = self;
-    [[EMClient sharedClient].roomManager getChatroomMemberListFromServerWithId:_chatroomId cursor:self.cursor pageSize:50 completion:^(EMCursorResult *aResult, EMError *aError) {
+    [[AgoraChatClient sharedClient].roomManager getChatroomMemberListFromServerWithId:_chatroomId cursor:self.cursor pageSize:50 completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
         if (!aError) {
            if (isHeader) {
                [weakself.memberList removeAllObjects];
@@ -811,10 +811,10 @@ extern NSArray<NSString*> *nickNameArray;
 - (void)_loadMuteList:(BOOL)isHeader
 {
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager getChatroomMuteListFromServerWithId:_liveroom.roomId
+    [[AgoraChatClient sharedClient].roomManager getChatroomMuteListFromServerWithId:_liveroom.roomId
                                                                   pageNumber:_mutePageNum
                                                                     pageSize:kDefaultPageSize
-                                                                  completion:^(NSArray *aList, EMError *aError) {
+                                                                  completion:^(NSArray *aList, AgoraChatError *aError) {
                                                                       if (!aError) {
                                                                           if (isHeader) {
                                                                               [weakSelf.muteList removeAllObjects];
@@ -835,7 +835,7 @@ extern NSArray<NSString*> *nickNameArray;
 - (void)_loadWhitelist:(BOOL)isHeader
 {
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager getChatroomWhiteListFromServerWithId:_liveroom.roomId completion:^(NSArray *aList, EMError *aError) {
+    [[AgoraChatClient sharedClient].roomManager getChatroomWhiteListFromServerWithId:_liveroom.roomId completion:^(NSArray *aList, AgoraChatError *aError) {
         if (!aError) {
             if (isHeader) {
                 [weakSelf.whitelist removeAllObjects];

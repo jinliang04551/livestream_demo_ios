@@ -17,17 +17,17 @@ typedef enum : NSInteger{
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class EMMessage;
+@class AgoraChatMessage;
 @protocol EaseCustomMessageHelperDelegate <NSObject>
 
 @optional
 
 //观众点赞消息
-- (void)didReceivePraiseMessage:(EMMessage *)message;
+- (void)didReceivePraiseMessage:(AgoraChatMessage *)message;
 //弹幕消息
-- (void)didSelectedBarrageSwitch:(EMMessage*)msg;
+- (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg;
 //观众刷礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count;//观众送礼物
+- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count;//观众送礼物
 
 @end
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithCustomMsgImp:(id<EaseCustomMessageHelperDelegate>)customMsgImp chatId:(NSString*)chatId;
 
 //解析消息内容
-+ (NSString*)getMsgContent:(EMMessageBody*)messageBody;
++ (NSString*)getMsgContent:(AgoraChatMessageBody*)messageBody;
 
 /*
  发送自定义消息 （礼物，点赞，弹幕）
@@ -49,9 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendCustomMessage:(NSString*)text
                       num:(NSInteger)num
                        to:(NSString*)toUser
-              messageType:(EMChatType)messageType
+              messageType:(AgoraChatType)messageType
             customMsgType:(customMessageType)customMsgType
-               completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+               completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 
 /*
  发送自定义消息（礼物，点赞，弹幕）（有扩展参数）
@@ -65,10 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendCustomMessage:(NSString*)text
                               num:(NSInteger)num
                                to:(NSString*)toUser
-                      messageType:(EMChatType)messageType
+                      messageType:(AgoraChatType)messageType
                     customMsgType:(customMessageType)customMsgType
                             ext:(NSDictionary*)ext
-                       completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                       completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 
 /*
 发送用户自定义消息体事件（其他自定义消息体事件）
@@ -81,8 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendUserCustomMessage:(NSString*)event
                 customMsgBodyExt:(NSDictionary*)customMsgBodyExt
                             to:(NSString*)toUser
-                        messageType:(EMChatType)messageType
-                   completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                        messageType:(AgoraChatType)messageType
+                   completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 
 /*
 发送用户自定义消息体事件（其他自定义消息体事件）（有消息扩展参数）
@@ -96,9 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)sendUserCustomMessage:(NSString*)event
                 customMsgBodyExt:(NSDictionary*)customMsgBodyExt
                             to:(NSString*)toUser
-                        messageType:(EMChatType)messageType
+                        messageType:(AgoraChatType)messageType
                                ext:(NSDictionary*)ext
-                   completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                   completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 
 /*
  @param msg             接收的消息
@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param backView        展示在哪个页面
  */
 //有观众送礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count backView:(UIView*)backView;
+- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count backView:(UIView*)backView;
 
 //礼物动画
 - (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView;
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param backView        展示在哪个页面
  */
 //弹幕动画
-- (void)barrageAction:(EMMessage*)msg backView:(UIView*)backView;
+- (void)barrageAction:(AgoraChatMessage*)msg backView:(UIView*)backView;
 
 /*
  @param backView        展示在哪个页面

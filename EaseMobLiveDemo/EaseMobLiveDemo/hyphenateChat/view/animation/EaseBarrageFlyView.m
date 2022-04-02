@@ -13,7 +13,7 @@
 
 @interface EaseBarrageFlyView ()
 {
-    EMMessage *_message;
+    AgoraChatMessage *_message;
 }
 
 @property(nonatomic,strong) UILabel *nameLabel;
@@ -25,7 +25,7 @@
 
 @implementation EaseBarrageFlyView
 
--(instancetype)initWithMessage:(EMMessage*)messge
+-(instancetype)initWithMessage:(AgoraChatMessage*)messge
 {
     self = [super init];
     if (self) {
@@ -61,7 +61,7 @@
 {
     if (_giftLabel == nil) {
         CGFloat width = kLabelDefaultMinWidth;
-        EMCustomMessageBody *body = (EMCustomMessageBody*)_message.body;
+        AgoraChatCustomMessageBody *body = (AgoraChatCustomMessageBody*)_message.body;
         NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:15.0f],};
         CGSize textSize = [[body.ext objectForKey:@"txt"] boundingRectWithSize:CGSizeMake(kLabelDefaultMaxWidth, kLabelDefaultHeight) options:NSStringDrawingTruncatesLastVisibleLine attributes:attributes context:nil].size;
         if (textSize.width >= kLabelDefaultMaxWidth) {

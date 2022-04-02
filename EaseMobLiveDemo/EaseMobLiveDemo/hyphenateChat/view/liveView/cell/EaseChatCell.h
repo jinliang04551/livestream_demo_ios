@@ -9,8 +9,8 @@
 
 @interface EaseChatCell : UITableViewCell
 
-- (void)setMesssage:(EMMessage*)message liveroom:(EaseLiveRoom*)liveroom;
+- (void)setMesssage:(AgoraChatMessage*)message liveroom:(EaseLiveRoom*)liveroom;
 
-+ (CGFloat)heightForMessage:(EMMessage *)message;
++ (CGFloat)heightForMessage:(AgoraChatMessage *)message;
 
 @end

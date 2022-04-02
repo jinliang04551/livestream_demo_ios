@@ -465,7 +465,7 @@ typedef enum : NSInteger{
                 _liveRoom.desc = _liveDescTextField.text;
             }
             _liveRoom.coverPictureUrl = _coverpictureurl;
-            _liveRoom.anchor = [EMClient sharedClient].currentUsername;
+            _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
             if (btn.tag == kLiveBroadCasting_Rapid)
                 _liveRoom.liveroomType = kLiveBroadCastingTypeAGORA_SPEED_LIVE;
             if (btn.tag == kLiveBroadCasting_Traditional)

@@ -11,7 +11,7 @@
 @protocol EaseMuteDelegate <NSObject>
 
 @required
-- (void)muteStatusDidchange:(EMChatroom *)chatRoom;
+- (void)muteStatusDidchange:(AgoraChatroom *)chatRoom;
 
 @end
 

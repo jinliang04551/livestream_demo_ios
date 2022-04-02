@@ -23,7 +23,7 @@
 
 static EaseLiveRoom *room;
 
-- (void)setMesssage:(EMMessage*)message liveroom:(EaseLiveRoom*)liveroom
+- (void)setMesssage:(AgoraChatMessage*)message liveroom:(EaseLiveRoom*)liveroom
 {
     self.textLabel.textColor = [UIColor whiteColor];
     self.textLabel.layer.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2].CGColor;
@@ -35,7 +35,7 @@ static EaseLiveRoom *room;
     room = liveroom;
 }
 
-+ (CGFloat)heightForMessage:(EMMessage *)message
++ (CGFloat)heightForMessage:(AgoraChatMessage *)message
 {
     if (message) {
         CGRect rect = [[EaseChatCell _attributedStringWithMessage:message] boundingRectWithSize:CGSizeMake(KCustomerWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
@@ -48,7 +48,7 @@ static EaseLiveRoom *room;
     return 25.f;
 }
 
-+ (NSMutableAttributedString*)_attributedStringWithMessage:(EMMessage*)message
++ (NSMutableAttributedString*)_attributedStringWithMessage:(AgoraChatMessage*)message
 {
     NSMutableAttributedString *text = [EaseChatCell latestMessageTitleForConversationModel:message];
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
@@ -62,33 +62,33 @@ extern NSMutableDictionary *audienceNickname;
 extern NSArray<NSString*> *nickNameArray;
 extern NSMutableDictionary *anchorInfoDic;
 
-+ (NSMutableAttributedString *)latestMessageTitleForConversationModel:(EMMessage*)lastMessage;
++ (NSMutableAttributedString *)latestMessageTitleForConversationModel:(AgoraChatMessage*)lastMessage;
 {
     NSString *latestMessageTitle = @"";
     if (lastMessage) {
-        EMMessageBody *messageBody = lastMessage.body;
+        AgoraChatMessageBody *messageBody = lastMessage.body;
         switch (messageBody.type) {
-            case EMMessageBodyTypeImage:{
+            case AgoraChatMessageBodyTypeImage:{
                 latestMessageTitle = @"[图片]";
             } break;
-            case EMMessageBodyTypeText:{
+            case AgoraChatMessageBodyTypeText:{
                 NSString *didReceiveText = [EaseEmojiHelper
-                                            convertEmoji:((EMTextMessageBody *)messageBody).text];
+                                            convertEmoji:((AgoraChatTextMessageBody *)messageBody).text];
                 latestMessageTitle = didReceiveText;
             } break;
-            case EMMessageBodyTypeVoice:{
+            case AgoraChatMessageBodyTypeVoice:{
                 latestMessageTitle = @"[语音]";
             } break;
-            case EMMessageBodyTypeLocation: {
+            case AgoraChatMessageBodyTypeLocation: {
                 latestMessageTitle = @"[位置]";
             } break;
-            case EMMessageBodyTypeVideo: {
+            case AgoraChatMessageBodyTypeVideo: {
                 latestMessageTitle = @"[视频]";
             } break;
-            case EMMessageBodyTypeFile: {
+            case AgoraChatMessageBodyTypeFile: {
                 latestMessageTitle = @"[文件]";
             } break;
-            case EMMessageBodyTypeCustom: {
+            case AgoraChatMessageBodyTypeCustom: {
                 latestMessageTitle = [EaseCustomMessageHelper getMsgContent:messageBody];
             } break;
             default: {
@@ -109,7 +109,7 @@ extern NSMutableDictionary *anchorInfoDic;
             randomNickname = [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];
         }
     }
-    if ([lastMessage.from isEqualToString:EMClient.sharedClient.currentUsername]) {
+    if ([lastMessage.from isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
     }
     NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:@""];
@@ -129,8 +129,8 @@ extern NSMutableDictionary *anchorInfoDic;
         attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
         NSRange range = [[attributedStr string] rangeOfString:[NSString stringWithFormat:@"%@: " ,randomNickname] options:NSCaseInsensitiveSearch];
         [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(255, 199, 0, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-        if (lastMessage.body.type == EMMessageBodyTypeCustom) {
-            EMCustomMessageBody *customBody = (EMCustomMessageBody*)lastMessage.body;
+        if (lastMessage.body.type == AgoraChatMessageBodyTypeCustom) {
+            AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)lastMessage.body;
             if ([customBody.event isEqualToString:kCustomMsgChatroomPraise] || [customBody.event isEqualToString:kCustomMsgChatroomGift]) {
                 [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(104, 255, 149, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
             }

@@ -12,7 +12,7 @@
 
 @interface EaseGiftFlyView ()
 {
-    EMMessage *_message;
+    AgoraChatMessage *_message;
 }
 
 @property(nonatomic,strong) UILabel *nameLabel;
@@ -25,7 +25,7 @@
 
 @implementation EaseGiftFlyView
 
--(instancetype)initWithMessage:(EMMessage*)messge
+-(instancetype)initWithMessage:(AgoraChatMessage*)messge
 {
     self = [super init];
     if (self) {

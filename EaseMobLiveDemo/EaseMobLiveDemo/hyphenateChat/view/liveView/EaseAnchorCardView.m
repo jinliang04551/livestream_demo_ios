@@ -94,8 +94,8 @@
         make.right.equalTo(bgView).offset(-40);
     }];
     
-    NSLog(@"%@", EMClient.sharedClient.currentUsername);
-    if (![_room.anchor isEqualToString:EMClient.sharedClient.currentUsername]) {
+    NSLog(@"%@", AgoraChatClient.sharedClient.currentUsername);
+    if (![_room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         [bgView addSubview:self.attentionBtn];
         [_attentionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.equalTo(@120);
@@ -231,7 +231,7 @@
 {
     extern NSMutableDictionary *anchorInfoDic;
     if (_room) {
-        if ([_room.anchor isEqualToString:EMClient.sharedClient.currentUsername]) {
+        if ([_room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
             _nameLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
             _headImageView.image = [UIImage imageNamed:@"default_anchor_avatar"];
             _praiseLabel.text = [NSString stringWithFormat:@"赞:%d",[EaseDefaultDataHelper.shared.praiseStatisticstCount intValue]];

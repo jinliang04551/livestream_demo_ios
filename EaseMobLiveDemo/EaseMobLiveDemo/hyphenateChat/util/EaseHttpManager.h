@@ -86,7 +86,7 @@
  */
 - (void)fetchLiveRoomsWithCursor:(NSString*)aCursor
                             limit:(NSInteger)aLimit
-                            completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion;
+                            completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion;
 
 /*
  *  获取vod点播房间列表
@@ -98,7 +98,7 @@
 - (void)fetchVodRoomWithCursor:(NSString*)aCursor
                          limit:(NSInteger)aLimit
                     video_type:(NSString*)video_type
-                    completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion;
+                    completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion;
 
 /*
  *  获取正在直播聊天室列表
@@ -111,7 +111,7 @@
 - (void)fetchLiveRoomsOngoingWithCursor:(NSString*)aCursor
                                   limit:(NSInteger)aLimit
                              video_type:(NSString*)video_type
-                             completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion;
+                             completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion;
 
 /*
  *  获取直播聊天室状态

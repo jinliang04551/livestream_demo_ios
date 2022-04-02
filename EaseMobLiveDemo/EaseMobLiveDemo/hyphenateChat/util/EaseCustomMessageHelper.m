@@ -20,7 +20,7 @@ extern NSArray<NSString*> *nickNameArray;
 extern NSMutableDictionary *anchorInfoDic;
 
 
-@interface EaseCustomMessageHelper ()<EMChatManagerDelegate>
+@interface EaseCustomMessageHelper ()<AgoraChatManagerDelegate>
 {
     NSString* _chatId;
     
@@ -40,27 +40,27 @@ extern NSMutableDictionary *anchorInfoDic;
         _delegate = customMsgImp;
         _chatId = chatId;
         _curtime = (long long)([[NSDate date] timeIntervalSince1970]*1000);
-        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [[AgoraChatClient sharedClient].chatManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [[EMClient sharedClient].chatManager removeDelegate:self];
+    [[AgoraChatClient sharedClient].chatManager removeDelegate:self];
 }
 
-#pragma mark - EMChatManagerDelegate
+#pragma mark - AgoraChatManagerDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    for (EMMessage *message in aMessages) {
+    for (AgoraChatMessage *message in aMessages) {
         if ([message.conversationId isEqualToString:_chatId]) {
-            if (message.body.type == EMMessageBodyTypeCustom) {
+            if (message.body.type == AgoraChatMessageBodyTypeCustom) {
                 if (message.timestamp < _curtime) {
                     continue;
                 }
-                EMCustomMessageBody* body = (EMCustomMessageBody*)message.body;
+                AgoraChatCustomMessageBody* body = (AgoraChatCustomMessageBody*)message.body;
                 if ([body.event isEqualToString:kCustomMsgChatroomBarrage]) {
                     //弹幕消息
                     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectedBarrageSwitch:)]) {
@@ -83,10 +83,10 @@ extern NSMutableDictionary *anchorInfoDic;
 }
 
 //解析消息内容
-+ (NSString*)getMsgContent:(EMMessageBody*)messageBody
++ (NSString*)getMsgContent:(AgoraChatMessageBody*)messageBody
 {
     NSString *msgContent = nil;
-    EMCustomMessageBody *customBody = (EMCustomMessageBody*)messageBody;
+    AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)messageBody;
     if ([customBody.event isEqualToString:kCustomMsgChatroomBarrage]) {
         msgContent = (NSString*)[customBody.ext objectForKey:@"txt"];
     } else if ([customBody.event isEqualToString:kCustomMsgChatroomPraise]) {
@@ -116,27 +116,27 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)sendCustomMessage:(NSString*)text
                               num:(NSInteger)num
                                to:(NSString*)toUser
-                      messageType:(EMChatType)messageType
+                      messageType:(AgoraChatType)messageType
                     customMsgType:(customMessageType)customMsgType
-                       completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                       completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 {
-    EMMessageBody *body;
+    AgoraChatMessageBody *body;
     NSMutableDictionary *extDic = [[NSMutableDictionary alloc]init];
     if (customMsgType == customMessageType_praise) {
         [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomPraise ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomPraise ext:extDic];
     } else if (customMsgType == customMessageType_gift){
         [extDic setObject:text forKey:@"id"];
         [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomGift ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomGift ext:extDic];
     } else if (customMsgType == customMessageType_barrage) {
         [extDic setObject:text forKey:@"txt"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomBarrage ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomBarrage ext:extDic];
     }
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:nil];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:nil];
     message.chatType = messageType;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(EMMessage *message, EMError *error) {
+    [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(AgoraChatMessage *message, AgoraChatError *error) {
         aCompletionBlock(message,error);
     }];
 }
@@ -154,28 +154,28 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)sendCustomMessage:(NSString*)text
                               num:(NSInteger)num
                                to:(NSString*)toUser
-                      messageType:(EMChatType)messageType
+                      messageType:(AgoraChatType)messageType
                     customMsgType:(customMessageType)customMsgType
                             ext:(NSDictionary*)ext
-                       completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                       completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 {
-    EMMessageBody *body;
+    AgoraChatMessageBody *body;
     NSMutableDictionary *extDic = [[NSMutableDictionary alloc]init];
     if (customMsgType == customMessageType_praise) {
         [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomPraise ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomPraise ext:extDic];
     } else if (customMsgType == customMessageType_gift){
         [extDic setObject:text forKey:@"id"];
         [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomGift ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomGift ext:extDic];
     } else if (customMsgType == customMessageType_barrage) {
         [extDic setObject:text forKey:@"txt"];
-        body = [[EMCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomBarrage ext:extDic];
+        body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomBarrage ext:extDic];
     }
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:ext];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:ext];
     message.chatType = messageType;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(EMMessage *message, EMError *error) {
+    [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(AgoraChatMessage *message, AgoraChatError *error) {
         aCompletionBlock(message,error);
     }];
 }
@@ -191,14 +191,14 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)sendUserCustomMessage:(NSString*)event
                 customMsgBodyExt:(NSDictionary*)customMsgBodyExt
                             to:(NSString*)toUser
-                        messageType:(EMChatType)messageType
-                        completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock
+                        messageType:(AgoraChatType)messageType
+                        completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock
 {
-    EMMessageBody *customMsgBody = [[EMCustomMessageBody alloc]initWithEvent:event ext:customMsgBodyExt];
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:customMsgBody ext:nil];
+    AgoraChatMessageBody *customMsgBody = [[AgoraChatCustomMessageBody alloc]initWithEvent:event ext:customMsgBodyExt];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:customMsgBody ext:nil];
     message.chatType = messageType;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(EMMessage *message, EMError *error) {
+    [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(AgoraChatMessage *message, AgoraChatError *error) {
         aCompletionBlock(message,error);
     }];
 }
@@ -215,23 +215,23 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)sendUserCustomMessage:(NSString*)event
                 customMsgBodyExt:(NSDictionary*)customMsgBodyExt
                             to:(NSString*)toUser
-                        messageType:(EMChatType)messageType
+                        messageType:(AgoraChatType)messageType
                                ext:(NSDictionary*)ext
-                         completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock
+                         completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock
 {
-    EMMessageBody *customMsgBody = [[EMCustomMessageBody alloc]initWithEvent:event ext:customMsgBodyExt];
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:customMsgBody ext:ext];
+    AgoraChatMessageBody *customMsgBody = [[AgoraChatCustomMessageBody alloc]initWithEvent:event ext:customMsgBodyExt];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:customMsgBody ext:ext];
     message.chatType = messageType;
-    [[EMClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(EMMessage *message, EMError *error) {
+    [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(AgoraChatMessage *message, AgoraChatError *error) {
         aCompletionBlock(message,error);
     }];
 }
 
 //有观众送礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count backView:(UIView*)backView
+- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count backView:(UIView*)backView
 {
-    EMCustomMessageBody *msgBody = (EMCustomMessageBody*)msg.body;
+    AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
     JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
     cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
     NSString *giftid = [msgBody.ext objectForKey:@"id"];
@@ -270,7 +270,7 @@ extern NSMutableDictionary *anchorInfoDic;
     } else {
         randomNickname = [audienceNickname objectForKey:userName];
     }
-    if ([userName isEqualToString:EMClient.sharedClient.currentUsername]) {
+    if ([userName isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
     }
     
@@ -278,7 +278,7 @@ extern NSMutableDictionary *anchorInfoDic;
 }
 
 //弹幕动画
-- (void)barrageAction:(EMMessage*)msg backView:(UIView*)backView
+- (void)barrageAction:(AgoraChatMessage*)msg backView:(UIView*)backView
 {
     EaseBarrageFlyView *barrageView = [[EaseBarrageFlyView alloc]initWithMessage:msg];
     [backView addSubview:barrageView];

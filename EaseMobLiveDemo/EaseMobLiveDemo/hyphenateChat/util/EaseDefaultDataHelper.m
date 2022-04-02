@@ -110,7 +110,7 @@ extern NSArray<NSString*> *nickNameArray;
 + (EaseDefaultDataHelper *)getDefaultDataFromLocal
 {
     //解档
-    NSString *fileName = [NSString stringWithFormat:@"emlivedemo_defaultdata_%@.data", [EMClient sharedClient].currentUsername];
+    NSString *fileName = [NSString stringWithFormat:@"emlivedemo_defaultdata_%@.data", [AgoraChatClient sharedClient].currentUsername];
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
     EaseDefaultDataHelper *defaultData = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
     if (!defaultData) {
@@ -124,7 +124,7 @@ extern NSArray<NSString*> *nickNameArray;
 //归档
 - (void)archive
 {
-    NSString *fileName = [NSString stringWithFormat:@"emlivedemo_defaultdata_%@.data", [EMClient sharedClient].currentUsername];
+    NSString *fileName = [NSString stringWithFormat:@"emlivedemo_defaultdata_%@.data", [AgoraChatClient sharedClient].currentUsername];
     NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:fileName];
     [NSKeyedArchiver archiveRootObject:self toFile:file];
 }

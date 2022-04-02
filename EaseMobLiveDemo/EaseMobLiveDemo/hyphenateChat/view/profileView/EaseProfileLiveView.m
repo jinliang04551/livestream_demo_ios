@@ -37,7 +37,7 @@
     self = [self initWithUsername:username chatroomId:chatroomId];
     if (self) {
         _isOwner = isOwner;
-        if (username.length > 0 && ![username isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if (username.length > 0 && ![username isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             [self.profileCardView addSubview:self.muteButton];
             [self.profileCardView addSubview:self.blockButton];
             [self.profileCardView addSubview:self.kickButton];
@@ -177,10 +177,10 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"profile.mute", @"Mute")] toView:self];
     __weak MBProgressHUD *weakHud = hud;
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager muteMembers:@[_username]
+    [[AgoraChatClient sharedClient].roomManager muteMembers:@[_username]
                                     muteMilliseconds:-1
                                         fromChatroom:_chatroomId
-                                          completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                          completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                               if (!aError) {
                                                   [weakHud hide:YES];
                                                   [weakSelf removeFromParentView];
@@ -196,9 +196,9 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"profile.kick", @"Kick")] toView:self];
     __weak MBProgressHUD *weakHud = hud;
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager removeMembers:@[_username]
+    [[AgoraChatClient sharedClient].roomManager removeMembers:@[_username]
                                           fromChatroom:_chatroomId
-                                            completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                            completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                                 if (!aError) {
                                                     [weakHud hide:YES];
                                                     [weakSelf removeFromParentView];
@@ -214,9 +214,9 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"profile.block", @"Block")]  toView:self];
     __weak MBProgressHUD *weakHud = hud;
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager blockMembers:@[_username]
+    [[AgoraChatClient sharedClient].roomManager blockMembers:@[_username]
                                          fromChatroom:_chatroomId
-                                           completion:^(EMChatroom *aChatroom, EMError *aError) {
+                                           completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                                                if (!aError) {
                                                    [weakHud hide:YES];
                                                    [weakSelf removeFromParentView];
@@ -232,9 +232,9 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:[NSString stringWithFormat:@"%@...",NSLocalizedString(@"profile.setAdmin", @"Set Admin")] toView:self];
     __weak MBProgressHUD *weakHud = hud;
     __weak typeof(self) weakSelf = self;
-    [[EMClient sharedClient].roomManager addAdmin:_username
+    [[AgoraChatClient sharedClient].roomManager addAdmin:_username
                                        toChatroom:_chatroomId
-                                       completion:^(EMChatroom *aChatroomp, EMError *aError) {
+                                       completion:^(AgoraChatroom *aChatroomp, AgoraChatError *aError) {
                                            if (!aError) {
                                                [weakHud hide:YES];
                                                [weakSelf removeFromParentView];

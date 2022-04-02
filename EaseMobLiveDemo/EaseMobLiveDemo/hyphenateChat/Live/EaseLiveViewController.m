@@ -38,11 +38,11 @@
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface EaseLiveViewController () <EaseChatViewDelegate,EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,EMChatroomManagerDelegate,EaseProfileLiveViewDelegate,EMClientDelegate,EaseCustomMessageHelperDelegate,PLPlayerDelegate,AgoraRtcEngineDelegate>
+@interface EaseLiveViewController () <EaseChatViewDelegate,EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLPlayerDelegate,AgoraRtcEngineDelegate>
 {
     NSTimer *_burstTimer;
     EaseLiveRoom *_room;
-    EMChatroom *_chatroom;
+    AgoraChatroom *_chatroom;
     BOOL _enableAdmin;
     EaseCustomMessageHelper *_customMsgHelper;
     NSTimer *_timer;
@@ -107,7 +107,7 @@
                                 completion:^(BOOL success) {
                                     if (success) {
                                         [weakSelf.headerListView loadHeaderListWithChatroomId:[_room.chatroomId copy]];
-                                        _chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
+                                        _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
                                                                                      }];
@@ -118,8 +118,8 @@
                                     }
                                 }];
     
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
     
     [self setupForDismissKeyboard];
     
@@ -134,8 +134,8 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[EMClient sharedClient].roomManager removeDelegate:self];
-    [[EMClient sharedClient] removeDelegate:self];
+    [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
+    [[AgoraChatClient sharedClient] removeDelegate:self];
     [_headerListView stopTimer];
     _chatview.delegate = nil;
     _chatview = nil;
@@ -364,11 +364,11 @@
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
 
-    NSString* strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/token/rtcToken/v1?userAccount=%@&channelName=%@&appkey=%@",[EMClient sharedClient].currentUsername, _room.channel, [EMClient sharedClient].options.appkey];
+    NSString* strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/token/rtcToken/v1?userAccount=%@&channelName=%@&appkey=%@",[AgoraChatClient sharedClient].currentUsername, _room.channel, [AgoraChatClient sharedClient].options.appkey];
     NSString*utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL* url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest* urlReq = [[NSMutableURLRequest alloc] initWithURL:url];
-    [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[EMClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
+    [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[AgoraChatClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:urlReq completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if(data) {
             NSDictionary* body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -535,8 +535,8 @@
         [self closeAction];
         return;
     }
-    BOOL isOwner = _chatroom.permissionType == EMChatroomPermissionTypeOwner;
-    BOOL ret = _chatroom.permissionType == EMChatroomPermissionTypeAdmin || isOwner;
+    BOOL isOwner = _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
+    BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || isOwner;
     if (ret || _enableAdmin) {
         EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
                                                                                   chatroomId:_room.chatroomId
@@ -580,7 +580,7 @@
 
 #pragma mark - EaseChatViewDelegate
 
-- (void)liveRoomOwnerDidUpdate:(EMChatroom *)aChatroom newOwner:(NSString *)aNewOwner
+- (void)liveRoomOwnerDidUpdate:(AgoraChatroom *)aChatroom newOwner:(NSString *)aNewOwner
 {
     _chatroom = aChatroom;
     _room.anchor = aNewOwner;
@@ -621,18 +621,18 @@
 #pragma mark - EaseCustomMessageHelperDelegate
 
 //有观众送礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count
+- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count
 {
     [_customMsgHelper userSendGifts:msg count:count backView:self.view];
 }
 //弹幕
-- (void)didSelectedBarrageSwitch:(EMMessage*)msg
+- (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg
 {
     [_customMsgHelper barrageAction:msg backView:self.view];
 }
 
 //点赞
-- (void)didReceivePraiseMessage:(EMMessage *)message
+- (void)didReceivePraiseMessage:(AgoraChatMessage *)message
 {
     [_customMsgHelper praiseAction:_chatview];
 }
@@ -670,7 +670,7 @@ extern NSMutableDictionary *anchorInfoDic;
     } else {
         randomNickname = [audienceNickname objectForKey:userName];
     }
-    if ([userName isEqualToString:EMClient.sharedClient.currentUsername]) {
+    if ([userName isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
     }
     
@@ -689,9 +689,9 @@ extern NSMutableDictionary *anchorInfoDic;
 #pragma mark - EaseProfileLiveViewDelegate
 
 
-#pragma mark - EMChatroomManagerDelegate
+#pragma mark - AgoraChatroomManagerDelegate
 
-- (void)chatroomAllMemberMuteChanged:(EMChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
+- (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
@@ -702,7 +702,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom reason:(EMChatroomBeKickedReason)aReason
+- (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom reason:(AgoraChatroomBeKickedReason)aReason
 {
     if (aReason == 0)
         [MBProgressHUD showMessag:[NSString stringWithFormat:@"被移出直播聊天室 %@", aChatroom.subject] toView:nil];
@@ -713,29 +713,29 @@ extern NSMutableDictionary *anchorInfoDic;
     [self closeButtonAction];
 }
 
-- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                         addedAdmin:(NSString *)aAdmin;
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
-        if ([aAdmin isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = YES;
             [self.view layoutSubviews];
         }
     }
 }
 
-- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                       removedAdmin:(NSString *)aAdmin
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
-        if ([aAdmin isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = NO;
             [self.view layoutSubviews];
         }
     }
 }
 
-- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
                 addedMutedMembers:(NSArray *)aMutes
                        muteExpire:(NSInteger)aMuteExpire
 {
@@ -750,7 +750,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
               removedMutedMembers:(NSArray *)aMutes
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
@@ -763,7 +763,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-- (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
+- (void)chatroomWhiteListDidUpdate:(AgoraChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         NSMutableString *text = [NSMutableString string];
@@ -775,7 +775,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-- (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom removedWhiteListMembers:(NSArray *)aMembers
+- (void)chatroomWhiteListDidUpdate:(AgoraChatroom *)aChatroom removedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         NSMutableString *text = [NSMutableString string];
@@ -787,7 +787,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomOwnerDidUpdate:(AgoraChatroom *)aChatroom
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner
 {
@@ -796,7 +796,7 @@ extern NSMutableDictionary *anchorInfoDic;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"聊天室创建者有更新:%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"publish.ok", @"Ok") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            if ([aNewOwner isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if ([aNewOwner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 [_burstTimer invalidate];
                 _burstTimer = nil;
                 [weakSelf dismissViewControllerAnimated:YES completion:^{
@@ -814,7 +814,7 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-#pragma mark - EMClientDelegate
+#pragma mark - AgoraChatClientDelegate
 
 - (void)userAccountDidLoginFromOtherDevice
 {
@@ -841,7 +841,7 @@ extern NSMutableDictionary *anchorInfoDic;
     [weakSelf.chatview leaveChatroomWithIsCount:YES
                                      completion:^(BOOL success) {
                                          if (success) {
-                                             [[EMClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
+                                             [[AgoraChatClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
                                          }
                                          [weakSelf dismissViewControllerAnimated:YES completion:NULL];
                                      }];

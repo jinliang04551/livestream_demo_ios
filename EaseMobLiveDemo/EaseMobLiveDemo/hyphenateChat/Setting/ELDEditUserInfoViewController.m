@@ -83,7 +83,7 @@
         self.myNickName = newName;
         self.userHeaderView.nameLabel.text = self.myNickName;
 
-        [[EMClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:EMUserInfoTypeNickName completion:^(EMUserInfo *aUserInfo, EMError *aError) {
+        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             if (aError != nil) {
 //                [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:AgoraChatClient.sharedClient.currentUsername];
                 self.userInfo = aUserInfo;
@@ -136,7 +136,7 @@
 
 - (void)modifyGenderWithIndex:(NSInteger)index {
      
-    [[EMClient.sharedClient userInfoManager] updateOwnUserInfo:[@(index) stringValue] withType:EMUserInfoTypeGender completion:^(EMUserInfo *aUserInfo, EMError *aError) {
+    [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:[@(index) stringValue] withType:AgoraChatUserInfoTypeGender completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
         if (aError != nil) {
             self.userInfo = aUserInfo;
             [self.table reloadData];
@@ -145,7 +145,7 @@
 }
 
 - (void)modifyBirth {
-    [[EMClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:EMUserInfoTypeBirth completion:^(EMUserInfo *aUserInfo, EMError *aError) {
+    [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             
     }];
 

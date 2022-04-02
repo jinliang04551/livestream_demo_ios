@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UITableView *table;
 @property (nonatomic, strong) ELDInfoDetailCell *aboutCell;
 @property (nonatomic, strong) UIButton *editButton;
-@property (nonatomic, strong) EMUserInfo *userInfo;
+@property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 
 @end
 
@@ -66,9 +66,9 @@
 }
 
 - (void)fetchUserInfo {
-    [[EMClient.sharedClient userInfoManager] fetchUserInfoById:@[@""] completion:^(NSDictionary *aUserDatas, EMError *aError) {
+    [[AgoraChatClient.sharedClient userInfoManager] fetchUserInfoById:@[@""] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {
         if(!aError) {
-            self.userInfo = [aUserDatas objectForKey:[EMClient sharedClient].currentUsername];
+            self.userInfo = [aUserDatas objectForKey:[AgoraChatClient sharedClient].currentUsername];
             if(self.userInfo && self.userInfo.avatarUrl) {
                 NSURL* url = [NSURL URLWithString:self.userInfo.avatarUrl];
                 [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"")];

@@ -143,7 +143,7 @@
         cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
         cellModel.icon = _giftCell.giftImageView.image;
         cellModel.name = _giftCell.nameLabel.text;
-        cellModel.username = EMClient.sharedClient.currentUsername;
+        cellModel.username = AgoraChatClient.sharedClient.currentUsername;
         cellModel.count = (NSInteger)_giftNum;
         _doneCompletion(confirm,cellModel);
     }

@@ -9,7 +9,7 @@
 
 @interface EaseBarrageFlyView : UIView
 
--(instancetype)initWithMessage:(EMMessage*)messge;
+-(instancetype)initWithMessage:(AgoraChatMessage*)messge;
 
 - (void)animateInView:(UIView *)view;
 

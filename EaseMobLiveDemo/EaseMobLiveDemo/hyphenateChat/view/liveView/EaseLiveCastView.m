@@ -43,7 +43,7 @@ extern NSMutableDictionary *anchorInfoDic;
         }];
         [self addSubview:self.headImageView];
         [self addSubview:self.nameLabel];
-        if ([_room.anchor isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if ([_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             [self addSubview:self.praiseLabel];
             [self.praiseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self);
@@ -133,7 +133,7 @@ extern NSMutableDictionary *anchorInfoDic;
 {
     extern NSArray<NSString*>*nickNameArray;
     if (_room) {
-        if ([_room.anchor isEqualToString:EMClient.sharedClient.currentUsername]) {
+        if ([_room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
             if (![EaseDefaultDataHelper.shared.defaultNickname isEqualToString:@""]) {
                 _nameLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
             } else {

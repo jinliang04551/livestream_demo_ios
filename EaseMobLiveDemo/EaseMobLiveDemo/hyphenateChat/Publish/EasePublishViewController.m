@@ -40,7 +40,7 @@
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface EasePublishViewController () <EaseChatViewDelegate,UITextViewDelegate,EMChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,EMClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate>
+@interface EasePublishViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate>
 {
     BOOL _isload;
     BOOL _isShutDown;
@@ -110,8 +110,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //[self.view insertSubview:self.backImageView atIndex:0];
-    [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
@@ -148,8 +148,8 @@
      @property (nonatomic, strong) NSString *giftNumbers;//礼物份数
      @property (nonatomic, strong) NSString *totalGifts;//礼物总数合计
      */
-    [[EMClient sharedClient].roomManager removeDelegate:self];
-    [[EMClient sharedClient] removeDelegate:self];
+    [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
+    [[AgoraChatClient sharedClient] removeDelegate:self];
     [_headerListView stopTimer];
     _chatview.delegate = nil;
     
@@ -175,7 +175,7 @@
     self.callCenter.callEventHandler = ^(CTCall* call) {
         if (call.callState == CTCallStateDisconnected) {
             NSLog(@"电话结束或挂断电话");
-            [weakSelf connectionStateDidChange:EMConnectionConnected];
+            [weakSelf connectionStateDidChange:AgoraChatConnectionConnected];
         } else if (call.callState == CTCallStateConnected){
             NSLog(@"电话接通");
         } else if(call.callState == CTCallStateIncoming) {
@@ -308,11 +308,11 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
-    NSString* strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/token/rtcToken/v1?userAccount=%@&channelName=%@&appkey=%@",[EMClient sharedClient].currentUsername, _room.channel, [EMClient sharedClient].options.appkey];
+    NSString* strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/token/rtcToken/v1?userAccount=%@&channelName=%@&appkey=%@",[AgoraChatClient sharedClient].currentUsername, _room.channel, [AgoraChatClient sharedClient].options.appkey];
     NSString*utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL* url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest* urlReq = [[NSMutableURLRequest alloc] initWithURL:url];
-    [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[EMClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
+    [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[AgoraChatClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:urlReq completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if(data) {
             NSDictionary* body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -332,13 +332,13 @@
     [task resume];
 }
 
-#pragma mark - EMClientDelegate
+#pragma mark - AgoraChatClientDelegate
 
-- (void)connectionStateDidChange:(EMConnectionState)aConnectionState
+- (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
     __weak typeof(self) weakSelf = self;
     //断网重连后，修改直播间状态为ongoing并重新推流&加入聊天室
-    if (aConnectionState == EMConnectionConnected) {
+    if (aConnectionState == AgoraChatConnectionConnected) {
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:_room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success)
                 _room = room;
@@ -570,7 +570,7 @@
         [weakSelf.chatview leaveChatroomWithIsCount:NO
                                          completion:^(BOOL success) {
                                              if (success) {
-                                                 [[EMClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
+                                                 [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
                                              } else {
                                                  [weakSelf showHint:@"退出聊天室失败"];
                                              }
@@ -627,11 +627,11 @@
 }
 
 //有观众送礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count
+- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count
 {
     [_customMsgHelper userSendGifts:msg count:count backView:self.view];
     
-    EMCustomMessageBody *msgBody = (EMCustomMessageBody*)msg.body;
+    AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
     NSString *giftid = [msgBody.ext objectForKey:@"id"];
     
     _totalGifts += count;
@@ -655,7 +655,7 @@
 }
 
 //弹幕
-- (void)didSelectedBarrageSwitch:(EMMessage*)msg
+- (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg
 {
     [_customMsgHelper barrageAction:msg backView:self.view];
 }
@@ -682,10 +682,10 @@
 }
 
 //收到点赞
-- (void)didReceivePraiseMessage:(EMMessage *)message
+- (void)didReceivePraiseMessage:(AgoraChatMessage *)message
 {
     [_customMsgHelper praiseAction:_chatview];
-    EMCustomMessageBody *customBody = (EMCustomMessageBody*)message.body;
+    AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)message.body;
     _praiseNum += [(NSString*)[customBody.ext objectForKey:@"num"] integerValue];
     [self.headerListView.liveCastView setNumberOfPraise:_praiseNum];
     EaseDefaultDataHelper.shared.praiseStatisticstCount = [NSString stringWithFormat:@"%ld",(long)_praiseNum];
@@ -693,7 +693,7 @@
 }
 
 //操作观众对象
-- (void)didSelectUserWithMessage:(EMMessage *)message
+- (void)didSelectUserWithMessage:(AgoraChatMessage *)message
 {
     [self.view endEditing:YES];
     if (![message.from isEqualToString:_room.anchor]) {
@@ -736,10 +736,10 @@
 
 #pragma mark - EaseProfileLiveViewDelegate
 
-#pragma mark - EMChatroomManagerDelegate
+#pragma mark - AgoraChatroomManagerDelegate
 
 extern bool isAllTheSilence;
-- (void)chatroomAllMemberMuteChanged:(EMChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
+- (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {
     isAllTheSilence = aMuted;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
@@ -751,7 +751,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
+- (void)chatroomWhiteListDidUpdate:(AgoraChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         NSMutableString *text = [NSMutableString string];
@@ -762,7 +762,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)chatroomWhiteListDidUpdate:(EMChatroom *)aChatroom removedWhiteListMembers:(NSArray *)aMembers
+- (void)chatroomWhiteListDidUpdate:(AgoraChatroom *)aChatroom removedWhiteListMembers:(NSArray *)aMembers
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         NSMutableString *text = [NSMutableString string];
@@ -773,7 +773,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
                 addedMutedMembers:(NSArray *)aMutes
                        muteExpire:(NSInteger)aMuteExpire
 {
@@ -787,7 +787,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)chatroomMuteListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
               removedMutedMembers:(NSArray *)aMutes
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
@@ -800,7 +800,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomOwnerDidUpdate:(AgoraChatroom *)aChatroom
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner
 {
@@ -809,7 +809,7 @@ extern bool isAllTheSilence;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"聊天室创建者有更新:%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"publish.ok", @"Ok") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            if ([aOldOwner isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if ([aOldOwner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeLIVE]) {
                     [weakSelf.session stopStreaming];//结束推流
                     [weakSelf.session destroy];
@@ -840,7 +840,7 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)didDismissFromChatroom:(EMChatroom *)aChatroom reason:(EMChatroomBeKickedReason)aReason
+- (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom reason:(AgoraChatroomBeKickedReason)aReason
 {
 //    if (aReason == 0)
 //        [MBProgressHUD showMessag:[NSString stringWithFormat:@"被移出直播聊天室 %@", aChatroom.subject] toView:nil];

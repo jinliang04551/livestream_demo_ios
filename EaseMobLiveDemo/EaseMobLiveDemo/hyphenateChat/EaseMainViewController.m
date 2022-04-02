@@ -86,7 +86,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     __weak typeof(self) weakSelf = self;
     [[EaseHttpManager sharedInstance] fetchLiveroomDetail:EaseDefaultDataHelper.shared.currentRoomId completion:^(EaseLiveRoom *room, BOOL success) {
         if (success) {
-            if (room.status == ongoing && [room.anchor isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if (room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
                     EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
                     publishView.modalPresentationStyle = 0;

@@ -22,7 +22,7 @@
 #import "SDWebImageDownloader.h"
 #import "EasePublishViewController.h"
 
-@interface EaseLiveTVListViewController () <UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,SRRefreshDelegate,EMClientDelegate>
+@interface EaseLiveTVListViewController () <UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,SRRefreshDelegate,AgoraChatClientDelegate>
 {
     NSString *_videoType;
     
@@ -68,15 +68,15 @@
     
     [self setupCollectionView];
     
-    [[EMClient sharedClient] removeDelegate:self];
-    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient] removeDelegate:self];
+    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList:) name:kNotificationRefreshList object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    if ([[EMClient sharedClient] isConnected]) {
+    if ([[AgoraChatClient sharedClient] isConnected]) {
         _cursor = @"";
         _noMore = NO;
         [self loadData:YES];
@@ -85,7 +85,7 @@
 
 - (void)dealloc
 {
-    [[EMClient sharedClient] removeDelegate:self];
+    [[AgoraChatClient sharedClient] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -106,18 +106,18 @@
         if (isHeader) {
             //获取vod点播房间列表
             if ([_videoType isEqualToString:kLiveBroadCastingTypeLIVE]) {
-                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(EMCursorResult *result, BOOL success) {
+                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
                         [weakSelf getOngoingLiveroom:YES vodList:result.list];
                 }];
             }
             //获取agora_vod点播房间列表
             if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
-                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(EMCursorResult *result, BOOL success) {
+                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
                         [weakSelf getOngoingLiveroom:YES vodList:result.list];
                 }];
             }
             if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
-                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(EMCursorResult *result, BOOL success) {
+                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
                     [weakSelf getOngoingLiveroom:YES vodList:result.list];
                 }];
             }
@@ -125,7 +125,7 @@
             [self getOngoingLiveroom:NO vodList:nil];
         }
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {
-        [[EaseHttpManager sharedInstance] fetchLiveRoomsWithCursor:_cursor limit:8 completion:^(EMCursorResult *result, BOOL success) {
+        [[EaseHttpManager sharedInstance] fetchLiveRoomsWithCursor:_cursor limit:8 completion:^(AgoraChatCursorResult *result, BOOL success) {
             if (success) {
                 if (isHeader) {
                     [weakSelf.dataArray removeAllObjects];
@@ -156,7 +156,7 @@
     __weak EaseLiveTVListViewController *weakSelf = self;
     //获取正在直播的直播间列表
     [[EaseHttpManager sharedInstance] fetchLiveRoomsOngoingWithCursor:_cursor limit:8 video_type:_videoType
-                                          completion:^(EMCursorResult *result, BOOL success) {
+                                          completion:^(AgoraChatCursorResult *result, BOOL success) {
           if (success) {
               if (isHeader) {
                   [weakSelf.dataArray removeAllObjects];
@@ -375,7 +375,7 @@
         
         __weak typeof(self) weakSelf = self;
         [[EaseHttpManager sharedInstance] fetchLiveroomDetail:room.roomId completion:^(EaseLiveRoom *room, BOOL success) {
-            if (success && room.status == ongoing && [room.anchor isEqualToString:EMClient.sharedClient.currentUsername]) {
+            if (success && room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
                 [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -399,7 +399,7 @@
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {
         //view = [[EaseCreateLiveViewController alloc]initWithLiveroom:room];
         __weak typeof(self) weakSelf = self;
-        room.anchor = [EMClient sharedClient].currentUsername;
+        room.anchor = [AgoraChatClient sharedClient].currentUsername;
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success) {
                 EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
@@ -433,9 +433,9 @@
     }
 }
 
-#pragma mark - EMClientDelegate
+#pragma mark - AgoraChatClientDelegate
 
-- (void)autoLoginDidCompleteWithError:(EMError *)aError
+- (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (!aError) {
         [self loadData:YES];
@@ -471,7 +471,7 @@
 - (void)logoutAction
 {
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"退出中..." toView:nil];
-    [[EMClient sharedClient] logout:NO];
+    [[AgoraChatClient sharedClient] logout:NO];
     [hud hideAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }

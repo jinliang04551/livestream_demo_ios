@@ -27,11 +27,11 @@
 
 NSMutableDictionary *audienceNickname;//直播间观众昵称库
 
-@interface EaseChatView () <EMChatManagerDelegate,EMChatroomManagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,EaseEmoticonViewDelegate>
+@interface EaseChatView () <AgoraChatManagerDelegate,AgoraChatroomManagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,EaseEmoticonViewDelegate>
 {
     NSString *_chatroomId;
     EaseLiveRoom *_room;
-    EMChatroom *_chatroom;
+    AgoraChatroom *_chatroom;
     
     long long _curtime;
     CGFloat _previousTextViewContentHeight;
@@ -64,7 +64,7 @@ NSMutableDictionary *audienceNickname;//直播间观众昵称库
 @property (strong, nonatomic) EaseCustomSwitch *barrageSwitch;//弹幕开关
 @property (strong, nonatomic) UIButton *faceButton;//表情
 @property (strong, nonatomic) UIButton *sendButton;//发送按钮
-@property (strong, nonatomic) EMConversation *conversation;
+@property (strong, nonatomic) AgoraChatConversation *conversation;
 
 @property (strong, nonatomic) UIView *faceView;
 @property (strong, nonatomic) UIView *activityView;
@@ -85,10 +85,10 @@ BOOL isAllTheSilence;//全体禁言
         _isBarrageInfo = false;
         _praiseInterval = 0;
         _praiseCount = 0;
-        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
-        [[EMClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+        [[AgoraChatClient sharedClient].chatManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
+        [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
         self.datasource = [NSMutableArray array];
-        self.conversation = [[EMClient sharedClient].chatManager getConversation:_chatroomId type:EMConversationTypeChatRoom createIfNotExist:NO];
+        self.conversation = [[AgoraChatClient sharedClient].chatManager getConversation:_chatroomId type:AgoraChatConversationTypeChatRoom createIfNotExist:NO];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
         
         [self addSubview:self.tableView];
@@ -155,8 +155,8 @@ BOOL isAllTheSilence;//全体禁言
 
 - (void)dealloc
 {
-    [[EMClient sharedClient].chatManager removeDelegate:self];
-    [[EMClient sharedClient].roomManager removeDelegate:self];
+    [[AgoraChatClient sharedClient].chatManager removeDelegate:self];
+    [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self stopTimer];
 }
@@ -337,11 +337,11 @@ BOOL isAllTheSilence;//全体禁言
     return _faceView;
 }
 
-#pragma mark - EMChatManagerDelegate
+#pragma mark - AgoraChatManagerDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages
 {
-    for (EMMessage *message in aMessages) {
+    for (AgoraChatMessage *message in aMessages) {
         if ([message.conversationId isEqualToString:_chatroomId]) {
             if ([self.datasource count] >= 200) {
                 [self.datasource removeObjectsInRange:NSMakeRange(0, 190)];
@@ -355,7 +355,7 @@ BOOL isAllTheSilence;//全体禁言
 
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages
 {
-    for (EMMessage *message in aCmdMessages) {
+    for (AgoraChatMessage *message in aCmdMessages) {
         if ([message.conversationId isEqualToString:_chatroomId]) {
             if (message.timestamp < _curtime) {
                 continue;
@@ -364,16 +364,16 @@ BOOL isAllTheSilence;//全体禁言
     }
 }
 
-#pragma mark - EMChatroomManagerDelegate
+#pragma mark - AgoraChatroomManagerDelegate
 
 //有用户加入聊天室
-- (void)userDidJoinChatroom:(EMChatroom *)aChatroom user:(NSString *)aUsername
+- (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername
 {
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:@"进入了直播间"];
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"进入了直播间"];
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]init];
     [ext setObject:@"em_join" forKey:@"em_join"];
-    EMMessage *joinMsg = [[EMMessage alloc] initWithConversationID:aChatroom.chatroomId from:aUsername to:aChatroom.chatroomId body:body ext:ext];
-    joinMsg.chatType = EMChatTypeChatRoom;
+    AgoraChatMessage *joinMsg = [[AgoraChatMessage alloc] initWithConversationID:aChatroom.chatroomId from:aUsername to:aChatroom.chatroomId body:body ext:ext];
+    joinMsg.chatType = AgoraChatTypeChatRoom;
     if ([self.datasource count] >= 200) {
         [self.datasource removeObjectsInRange:NSMakeRange(0, 190)];
     }
@@ -382,29 +382,29 @@ BOOL isAllTheSilence;//全体禁言
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:[self.datasource count] - 1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
-- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                         addedAdmin:(NSString *)aAdmin;
 {
     if ([aChatroom.chatroomId isEqualToString:_chatroomId]) {
-        if ([aAdmin isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             //[self.bottomView addSubview:self.adminButton];
             [self layoutSubviews];
         }
     }
 }
 
-- (void)chatroomAdminListDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                       removedAdmin:(NSString *)aAdmin
 {
     if ([aChatroom.chatroomId isEqualToString:_chatroomId]) {
-        if ([aAdmin isEqualToString:[EMClient sharedClient].currentUsername]) {
+        if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             [self.adminButton removeFromSuperview];
             [self layoutSubviews];
         }
     }
 }
 
-- (void)chatroomOwnerDidUpdate:(EMChatroom *)aChatroom
+- (void)chatroomOwnerDidUpdate:(AgoraChatroom *)aChatroom
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner
 {
@@ -419,7 +419,7 @@ BOOL isAllTheSilence;//全体禁言
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    EMMessage *message = [self.datasource objectAtIndex:indexPath.section];
+    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
     return [EaseChatCell heightForMessage:message];
 }
 
@@ -444,7 +444,7 @@ BOOL isAllTheSilence;//全体禁言
     }
     if (!self.datasource || [self.datasource count] < 1)
         return nil;
-    EMMessage *message = [self.datasource objectAtIndex:indexPath.section];
+    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
     [cell setMesssage:message liveroom:_room];
     return cell;
 }
@@ -478,7 +478,7 @@ BOOL isAllTheSilence;//全体禁言
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    EMMessage *message = [self.datasource objectAtIndex:indexPath.section];
+    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectUserWithMessage:)]) {
         [self.delegate didSelectUserWithMessage:message];
     }
@@ -612,29 +612,29 @@ BOOL isAllTheSilence;//全体禁言
     }
 }
 
-+ (NSString *)latestMessageTitleForConversationModel:(EMMessage*)lastMessage;
++ (NSString *)latestMessageTitleForConversationModel:(AgoraChatMessage*)lastMessage;
 {
     NSString *latestMessageTitle = @"";
     if (lastMessage) {
-        EMMessageBody *messageBody = lastMessage.body;
+        AgoraChatMessageBody *messageBody = lastMessage.body;
         switch (messageBody.type) {
-            case EMMessageBodyTypeImage:{
+            case AgoraChatMessageBodyTypeImage:{
                 latestMessageTitle = @"[图片]";
             } break;
-            case EMMessageBodyTypeText:{
-                NSString *didReceiveText = ((EMTextMessageBody *)messageBody).text;
+            case AgoraChatMessageBodyTypeText:{
+                NSString *didReceiveText = ((AgoraChatTextMessageBody *)messageBody).text;
                 latestMessageTitle = didReceiveText;
             } break;
-            case EMMessageBodyTypeVoice:{
+            case AgoraChatMessageBodyTypeVoice:{
                 latestMessageTitle = @"[语音]";
             } break;
-            case EMMessageBodyTypeLocation: {
+            case AgoraChatMessageBodyTypeLocation: {
                 latestMessageTitle = @"[位置]";
             } break;
-            case EMMessageBodyTypeVideo: {
+            case AgoraChatMessageBodyTypeVideo: {
                 latestMessageTitle = @"[视频]";
             } break;
-            case EMMessageBodyTypeFile: {
+            case AgoraChatMessageBodyTypeFile: {
                 latestMessageTitle = @"[文件]";
             } break;
             default: {
@@ -645,28 +645,28 @@ BOOL isAllTheSilence;//全体禁言
     return latestMessageTitle;
 }
 
-- (EMMessage *)_sendTextMessage:(NSString *)text
+- (AgoraChatMessage *)_sendTextMessage:(NSString *)text
                              to:(NSString *)toUser
-                    messageType:(EMChatType)messageType
+                    messageType:(AgoraChatType)messageType
                      messageExt:(NSDictionary *)messageExt
 
 {
-    EMMessageBody *body = [[EMTextMessageBody alloc] initWithText:text];
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:messageExt];
+    AgoraChatMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:text];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:messageExt];
     message.chatType = messageType;
     return message;
 }
 
-- (EMMessage *)_sendCMDMessageTo:(NSString *)toUser
-                     messageType:(EMChatType)messageType
+- (AgoraChatMessage *)_sendCMDMessageTo:(NSString *)toUser
+                     messageType:(AgoraChatType)messageType
                       messageExt:(NSDictionary *)messageExt
                           action:(NSString*)action
 
 {
-    EMCmdMessageBody *body = [[EMCmdMessageBody alloc] initWithAction:action];
-    NSString *from = [[EMClient sharedClient] currentUsername];
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:messageExt];
+    AgoraChatCmdMessageBody *body = [[AgoraChatCmdMessageBody alloc] initWithAction:action];
+    NSString *from = [[AgoraChatClient sharedClient] currentUsername];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:toUser from:from to:toUser body:body ext:messageExt];
     message.chatType = messageType;
     
     return message;
@@ -781,9 +781,9 @@ BOOL isAllTheSilence;//全体禁言
 - (void)sendText
 {
     if (self.textView.text.length > 0) {
-        EMMessage *message = [self _sendTextMessage:self.textView.text to:_chatroomId messageType:EMChatTypeChatRoom messageExt:nil];
+        AgoraChatMessage *message = [self _sendTextMessage:self.textView.text to:_chatroomId messageType:AgoraChatTypeChatRoom messageExt:nil];
         __weak EaseChatView *weakSelf = self;
-        [[EMClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(EMMessage *message, EMError *error) {
+        [[AgoraChatClient sharedClient].chatManager sendMessage:message progress:NULL completion:^(AgoraChatMessage *message, AgoraChatError *error) {
             if (!error) {
                 [weakSelf currentViewDataFill:message];
             } else {
@@ -799,7 +799,7 @@ BOOL isAllTheSilence;//全体禁言
 - (void)sendBarrageMsg:(NSString*)text
 {
     __weak EaseChatView *weakSelf = self;
-    [_customMsgHelper sendCustomMessage:text num:0 to:_chatroomId messageType:EMChatTypeChatRoom customMsgType:customMessageType_barrage completion:^(EMMessage * _Nonnull message, EMError * _Nonnull error) {
+    [_customMsgHelper sendCustomMessage:text num:0 to:_chatroomId messageType:AgoraChatTypeChatRoom customMsgType:customMessageType_barrage completion:^(AgoraChatMessage * _Nonnull message, AgoraChatError * _Nonnull error) {
         if (!error) {
             [_customMsgHelper barrageAction:message backView:self.superview];
             [weakSelf currentViewDataFill:message];
@@ -830,7 +830,7 @@ BOOL isAllTheSilence;//全体禁言
 
 {
      __weak EaseChatView *weakSelf = self;
-    [_customMsgHelper sendCustomMessage:giftId num:num to:_chatroomId messageType:EMChatTypeChatRoom customMsgType:customMessageType_gift completion:^(EMMessage * _Nonnull message, EMError * _Nonnull error) {
+    [_customMsgHelper sendCustomMessage:giftId num:num to:_chatroomId messageType:AgoraChatTypeChatRoom customMsgType:customMessageType_gift completion:^(AgoraChatMessage * _Nonnull message, AgoraChatError * _Nonnull error) {
         bool ret = false;
         if (!error) {
             [weakSelf currentViewDataFill:message];
@@ -856,7 +856,7 @@ BOOL isAllTheSilence;//全体禁言
 - (void)_praiseOperate
 {
     __weak EaseChatView *weakSelf = self;
-    [_customMsgHelper sendCustomMessage:@"" num:_praiseCount to:_chatroomId messageType:EMChatTypeChatRoom customMsgType:customMessageType_praise completion:^(EMMessage * _Nonnull message, EMError * _Nonnull error) {
+    [_customMsgHelper sendCustomMessage:@"" num:_praiseCount to:_chatroomId messageType:AgoraChatTypeChatRoom customMsgType:customMessageType_praise completion:^(AgoraChatMessage * _Nonnull message, AgoraChatError * _Nonnull error) {
         if (!error) {
             _praiseCount = 0;
             [weakSelf currentViewDataFill:message];
@@ -906,7 +906,7 @@ BOOL isAllTheSilence;//全体禁言
 
 - (void)giftAction
 {
-    if ([_chatroom.owner isEqualToString:EMClient.sharedClient.currentUsername]) {
+    if ([_chatroom.owner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         //礼物列表
         if (_delegate && [_delegate respondsToSelector:@selector(didSelectGiftButton:)]) {
             [_delegate didSelectGiftButton:YES];
@@ -922,7 +922,7 @@ BOOL isAllTheSilence;//全体禁言
 #pragma mark - private
 
 //当前视图数据填充
-- (void)currentViewDataFill:(EMMessage*)message
+- (void)currentViewDataFill:(AgoraChatMessage*)message
 {
     if ([self.datasource count] >= 200) {
         [self.datasource removeObjectsInRange:NSMakeRange(0, 190)];
@@ -953,12 +953,12 @@ BOOL isAllTheSilence;//全体禁言
                                                   completion:^(BOOL success) {
                                                       BOOL ret = NO;
                                                       if (success) {
-                                                          EMError *error = nil;
-                                                          _chatroom = [[EMClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroomId error:&error];
+                                                          AgoraChatError *error = nil;
+                                                          _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroomId error:&error];
                                                           ret = YES;
                                                           if (!error) {
                                                               isAllTheSilence = _chatroom.isMuteAllMembers;
-                                                              BOOL ret = _chatroom.permissionType == EMChatroomPermissionTypeAdmin || _chatroom.permissionType == EMChatroomPermissionTypeOwner;
+                                                              BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
                                                               if (ret) {
                                                                   //[weakSelf.bottomView addSubview:weakSelf.adminButton];
                                                                   [weakSelf layoutSubviews];
@@ -980,7 +980,7 @@ BOOL isAllTheSilence;//全体禁言
                                                        BOOL ret = NO;
                                                        if (success) {
                                                            [weakSelf.datasource removeAllObjects];
-                                                           [[EMClient sharedClient].chatManager deleteConversation:_chatroomId isDeleteMessages:YES completion:NULL];
+                                                           [[AgoraChatClient sharedClient].chatManager deleteConversation:_chatroomId isDeleteMessages:YES completion:NULL];
                                                            ret = YES;
                                                        }
                                                        aCompletion(ret);

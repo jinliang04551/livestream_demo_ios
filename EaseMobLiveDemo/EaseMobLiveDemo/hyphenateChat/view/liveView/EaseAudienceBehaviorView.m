@@ -134,12 +134,12 @@
     __weak typeof(self) weakSelf = self;
     if (btn.isSelected) {
         //禁言
-        [[EMClient sharedClient].roomManager muteMembers:@[_currentOperateUser] muteMilliseconds:-1 fromChatroom:_chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager muteMembers:@[_currentOperateUser] muteMilliseconds:-1 fromChatroom:_chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             [weakSelf cancelAction];
         }];
     } else {
         //解除禁言
-        [[EMClient sharedClient].roomManager unmuteMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager unmuteMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             [weakSelf cancelAction];
         }];
     }
@@ -151,12 +151,12 @@
     __weak typeof(self) weakSelf = self;
     if (btn.isSelected) {
         //添加白名单
-        [[EMClient sharedClient].roomManager addWhiteListMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager addWhiteListMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             [weakSelf cancelAction];
         }];
     } else {
         //从白名单移除
-        [[EMClient sharedClient].roomManager removeWhiteListMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(EMChatroom *aChatroom, EMError *aError) {
+        [[AgoraChatClient sharedClient].roomManager removeWhiteListMembers:@[_currentOperateUser] fromChatroom:_chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             [weakSelf cancelAction];
         }];
     }
@@ -171,13 +171,13 @@
 //获取禁言列表
 - (void)_loadMuteList
 {
-    self.mutelist = [[EMClient sharedClient].roomManager getChatroomMuteListFromServerWithId:_chatroomId pageNumber:0 pageSize:10000 error:nil];
+    self.mutelist = [[AgoraChatClient sharedClient].roomManager getChatroomMuteListFromServerWithId:_chatroomId pageNumber:0 pageSize:10000 error:nil];
 }
 
 //获取白名单列表
 - (void)_loadWhitelist
 {
-    self.whitelist = [[EMClient sharedClient].roomManager getChatroomWhiteListFromServerWithId:_chatroomId error:nil];
+    self.whitelist = [[AgoraChatClient sharedClient].roomManager getChatroomWhiteListFromServerWithId:_chatroomId error:nil];
 }
 
 - (NSArray*)mutelist

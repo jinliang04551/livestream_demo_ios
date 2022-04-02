@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "EaseCustomMessageHelper.h"
 
-@class EMMessage;
+@class AgoraChatMessage;
 @class EaseLiveRoom;
 @protocol EaseChatViewDelegate <NSObject>
 
@@ -16,11 +16,11 @@
 
 - (void)easeChatViewDidChangeFrameToHeight:(CGFloat)toHeight;
 
-- (void)didReceiveGiftWithCMDMessage:(EMMessage*)message;
+- (void)didReceiveGiftWithCMDMessage:(AgoraChatMessage*)message;
 
-- (void)didReceiveBarrageWithCMDMessage:(EMMessage*)message;
+- (void)didReceiveBarrageWithCMDMessage:(AgoraChatMessage*)message;
 
-- (void)didSelectUserWithMessage:(EMMessage*)message;
+- (void)didSelectUserWithMessage:(AgoraChatMessage*)message;
 
 - (void)didSelectChangeCameraButton;
 
@@ -28,7 +28,7 @@
 
 - (void)didSelectedExitButton;
 
-- (void)liveRoomOwnerDidUpdate:(EMChatroom *)aChatroom newOwner:(NSString *)aNewOwner;
+- (void)liveRoomOwnerDidUpdate:(AgoraChatroom *)aChatroom newOwner:(NSString *)aNewOwner;
 
 - (void)liveRoomDidDEstory;
 

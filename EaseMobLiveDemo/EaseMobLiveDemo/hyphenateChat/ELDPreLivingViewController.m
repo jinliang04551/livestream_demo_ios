@@ -196,7 +196,7 @@
     
     _liveRoom = [[EaseLiveRoom alloc] init];
     _liveRoom.title =_liveNameTextField.text;
-    _liveRoom.anchor = [EMClient sharedClient].currentUsername;
+    _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
     _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
 
     [self showHudInView:self.view hint:@"上传直播间封面..."];

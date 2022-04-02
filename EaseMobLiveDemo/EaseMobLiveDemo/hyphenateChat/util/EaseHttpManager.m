@@ -11,7 +11,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import "NSDictionary+SafeValue.h"
 
-#define kAppKeyForDomain [EMClient sharedClient].options.appkey.length > 0 ? [[EMClient sharedClient].options.appkey stringByReplacingOccurrencesOfString:@"#" withString:@"/"] : @""
+#define kAppKeyForDomain [AgoraChatClient sharedClient].options.appkey.length > 0 ? [[AgoraChatClient sharedClient].options.appkey stringByReplacingOccurrencesOfString:@"#" withString:@"/"] : @""
 
 /*
  POST request   设置管理员
@@ -388,7 +388,7 @@ static EaseHttpManager *sharedInstance = nil;
 
 - (void)fetchLiveRoomsWithCursor:(NSString*)aCursor
                                   limit:(NSInteger)aLimit
-                             completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion
+                             completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion
 {
     NSString *cursor = @"";
     if (aCursor.length > 0) {
@@ -398,7 +398,7 @@ static EaseHttpManager *sharedInstance = nil;
         if (aCompletion) {
             NSMutableArray *array = nil;
             NSString *cursor = nil;
-            EMCursorResult *result = nil;
+            AgoraChatCursorResult *result = nil;
             BOOL ret = NO;
             if (!error) {
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
@@ -415,7 +415,7 @@ static EaseHttpManager *sharedInstance = nil;
                         }
                     }
                     cursor = [responseObject objectForKey:@"cursor"];
-                    result = [EMCursorResult cursorResultWithList:array andCursor:cursor];
+                    result = [AgoraChatCursorResult cursorResultWithList:array andCursor:cursor];
                     ret = YES;
                 }
             }
@@ -427,7 +427,7 @@ static EaseHttpManager *sharedInstance = nil;
 - (void)fetchVodRoomWithCursor:(NSString*)aCursor
                          limit:(NSInteger)aLimit
                     video_type:(NSString*)video_type
-                    completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion
+                    completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion
 {
     NSString *cursor = @"";
     if (aCursor.length > 0) {
@@ -437,7 +437,7 @@ static EaseHttpManager *sharedInstance = nil;
         if (aCompletion) {
             NSMutableArray *array = nil;
             NSString *cursor = nil;
-            EMCursorResult *result = nil;
+            AgoraChatCursorResult *result = nil;
             BOOL ret = NO;
             if (!error) {
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
@@ -454,7 +454,7 @@ static EaseHttpManager *sharedInstance = nil;
                         }
                     }
                     cursor = [responseObject objectForKey:@"cursor"];
-                    result = [EMCursorResult cursorResultWithList:array andCursor:cursor];
+                    result = [AgoraChatCursorResult cursorResultWithList:array andCursor:cursor];
                     ret = YES;
                 }
             }
@@ -466,7 +466,7 @@ static EaseHttpManager *sharedInstance = nil;
 - (void)fetchLiveRoomsOngoingWithCursor:(NSString*)aCursor
                                   limit:(NSInteger)aLimit
                              video_type:(NSString*)video_type
-                             completion:(void (^)(EMCursorResult *result, BOOL success))aCompletion
+                             completion:(void (^)(AgoraChatCursorResult *result, BOOL success))aCompletion
 {
     NSString *cursor = @"";
     if (aCursor.length > 0) {
@@ -476,7 +476,7 @@ static EaseHttpManager *sharedInstance = nil;
         if (aCompletion) {
             NSMutableArray *array = nil;
             NSString *cursor = nil;
-            EMCursorResult *result = nil;
+            AgoraChatCursorResult *result = nil;
             BOOL ret = NO;
             if (!error) {
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]) {
@@ -493,7 +493,7 @@ static EaseHttpManager *sharedInstance = nil;
                         }
                     }
                     cursor = [responseObject objectForKey:@"cursor"];
-                    result = [EMCursorResult cursorResultWithList:array andCursor:cursor];
+                    result = [AgoraChatCursorResult cursorResultWithList:array andCursor:cursor];
                     ret = YES;
                 }
             }
@@ -782,8 +782,8 @@ static EaseHttpManager *sharedInstance = nil;
 {
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient].roomManager joinChatroom:aChatroomId error:&error];
+        AgoraChatError *error = nil;
+        [[AgoraChatClient sharedClient].roomManager joinChatroom:aChatroomId error:&error];
         BOOL ret = NO;
         if (!error) {
             if (aIsCount) {
@@ -810,8 +810,8 @@ static EaseHttpManager *sharedInstance = nil;
 {
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = nil;
-        [[EMClient sharedClient].roomManager leaveChatroom:aChatroomId error:&error];
+        AgoraChatError *error = nil;
+        [[AgoraChatClient sharedClient].roomManager leaveChatroom:aChatroomId error:&error];
         BOOL ret = NO;
         if (!error) {
             if (aIsCount) {
@@ -876,7 +876,7 @@ static EaseHttpManager *sharedInstance = nil;
 {
     NSDictionary *parameters = nil;
     if ([aType isEqualToString:@"join"] || [aType isEqualToString:@"leave"]) {
-        parameters = @{@"count":[EMClient sharedClient].currentUsername,@"type":aType};
+        parameters = @{@"count":[AgoraChatClient sharedClient].currentUsername,@"type":aType};
     } else {
         parameters = @{@"count":@(aCount),@"type":aType};
     }
@@ -977,7 +977,7 @@ static EaseHttpManager *sharedInstance = nil;
                       completion:(void (^)(id responseObject, NSError *error))completion
 {
 //    [self _setHeaderToken];
-//    NSDictionary *heders = @{@"Authorization":[NSString stringWithFormat:@"Bearer %@", [EMClient sharedClient].accessUserToken]};
+//    NSDictionary *heders = @{@"Authorization":[NSString stringWithFormat:@"Bearer %@", [AgoraChatClient sharedClient].accessUserToken]};
 //    _sessionManager.requestSerializer.HTTPMethodsEncodingParametersInURI = [NSSet setWithObjects:@"GET", @"HEAD", nil];
 //    [_sessionManager DELETE:path parameters:parameters headers:heders success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        if (completion) {
@@ -992,7 +992,7 @@ static EaseHttpManager *sharedInstance = nil;
       cachePolicy:NSURLRequestUseProtocolCachePolicy
       timeoutInterval:10.0];
     NSDictionary *headers = @{
-      @"Authorization": [NSString stringWithFormat:@"Bearer %@", [EMClient sharedClient].accessUserToken]
+      @"Authorization": [NSString stringWithFormat:@"Bearer %@", [AgoraChatClient sharedClient].accessUserToken]
     };
 
     [request setAllHTTPHeaderFields:headers];
@@ -1045,14 +1045,14 @@ static EaseHttpManager *sharedInstance = nil;
 
 - (void)_setHeaderToken
 {
-    [[_sessionManager requestSerializer] setValue:[NSString stringWithFormat:@"Bearer %@", [EMClient sharedClient].accessUserToken] forHTTPHeaderField:@"Authorization"];
+    [[_sessionManager requestSerializer] setValue:[NSString stringWithFormat:@"Bearer %@", [AgoraChatClient sharedClient].accessUserToken] forHTTPHeaderField:@"Authorization"];
 }
 
 - (NSString*)_getUserToken
 {
     NSString *userToken = nil;
     BOOL isRefresh = NO;
-    EMClient *client = [EMClient sharedClient];
+    AgoraChatClient *client = [AgoraChatClient sharedClient];
     SEL selector = NSSelectorFromString(@"getUserToken:");
     if ([client respondsToSelector:selector]) {
         IMP imp = [client methodForSelector:selector];

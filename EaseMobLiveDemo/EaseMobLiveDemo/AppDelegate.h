@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "EaseMainViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,EMClientDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,AgoraChatClientDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) EaseMainViewController *mainVC;

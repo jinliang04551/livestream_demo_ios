@@ -71,9 +71,9 @@
     self.window.rootViewController = navigationController;
 }
 
-#pragma makr - EMClientDelegate
+#pragma makr - AgoraChatClientDelegate
 
-- (void)autoLoginDidCompleteWithError:(EMError *)aError
+- (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (aError) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"自动登录失败，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];

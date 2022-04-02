@@ -91,7 +91,7 @@
     
     _liveRoom = [[EaseLiveRoom alloc] init];
     _liveRoom.title =_liveNameTextField.text;
-    _liveRoom.anchor = [EMClient sharedClient].currentUsername;
+    _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
     if (sender.tag == 100) {
         //传统直播
         _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;

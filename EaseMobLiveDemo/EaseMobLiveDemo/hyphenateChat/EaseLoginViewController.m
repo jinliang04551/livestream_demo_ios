@@ -150,32 +150,32 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:NSLocalizedString(@"login.ing", @"Login...") toView:nil];
     __weak MBProgressHUD *weakHud = hud;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        EMError *error = [[EMClient sharedClient] loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
+        AgoraChatError *error = [[AgoraChatClient sharedClient] loginWithUsername:_usernameTextField.text password:_passwordTextField.text];
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakHud hideAnimated:YES];
             if (!error) {
                 NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-                [ud setObject:[EMClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
+                [ud setObject:[AgoraChatClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
                 [ud synchronize];
-                [[EMClient sharedClient].options setIsAutoLogin:YES];
+                [[AgoraChatClient sharedClient].options setIsAutoLogin:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
             } else {
                 NSString *alertTitle = NSLocalizedString(@"login.failed", @"Login failed");
                 switch (error.code)
                 {
-                    case EMErrorUserNotFound:
+                    case AgoraChatErrorUserNotFound:
                         alertTitle = NSLocalizedString(@"error.user.notfound", @"User not exist");
                         break;
-                    case EMErrorNetworkUnavailable:
+                    case AgoraChatErrorNetworkUnavailable:
                         alertTitle = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
                         break;
-                    case EMErrorServerNotReachable:
+                    case AgoraChatErrorServerNotReachable:
                         alertTitle = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
                         break;
-                    case EMErrorUserAuthenticationFailed:
+                    case AgoraChatErrorUserAuthenticationFailed:
                         alertTitle = NSLocalizedString(@"error.invalid.username.password", @"Invalid username or password");
                         break;
-                    case EMErrorServerTimeout:
+                    case AgoraChatErrorServerTimeout:
                         alertTitle = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
                         break;
                     default:
