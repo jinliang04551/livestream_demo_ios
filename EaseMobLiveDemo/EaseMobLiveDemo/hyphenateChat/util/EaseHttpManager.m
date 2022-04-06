@@ -561,6 +561,7 @@ static EaseHttpManager *sharedInstance = nil;
         }
     }];
 }
+
 -(void)getAgroLiveRoomPlayStreamUrlParamtars:(NSDictionary *)paramtas Completion:(void (^)(NSString *))aCompletion{
     [self _doGetRequestWithPath:kRequestArgoPushStreamUrl parameters:paramtas completion:^(id responseObject, NSError *error) {
         if (aCompletion) {
@@ -1110,11 +1111,7 @@ static EaseHttpManager *sharedInstance = nil;
 }
 
 - (BOOL)networkIsReachable
-{
-//    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager managerForDomain:@"www.apple.com"];
-//
-//    return manager.isReachable;
-    
+{    
     Reachability *reachability   = [Reachability reachabilityWithHostName:@"www.apple.com"];
     NetworkStatus internetStatus = [reachability currentReachabilityStatus];
     if (internetStatus == NotReachable) {

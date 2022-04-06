@@ -9,6 +9,8 @@
 #import "EaseDefaultDataHelper.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
+#import "Reachability.h"
+
 
 NSArray<NSString*> *nickNameArray;//本地昵称库
 
@@ -18,7 +20,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
 
 - (void)initHyphenateChatSDK
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#chatdemoui"];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
     /*
     [options setEnableDnsConfig:NO];
     [options setRestServer:@"a1-hsb.easemob.com"];
@@ -27,9 +29,10 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     
     NSString *apnsCertName = nil;
 #if DEBUG
-    apnsCertName = @"chatdemoui_dev";
+    apnsCertName = @"ChatDemoDevPush";
 #else
-    apnsCertName = @"chatdemoui";
+    apnsCertName = @"ChatDemoProPush";
+
 #endif
     options.apnsCertName = apnsCertName;
     options.isAutoAcceptGroupInvitation = NO;
@@ -45,16 +48,16 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     
     anchorInfoDic = [[NSMutableDictionary alloc]initWithCapacity:16];//初始化本地直播间主播昵称库
 
-    BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;
-    if (isAutoLogin) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
-    } else {
-        if (!EaseDefaultDataHelper.shared.isInitiativeLogin) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"autoRegistAccount" object:nil];
-        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
-        }
-    }
+//    BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;
+//    if (isAutoLogin) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
+//    } else {
+//        if (!EaseDefaultDataHelper.shared.isInitiativeLogin) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"autoRegistAccount" object:nil];
+//        } else {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
+//        }
+//    }
     
     [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
 }
@@ -69,6 +72,136 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
                     @"毋丘出",@"左颀",@"宰绝",@"谷唐",@"萧格",@"谈草",@"商炅",@"米秀",@"习垂",@"黄崔",@"单遇观",@"茹启",@"田瓮",@"蒋蹯苻",@"呼延汶",
                     @"林犍",@"左丘芍",@"东宅蜇",@"谭七",@"徐仙",@"欧阳使",@"龙偃",@"山鹰",@"况梁",@"江胭",@"展思"];
 }
+
+
+- (BOOL)conecteNetwork
+{
+    Reachability *reachability   = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    if (internetStatus == NotReachable) {
+        return NO;
+    }
+    return YES;
+}
+
+
+- (void)doLogin {
+    
+    if (![self conecteNetwork]) {
+        [self showAlertControllerWithTitle:@"" message:@"Network disconnected."];
+        return;
+    }
+    
+    void (^finishBlock) (NSString *aName, NSString *nickName, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, AgoraChatError *aError) {
+        if (!aError) {
+            if (nickName) {
+                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+                    if (!aError) {
+
+                        [[NSNotificationCenter defaultCenter] postNotificationName:ELDUSERINFO_UPDATE  object:aUserInfo userInfo:nil];
+                    }
+                }];
+            }
+            
+            [self saveLoginUserInfoWithUserName:aName nickName:nickName];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES userInfo:@{@"userName":aName,@"nickName":!nickName ? @"" : nickName}];
+            });
+            return ;
+        }
+        
+        NSString *errorDes = NSLocalizedString(@"login.failure", @"login failure");
+        switch (aError.code) {
+            case AgoraChatErrorServerNotReachable:
+                errorDes = NSLocalizedString(@"error.connectServerFail", @"Connect to the server failed!");
+                break;
+            case AgoraChatErrorNetworkUnavailable:
+                errorDes = NSLocalizedString(@"error.connectNetworkFail", @"No network connection!");
+                break;
+            case AgoraChatErrorServerTimeout:
+                errorDes = NSLocalizedString(@"error.connectServerTimeout", @"Connect to the server timed out!");
+                break;
+            case AgoraChatErrorUserAlreadyExist:
+                errorDes = NSLocalizedString(@"login.taken", @"Username taken");
+                break;
+            default:
+                errorDes = NSLocalizedString(@"login.failure", @"login failure");
+                break;
+        }
+        
+        [self showAlertControllerWithTitle:@"" message:errorDes];
+    };
+    
+    
+    NSString *userName = @"";
+    NSString *nickName = @"";
+
+    NSDictionary *loginDic = [self getLoginUserInfo];
+    if (loginDic.count > 0) {
+        userName = loginDic[USER_NAME];
+        nickName = loginDic[USER_NICKNAME];
+    }else {
+        userName = @"eld_002";
+        nickName = userName;
+    }
+    
+    
+    //unify token login
+    [[EaseHttpManager sharedInstance] loginToApperServer:userName nickName:nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *alertStr = nil;
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *token = [responsedict objectForKey:@"accessToken"];
+                NSString *loginName = [responsedict objectForKey:@"chatUserName"];
+                NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
+                if (token && token.length > 0) {
+                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                        finishBlock(aUsername, nickName, aError);
+                    }];
+                    return;
+                } else {
+                    alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");
+                }
+            } else {
+                alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
+            }
+            
+                        
+            [self showAlertControllerWithTitle:@"" message:alertStr];
+
+        });
+    }];
+    
+    
+}
+
+- (void)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message {
+    UIAlertController *alertControler = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *conform = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+    [alertControler addAction:conform];
+    [self.window.rootViewController presentViewController:alertControler animated:YES completion:nil];
+
+}
+
+- (NSDictionary *)getLoginUserInfo {
+    NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = [shareDefault objectForKey:LAST_LOGINUSER];
+    return dic;
+}
+
+- (void)saveLoginUserInfoWithUserName:(NSString *)userName nickName:(NSString *)nickName {
+    NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = @{USER_NAME:userName,USER_NICKNAME:nickName};
+    [shareDefault setObject:dic forKey:LAST_LOGINUSER];
+    [shareDefault synchronize];
+}
+
+
 
 #pragma mark - app delegate notifications
 // 监听系统生命周期回调，以便将需要的事件传给SDK

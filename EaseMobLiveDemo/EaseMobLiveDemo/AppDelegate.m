@@ -47,6 +47,8 @@
         
     [self loadMainView];
     
+    [self doLogin];
+    
     [self.window makeKeyAndVisible];
 
     return YES;
