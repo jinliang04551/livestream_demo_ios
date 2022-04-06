@@ -40,7 +40,6 @@
                                                       } forState:UIControlStateSelected];
 
     UITabBar.appearance.shadowImage = [[UIImage alloc] init];
-    UITabBar.appearance.backgroundColor = ViewControllerBgBlackColor;
     UITabBarItem.appearance.badgeColor = TextLabelPinkColor;
     //去黑线
     [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];

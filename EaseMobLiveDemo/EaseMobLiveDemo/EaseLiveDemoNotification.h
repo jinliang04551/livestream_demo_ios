@@ -11,6 +11,8 @@
 
 #define  ELDloginStateChange @"loginStateChange"
 #define  ELDautoRegistAccount @"autoRegistAccount"
+#define  ELDUSERINFO_UPDATE  @"USERINFO_UPDATE"
+
 
 
 #endif /* EaseLiveDemoNotification_h */

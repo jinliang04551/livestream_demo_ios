@@ -7,9 +7,10 @@
 //
 
 #import "EaseHttpManager.h"
-
 #import <AFNetworking/AFNetworking.h>
 #import "NSDictionary+SafeValue.h"
+#import "ELDConfig.h"
+#import "Reachability.h"
 
 #define kAppKeyForDomain [AgoraChatClient sharedClient].options.appkey.length > 0 ? [[AgoraChatClient sharedClient].options.appkey stringByReplacingOccurrencesOfString:@"#" withString:@"/"] : @""
 
@@ -137,9 +138,10 @@ Get request 获取直播间拉流地址
 
 static EaseHttpManager *sharedInstance = nil;
 
-@interface EaseHttpManager ()
+@interface EaseHttpManager ()<NSURLSessionDelegate>
 
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (readonly, nonatomic, strong) NSURLSession *session;
 
 @end
 
@@ -168,6 +170,12 @@ static EaseHttpManager *sharedInstance = nil;
         [_sessionManager.operationQueue setMaxConcurrentOperationCount:kHttpRequestMaxOperation];
         _sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
         _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+        
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        configuration.timeoutIntervalForRequest = 120;
+        _session = [NSURLSession sessionWithConfiguration:configuration
+                                                 delegate:self
+                                            delegateQueue:[NSOperationQueue mainQueue]];
     }
     return self;
 }
@@ -1061,5 +1069,59 @@ static EaseHttpManager *sharedInstance = nil;
     }
     return userToken;
 }
+
+
+- (void)loginToApperServer:(NSString *)uName
+                  nickName:(NSString *)nickName
+                completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
+{
+    
+    NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/app/chat/user/login",AppServerHost]];
+    NSLog(@"%s loginURL:%@",__func__,loginURL.absoluteString);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest
+                                                requestWithURL:loginURL];
+    request.HTTPMethod = @"POST";
+    
+    NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];
+    [headerDict setObject:@"application/json" forKey:@"Content-Type"];
+    request.allHTTPHeaderFields = headerDict;
+    
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setObject:uName forKey:@"userAccount"];
+    [dict setObject:nickName forKey:@"userNickname"];
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
+        if (aCompletionBlock) {
+            aCompletionBlock(((NSHTTPURLResponse*)response).statusCode, responseData);
+        }
+    }];
+    [task resume];
+}
+
+- (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
+{
+    if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){//服务器信任证书
+            NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];//服务器信任证书
+            if(completionHandler)
+                completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
+        }
+}
+
+- (BOOL)networkIsReachable
+{
+//    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager managerForDomain:@"www.apple.com"];
+//
+//    return manager.isReachable;
+    
+    Reachability *reachability   = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    NetworkStatus internetStatus = [reachability currentReachabilityStatus];
+    if (internetStatus == NotReachable) {
+        return NO;
+    }
+    return YES;
+}
+
 
 @end

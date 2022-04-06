@@ -10,4 +10,7 @@
 @interface AppDelegate (HyphenateChat)
 
 - (void)initHyphenateChatSDK;
+
+- (void)doLogin;
+
 @end

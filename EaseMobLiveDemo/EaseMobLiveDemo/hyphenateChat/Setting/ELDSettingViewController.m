@@ -27,9 +27,24 @@
 @property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 
+
 @end
 
 @implementation ELDSettingViewController
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUserInfo:) name:ELDUSERINFO_UPDATE object:nil];
+        
+    }
+    return self;
+}
+
+- (void)dealloc {
+    EASELIVEDEMO_REMOVENOTIFY(self);
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = ViewControllerBgBlackColor;
@@ -41,7 +56,6 @@
         make.edges.equalTo(self.view);
     }];
     [self fetchUserInfo];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -77,6 +91,16 @@
         }
 
     }];
+}
+
+#pragma mark Notification
+- (void)updateUserInfo:(NSNotification *)notify {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AgoraChatUserInfo *userInfo = notify.object;
+        self.userInfo = userInfo;
+        self.userHeaderView.nameLabel.text = self.userInfo.nickname;
+
+    });
 }
 
 #pragma mark public method

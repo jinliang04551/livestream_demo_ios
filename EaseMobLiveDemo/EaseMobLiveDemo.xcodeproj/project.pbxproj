@@ -249,6 +249,7 @@
 		C08DFC7927F5C2F500862ADF /* nav_left_arrow_white@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7727F5C2F500862ADF /* nav_left_arrow_white@3x.png */; };
 		C08DFC7A27F5C2F500862ADF /* nav_left_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */; };
 		C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */; };
+		C08DFC8A27F84D6F00862ADF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC8927F84D6F00862ADF /* Reachability.m */; };
 		C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */; };
 		C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */; };
 		C08E8F2D27EDC20800DE47C4 /* livelist_placeHolder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2B27EDC20800DE47C4 /* livelist_placeHolder@3x.png */; };
@@ -269,7 +270,6 @@
 		D2E368221D3C7EFF00B1C90C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2E368241D3C7EFF00B1C90C /* Localizable.strings */; };
 		D2F4E23E1D12C8AB00BB7E1A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F4E0F01D12C8AB00BB7E1A /* AppDelegate.m */; };
 		D2F4E23F1D12C8AB00BB7E1A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D2F4E0F11D12C8AB00BB7E1A /* LaunchScreen.xib */; };
-		D2F4E2401D12C8AB00BB7E1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2F4E0F31D12C8AB00BB7E1A /* Main.storyboard */; };
 		D2F4E26D1D12C8AB00BB7E1A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2F4E14D1D12C8AB00BB7E1A /* Images.xcassets */; };
 		D2F4E2721D12C8AB00BB7E1A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F4E2081D12C8AB00BB7E1A /* main.m */; };
 		E9271D411C3CC735000DBADF /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9271D401C3CC735000DBADF /* CoreVideo.framework */; };
@@ -630,6 +630,9 @@
 		C08DFC7B27F6A07F00862ADF /* EaseLiveDemoNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoNotification.h; sourceTree = "<group>"; };
 		C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDAboutViewController.m; sourceTree = "<group>"; };
 		C08DFC7D27F6DA2A00862ADF /* ELDAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDAboutViewController.h; sourceTree = "<group>"; };
+		C08DFC8727F8270300862ADF /* ELDConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDConfig.h; sourceTree = "<group>"; };
+		C08DFC8827F84D6F00862ADF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		C08DFC8927F84D6F00862ADF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDAnimationController.h; sourceTree = "<group>"; };
 		C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDAnimationController.m; sourceTree = "<group>"; };
 		C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@2x.png"; sourceTree = "<group>"; };
@@ -658,7 +661,6 @@
 		D2F4E0EF1D12C8AB00BB7E1A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D2F4E0F01D12C8AB00BB7E1A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D2F4E0F21D12C8AB00BB7E1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		D2F4E0F41D12C8AB00BB7E1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2F4E14D1D12C8AB00BB7E1A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D2F4E14E1D12C8AB00BB7E1A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2F4E2081D12C8AB00BB7E1A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -978,6 +980,8 @@
 		3C9E31DF260C7B4200CC3E3F /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				C08DFC8827F84D6F00862ADF /* Reachability.h */,
+				C08DFC8927F84D6F00862ADF /* Reachability.m */,
 				3C9E31E0260C7B4200CC3E3F /* MBProgressHUD */,
 				3C9E31E3260C7B4200CC3E3F /* SlimeRefresh */,
 			);
@@ -1286,13 +1290,13 @@
 				C08DFC1227F16F4700862ADF /* ALSAppStyle.m */,
 				3C9E3153260C7B4100CC3E3F /* hyphenateChat */,
 				D2F4E0F11D12C8AB00BB7E1A /* LaunchScreen.xib */,
-				D2F4E0F31D12C8AB00BB7E1A /* Main.storyboard */,
 				D2F4E14D1D12C8AB00BB7E1A /* Images.xcassets */,
 				D2F4E14E1D12C8AB00BB7E1A /* Info.plist */,
 				D2F4E2081D12C8AB00BB7E1A /* main.m */,
 				C08DFC0C27F15E8B00862ADF /* EaseLiveDemoDefine.h */,
 				C08DFC1427F18D6900862ADF /* EaseLiveColorDefine.h */,
 				C08DFC7B27F6A07F00862ADF /* EaseLiveDemoNotification.h */,
+				C08DFC8727F8270300862ADF /* ELDConfig.h */,
 				D2F4E2391D12C8AB00BB7E1A /* PrefixHeader.pch */,
 				D2E368241D3C7EFF00B1C90C /* Localizable.strings */,
 			);
@@ -1505,7 +1509,6 @@
 				3C9E331F260C7B4400CC3E3F /* icon-living@3x.png in Resources */,
 				3C9E32C9260C7B4300CC3E3F /* gift.rings@2x.png in Resources */,
 				3C525E2124650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md in Resources */,
-				D2F4E2401D12C8AB00BB7E1A /* Main.storyboard in Resources */,
 				3C9E330A260C7B4300CC3E3F /* chat@3x.png in Resources */,
 				3C9E32C7260C7B4300CC3E3F /* webRefreshButton@2x.png in Resources */,
 				3C9E32F2260C7B4300CC3E3F /* avatat_2@3x.png in Resources */,
@@ -1765,6 +1768,7 @@
 				3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */,
 				3C9E32B0260C7B4300CC3E3F /* EaseHeartFlyView.m in Sources */,
 				C08DFC2727F1D18C00862ADF /* ELDHintGoLiveView.m in Sources */,
+				C08DFC8A27F84D6F00862ADF /* Reachability.m in Sources */,
 				3C9E32AC260C7B4300CC3E3F /* EaseInputTextView.m in Sources */,
 				3C9E3286260C7B4300CC3E3F /* EaseBroadCastTabViewController.m in Sources */,
 				3C9E327A260C7B4300CC3E3F /* EaseLiveGiftHelper.m in Sources */,
@@ -1790,14 +1794,6 @@
 				D2F4E0F21D12C8AB00BB7E1A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-		D2F4E0F31D12C8AB00BB7E1A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D2F4E0F41D12C8AB00BB7E1A /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

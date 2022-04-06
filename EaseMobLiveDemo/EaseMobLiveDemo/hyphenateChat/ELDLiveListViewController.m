@@ -66,6 +66,13 @@
 //           if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
 //               self.title = @"互动直播";
 //           }
+           
+           [[AgoraChatClient sharedClient] removeDelegate:self];
+           [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
+           
+           [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList:) name:kNotificationRefreshList object:nil];
+
+           [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateChangedNotify:) name:ELDloginStateChange object:nil];
        }
     return self;
 }
@@ -80,10 +87,8 @@
     
     [self setupCollectionView];
     
-    [[AgoraChatClient sharedClient] removeDelegate:self];
-    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
+    [self setRefreshHeaderAndFooter];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshList:) name:kNotificationRefreshList object:nil];
 }
 
 - (void)setupNavbar {
@@ -104,7 +109,7 @@
 - (void)dealloc
 {
     [[AgoraChatClient sharedClient] removeDelegate:self];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    EASELIVEDEMO_REMOVENOTIFY(self);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -217,8 +222,10 @@
         make.bottom.equalTo(self.view).offset(-kEaseLiveDemoPadding*3);
         make.centerX.left.right.equalTo(self.view);
     }];
-
     
+}
+
+- (void)setRefreshHeaderAndFooter {
     ELD_WS
     _refreshHeader =  [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         _noMore = NO;
@@ -238,6 +245,28 @@
     self.collectionView.mj_footer = nil;
     self.collectionView.mj_footer.accessibilityIdentifier = @"refresh_footer";
 }
+
+#pragma mark Notification
+- (void)loginStateChangedNotify:(NSNotification *)notify {
+    [self loadData:YES];
+}
+
+#pragma mark - notification
+
+- (void)refreshList:(NSNotification*)notify
+{
+    BOOL ret = YES;
+    if (notify) {
+        ret = [notify.object boolValue];
+    }
+    if (ret) {
+        _noMore = NO;
+        _cursor = @"";
+    }
+    [self loadData:ret];
+}
+
+
 
 #pragma mark - getter
 - (UIBarButtonItem*)searchBarItem
@@ -506,7 +535,6 @@
     [self.navigationController pushViewController:createLiveView animated:NO];
 }
 
-#pragma mark - action
 
 - (void)searchAction
 {
@@ -524,21 +552,6 @@
     [[AgoraChatClient sharedClient] logout:NO];
     [hud hideAnimated:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
-}
-
-#pragma mark - notification
-
-- (void)refreshList:(NSNotification*)notify
-{
-    BOOL ret = YES;
-    if (notify) {
-        ret = [notify.object boolValue];
-    }
-    if (ret) {
-        _noMore = NO;
-        _cursor = @"";
-    }
-    [self loadData:ret];
 }
 
 

@@ -28,10 +28,12 @@
 #define KScreenHeight [[UIScreen mainScreen] bounds].size.height
 #define KScreenWidth  [[UIScreen mainScreen] bounds].size.width
 
-#define  EASELIVEDEMO_POSTNOTIFY(name,object)  [[NSNotificationCenter defaultCenter] postNotificationName:name object:object];
+#define  EASELIVEDEMO_POSTNOTIFY(name,object)  [[NSNotificationCenter defaultCenter] postNotificationName:name object:object]
 
-#define  EASELIVEDEMO_LISTENNOTIFY(name,SEL)  [[NSNotificationCenter defaultCenter] addObserver:self selector:SEL name:name object:nil];
+#define  EASELIVEDEMO_LISTENNOTIFY(name,SEL) [[NSNotificationCenter defaultCenter] addObserver:self selector:SEL name:name object:nil]
   
+#define EASELIVEDEMO_REMOVENOTIFY(observer) [[NSNotificationCenter defaultCenter] removeObserver:observer]
+
 
 #define ImageWithName(imageName) [UIImage imageNamed:imageName]
 
@@ -40,11 +42,15 @@
 #define kContactAvatarHeight 40.0f
 #define kSearchBarHeight 32.0
 
-
 //fonts
 #define NFont(__SIZE) [UIFont systemFontOfSize:__SIZE] //system font with size
 #define IFont(__SIZE) [UIFont italicSystemFontOfSize:__SIZE] //system font with size
 #define BFont(__SIZE) [UIFont boldSystemFontOfSize:__SIZE]//system bold font with size
 #define Font(__NAME, __SIZE) [UIFont fontWithName:__NAME size:__SIZE] //font with name and size
+
+//user
+#define USER_NAME @"user_name"
+#define USER_NICKNAME @"nick_name"
+#define LAST_LOGINUSER @"eld_lastLoginUser"
 
 #endif /* EaseLiveDemoDefine_h */

@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "EaseLiveRoom.h"
 
 @interface EaseHttpManager : NSObject
 
 + (instancetype)sharedInstance;
+
 
 /*
  *  创建直播聊天室
@@ -299,5 +299,19 @@
  */
 - (void)uploadFileWithData:(NSData*)aData
                 completion:(void (^)(NSString *url, BOOL success))aCompletion;
+
+
+/*
+ *
+ *
+ *  @param aData            文件数据
+ *  @param aCompletion      完成的回调block
+ */
+- (void)loginToApperServer:(NSString *)uName
+                  nickName:(NSString *)nickName
+                completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
+
+
+- (BOOL)networkIsReachable;
 
 @end
