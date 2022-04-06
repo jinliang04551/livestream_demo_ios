@@ -30,25 +30,23 @@
     self.window.backgroundColor = [UIColor whiteColor];
 
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(loginStateChange:)
-//                                                 name:ELDloginStateChange
-//                                               object:nil];
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(autoRegistAccount)
-//                                                 name:@"autoRegistAccount"
-//                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStateChange:)
+                                                 name:ELDloginStateChange
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(autoRegistAccount)
+                                                 name:ELDautoRegistAccount
+                                               object:nil];
         
     //初始化环信sdk
     [self initHyphenateChatSDK];
     //初始化七牛sdk
     [PLStreamingEnv initEnv];
         
-    [self loadMainView];
-    
-    [self doLogin];
-    
+//    [self loadMainView];
+        
     [self.window makeKeyAndVisible];
 
     return YES;

@@ -200,8 +200,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 {
 //    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
     
-    ELDLiveContainerViewController *createLiveVC = [[ELDLiveContainerViewController alloc] init];
-    [self presentViewController:createLiveVC animated:true completion:nil];
+    ELDLiveContainerViewController *vc = [[ELDLiveContainerViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:vc animated:true completion:nil];
 }
 
 - (void)loadViewControllers

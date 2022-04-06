@@ -118,6 +118,8 @@
     
 }
 
+#pragma mark private method
+
 - (void)loadData:(BOOL)isHeader
 {
     if (_isLoading) {
@@ -250,8 +252,6 @@
 - (void)loginStateChangedNotify:(NSNotification *)notify {
     [self loadData:YES];
 }
-
-#pragma mark - notification
 
 - (void)refreshList:(NSNotification*)notify
 {

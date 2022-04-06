@@ -9,9 +9,7 @@
 #ifndef ELDConfig_h
 #define ELDConfig_h
 
-//美东
-#define Appkey @"41117440#383391"
-#define AppServerHost @"https://a41.easemob.com"
-
+#define Appkey @"easemob-demo#chatdemoui"
+#define AppServerHost @"https://a1.easemob.com"
 
 #endif /* ELDConfig_h */

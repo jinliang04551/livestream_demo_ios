@@ -1054,7 +1054,11 @@ static EaseHttpManager *sharedInstance = nil;
 
 - (void)_setHeaderToken
 {
-    [[_sessionManager requestSerializer] setValue:[NSString stringWithFormat:@"Bearer %@", [AgoraChatClient sharedClient].accessUserToken] forHTTPHeaderField:@"Authorization"];
+    NSString *accessToken = [AgoraChatClient sharedClient].accessUserToken;
+    
+    NSLog(@"%s accessToken:%@",__func__,accessToken);
+    
+    [[_sessionManager requestSerializer] setValue:[NSString stringWithFormat:@"Bearer %@", accessToken] forHTTPHeaderField:@"Authorization"];
 }
 
 - (NSString*)_getUserToken

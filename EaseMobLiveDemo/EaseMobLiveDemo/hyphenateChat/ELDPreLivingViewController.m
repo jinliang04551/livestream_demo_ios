@@ -8,11 +8,12 @@
 
 #import "ELDPreLivingViewController.h"
 #import <CoreServices/CoreServices.h>
+#import "EasePublishViewController.h"
 
 
 @interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate>
 
-
+@property (nonatomic, strong) UIView *headerBgView;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UIButton *changeAvatarButton;
 @property (nonatomic, strong) UITextField *liveNameTextField;
@@ -44,17 +45,9 @@
 }
 
 - (void)placeAndLayoutSubviews {
-    UIView *headerBgView = [[UIView alloc] init];
-    headerBgView.backgroundColor = UIColor.grayColor;
-    headerBgView.alpha = 0.5;
-    headerBgView.layer.cornerRadius = 8.0;
-    
-    [headerBgView addSubview:self.changeAvatarButton];
-    [headerBgView addSubview:self.editButton];
-    [headerBgView addSubview:self.liveNameTextField];
 
     [self.view addSubview:self.closeButton];
-    [self.view addSubview:headerBgView];
+    [self.view addSubview:self.headerBgView];
     [self.view addSubview:self.flipButton];
     [self.view addSubview:self.flipHintLabel];
     [self.view addSubview:self.goLiveButton];
@@ -62,38 +55,16 @@
     [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(kEaseLiveDemoPadding * 2.6);
         make.right.equalTo(self.view).offset(-kEaseLiveDemoPadding * 1.6);
-        make.size.equalTo(@16.0);
+        make.size.equalTo(@30.0);
     }];
 
     
-    [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.closeButton).offset(kEaseLiveDemoPadding * 2.6);
         make.left.equalTo(self.view).offset(kEaseLiveDemoPadding * 1.6);
         make.right.equalTo(self.view).offset(-kEaseLiveDemoPadding * 1.6);
-
     }];
-    
-    [self.changeAvatarButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerBgView).offset(8.0);
-        make.left.equalTo(headerBgView).offset(8.0);
-        make.bottom.equalTo(headerBgView).offset(-8.0);
-        make.size.equalTo(@84.0);
-    }];
-    
-    [self.liveNameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.changeAvatarButton);
-        make.left.equalTo(self.changeAvatarButton.mas_right).offset(12.0);
-        make.right.equalTo(headerBgView).offset(-12.0f);
-        make.bottom.equalTo(self.editButton.mas_top);
-    }];
-
-
-    [self.editButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
-        make.right.equalTo(headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
-        make.size.equalTo(@16.0);
-    }];
-    
+        
     
     [self.flipButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
@@ -154,7 +125,6 @@
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     self.imagePicker.editing = YES;
-    self.imagePicker.modalPresentationStyle = 0;
     [self presentViewController:self.imagePicker animated:YES completion:NULL];
 }
 
@@ -167,7 +137,6 @@
         }
         self.imagePicker.editing = YES;
         self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
-        self.imagePicker.modalPresentationStyle = 0;
         [self presentViewController:self.imagePicker animated:YES completion:NULL];
     }
 #endif
@@ -189,7 +158,6 @@
         return;
     }
     
-    _fileData = UIImageJPEGRepresentation(_coverImageView.image, 1.0);
     if (!_fileData) {
         _fileData = [NSData new];
     }
@@ -199,27 +167,39 @@
     _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
     _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
 
-    [self showHudInView:self.view hint:@"上传直播间封面..."];
+//    [self showHudInView:self.view hint:@"上传直播间封面..."];
     __block typeof(_liveRoom) blockLiveRoom = _liveRoom;
     
-    ELD_WS
-    [self uploadCoverImageView:^(BOOL success) {
-        [self hideHud];
-        
-        if (success) {
-            [weakSelf createLiveRoom:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-                if (success) {
-                    [self modifyLiveRoomStatus:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-                    }];
-                }else{
-                    [weakSelf showHint:@"开始直播失败"];
-                }
-            }];
-        }else{
-            [self showHint:@"设置封面图失败"];
-        }
-    }];
-
+    
+    if (_coverImageView.image) {
+        ELD_WS
+        [self uploadCoverImageView:^(BOOL success) {
+            [self hideHud];
+            
+            if (success) {
+                [weakSelf createLiveRoom:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+                    if (success) {
+                        [self modifyLiveRoomStatus:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+                        }];
+                    }else{
+                        [weakSelf showHint:@"开始直播失败"];
+                    }
+                }];
+            }else{
+                [self showHint:@"设置封面图失败"];
+            }
+        }];
+    }else {
+        [self createLiveRoom:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+            
+            if (success) {
+                [self modifyLiveRoomStatus:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+                }];
+            }else{
+                [self showHint:@"开始直播失败"];
+            }
+        }];
+    }
 }
 
 
@@ -236,7 +216,7 @@
     }];
 }
 
--(void)createLiveRoom:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion{
+- (void)createLiveRoom:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion{
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"开始直播..." toView:self.view];
     __weak MBProgressHUD *weakHud = hud;
     [EaseHttpManager.sharedInstance createLiveRoomWithRoom:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
@@ -251,31 +231,39 @@
 }
 
 - (void)modifyLiveRoomStatus:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion {
-//    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在更新直播..." toView:self.view];
-//    __weak MBProgressHUD *weakHud = hud;
-//    __weak typeof(self) weakSelf = self;
-//    [EaseHttpManager.sharedInstance modifyLiveroomStatusWithOngoing:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
-//        [weakHud hideAnimated:YES];
-//        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:_liveRoom];
-//        publishView.modalPresentationStyle = 0;
-//        [weakSelf presentViewController:publishView
-//                               animated:YES
-//                             completion:^{
-//            [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
-//                if (isFinish)
-//                    [weakSelf dismissViewControllerAnimated:false completion:nil];
-//            }];
-//        }];
-//    }];
+    
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在更新直播..." toView:self.view];
+    __weak MBProgressHUD *weakHud = hud;
+    
+    ELD_WS
+    [EaseHttpManager.sharedInstance modifyLiveroomStatusWithOngoing:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
+        [weakHud hideAnimated:YES];
+        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:_liveRoom];
+        publishView.modalPresentationStyle = 0;
+        [self presentViewController:publishView
+                               animated:YES
+                             completion:^{
+            [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
+                if (isFinish)
+                    [weakSelf dismissViewControllerAnimated:false completion:nil];
+            }];
+        }];
+    }];
+    
 }
 
 #pragma mark - UIImagePickerController
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *editImage = info[UIImagePickerControllerEditedImage];
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+
     if (editImage) {
-        _coverImageView.image = editImage;
+//        _coverImageView.image = editImage;
+        _fileData = UIImageJPEGRepresentation(editImage, 1.0);
+        [self.changeAvatarButton setImage:editImage forState:UIControlStateNormal];
     }
+    [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
@@ -290,6 +278,44 @@
 }
 
 #pragma mark gette and setter
+- (UIView *)headerBgView {
+    if (_headerBgView == nil) {
+
+        _headerBgView = [[UIView alloc] init];
+        _headerBgView.backgroundColor = UIColor.grayColor;
+        _headerBgView.alpha = 0.5;
+        _headerBgView.layer.cornerRadius = 8.0;
+        
+        [_headerBgView addSubview:self.changeAvatarButton];
+        [_headerBgView addSubview:self.editButton];
+        [_headerBgView addSubview:self.liveNameTextField];
+
+        
+        [self.changeAvatarButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_headerBgView).offset(8.0);
+            make.left.equalTo(_headerBgView).offset(8.0);
+            make.bottom.equalTo(_headerBgView).offset(-8.0);
+            make.size.equalTo(@84.0);
+        }];
+        
+        [self.liveNameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.changeAvatarButton);
+            make.left.equalTo(self.changeAvatarButton.mas_right).offset(12.0);
+            make.right.equalTo(_headerBgView).offset(-12.0f);
+            make.bottom.equalTo(self.editButton.mas_top);
+        }];
+
+
+        [self.editButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(_headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
+            make.right.equalTo(_headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
+            make.size.equalTo(@16.0);
+        }];
+    
+    }
+    return _headerBgView;
+}
+
 - (UIButton *)closeButton
 {
     if (_closeButton == nil) {
@@ -362,6 +388,8 @@
         _liveNameTextField.backgroundColor = [UIColor clearColor];
         _liveNameTextField.returnKeyType = UIReturnKeyNext;
         _liveNameTextField.font = NFont(16.0f);
+        _liveNameTextField.textColor = TextLabelWhiteColor;
+        _liveNameTextField.tintColor = TextLabelWhiteColor;
     }
     return _liveNameTextField;
 }
