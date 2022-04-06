@@ -235,19 +235,22 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在更新直播..." toView:self.view];
     __weak MBProgressHUD *weakHud = hud;
     
-    ELD_WS
     [EaseHttpManager.sharedInstance modifyLiveroomStatusWithOngoing:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
         [weakHud hideAnimated:YES];
-        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:_liveRoom];
-        publishView.modalPresentationStyle = 0;
-        [self presentViewController:publishView
-                               animated:YES
-                             completion:^{
-            [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
-                if (isFinish)
-                    [weakSelf dismissViewControllerAnimated:false completion:nil];
-            }];
-        }];
+        
+//        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:_liveRoom];
+//        [self presentViewController:publishView
+//                               animated:YES
+//                             completion:^{
+//            [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
+//                if (isFinish)
+//                    [weakSelf dismissViewControllerAnimated:false completion:nil];
+//            }];
+//        }];
+        
+        if (success && self.createSuccessBlock) {
+            self.createSuccessBlock(liveRoom);
+        }
     }];
     
 }

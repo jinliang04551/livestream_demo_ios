@@ -27,13 +27,7 @@
 
 - (void)placeAndLayoutSubviews {
     [self.view addSubview:self.preLivingViewController.view];
-    [self.view addSubview:self.liveViewController.view];
-
     [self.preLivingViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
-    
-    [self.liveViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
 }
@@ -46,17 +40,24 @@
         _preLivingViewController.closeBlock = ^{
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
         };
+        _preLivingViewController.createSuccessBlock = ^(EaseLiveRoom * _Nonnull liveRoom) {
+            [weakSelf goLiveingPageWithLiveRoom:liveRoom];
+        };
     }
     return _preLivingViewController;
 }
 
-- (ELDLiveViewController *)liveViewController {
-    if (_liveViewController == nil) {
-        _liveViewController = [[ELDLiveViewController alloc] init];
-        _liveViewController.view.hidden = YES;
-    }
-    return _liveViewController;
-}
 
+- (void)goLiveingPageWithLiveRoom:(EaseLiveRoom *)liveRoom {
+    ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:liveRoom];
+    [self presentViewController:livingVC
+                           animated:YES
+                         completion:^{
+        [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
+            if (isFinish)
+                [self dismissViewControllerAnimated:false completion:nil];
+        }];
+    }];
+}
 
 @end
