@@ -34,4 +34,10 @@
 
 #define ViewControllerBgBlackColor    UIColor.blackColor
 
+#define GenderMaleBgColor     COLOR_HEX(0xE50037)
+#define GenderFemaleBgColor    COLOR_HEX(0x27AE60)
+#define GenderOtherBgColor    COLOR_HEX(0x8D01E5)
+#define GenderSecretBgColor    COLOR_HEX(0x0085FF)
+
+
 #endif /* EaseLiveColorDefine_h */

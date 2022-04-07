@@ -10,6 +10,8 @@
 #import "EaseLiveRoom.h"
 #import "EaseDefaultDataHelper.h"
 #import <Masonry/Masonry.h>
+#import "ELDGenderView.h"
+
 
 @interface EaseLiveCastView ()
 {
@@ -22,6 +24,8 @@
 //@property (nonatomic, strong) UILabel *numberLabel;
 @property (nonatomic, strong) UILabel *praiseLabel;
 @property (nonatomic, strong) UILabel *giftLabel;
+@property (nonatomic, strong) ELDGenderView *genderView;
+@property (nonatomic, strong) UIImageView *giftIconImageView;
 
 @end
 
@@ -36,38 +40,53 @@ extern NSMutableDictionary *anchorInfoDic;
     if (self) {
         _room = room;
         self.layer.cornerRadius = frame.size.height / 2;
-        [self addSubview:self.backView];
-        [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.bottom.equalTo(self);
-            make.width.equalTo(@120);
-        }];
-        [self addSubview:self.headImageView];
-        [self addSubview:self.nameLabel];
-        if ([_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
-            [self addSubview:self.praiseLabel];
-            [self.praiseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self);
-                make.top.equalTo(self).offset(self.height + 5);
-                make.width.mas_lessThanOrEqualTo(@(self.width / 2));
-                make.height.equalTo(@(self.height / 2));
-            }];
-            [self addSubview:self.giftLabel];
-            [self.giftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.praiseLabel.mas_right).offset(10);
-                make.top.equalTo(self).offset(self.height + 5);
-                make.width.mas_lessThanOrEqualTo(@(self.width / 2));
-                make.height.equalTo(@(self.height / 2));
-            }];
-        }
+        self.backgroundColor = UIColor.yellowColor;
+
+        [self placeAndlayoutSubviews];
         [self _setviewData];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectHeadImage)];
-        self.userInteractionEnabled = YES;
-        [self addGestureRecognizer:tap];
-        //[self addSubview:self.numberLabel];
+        [self addTapGesture];
     }
     return self;
 }
 
+- (void)addTapGesture {
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectHeadImage)];
+    self.userInteractionEnabled = YES;
+    [self addGestureRecognizer:tap];
+}
+
+
+- (void)placeAndlayoutSubviews {
+    [self addSubview:self.backView];
+    [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(self);
+        make.width.equalTo(@120);
+    }];
+    [self addSubview:self.headImageView];
+    [self addSubview:self.nameLabel];
+    [self addSubview:self.genderView];
+    
+    if ([_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
+        [self addSubview:self.praiseLabel];
+        [self.praiseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self);
+            make.top.equalTo(self).offset(self.height + 5);
+            make.width.mas_lessThanOrEqualTo(@(self.width / 2));
+            make.height.equalTo(@(self.height / 2));
+        }];
+        [self addSubview:self.giftLabel];
+        [self.giftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.praiseLabel.mas_right).offset(10);
+            make.top.equalTo(self).offset(self.height + 5);
+            make.width.mas_lessThanOrEqualTo(@(self.width / 2));
+            make.height.equalTo(@(self.height / 2));
+        }];
+    }
+}
+
+
+
+#pragma mark getter and setter
 - (UIView *)backView
 {
     if (_backView == nil) {
@@ -120,7 +139,6 @@ extern NSMutableDictionary *anchorInfoDic;
 {
     if (_giftLabel == nil) {
         _giftLabel = [[UILabel alloc] init];
-        //_giftLabel.frame = CGRectMake(self.frame.origin.x + _praiseLabel.width, self.frame.origin.y + self.height + 5, self.width / 2, self.height / 2);
         _giftLabel.font = [UIFont systemFontOfSize:12.f];
         _giftLabel.textColor = [UIColor colorWithRed:255/255.0 green:199/255.0 blue:0/255.0 alpha:1.0];
         _giftLabel.text = [NSString stringWithFormat:@"礼物:%d",[EaseDefaultDataHelper.shared.totalGifts intValue]];
@@ -128,6 +146,25 @@ extern NSMutableDictionary *anchorInfoDic;
     }
     return _giftLabel;
 }
+
+- (ELDGenderView *)genderView {
+    if (_genderView == nil) {
+        _genderView = [[ELDGenderView alloc] init];
+        _genderView.backgroundColor = UIColor.redColor;
+    }
+    return _genderView;
+}
+
+- (UIImageView *)giftIconImageView {
+    if (_giftIconImageView == nil) {
+        _giftIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gender_male"]];
+        _giftIconImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _giftIconImageView.layer.masksToBounds = YES;
+    }
+    return _giftIconImageView;
+}
+
+
 
 - (void)_setviewData
 {

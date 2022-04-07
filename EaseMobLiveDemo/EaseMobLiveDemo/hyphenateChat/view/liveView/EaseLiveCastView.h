@@ -13,6 +13,7 @@
 @class EaseLiveRoom;
 @interface EaseLiveCastView : UIView
 
+
 - (instancetype)initWithFrame:(CGRect)frame room:(EaseLiveRoom*)room;
 
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;

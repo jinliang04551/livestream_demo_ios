@@ -14,6 +14,7 @@
 #define kLabelDefaultHeight 22.f
 #define kCellSpace 5.f
 
+
 @interface EaseLiveCollectionViewCell ()
 {
     BOOL isBroadcasting; //房间是否正直播
@@ -300,6 +301,8 @@
 
 - (void)setLiveRoom:(EaseLiveRoom*)room liveBehavior:(kTabbarItemBehavior)liveBehavior
 {
+    self.liveStreamerNameLabel.text = room.anchor;
+    
     self.liveroomNameLabel.text = room.title;
     
     if (room.coverPictureUrl.length > 0) {
@@ -332,7 +335,7 @@
     } else {
         _liveImageView.image = [UIImage imageNamed:@"default_back_image"];
     }
-    _liveroomNameLabel.text = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
+    self.watchNumberLabel.text  = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
     
     //判断房间状态
     if (liveBehavior == kTabbarItemTag_Live) {
@@ -353,5 +356,6 @@
         }
     }
 }
+
 
 @end

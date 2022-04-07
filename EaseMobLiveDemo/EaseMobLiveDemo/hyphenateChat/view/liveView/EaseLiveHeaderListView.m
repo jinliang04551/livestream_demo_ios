@@ -163,8 +163,10 @@
         _numberBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
         _numberBtn.titleLabel.textColor = [UIColor whiteColor];
         _numberBtn.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6];
-        //[_numberBtn setTitle:[NSString stringWithFormat:@"%ld人",(long)_room.currentUserCount] forState:UIControlStateNormal];
         _numberBtn.layer.cornerRadius = 15.f;
+        [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
+        [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];
+        [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 0)];
         [_numberBtn addTarget:self action:@selector(memberListAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _numberBtn;

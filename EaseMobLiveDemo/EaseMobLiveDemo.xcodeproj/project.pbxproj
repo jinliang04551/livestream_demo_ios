@@ -233,6 +233,9 @@
 		C08D320427FEE846005AC68E /* gender_other@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31FC27FEE846005AC68E /* gender_other@3x.png */; };
 		C08D320527FEE846005AC68E /* gender_female@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31FD27FEE846005AC68E /* gender_female@2x.png */; };
 		C08D320627FEE846005AC68E /* gender_secret@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31FE27FEE846005AC68E /* gender_secret@3x.png */; };
+		C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D320827FEF062005AC68E /* ELDGenderView.m */; };
+		C08D320C27FF0FCA005AC68E /* liveroom_people_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D320A27FF0FCA005AC68E /* liveroom_people_icon@3x.png */; };
+		C08D320D27FF0FCA005AC68E /* liveroom_people_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D320B27FF0FCA005AC68E /* liveroom_people_icon@2x.png */; };
 		C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */; };
 		C08DFC0F27F16A9500862ADF /* TabbarBg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0D27F16A9400862ADF /* TabbarBg@3x.png */; };
 		C08DFC1027F16A9500862ADF /* TabbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0E27F16A9500862ADF /* TabbarBg@2x.png */; };
@@ -625,6 +628,10 @@
 		C08D31FC27FEE846005AC68E /* gender_other@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gender_other@3x.png"; sourceTree = "<group>"; };
 		C08D31FD27FEE846005AC68E /* gender_female@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gender_female@2x.png"; sourceTree = "<group>"; };
 		C08D31FE27FEE846005AC68E /* gender_secret@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gender_secret@3x.png"; sourceTree = "<group>"; };
+		C08D320727FEF062005AC68E /* ELDGenderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDGenderView.h; sourceTree = "<group>"; };
+		C08D320827FEF062005AC68E /* ELDGenderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDGenderView.m; sourceTree = "<group>"; };
+		C08D320A27FF0FCA005AC68E /* liveroom_people_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liveroom_people_icon@3x.png"; sourceTree = "<group>"; };
+		C08D320B27FF0FCA005AC68E /* liveroom_people_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "liveroom_people_icon@2x.png"; sourceTree = "<group>"; };
 		C08DFC0927F15BDC00862ADF /* ELDLiveListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveListViewController.h; sourceTree = "<group>"; };
 		C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveListViewController.m; sourceTree = "<group>"; };
 		C08DFC0C27F15E8B00862ADF /* EaseLiveDemoDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoDefine.h; sourceTree = "<group>"; };
@@ -802,6 +809,8 @@
 				C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */,
 				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
 				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
+				C08D320727FEF062005AC68E /* ELDGenderView.h */,
+				C08D320827FEF062005AC68E /* ELDGenderView.m */,
 				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
 				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
 				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
@@ -809,7 +818,6 @@
 				3C9E317E260C7B4200CC3E3F /* Live */,
 				3C9E318B260C7B4200CC3E3F /* Model */,
 				3C9E3174260C7B4200CC3E3F /* Publish */,
-				3C9E31EB260C7B4200CC3E3F /* Resource */,
 				C08E8F2527EB37DA00DE47C4 /* Setting */,
 				3C9E3160260C7B4100CC3E3F /* util */,
 				3C9E3197260C7B4200CC3E3F /* view */,
@@ -1308,6 +1316,8 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C08D320B27FF0FCA005AC68E /* liveroom_people_icon@2x.png */,
+				C08D320A27FF0FCA005AC68E /* liveroom_people_icon@3x.png */,
 				C08D31D827FEDDDD005AC68E /* flip_camera_ios@2x.png */,
 				C08D31E127FEDDDD005AC68E /* flip_camera_ios@3x.png */,
 				C08D31E427FEDDDD005AC68E /* live_chatlist_hidden@2x.png */,
@@ -1337,9 +1347,9 @@
 				C08D31CC27FE900D005AC68E /* loading@2x.png */,
 				C08D31CD27FE900D005AC68E /* loading@3x.png */,
 				C08DFC3427F2EFA300862ADF /* live_close@2x.png */,
+				C08DFC3527F2EFA300862ADF /* live_close@3x.png */,
 				C08DFC3F27F3039F00862ADF /* camera_flip@2x.png */,
 				C08DFC4027F3039F00862ADF /* camera_flip@3x.png */,
-				C08DFC3527F2EFA300862ADF /* live_close@3x.png */,
 				C08DFC2927F1D52500862ADF /* goLive_button_bg@2x.png */,
 				C08DFC2827F1D52500862ADF /* goLive_button_bg@3x.png */,
 				C08E8F3527EDD46100DE47C4 /* Channel_normal@2x.png */,
@@ -1378,6 +1388,7 @@
 				C08DFC1127F16F4700862ADF /* ALSAppStyle.h */,
 				C08DFC1227F16F4700862ADF /* ALSAppStyle.m */,
 				3C9E3153260C7B4100CC3E3F /* hyphenateChat */,
+				3C9E31EB260C7B4200CC3E3F /* Resource */,
 				D2F4E0F11D12C8AB00BB7E1A /* LaunchScreen.xib */,
 				D2F4E14D1D12C8AB00BB7E1A /* Images.xcassets */,
 				D2F4E14E1D12C8AB00BB7E1A /* Info.plist */,
@@ -1603,6 +1614,7 @@
 				3C9E32C4260C7B4300CC3E3F /* gift.cake@2x.png in Resources */,
 				C08DFC1827F1AFB200862ADF /* LiveStreamer@3x.png in Resources */,
 				3C9E32D5260C7B4300CC3E3F /* icon-liveList-selected@2x.png in Resources */,
+				C08D320D27FF0FCA005AC68E /* liveroom_people_icon@2x.png in Resources */,
 				3C9E32CA260C7B4300CC3E3F /* avatat_6@2x.png in Resources */,
 				3C9E32E0260C7B4300CC3E3F /* avatat_3@2x.png in Resources */,
 				3C9E32D1260C7B4300CC3E3F /* gift.wishs_come_true@2x.png in Resources */,
@@ -1669,6 +1681,7 @@
 				C08D31F227FEDDDD005AC68E /* live_gift@2x.png in Resources */,
 				3C9E3322260C7B4400CC3E3F /* notalk@3x.png in Resources */,
 				C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */,
+				C08D320C27FF0FCA005AC68E /* liveroom_people_icon@3x.png in Resources */,
 				D2F4E23F1D12C8AB00BB7E1A /* LaunchScreen.xib in Resources */,
 				3C9E3324260C7B4400CC3E3F /* default_anchor_avatar@3x.png in Resources */,
 				3C9E3313260C7B4400CC3E3F /* Logo@3x.png in Resources */,
@@ -1804,6 +1817,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */,
+				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
 				3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */,
 				3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */,
 				3C9E32B1260C7B4300CC3E3F /* EaseBarrageFlyView.m in Sources */,
