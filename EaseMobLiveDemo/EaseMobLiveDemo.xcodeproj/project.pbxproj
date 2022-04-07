@@ -204,6 +204,9 @@
 		3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3358260C800100CC3E3F /* EaseLiveRoom.m */; };
 		3C9E3394260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */; };
 		625C061F1FC1BDF3DB48A4DC /* Pods_EaseMobLiveDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0268EF83D5154996F91646CD /* Pods_EaseMobLiveDemo.framework */; };
+		C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CC27FE900D005AC68E /* loading@2x.png */; };
+		C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CD27FE900D005AC68E /* loading@3x.png */; };
+		C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */; };
 		C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */; };
 		C08DFC0F27F16A9500862ADF /* TabbarBg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0D27F16A9400862ADF /* TabbarBg@3x.png */; };
 		C08DFC1027F16A9500862ADF /* TabbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0E27F16A9500862ADF /* TabbarBg@2x.png */; };
@@ -566,6 +569,10 @@
 		3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+HyphenateChat.m"; sourceTree = "<group>"; };
 		689F2F915A9D8BCBC505C84F /* Pods-EaseMobLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.debug.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		70D4B5700D415AE2BD0470A4 /* Pods-EaseMobLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.release.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C08D31CC27FE900D005AC68E /* loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@2x.png"; sourceTree = "<group>"; };
+		C08D31CD27FE900D005AC68E /* loading@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@3x.png"; sourceTree = "<group>"; };
+		C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLivingCountdownView.h; sourceTree = "<group>"; };
+		C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLivingCountdownView.m; sourceTree = "<group>"; };
 		C08DFC0927F15BDC00862ADF /* ELDLiveListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveListViewController.h; sourceTree = "<group>"; };
 		C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveListViewController.m; sourceTree = "<group>"; };
 		C08DFC0C27F15E8B00862ADF /* EaseLiveDemoDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoDefine.h; sourceTree = "<group>"; };
@@ -743,6 +750,8 @@
 				C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */,
 				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
 				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
+				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
+				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
 				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
 				C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */,
 				3C9E317E260C7B4200CC3E3F /* Live */,
@@ -1247,6 +1256,8 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C08D31CC27FE900D005AC68E /* loading@2x.png */,
+				C08D31CD27FE900D005AC68E /* loading@3x.png */,
 				C08DFC3427F2EFA300862ADF /* live_close@2x.png */,
 				C08DFC3F27F3039F00862ADF /* camera_flip@2x.png */,
 				C08DFC4027F3039F00862ADF /* camera_flip@3x.png */,
@@ -1521,6 +1532,7 @@
 				3C9E330D260C7B4300CC3E3F /* avatat_6@3x.png in Resources */,
 				3C9E32EE260C7B4300CC3E3F /* default_image@2x.png in Resources */,
 				3C9E32F8260C7B4300CC3E3F /* back@3x.png in Resources */,
+				C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */,
 				3C9E331C260C7B4400CC3E3F /* icon-setting-unSelected@3x.png in Resources */,
 				3C9E3318260C7B4400CC3E3F /* giftrecord@3x.png in Resources */,
 				C08DFC3D27F2FD9A00862ADF /* Live_edit_name@2x.png in Resources */,
@@ -1534,6 +1546,7 @@
 				3C9E32D3260C7B4300CC3E3F /* Icons-Plus-white@2x.png in Resources */,
 				C08DFC2F27F2B86B00862ADF /* back_icon_white@3x.png in Resources */,
 				3C9E32C2260C7B4300CC3E3F /* attention@2x.png in Resources */,
+				C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */,
 				3C9E3327260C7B4400CC3E3F /* ic_praise@3x.png in Resources */,
 				C08DFC2E27F2B86B00862ADF /* back_icon_white@2x.png in Resources */,
 				C08E8F3827EDD46100DE47C4 /* strat_live_stream@3x.png in Resources */,
@@ -1763,6 +1776,7 @@
 				C08DFC5C27F58A4D00862ADF /* ELDInfoDetailCell.m in Sources */,
 				D2F4E23E1D12C8AB00BB7E1A /* AppDelegate.m in Sources */,
 				3C9E32A6260C7B4300CC3E3F /* EaseChatCell.m in Sources */,
+				C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */,
 				C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */,
 				3C9E335B260C800100CC3E3F /* EaseBoradCastCard.m in Sources */,
 				3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */,

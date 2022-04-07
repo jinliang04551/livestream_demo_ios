@@ -25,6 +25,8 @@
 @property (nonatomic, strong) NSData *fileData;
 @property (nonatomic, strong) EaseLiveRoom *liveRoom;
 @property (nonatomic, strong) UIImageView *coverImageView;
+@property (nonatomic, strong) UIImageView *loadingImageView;
+@property (nonatomic, assign) CGFloat loadingAngle;
 
 @end
 
@@ -87,13 +89,39 @@
     
 }
 
+#pragma mark private method
+- (void)startAnimation {
+    CGAffineTransform endAngle = CGAffineTransformMakeRotation(self.loadingAngle * (M_PI /180.0f));
+
+    [UIView animateWithDuration:0.05 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        self.loadingImageView.transform = endAngle;
+    } completion:^(BOOL finished) {
+        self.loadingAngle += 15;
+        [self startAnimation];
+    }];
+}
+
+- (void)updateLoginStateWithStart:(BOOL)start{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (start) {
+            [self.goLiveButton setTitle:@"" forState:UIControlStateNormal];
+            self.loadingImageView.hidden = NO;
+            [self startAnimation];
+            
+        }else {
+            [self.goLiveButton setTitle:@"Go LIVE!" forState:UIControlStateNormal];
+            self.loadingImageView.hidden = YES;
+        }
+    });
+}
+
+
 #pragma mark action
 - (void)closeAction {
     if (self.closeBlock) {
         self.closeBlock();
     }
 }
-
 
 
 - (void)changeAvatarAction {
@@ -168,39 +196,44 @@
     _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
 
 //    [self showHudInView:self.view hint:@"上传直播间封面..."];
-    __block typeof(_liveRoom) blockLiveRoom = _liveRoom;
-    
     
     if (_coverImageView.image) {
-        ELD_WS
         [self uploadCoverImageView:^(BOOL success) {
             [self hideHud];
             
             if (success) {
-                [weakSelf createLiveRoom:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-                    if (success) {
-                        [self modifyLiveRoomStatus:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-                        }];
-                    }else{
-                        [weakSelf showHint:@"开始直播失败"];
-                    }
-                }];
+                [self createLiveRoom:self.liveRoom];
             }else{
                 [self showHint:@"设置封面图失败"];
             }
         }];
     }else {
-        [self createLiveRoom:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-            
-            if (success) {
-                [self modifyLiveRoomStatus:blockLiveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
-                }];
-            }else{
-                [self showHint:@"开始直播失败"];
-            }
-        }];
+        [self createLiveRoom:self.liveRoom];
     }
 }
+
+- (void)createLiveRoom:(EaseLiveRoom *)liveRoom {
+    [self updateLoginStateWithStart:YES];
+
+    ELD_WS
+    [self createLiveRoom:liveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+        if (success) {
+            weakSelf.liveRoom = liveRoom;
+            [self modifyLiveRoomStatus:weakSelf.liveRoom completion:^(EaseLiveRoom *liveRoom, BOOL success) {
+                [self updateLoginStateWithStart:NO];
+                if (success) {
+                    weakSelf.liveRoom = liveRoom;
+                    if (self.createSuccessBlock) {
+                        self.createSuccessBlock(weakSelf.liveRoom);
+                    }
+                }else  {
+                    [weakSelf showHint:@"开始直播失败"];
+                }
+            }];
+        }else{
+            [weakSelf showHint:@"开始直播失败"];
+        }
+    }];}
 
 
 #pragma mark - CreateRoom
@@ -232,25 +265,8 @@
 
 - (void)modifyLiveRoomStatus:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion {
     
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在更新直播..." toView:self.view];
-    __weak MBProgressHUD *weakHud = hud;
-    
     [EaseHttpManager.sharedInstance modifyLiveroomStatusWithOngoing:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
-        [weakHud hideAnimated:YES];
-        
-//        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:_liveRoom];
-//        [self presentViewController:publishView
-//                               animated:YES
-//                             completion:^{
-//            [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
-//                if (isFinish)
-//                    [weakSelf dismissViewControllerAnimated:false completion:nil];
-//            }];
-//        }];
-        
-        if (success && self.createSuccessBlock) {
-            self.createSuccessBlock(liveRoom);
-        }
+        completion(room,success);
     }];
     
 }
@@ -419,6 +435,17 @@
     
     return _imagePicker;
 }
+
+- (UIImageView *)loadingImageView {
+    if (_loadingImageView == nil) {
+        _loadingImageView = [[UIImageView alloc] init];
+        _loadingImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _loadingImageView.image = ImageWithName(@"loading");
+        _loadingImageView.hidden = YES;
+    }
+    return _loadingImageView;
+}
+
 
 @end
 

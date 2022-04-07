@@ -426,7 +426,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(fetchLivingStream) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:NO];
 }
 
 - (void)stopTimer {

@@ -9,11 +9,13 @@
 #import "ELDLiveContainerViewController.h"
 #import "ELDLiveViewController.h"
 #import "ELDPreLivingViewController.h"
+#import "ELDLivingCountdownView.h"
 
 @interface ELDLiveContainerViewController ()
 @property (nonatomic, strong) ELDPreLivingViewController *preLivingViewController;
 @property (nonatomic, strong) ELDLiveViewController *liveViewController;
 @property (nonatomic, strong) EaseLiveRoom *liveRoom;
+@property (nonatomic, strong) ELDLivingCountdownView *livingCountDownView;
 
 @end
 
@@ -30,6 +32,13 @@
     [self.preLivingViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.livingCountDownView];
+    [self.livingCountDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
+    }];
+
 }
 
 #pragma mark getter and setter
@@ -49,15 +58,33 @@
 
 
 - (void)goLiveingPageWithLiveRoom:(EaseLiveRoom *)liveRoom {
-    ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:liveRoom];
-    [self presentViewController:livingVC
-                           animated:YES
-                         completion:^{
-        [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
-            if (isFinish)
-                [self dismissViewControllerAnimated:false completion:nil];
-        }];
-    }];
+    self.liveRoom = liveRoom;
+    self.preLivingViewController.view.hidden = YES;
+    [self.livingCountDownView startCountDown];
 }
+
+
+- (ELDLivingCountdownView *)livingCountDownView {
+    if (_livingCountDownView == nil) {
+        _livingCountDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+        ELD_WS
+        _livingCountDownView.CountDownFinishBlock = ^{
+            [weakSelf.livingCountDownView removeFromSuperview];
+            
+            ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:weakSelf.liveRoom];
+            livingVC.modalPresentationStyle =  UIModalPresentationFullScreen;
+            [weakSelf presentViewController:livingVC
+                                   animated:YES
+                                 completion:^{
+                [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
+                    if (isFinish)
+                        [weakSelf dismissViewControllerAnimated:false completion:nil];
+                }];
+            }];
+        };
+    }
+    return _livingCountDownView;
+}
+
 
 @end
