@@ -450,10 +450,14 @@
     EaseLiveRoom *room = [self.dataArray objectAtIndex:indexPath.row];
     if (self.tabBarBehavior == kTabbarItemTag_Live) {
         
-        
-        __weak typeof(self) weakSelf = self;
+        ELD_WS
         [[EaseHttpManager sharedInstance] fetchLiveroomDetail:room.roomId completion:^(EaseLiveRoom *room, BOOL success) {
-            if (success && room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
+            if (!success) {
+                [weakSelf showHint:@"fetchLiveroomDetail failed"];
+                return;
+            }
+            
+            if (room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
                 [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
                     [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -495,7 +499,6 @@
                 [weakSelf presentViewController:alertControler animated:YES completion:nil];
             }
         }];
-        //[self.navigationController pushViewController:view animated:NO];
     }
 }
 
