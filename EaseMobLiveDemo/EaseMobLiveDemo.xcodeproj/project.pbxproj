@@ -204,6 +204,8 @@
 		3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3358260C800100CC3E3F /* EaseLiveRoom.m */; };
 		3C9E3394260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */; };
 		625C061F1FC1BDF3DB48A4DC /* Pods_EaseMobLiveDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0268EF83D5154996F91646CD /* Pods_EaseMobLiveDemo.framework */; };
+		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
+		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CC27FE900D005AC68E /* loading@2x.png */; };
 		C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CD27FE900D005AC68E /* loading@3x.png */; };
 		C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */; };
@@ -598,6 +600,8 @@
 		3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+HyphenateChat.m"; sourceTree = "<group>"; };
 		689F2F915A9D8BCBC505C84F /* Pods-EaseMobLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.debug.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		70D4B5700D415AE2BD0470A4 /* Pods-EaseMobLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.release.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
+		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C08D31CC27FE900D005AC68E /* loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@2x.png"; sourceTree = "<group>"; };
 		C08D31CD27FE900D005AC68E /* loading@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@3x.png"; sourceTree = "<group>"; };
 		C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLivingCountdownView.h; sourceTree = "<group>"; };
@@ -1316,6 +1320,8 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */,
+				C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */,
 				C08D320B27FF0FCA005AC68E /* liveroom_people_icon@2x.png */,
 				C08D320A27FF0FCA005AC68E /* liveroom_people_icon@3x.png */,
 				C08D31D827FEDDDD005AC68E /* flip_camera_ios@2x.png */,
@@ -1534,6 +1540,7 @@
 				3C9E3293260C7B4300CC3E3F /* X.png in Resources */,
 				3C9E32C5260C7B4300CC3E3F /* gift.bouquet@2x.png in Resources */,
 				3C9E32E8260C7B4300CC3E3F /* icon-broadcast@2x.png in Resources */,
+				C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */,
 				3C9E32E7260C7B4300CC3E3F /* ic_praise@2x.png in Resources */,
 				3C9E32EB260C7B4300CC3E3F /* close@2x.png in Resources */,
 				3C9E332C260C7B4400CC3E3F /* iconfont.eot in Resources */,
@@ -1581,6 +1588,7 @@
 				3C9E32EF260C7B4300CC3E3F /* icon-living@2x.png in Resources */,
 				C08DFC4127F3039F00862ADF /* camera_flip@2x.png in Resources */,
 				3C9E3323260C7B4400CC3E3F /* close@3x.png in Resources */,
+				C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */,
 				3C9E331D260C7B4400CC3E3F /* ic_chat@3x.png in Resources */,
 				C08DFC1D27F1B08A00862ADF /* Live_watch@3x.png in Resources */,
 				3C9E331A260C7B4400CC3E3F /* admin@3x.png in Resources */,

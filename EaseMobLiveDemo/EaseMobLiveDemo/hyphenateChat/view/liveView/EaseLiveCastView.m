@@ -18,12 +18,11 @@
     EaseLiveRoom *_room;
 }
 
-@property (nonatomic, strong) UIView *backView;
 @property (nonatomic, strong) UIImageView *headImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 //@property (nonatomic, strong) UILabel *numberLabel;
 @property (nonatomic, strong) UILabel *praiseLabel;
-@property (nonatomic, strong) UILabel *giftLabel;
+@property (nonatomic, strong) UILabel *giftValuesLabel;
 @property (nonatomic, strong) ELDGenderView *genderView;
 @property (nonatomic, strong) UIImageView *giftIconImageView;
 
@@ -40,8 +39,7 @@ extern NSMutableDictionary *anchorInfoDic;
     if (self) {
         _room = room;
         self.layer.cornerRadius = frame.size.height / 2;
-        self.backgroundColor = UIColor.yellowColor;
-
+        
         [self placeAndlayoutSubviews];
         [self _setviewData];
         [self addTapGesture];
@@ -57,46 +55,47 @@ extern NSMutableDictionary *anchorInfoDic;
 
 
 - (void)placeAndlayoutSubviews {
-    [self addSubview:self.backView];
-    [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.bottom.equalTo(self);
-        make.width.equalTo(@120);
-    }];
+
     [self addSubview:self.headImageView];
     [self addSubview:self.nameLabel];
     [self addSubview:self.genderView];
+    [self addSubview:self.giftIconImageView];
+    [self addSubview:self.giftValuesLabel];
+
+    [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self);
+        make.left.equalTo(self).offset(2.0);
+        make.size.equalTo(@32.0);
+    }];
     
-    if ([_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
-        [self addSubview:self.praiseLabel];
-        [self.praiseLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self);
-            make.top.equalTo(self).offset(self.height + 5);
-            make.width.mas_lessThanOrEqualTo(@(self.width / 2));
-            make.height.equalTo(@(self.height / 2));
-        }];
-        [self addSubview:self.giftLabel];
-        [self.giftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.praiseLabel.mas_right).offset(10);
-            make.top.equalTo(self).offset(self.height + 5);
-            make.width.mas_lessThanOrEqualTo(@(self.width / 2));
-            make.height.equalTo(@(self.height / 2));
-        }];
-    }
+    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(4.0);
+        make.left.equalTo(self.headImageView.mas_right).offset(kEaseLiveDemoPadding);
+        make.height.equalTo(@16.0);
+    }];
+
+    [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.nameLabel);
+        make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
+        make.right.equalTo(self).offset(-8.0);
+    }];
+
+    [self.giftIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self).offset(-4.0);
+        make.left.equalTo(self.nameLabel);
+        make.size.equalTo(@10.0);
+    }];
+    
+    [self.giftValuesLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.giftIconImageView.mas_right).offset(5.0);
+        make.centerY.equalTo(self.giftIconImageView);
+        make.right.equalTo(self.genderView);
+    }];
 }
 
 
 
 #pragma mark getter and setter
-- (UIView *)backView
-{
-    if (_backView == nil) {
-        _backView = [[UIView alloc] init];
-        _backView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.25];
-        _backView.layer.cornerRadius = (self.height - 4)/2;
-    }
-    return _backView;
-}
-
 - (UIImageView*)headImageView
 {
     if (_headImageView == nil) {
@@ -115,7 +114,7 @@ extern NSMutableDictionary *anchorInfoDic;
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.frame = CGRectMake(_headImageView.width + 10.f, self.height / 4, self.width - (_headImageView.width + 10.f), self.height/2);
-        _nameLabel.font = [UIFont systemFontOfSize:14.f];
+        _nameLabel.font = BFont(12.0f);
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
     }
@@ -135,29 +134,29 @@ extern NSMutableDictionary *anchorInfoDic;
     return _praiseLabel;
 }
 
-- (UILabel*)giftLabel
+- (UILabel*)giftValuesLabel
 {
-    if (_giftLabel == nil) {
-        _giftLabel = [[UILabel alloc] init];
-        _giftLabel.font = [UIFont systemFontOfSize:12.f];
-        _giftLabel.textColor = [UIColor colorWithRed:255/255.0 green:199/255.0 blue:0/255.0 alpha:1.0];
-        _giftLabel.text = [NSString stringWithFormat:@"礼物:%d",[EaseDefaultDataHelper.shared.totalGifts intValue]];
-        _giftLabel.textAlignment = NSTextAlignmentLeft;
+    if (_giftValuesLabel == nil) {
+        _giftValuesLabel = [[UILabel alloc] init];
+        _giftValuesLabel.font = [UIFont systemFontOfSize:10.0f];
+        _giftValuesLabel.textColor = [UIColor colorWithRed:255/255.0 green:199/255.0 blue:0/255.0 alpha:0.74];
+        _giftValuesLabel.text = [NSString stringWithFormat:@"%d",[EaseDefaultDataHelper.shared.totalGifts intValue]];
+        _giftValuesLabel.textAlignment = NSTextAlignmentLeft;
     }
-    return _giftLabel;
+    return _giftValuesLabel;
 }
 
 - (ELDGenderView *)genderView {
     if (_genderView == nil) {
-        _genderView = [[ELDGenderView alloc] init];
-        _genderView.backgroundColor = UIColor.redColor;
+        _genderView = [[ELDGenderView alloc] initWithFrame:CGRectZero];
+        [_genderView updateWithGender:2 birthday:@""];
     }
     return _genderView;
 }
 
 - (UIImageView *)giftIconImageView {
     if (_giftIconImageView == nil) {
-        _giftIconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gender_male"]];
+        _giftIconImageView = [[UIImageView alloc] initWithImage:ImageWithName(@"receive_gift_icon")];
         _giftIconImageView.contentMode = UIViewContentModeScaleAspectFill;
         _giftIconImageView.layer.masksToBounds = YES;
     }
@@ -227,7 +226,7 @@ extern NSMutableDictionary *anchorInfoDic;
 
 - (void)setNumberOfGift:(NSInteger)number
 {
-    _giftLabel.text = [NSString stringWithFormat:@"礼物：%ld",(long)number];
+    _giftValuesLabel.text = [NSString stringWithFormat:@"礼物：%ld",(long)number];
 }
 
 @end

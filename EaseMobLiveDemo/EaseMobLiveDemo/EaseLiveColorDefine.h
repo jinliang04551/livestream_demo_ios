@@ -34,9 +34,10 @@
 
 #define ViewControllerBgBlackColor    UIColor.blackColor
 
+#define AlphaBlackColor  [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6]
 #define GenderMaleBgColor     COLOR_HEX(0xE50037)
 #define GenderFemaleBgColor    COLOR_HEX(0x27AE60)
-#define GenderOtherBgColor    COLOR_HEX(0x8D01E5)
+#define GenderOtherBgColor     COLOR_HEX(0x8D01E5)
 #define GenderSecretBgColor    COLOR_HEX(0x0085FF)
 
 

@@ -11,6 +11,8 @@
 #import "EaseLiveCastView.h"
 #import "EaseLiveRoom.h"
 
+#define kNumberBtnHeight 36.0f
+
 #define kCollectionIdentifier @"collectionCell"
 
 @interface EaseLiveHeaderCell : UICollectionViewCell
@@ -67,6 +69,19 @@
         _model = model;
         [self addSubview:self.collectionView];
         [self addSubview:self.liveCastView];
+        
+        [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self);
+            make.height.equalTo(@kNumberBtnHeight);
+            make.left.equalTo(self).offset(12.0f);
+        }];
+        
+        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.left.equalTo(self.liveCastView.mas_right).offset(kEaseLiveDemoPadding * 4);
+            make.right.equalTo(self).offset(-12.0);
+        }];
+        
         [self startTimer];
     }
     return self;
@@ -80,6 +95,26 @@
         [self addSubview:self.collectionView];
         [self addSubview:self.liveCastView];
         [self addSubview:self.numberBtn];
+        
+        [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self);
+            make.height.equalTo(@kNumberBtnHeight);
+            make.left.equalTo(self).offset(12.0f);
+        }];
+        
+        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.left.equalTo(self.liveCastView.mas_right).offset(kEaseLiveDemoPadding * 5);
+            make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
+        }];
+
+        [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.height.equalTo(@kNumberBtnHeight);
+            make.width.greaterThanOrEqualTo(@70.0);
+            make.right.equalTo(self).offset(-12.0);
+        }];
+        
         [self startTimer];
     }
     return self;
@@ -137,6 +172,8 @@
         _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
         _collectionView.pagingEnabled = NO;
         _collectionView.userInteractionEnabled = YES;
+        
+        _collectionView.backgroundColor = UIColor.blueColor;
     }
     return _collectionView;
 }
@@ -145,10 +182,13 @@
 - (EaseLiveCastView*)liveCastView
 {
     if (_liveCastView == nil) {
-        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, 40.f) room:_room];
+        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, 36.0) room:_room];
+        _liveCastView.backgroundColor = AlphaBlackColor;
+
     }
     return _liveCastView;
 }
+
 
 - (void)setLiveCastDelegate
 {
@@ -160,14 +200,15 @@
     if (_numberBtn == nil) {
         _numberBtn = [[UIButton alloc] init];
         _numberBtn.frame = CGRectMake(self.frame.size.width - 60.f, 5.f, 50.f, 30.f);
-        _numberBtn.titleLabel.font = [UIFont systemFontOfSize:14.f];
+        _numberBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
         _numberBtn.titleLabel.textColor = [UIColor whiteColor];
-        _numberBtn.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6];
-        _numberBtn.layer.cornerRadius = 15.f;
+        _numberBtn.backgroundColor = AlphaBlackColor;
+        _numberBtn.layer.cornerRadius = kNumberBtnHeight *0.5;
         [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
         [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];
         [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 0)];
         [_numberBtn addTarget:self action:@selector(memberListAction) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return _numberBtn;
 }
@@ -322,3 +363,7 @@
 }
 
 @end
+
+#undef kNumberBtnHeight
+
+

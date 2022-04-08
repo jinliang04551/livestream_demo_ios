@@ -468,6 +468,8 @@
         _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) room:_room];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
+        _headerListView.backgroundColor = UIColor.purpleColor;
+        
     }
     return _headerListView;
 }

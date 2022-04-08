@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly)UILabel *ageLabel;
 @property (nonatomic, strong, readonly)UIImageView *genderImageView;
 
+- (void)updateWithGender:(NSInteger)gender birthday:(NSString *)birthday;
 
 @end
 

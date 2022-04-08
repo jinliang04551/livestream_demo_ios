@@ -32,6 +32,30 @@
     }];
 }
 
+- (void)updateWithGender:(NSInteger)gender birthday:(NSString *)birthday {
+    if (birthday.length > 0) {
+        
+        
+    }
+    
+    if (gender == 1) {
+        [self.genderImageView setImage:ImageWithName(@"gender_male")];
+        self.bgView.backgroundColor =  GenderMaleBgColor;
+    }else if (gender == 2){
+        [self.genderImageView setImage:ImageWithName(@"gender_female")];
+        self.bgView.backgroundColor =  GenderFemaleBgColor;
+    }else if (gender == 3){
+        [self.genderImageView setImage:ImageWithName(@"gender_other")];
+        self.bgView.backgroundColor =  GenderOtherBgColor;
+    }else if (gender == 4){
+        [self.genderImageView setImage:ImageWithName(@"gender_secret")];
+        self.bgView.backgroundColor =  GenderSecretBgColor;
+    }else {
+        [self.genderImageView setImage:ImageWithName(@"gender_secret")];
+        self.bgView.backgroundColor =  GenderSecretBgColor;
+    }
+     
+}
 
 #pragma mark getter and setter
 - (UILabel*)ageLabel
@@ -43,7 +67,7 @@
         _ageLabel.textAlignment = NSTextAlignmentLeft;
         _ageLabel.shadowColor = [UIColor blackColor];
         _ageLabel.shadowOffset = CGSizeMake(1, 1);
-        _ageLabel.text = @"20";
+        _ageLabel.text = @"21";
     }
     return _ageLabel;
 }
@@ -54,6 +78,7 @@
         _genderImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gender_male"]];
         _genderImageView.contentMode = UIViewContentModeScaleAspectFill;
         _genderImageView.layer.masksToBounds = YES;
+
     }
     return _genderImageView;
 }
@@ -62,6 +87,8 @@
     if (_bgView == nil) {
         _bgView = [[UIView alloc] init];
         _bgView.layer.cornerRadius = 8.0;
+        _bgView.alpha = 1.0;
+        _bgView.backgroundColor = GenderSecretBgColor;
         
         [_bgView addSubview:self.genderImageView];
         [_bgView addSubview:self.ageLabel];
@@ -74,6 +101,7 @@
         [self.ageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_bgView);
             make.left.equalTo(self.genderImageView.mas_right).offset(3.0);
+            make.right.equalTo(_bgView).offset(-2.0);
         }];
     }
     return _bgView;
