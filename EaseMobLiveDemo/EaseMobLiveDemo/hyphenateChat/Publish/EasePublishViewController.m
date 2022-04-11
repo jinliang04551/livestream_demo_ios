@@ -194,7 +194,7 @@
 }
 - (void)_setupAgoreKit
 {
-    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:@"b79a23d7b1074ed9b0c756c63fd4fa81" delegate:self];
+    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
     [self.agoraKit setClientRole:AgoraClientRoleBroadcaster options:nil];
     [self.agoraKit enableVideo];

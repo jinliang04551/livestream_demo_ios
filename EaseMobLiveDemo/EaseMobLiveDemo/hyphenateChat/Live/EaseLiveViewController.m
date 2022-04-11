@@ -8,7 +8,6 @@
 #import "EaseLiveViewController.h"
 
 #import "EaseChatView.h"
-#import "AppDelegate.h"
 #import "EaseHeartFlyView.h"
 #import "EaseGiftFlyView.h"
 #import "EaseBarrageFlyView.h"
@@ -34,6 +33,8 @@
 #import <PLPlayerKit/PLPlayerKit.h>
 
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
+
+#import "ELDLiveroomMembersContainerViewController.h"
 
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
@@ -63,7 +64,7 @@
 
 /** gifimage */
 @property(nonatomic,strong) UIImageView *gifImageView;
-@property(nonatomic,strong) UIImageView *backImageView;
+@property(nonatomic,strong) UIImageView *backgroudImageView;
 
 @property (nonatomic, strong) PLPlayer  *player;
 
@@ -90,18 +91,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view insertSubview:self.backImageView atIndex:0];
+    [self.view insertSubview:self.backgroudImageView atIndex:0];
     
     [self.view addSubview:self.liveView];
     [self.liveView addSubview:self.headerListView];
     [self.liveView addSubview:self.chatview];
-    //[self.liveView addSubview:self.roomNameLabel];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     //[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
 
+    [self joinChatroom];
+    
+    [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
+    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
+    
+    [self setupForDismissKeyboard];
+    
+    [self _setupAgoreKit];
+}
+
+- (void)joinChatroom {
     __weak EaseLiveViewController *weakSelf = self;
     [self.chatview joinChatroomWithIsCount:YES
                                 completion:^(BOOL success) {
@@ -118,12 +130,7 @@
                                     }
                                 }];
     
-    [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
-    [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
-    
-    [self setupForDismissKeyboard];
-    
-    [self _setupAgoreKit];
+
 }
 
 - (void)viewWillLayoutSubviews
@@ -185,7 +192,7 @@
 
 - (void)_setupAgoreKit
 {
-    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:@"b79a23d7b1074ed9b0c756c63fd4fa81" delegate:self];
+    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
     AgoraClientRoleOptions *options = [[AgoraClientRoleOptions alloc]init];
     options.audienceLatencyLevel = AgoraAudienceLatencyLevelLowLatency;
@@ -224,10 +231,10 @@
 {
     if (state == AgoraVideoRemoteStateFailed || state == AgoraVideoRemoteStateStopped) {
         [self.agoraRemoteVideoView removeFromSuperview];
-        [self.view insertSubview:self.backImageView atIndex:0];
+        [self.view insertSubview:self.backgroudImageView atIndex:0];
     } else {
         [self.view insertSubview:self.agoraRemoteVideoView atIndex:0];
-        [self.backImageView removeFromSuperview];
+        [self.backgroudImageView removeFromSuperview];
     }
     AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
     videoCanvas.uid = uid;
@@ -260,7 +267,7 @@
     self.avLayer.backgroundColor = [UIColor clearColor].CGColor;
     //设置播放窗口和当前视图之间的比例显示内容
     self.avLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    [self.backImageView removeFromSuperview];
+    [self.backgroudImageView removeFromSuperview];
     //添加播放视图到self.view
     [self.view.layer insertSublayer:self.avLayer atIndex:0];
     //设置播放的默认音量值
@@ -326,12 +333,12 @@
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在连接..." toView:self.view];
         [hud hideAnimated:YES afterDelay:1.5];
         [self.agoraRemoteVideoView removeFromSuperview];
-        [self.view insertSubview:self.backImageView atIndex:0];
+        [self.view insertSubview:self.backgroudImageView atIndex:0];
     }
     if (state == AgoraConnectionStateFailed) {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"连接失败,请退出重进直播间。" toView:self.view];
         [self.agoraRemoteVideoView removeFromSuperview];
-        [self.view insertSubview:self.backImageView atIndex:0];
+        [self.view insertSubview:self.backgroudImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:2.0];
         if (_clock >= 5)
             return;
@@ -394,7 +401,7 @@
 {
     NSLog(@"status       %ld",(long)state);
     if (state == PLPlayerStatusPlaying) {
-        [self.backImageView removeFromSuperview];
+        [self.backgroudImageView removeFromSuperview];
         if (_clock > 0) {
             _clock = 0;
             [self stopTimer];
@@ -406,7 +413,7 @@
     } else if (state == PLPlayerStatusError) {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"播放出错,请退出重进直播间。" toView:self.view];
         [self.player.playerView removeFromSuperview];
-        [self.view insertSubview:self.backImageView atIndex:0];
+        [self.view insertSubview:self.backgroudImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:1.5];
     }
 }
@@ -416,7 +423,7 @@
     NSString *info = error.userInfo[@"NSLocalizedDescription"];
     MBProgressHUD *hud = [MBProgressHUD showMessag:info toView:self.view];
     [self.player.playerView removeFromSuperview];
-    [self.view insertSubview:self.backImageView atIndex:0];
+    [self.view insertSubview:self.backgroudImageView atIndex:0];
     [hud hideAnimated:YES afterDelay:2.0];
     if (_clock >= 5)
         return;
@@ -436,6 +443,10 @@
     }
 }
 
+- (void)updateCountLabel {
+    
+}
+
 #pragma mark - getter
 
 - (UIWindow*)window
@@ -446,11 +457,11 @@
     return _window;
 }
 
-- (UIImageView*)backImageView
+- (UIImageView*)backgroudImageView
 {
-    if (_backImageView == nil) {
-        _backImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
-        _backImageView.contentMode = UIViewContentModeScaleAspectFill;
+    if (_backgroudImageView == nil) {
+        _backgroudImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
+        _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
         UIImage *image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:_room.coverPictureUrl];
         __weak typeof(self) weakSelf = self;
         if (!image) {
@@ -460,16 +471,16 @@
                                                                    completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                                                                        if (image) {
                                                                            [[SDImageCache sharedImageCache] storeImage:image forKey:_room.coverPictureUrl toDisk:NO completion:^{
-                                                                               weakSelf.backImageView.image = image;
+                                                                               weakSelf.backgroudImageView.image = image;
                                                                            }];
                                                                        } else {
-                                                                           weakSelf.backImageView.image = [UIImage imageNamed:@"default_back_image"];
+                                                                           weakSelf.backgroudImageView.image = [UIImage imageNamed:@"default_back_image"];
                                                                        }
                                                                    }];
            }
-        _backImageView.image = image;
+        _backgroudImageView.image = image;
     }
-    return _backImageView;
+    return _backgroudImageView;
 }
 
 - (UIView*)liveView
@@ -564,11 +575,14 @@
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList
 {
     [self.view endEditing:YES];
-    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
-                                                                 isOwner:isOwner
-                                                                currentMemberList:currentMemberList];
-    adminView.delegate = self;
-    [adminView showFromParentView:self.view];
+//    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
+//                                                                 isOwner:isOwner
+//                                                                currentMemberList:currentMemberList];
+//    adminView.delegate = self;
+//    [adminView showFromParentView:self.view];
+    
+    ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_chatroom];
+    [vc showFromParentView:self.view];
 }
 
 #pragma  mark - TapBackgroundViewDelegate
@@ -685,8 +699,6 @@ extern NSMutableDictionary *anchorInfoDic;
     keyBoardView.delegate = self;
     [keyBoardView showFromParentView:self.view];
 }
-
-#pragma mark - EaseProfileLiveViewDelegate
 
 
 #pragma mark - AgoraChatroomManagerDelegate

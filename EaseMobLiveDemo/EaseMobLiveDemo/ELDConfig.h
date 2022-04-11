@@ -12,4 +12,6 @@
 #define Appkey @"easemob-demo#chatdemoui"
 #define AppServerHost @"https://a1.easemob.com"
 
+#define AppId @"b79a23d7b1074ed9b0c756c63fd4fa81"
+
 #endif /* ELDConfig_h */

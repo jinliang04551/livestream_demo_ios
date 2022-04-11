@@ -475,6 +475,7 @@ extern BOOL isAllTheSilence;
     }
 }
 
+
 extern NSMutableDictionary *audienceNickname;
 extern NSMutableDictionary*anchorInfoDic;
 extern NSArray<NSString*> *nickNameArray;

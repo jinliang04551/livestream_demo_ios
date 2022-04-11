@@ -37,6 +37,9 @@
 
 #import <CallKit/CXCallObserver.h>
 
+#import "ELDLiveroomMembersContainerViewController.h"
+
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
@@ -87,6 +90,10 @@
 
 @property (nonatomic, strong) CTCallCenter *callCenter;
 
+@property (nonatomic, strong) AgoraChatroom *chatroom;
+
+
+
 @end
 
 @implementation ELDLiveViewController
@@ -95,6 +102,9 @@
 {
     self = [super init];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+
+        
         _room = room;
         _customMsgHelper = [[EaseCustomMessageHelper alloc]initWithCustomMsgImp:self chatId:_room.chatroomId];
         _praiseNum = [EaseDefaultDataHelper.shared.praiseStatisticstCount intValue];
@@ -113,19 +123,14 @@
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self setupForDismissKeyboard];
     
     [self.view addSubview:self.headerListView];
     [self.view addSubview:self.chatview];
-    [self.chatview joinChatroomWithIsCount:NO
-                                completion:^(BOOL success) {
-                                    if (success) {
-                                        [self.headerListView loadHeaderListWithChatroomId:_room.chatroomId];
-                                    }
-                                }];
-    //[self.view addSubview:self.roomNameLabel];
+    
+    [self joinChatroom];
+    
     [self.view layoutSubviews];
     [self setBtnStateInSel:0];
     [self _setupAgoreKit];
@@ -137,6 +142,24 @@
 //        [self actionPushStream];
 //        [self monitorCall];
 //    }
+}
+
+- (void)joinChatroom {
+    ELD_WS
+    [self.chatview joinChatroomWithIsCount:YES
+                                completion:^(BOOL success) {
+                                    if (success) {
+                                        [weakSelf.headerListView loadHeaderListWithChatroomId:[_room.chatroomId copy]];
+                                        _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
+                                        [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
+                                                                                     completion:^(EaseLiveRoom *room, BOOL success) {
+                                                                                     }];
+                                    } else {
+                                        [weakSelf showHint:@"加入聊天室失败"];
+                                    }
+                                }];
+    
+
 }
 
 - (void)dealloc
@@ -193,7 +216,7 @@
 }
 - (void)_setupAgoreKit
 {
-    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:@"b79a23d7b1074ed9b0c756c63fd4fa81" delegate:self];
+    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];
     [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
     [self.agoraKit setClientRole:AgoraClientRoleBroadcaster options:nil];
     [self.agoraKit enableVideo];
@@ -468,8 +491,6 @@
         _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) room:_room];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
-        _headerListView.backgroundColor = UIColor.purpleColor;
-        
     }
     return _headerListView;
 }
@@ -716,12 +737,19 @@
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList
 {
     [self.view endEditing:YES];
-    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
-                                                                 isOwner:isOwner
-                                                                currentMemberList:currentMemberList];
-    adminView.delegate = self;
-    [adminView showFromParentView:self.view];
+//    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
+//                                                                 isOwner:isOwner
+//                                                                currentMemberList:currentMemberList];
+//    adminView.delegate = self;
+//    [adminView showFromParentView:self.view];
+
+    
+    ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_room];
+    
+    [vc showFromParentView:self.view];
 }
+
+
 
 #pragma mark - UITextViewDelegate
 

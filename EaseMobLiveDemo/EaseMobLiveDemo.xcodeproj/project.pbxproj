@@ -206,6 +206,22 @@
 		625C061F1FC1BDF3DB48A4DC /* Pods_EaseMobLiveDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0268EF83D5154996F91646CD /* Pods_EaseMobLiveDemo.framework */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
+		C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */; };
+		C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */; };
+		C0602E8028001EF600D39575 /* MISScrollPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6E28001EF600D39575 /* MISScrollPageController.m */; };
+		C0602E8128001EF600D39575 /* MISScrollPageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7228001EF600D39575 /* MISScrollPageStyle.m */; };
+		C0602E8228001EF600D39575 /* MISScrollPageSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7428001EF600D39575 /* MISScrollPageSegmentView.m */; };
+		C0602E8328001EF600D39575 /* UIView+MISHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7728001EF600D39575 /* UIView+MISHelper.m */; };
+		C0602E8428001EF600D39575 /* MISScrollPageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7928001EF600D39575 /* MISScrollPageContentView.m */; };
+		C0602E8528001EF600D39575 /* MISScrollPageSegmentTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7A28001EF600D39575 /* MISScrollPageSegmentTitleView.m */; };
+		C0602E8628001EF600D39575 /* MISScrollPageControllerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7C28001EF600D39575 /* MISScrollPageControllerDelegate.m */; };
+		C0602E8728001EF600D39575 /* UIView+MISRedPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7D28001EF600D39575 /* UIView+MISRedPoint.m */; };
+		C0602E8A2800246900D39575 /* ELDLiveroomMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E892800246900D39575 /* ELDLiveroomMembersViewController.m */; };
+		C0602E8D280029F200D39575 /* member_bg_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E8B280029F200D39575 /* member_bg_top@2x.png */; };
+		C0602E8E280029F200D39575 /* member_bg_top@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E8C280029F200D39575 /* member_bg_top@3x.png */; };
+		C0602E9128003C6D00D39575 /* ELDLiveroomMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E9028003C6D00D39575 /* ELDLiveroomMemberCell.m */; };
+		C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E96280046B700D39575 /* ELDContainerTableViewController.m */; };
+		C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E97280046B700D39575 /* ELDBaseTableViewController.m */; };
 		C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CC27FE900D005AC68E /* loading@2x.png */; };
 		C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CD27FE900D005AC68E /* loading@3x.png */; };
 		C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */; };
@@ -602,6 +618,37 @@
 		70D4B5700D415AE2BD0470A4 /* Pods-EaseMobLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.release.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
+		C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersContainerViewController.h; sourceTree = "<group>"; };
+		C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveroomMembersContainerViewController.m; sourceTree = "<group>"; };
+		C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageCollectionView.m; sourceTree = "<group>"; };
+		C0602E6D28001EF600D39575 /* UIView+MISHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MISHelper.h"; sourceTree = "<group>"; };
+		C0602E6E28001EF600D39575 /* MISScrollPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageController.m; sourceTree = "<group>"; };
+		C0602E6F28001EF600D39575 /* MISScrollPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPage.h; sourceTree = "<group>"; };
+		C0602E7028001EF600D39575 /* MISScrollPageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageContentView.h; sourceTree = "<group>"; };
+		C0602E7128001EF600D39575 /* MISScrollPageControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageControllerDelegate.h; sourceTree = "<group>"; };
+		C0602E7228001EF600D39575 /* MISScrollPageStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageStyle.m; sourceTree = "<group>"; };
+		C0602E7328001EF600D39575 /* MISScrollPageSegmentTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageSegmentTitleView.h; sourceTree = "<group>"; };
+		C0602E7428001EF600D39575 /* MISScrollPageSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageSegmentView.m; sourceTree = "<group>"; };
+		C0602E7528001EF600D39575 /* UIView+MISRedPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MISRedPoint.h"; sourceTree = "<group>"; };
+		C0602E7628001EF600D39575 /* MISScrollPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageController.h; sourceTree = "<group>"; };
+		C0602E7728001EF600D39575 /* UIView+MISHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MISHelper.m"; sourceTree = "<group>"; };
+		C0602E7828001EF600D39575 /* MISScrollPageCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageCollectionView.h; sourceTree = "<group>"; };
+		C0602E7928001EF600D39575 /* MISScrollPageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageContentView.m; sourceTree = "<group>"; };
+		C0602E7A28001EF600D39575 /* MISScrollPageSegmentTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageSegmentTitleView.m; sourceTree = "<group>"; };
+		C0602E7B28001EF600D39575 /* MISScrollPageStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageStyle.h; sourceTree = "<group>"; };
+		C0602E7C28001EF600D39575 /* MISScrollPageControllerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageControllerDelegate.m; sourceTree = "<group>"; };
+		C0602E7D28001EF600D39575 /* UIView+MISRedPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MISRedPoint.m"; sourceTree = "<group>"; };
+		C0602E7E28001EF600D39575 /* MISScrollPageSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MISScrollPageSegmentView.h; sourceTree = "<group>"; };
+		C0602E882800246900D39575 /* ELDLiveroomMembersViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersViewController.h; sourceTree = "<group>"; };
+		C0602E892800246900D39575 /* ELDLiveroomMembersViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveroomMembersViewController.m; sourceTree = "<group>"; };
+		C0602E8B280029F200D39575 /* member_bg_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "member_bg_top@2x.png"; sourceTree = "<group>"; };
+		C0602E8C280029F200D39575 /* member_bg_top@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "member_bg_top@3x.png"; sourceTree = "<group>"; };
+		C0602E8F28003C6D00D39575 /* ELDLiveroomMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMemberCell.h; sourceTree = "<group>"; };
+		C0602E9028003C6D00D39575 /* ELDLiveroomMemberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveroomMemberCell.m; sourceTree = "<group>"; };
+		C0602E94280046B700D39575 /* ELDContainerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDContainerTableViewController.h; sourceTree = "<group>"; };
+		C0602E95280046B700D39575 /* ELDBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDBaseTableViewController.h; sourceTree = "<group>"; };
+		C0602E96280046B700D39575 /* ELDContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDContainerTableViewController.m; sourceTree = "<group>"; };
+		C0602E97280046B700D39575 /* ELDBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDBaseTableViewController.m; sourceTree = "<group>"; };
 		C08D31CC27FE900D005AC68E /* loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@2x.png"; sourceTree = "<group>"; };
 		C08D31CD27FE900D005AC68E /* loading@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@3x.png"; sourceTree = "<group>"; };
 		C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLivingCountdownView.h; sourceTree = "<group>"; };
@@ -912,6 +959,14 @@
 				3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */,
 				3C9E3186260C7B4200CC3E3F /* EaseSettingsViewController.h */,
 				3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */,
+				C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */,
+				C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */,
+				C0602E882800246900D39575 /* ELDLiveroomMembersViewController.h */,
+				C0602E892800246900D39575 /* ELDLiveroomMembersViewController.m */,
+				C0602E95280046B700D39575 /* ELDBaseTableViewController.h */,
+				C0602E97280046B700D39575 /* ELDBaseTableViewController.m */,
+				C0602E94280046B700D39575 /* ELDContainerTableViewController.h */,
+				C0602E96280046B700D39575 /* ELDContainerTableViewController.m */,
 			);
 			path = Live;
 			sourceTree = "<group>";
@@ -1053,6 +1108,7 @@
 		3C9E31DF260C7B4200CC3E3F /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				C0602E6A28001EF600D39575 /* MISScrollPage */,
 				C08DFC8827F84D6F00862ADF /* Reachability.h */,
 				C08DFC8927F84D6F00862ADF /* Reachability.m */,
 				3C9E31E0260C7B4200CC3E3F /* MBProgressHUD */,
@@ -1261,6 +1317,40 @@
 			path = iconfront;
 			sourceTree = "<group>";
 		};
+		C0602E6A28001EF600D39575 /* MISScrollPage */ = {
+			isa = PBXGroup;
+			children = (
+				C0602E6B28001EF600D39575 /* Classes */,
+			);
+			path = MISScrollPage;
+			sourceTree = "<group>";
+		};
+		C0602E6B28001EF600D39575 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */,
+				C0602E6D28001EF600D39575 /* UIView+MISHelper.h */,
+				C0602E6E28001EF600D39575 /* MISScrollPageController.m */,
+				C0602E6F28001EF600D39575 /* MISScrollPage.h */,
+				C0602E7028001EF600D39575 /* MISScrollPageContentView.h */,
+				C0602E7128001EF600D39575 /* MISScrollPageControllerDelegate.h */,
+				C0602E7228001EF600D39575 /* MISScrollPageStyle.m */,
+				C0602E7328001EF600D39575 /* MISScrollPageSegmentTitleView.h */,
+				C0602E7428001EF600D39575 /* MISScrollPageSegmentView.m */,
+				C0602E7528001EF600D39575 /* UIView+MISRedPoint.h */,
+				C0602E7628001EF600D39575 /* MISScrollPageController.h */,
+				C0602E7728001EF600D39575 /* UIView+MISHelper.m */,
+				C0602E7828001EF600D39575 /* MISScrollPageCollectionView.h */,
+				C0602E7928001EF600D39575 /* MISScrollPageContentView.m */,
+				C0602E7A28001EF600D39575 /* MISScrollPageSegmentTitleView.m */,
+				C0602E7B28001EF600D39575 /* MISScrollPageStyle.h */,
+				C0602E7C28001EF600D39575 /* MISScrollPageControllerDelegate.m */,
+				C0602E7D28001EF600D39575 /* UIView+MISRedPoint.m */,
+				C0602E7E28001EF600D39575 /* MISScrollPageSegmentView.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		C08DFC2127F1CC4300862ADF /* Custom */ = {
 			isa = PBXGroup;
 			children = (
@@ -1300,6 +1390,8 @@
 				C08DFC5827F58A4D00862ADF /* ELDCustomCell.m */,
 				C08DFC5927F58A4D00862ADF /* ELDInfoDetailCell.h */,
 				C08DFC5A27F58A4D00862ADF /* ELDInfoDetailCell.m */,
+				C0602E8F28003C6D00D39575 /* ELDLiveroomMemberCell.h */,
+				C0602E9028003C6D00D39575 /* ELDLiveroomMemberCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1320,6 +1412,8 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C0602E8B280029F200D39575 /* member_bg_top@2x.png */,
+				C0602E8C280029F200D39575 /* member_bg_top@3x.png */,
 				C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */,
 				C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */,
 				C08D320B27FF0FCA005AC68E /* liveroom_people_icon@2x.png */,
@@ -1579,6 +1673,7 @@
 				3C9E32F1260C7B4300CC3E3F /* input_bar_1_icon_keyboard@2x.png in Resources */,
 				3C9E3315260C7B4400CC3E3F /* avatat_3@3x.png in Resources */,
 				3C9E32C1260C7B4300CC3E3F /* ic_praised@2x.png in Resources */,
+				C0602E8E280029F200D39575 /* member_bg_top@3x.png in Resources */,
 				3C9E32BC260C7B4300CC3E3F /* barrage@2x.png in Resources */,
 				3C9E3301260C7B4300CC3E3F /* icon-liveList-selected@3x.png in Resources */,
 				C08E8F3B27EDD46100DE47C4 /* Channel_normal@2x.png in Resources */,
@@ -1701,6 +1796,7 @@
 				3C9E32C6260C7B4300CC3E3F /* avatat_2@2x.png in Resources */,
 				3C9E32D4260C7B4300CC3E3F /* ic_exit@2x.png in Resources */,
 				F5D6F695277B1456000F3FD2 /* interactionBroadCast@3x.png in Resources */,
+				C0602E8D280029F200D39575 /* member_bg_top@2x.png in Resources */,
 				3C9E32CE260C7B4300CC3E3F /* default_back_image@2x.png in Resources */,
 				3C9E32D6260C7B4300CC3E3F /* like@2x.png in Resources */,
 				C08D31F527FEDDDD005AC68E /* live_chatlist_hidden@3x.png in Resources */,
@@ -1824,6 +1920,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0602E8428001EF600D39575 /* MISScrollPageContentView.m in Sources */,
 				3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */,
 				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
 				3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */,
@@ -1848,13 +1945,17 @@
 				3C9E32AB260C7B4300CC3E3F /* EaseAnchorCardView.m in Sources */,
 				3C9E3285260C7B4300CC3E3F /* EaseSettingsViewController.m in Sources */,
 				3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */,
+				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
 				F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */,
+				C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */,
 				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
 				3C9E329B260C7B4300CC3E3F /* JPGiftOperation.m in Sources */,
 				3C9E3295260C7B4300CC3E3F /* JPGiftCountLabel.m in Sources */,
 				3C9E32A4260C7B4300CC3E3F /* EaseGiftListView.m in Sources */,
 				3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */,
+				C0602E8228001EF600D39575 /* MISScrollPageSegmentView.m in Sources */,
+				C0602E8128001EF600D39575 /* MISScrollPageStyle.m in Sources */,
 				3C9E329D260C7B4300CC3E3F /* EaseCustomKeyBoardView.m in Sources */,
 				C08DFC1327F16F4700862ADF /* ALSAppStyle.m in Sources */,
 				3C9E32AF260C7B4300CC3E3F /* EaseGiftFlyView.m in Sources */,
@@ -1878,23 +1979,29 @@
 				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */,
 				3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */,
+				C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */,
 				3C9E3274260C7B4300CC3E3F /* EaseHttpManager.m in Sources */,
 				3C9E32B2260C7B4300CC3E3F /* MBProgressHUD+Add.m in Sources */,
 				3C9E32AD260C7B4300CC3E3F /* EaseCustomSwitch.m in Sources */,
 				3C9E32AE260C7B4300CC3E3F /* EaseProfileLiveView.m in Sources */,
 				3C9E3291260C7B4300CC3E3F /* EaseLiveGiftView.m in Sources */,
+				C0602E8028001EF600D39575 /* MISScrollPageController.m in Sources */,
 				3C9E327B260C7B4300CC3E3F /* EaseSignUpViewController.m in Sources */,
 				3C9E3297260C7B4300CC3E3F /* JPGiftShowView.m in Sources */,
 				3C9E3272260C7B4300CC3E3F /* NSDictionary+SafeValue.m in Sources */,
 				3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */,
 				3C9E3273260C7B4300CC3E3F /* UIImage+Color.m in Sources */,
+				C0602E8628001EF600D39575 /* MISScrollPageControllerDelegate.m in Sources */,
+				C0602E9128003C6D00D39575 /* ELDLiveroomMemberCell.m in Sources */,
 				3C9E32B4260C7B4300CC3E3F /* SRRefreshView.m in Sources */,
 				C08DFC7627F5B20E00862ADF /* ELDTitleDetailCell.m in Sources */,
 				3C9E32A7260C7B4300CC3E3F /* EaseLiveCollectionViewCell.m in Sources */,
 				3C9E3275260C7B4300CC3E3F /* EMEmoticonGroup.m in Sources */,
+				C0602E8328001EF600D39575 /* UIView+MISHelper.m in Sources */,
 				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
 				3C9E32A5260C7B4300CC3E3F /* EaseGiftCell.m in Sources */,
 				C08E8F4327EDD9CA00DE47C4 /* ELDLoadingView.m in Sources */,
+				C0602E8728001EF600D39575 /* UIView+MISRedPoint.m in Sources */,
 				3C9E3270260C7B4300CC3E3F /* UIView+Position.m in Sources */,
 				3C9E3296260C7B4300CC3E3F /* JPGiftShowManager.m in Sources */,
 				3C9E32B5260C7B4300CC3E3F /* SRSlimeView.m in Sources */,
@@ -1904,6 +2011,7 @@
 				3C9E32A6260C7B4300CC3E3F /* EaseChatCell.m in Sources */,
 				C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */,
 				C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */,
+				C0602E8A2800246900D39575 /* ELDLiveroomMembersViewController.m in Sources */,
 				3C9E335B260C800100CC3E3F /* EaseBoradCastCard.m in Sources */,
 				3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */,
 				3C9E32B0260C7B4300CC3E3F /* EaseHeartFlyView.m in Sources */,
@@ -1911,6 +2019,8 @@
 				C08DFC8A27F84D6F00862ADF /* Reachability.m in Sources */,
 				3C9E32AC260C7B4300CC3E3F /* EaseInputTextView.m in Sources */,
 				3C9E3286260C7B4300CC3E3F /* EaseBroadCastTabViewController.m in Sources */,
+				C0602E8528001EF600D39575 /* MISScrollPageSegmentTitleView.m in Sources */,
+				C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */,
 				3C9E327A260C7B4300CC3E3F /* EaseLiveGiftHelper.m in Sources */,
 				3C9E327D260C7B4300CC3E3F /* EaseTransitionViewController.m in Sources */,
 			);
