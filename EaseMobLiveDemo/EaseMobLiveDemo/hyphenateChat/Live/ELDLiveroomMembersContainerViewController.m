@@ -67,6 +67,7 @@ MISScrollPageControllerDelegate>
     
     [self.view addSubview:container];
     [self.view addSubview:self.topBgImageView];
+    [self.view addSubview:self.viewerTitleLabel];
     [container addSubview:self.allVC.view];
     
     CGFloat bottom = 0;
@@ -79,8 +80,13 @@ MISScrollPageControllerDelegate>
         make.left.right.equalTo(self.view);
     }];
     
-    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.viewerTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBgImageView.mas_bottom);
+        make.left.right.equalTo(self.view);
+    }];
+    
+    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.viewerTitleLabel.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);

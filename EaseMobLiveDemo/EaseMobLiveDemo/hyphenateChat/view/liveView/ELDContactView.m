@@ -9,11 +9,15 @@
 #import "ELDContactView.h"
 #import "ELDGenderView.h"
 
+#define kMeHeaderImageViewHeight 90.0
+
+static NSString *reusecellIndentify = @"reusecellIndentify";
+
 @interface ELDContactView ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIImageView *topBgImageView;
-@property (nonatomic, strong) UIImageView *headImageView;
+@property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) ELDGenderView *genderView;
 @property (nonatomic, strong) UIImageView *muteImageView;
@@ -34,34 +38,10 @@
 }
 
 - (void)placeAndlayoutSubviews {
-
-    [self addSubview:self.headImageView];
-    [self addSubview:self.nameLabel];
-    [self addSubview:self.genderView];
     [self addSubview:self.table];
 
-    [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self);
-        make.left.equalTo(self).offset(2.0);
-        make.size.equalTo(@32.0);
-    }];
-    
-    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(4.0);
-        make.left.equalTo(self.headImageView.mas_right).offset(kEaseLiveDemoPadding);
-        make.height.equalTo(@16.0);
-    }];
-
-    [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.nameLabel);
-        make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
-        make.right.equalTo(self).offset(-8.0);
-    }];
-
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self).offset(-4.0);
-        make.left.equalTo(self.nameLabel);
-        make.size.equalTo(@10.0);
+        make.edges.equalTo(self);
     }];
     
 }
@@ -83,29 +63,22 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return [ELDLiveroomMemberCell height];
     return 10.0;
 }
 
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-//    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:[ELDLiveroomMemberCell reuseIdentifier]];
-//    if (cell == nil) {
-//        cell = [[ELDLiveroomMemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDLiveroomMemberCell reuseIdentifier]];
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    }
-//
-//    cell.chatroom = self.chatroom;
-//    [cell updateWithObj:self.dataArray[indexPath.row]];
-//
-//    ELD_WS
-//    cell.tapCellBlock = ^{
-//
-//    };
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:reusecellIndentify];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusecellIndentify];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
     
-//    return cell;
-    return nil;
+    cell.textLabel.text = @"111";
+    
+    return cell;
 }
 
 
@@ -121,13 +94,23 @@
     return _topBgImageView;
 }
 
+- (UIImageView *)avatarImageView {
+    if (_avatarImageView == nil) {
+        _avatarImageView = [[UIImageView alloc] init];
+        _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _avatarImageView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
+        _avatarImageView.layer.masksToBounds = YES;
+        _avatarImageView.clipsToBounds = YES;
+        _avatarImageView.backgroundColor = UIColor.greenColor;
+    }
+    return _avatarImageView;
+}
 
 
 - (UILabel*)nameLabel
 {
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
-        _nameLabel.frame = CGRectMake(_headImageView.width + 10.f, self.height / 4, self.width - (_headImageView.width + 10.f), self.height/2);
         _nameLabel.font = BFont(12.0f);
         _nameLabel.textColor = [UIColor whiteColor];
         _nameLabel.textAlignment = NSTextAlignmentLeft;
@@ -186,15 +169,40 @@
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
         [_headerView addSubview:self.topBgImageView];
-        [_headerView addSubview:self.topBgImageView];
+        [_headerView addSubview:self.avatarImageView];
         [_headerView addSubview:self.nameLabel];
         [_headerView addSubview:self.genderView];
+        [_headerView addSubview:self.roleImageView];
+        [_headerView addSubview:self.muteImageView];
 
+        [self.topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_headerView).offset(100.0);
+            make.left.right.equalTo(_headerView);
+        }];
         
+        [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_headerView);
+            make.left.equalTo(_headerView).offset(2.0);
+            make.size.equalTo(@32.0);
+        }];
         
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(4.0);
+            make.left.equalTo(self.avatarImageView.mas_right).offset(kEaseLiveDemoPadding);
+            make.height.equalTo(@16.0);
+        }];
+
+        [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.nameLabel);
+            make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
+            make.right.equalTo(self).offset(-8.0);
+        }];
     }
     return _headerView;
 }
 
 
 @end
+
+#undef kMeHeaderImageViewHeight
+
