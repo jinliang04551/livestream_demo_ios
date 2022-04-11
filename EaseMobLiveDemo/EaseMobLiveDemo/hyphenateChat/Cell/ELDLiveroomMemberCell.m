@@ -10,6 +10,7 @@
 @interface ELDLiveroomMemberCell ()
 @property (nonatomic, strong) UIImageView *muteImageView;
 @property (nonatomic, strong) UIImageView *roleImageView;
+@property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 
 @end
 
@@ -40,6 +41,7 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
         make.left.equalTo(self.iconImageView.mas_right).offset(kEaseLiveDemoPadding);
+        make.width.lessThanOrEqualTo(@100);
     }];
     
     [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,9 +57,25 @@
 
 
 - (void)updateWithObj:(id)obj {
+    self.userInfo = (AgoraChatUserInfo *)obj;
+  
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
     
-    [self.roleImageView setImage:ImageWithName(@"live_streamer")];
+    self.nameLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
+
     
+    if ([self.userInfo.userId isEqualToString:self.chatroom.owner]) {
+        [self.roleImageView setImage:ImageWithName(@"live_streamer")];
+    }else if ([self.chatroom.adminList containsObject:self.userInfo.userId]){
+        [self.roleImageView setImage:ImageWithName(@"live_moderator")];
+    }else {
+        [self.roleImageView setImage:ImageWithName(@"")];
+    }
+    
+    
+    if ([self.chatroom.blacklist containsObject:self.userInfo.userId]) {
+        
+    }
     
 }
 

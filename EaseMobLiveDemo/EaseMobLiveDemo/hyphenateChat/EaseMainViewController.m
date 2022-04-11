@@ -8,7 +8,6 @@
 #import "EaseMainViewController.h"
 
 #import "EaseLiveTVListViewController.h"
-#import "EasePublishViewController.h"
 #import "UIImage+Color.h"
 #import "EaseCreateLiveViewController.h"
 #import "EaseLiveCreateViewController.h"
@@ -20,7 +19,7 @@
 #import "ELDLiveListViewController.h"
 #import "ELDLiveContainerViewController.h"
 #import "ELDSettingViewController.h"
-
+#import "ELDLiveViewController.h"
 
 
 #define IS_iPhoneX (\
@@ -88,11 +87,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         if (success) {
             if (room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
-                    EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
+                    ELDLiveViewController *publishView = [[ELDLiveViewController alloc] initWithLiveRoom:room];
                     publishView.modalPresentationStyle = 0;
                     [weakSelf presentViewController:publishView animated:YES completion:^{
                         [weakSelf.navigationController popToRootViewControllerAnimated:NO];
                     }];
+                    
                 }];
             }
         }

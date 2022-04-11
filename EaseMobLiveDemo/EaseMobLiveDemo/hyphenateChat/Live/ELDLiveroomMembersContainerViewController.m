@@ -43,9 +43,6 @@ MISScrollPageControllerDelegate>
         self.chatroom = aChatroom;
 //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
 
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self    action:@selector(tapGestureAction)];
-        [self.view addGestureRecognizer:tap];
-
     }
     return self;
 }
@@ -53,6 +50,10 @@ MISScrollPageControllerDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.yellowColor;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self    action:@selector(tapGestureAction)];
+    [self.view addGestureRecognizer:tap];
+
     
     [self placeAndLayoutSubviews];
     
@@ -79,7 +80,7 @@ MISScrollPageControllerDelegate>
     }];
     
     [container mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBgImageView.mas_bottom).offset(5);
+        make.top.equalTo(self.topBgImageView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
@@ -108,7 +109,7 @@ MISScrollPageControllerDelegate>
     }];
     
     [container mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBgImageView.mas_bottom).offset(5);
+        make.top.equalTo(self.topBgImageView.mas_bottom);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view).offset(-bottom);
@@ -117,6 +118,7 @@ MISScrollPageControllerDelegate>
 
 
 - (void)placeAndLayoutSubviews {
+
     if ([self isAdmin]) {
         [self placeAndLayoutSubviewsForAdmin];
     }else {
@@ -220,7 +222,7 @@ MISScrollPageControllerDelegate>
 
 
 #pragma mark - setter or getter
-- (MISScrollPageController*)pageController{
+- (MISScrollPageController*)pageController {
     if(!_pageController){
         MISScrollPageStyle* style = [[MISScrollPageStyle alloc] init];
         style.showCover = YES;
@@ -249,7 +251,7 @@ MISScrollPageControllerDelegate>
 
 - (MISScrollPageContentView*)contentView {
     if(!_contentView){
-        _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, KScreenWidth, KScreenHeight-64-50-5)];
+        _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, KScreenWidth, KScreenHeight-64-kViewTopPadding)];
     }
     return _contentView;
 }
@@ -257,36 +259,35 @@ MISScrollPageControllerDelegate>
 
 - (ELDLiveroomMembersViewController *)allVC {
     if (_allVC == nil) {
-        _allVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom];
-        _allVC.view.backgroundColor = UIColor.yellowColor;
+        _allVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAll];
     }
     return _allVC;
 }
 
 - (ELDLiveroomMembersViewController *)adminListVC {
     if (_adminListVC == nil) {
-        _adminListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom];
+        _adminListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAdmin];
     }
     return _adminListVC;
 }
 
 - (ELDLiveroomMembersViewController *)allowListVC {
     if (_allowListVC == nil) {
-        _allowListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom];
+        _allowListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAllow];
     }
     return _allowListVC;
 }
 
 - (ELDLiveroomMembersViewController *)mutedListVC {
     if (_mutedListVC == nil) {
-        _mutedListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom];
+        _mutedListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeMute];
     }
     return _mutedListVC;
 }
 
 - (ELDLiveroomMembersViewController *)blockListVC {
     if (_blockListVC == nil) {
-        _blockListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom];
+        _blockListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeBlock];
     }
     return _blockListVC;
 }

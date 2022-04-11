@@ -47,9 +47,7 @@
 {
     BOOL _isload;
     BOOL _isShutDown;
-    
-    UIView *_blackView;
-    
+        
     BOOL _isPublish;
     
     BOOL _isAllMute;
@@ -743,8 +741,7 @@
 //    adminView.delegate = self;
 //    [adminView showFromParentView:self.view];
 
-    
-    ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_room];
+    ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_chatroom];
     
     [vc showFromParentView:self.view];
 }

@@ -9,11 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "ELDContainerTableViewController.h"
 
+typedef enum : NSUInteger {
+    ELDMemberVCTypeAll = 1,
+    ELDMemberVCTypeAdmin,
+    ELDMemberVCTypeAllow,
+    ELDMemberVCTypeMute,
+    ELDMemberVCTypeBlock,
+} ELDMemberVCType;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLiveroomMembersViewController : ELDContainerTableViewController
 
-- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom;
+- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom withMemberType:(ELDMemberVCType)memberVCType;
 
 @end
 

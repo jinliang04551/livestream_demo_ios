@@ -172,8 +172,6 @@
         _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
         _collectionView.pagingEnabled = NO;
         _collectionView.userInteractionEnabled = YES;
-        
-        _collectionView.backgroundColor = UIColor.blueColor;
     }
     return _collectionView;
 }

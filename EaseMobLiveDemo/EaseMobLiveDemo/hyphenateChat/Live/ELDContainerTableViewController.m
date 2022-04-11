@@ -26,8 +26,9 @@
 }
 
 - (void)viewDidLoadedForIndex:(NSUInteger)index{
-    
+    [self.table reloadData];
 }
+
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
 

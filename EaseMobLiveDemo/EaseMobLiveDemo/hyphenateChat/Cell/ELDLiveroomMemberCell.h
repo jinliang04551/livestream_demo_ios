@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLiveroomMemberCell : ELDCustomCell
+@property (nonatomic, strong) AgoraChatroom *chatroom;
 
 @end
 

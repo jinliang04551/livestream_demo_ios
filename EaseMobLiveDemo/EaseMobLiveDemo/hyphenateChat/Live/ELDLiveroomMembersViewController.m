@@ -13,22 +13,26 @@
 
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 @property (nonatomic, assign) NSInteger page;
-
+@property (nonatomic, assign) ELDMemberVCType memberVCType;
 @end
 
-@implementation ELDLiveroomMembersViewController
 
-- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom
-{
+
+@implementation ELDLiveroomMembersViewController
+- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom withMemberType:(ELDMemberVCType)memberVCType {
     self = [super init];
     if (self) {
         self.chatroom = aChatroom;
+        self.memberVCType = memberVCType;
+        
+        
 //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
         
     }
     
     return self;
 }
+
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -37,24 +41,76 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    [self useRefresh];
-    
-//    [self tableViewDidTriggerHeaderRefresh];
-
-    self.dataArray = [self.chatroom.memberList copy];
-    
-    [self.table reloadData];
+    [self loadDatas];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark reload data
-- (void)updateUI {
-    [self tableViewDidTriggerHeaderRefresh];
+- (void)loadDatas {
+    
+    NSMutableArray *tempArray = NSMutableArray.new;
+    
+    switch (self.memberVCType) {
+        case 1:
+        {
+            [tempArray addObject:self.chatroom.owner];
+            [tempArray addObjectsFromArray:self.chatroom.adminList];
+            [tempArray addObjectsFromArray:self.chatroom.memberList];
+        }
+            break;
+        case 2:
+        {
+            [tempArray addObject:self.chatroom.owner];
+            [tempArray addObjectsFromArray:self.chatroom.adminList];
+        }
+            break;
+        case 3:
+        {
+            [tempArray addObjectsFromArray:self.chatroom.whitelist];
+        }
+            break;
+
+        case 4:
+        {
+            [tempArray addObjectsFromArray:self.chatroom.muteList];
+        }
+            break;
+
+        case 5:
+        {
+            [tempArray addObject:self.chatroom.blacklist];
+        }
+            break;
+
+        default:
+        {
+            [tempArray addObject:self.chatroom.owner];
+            [tempArray addObject:self.chatroom.adminList];
+            [tempArray addObject:self.chatroom.memberList];
+        }
+            break;
+    }
+    
+    NSLog(@"tempArray:%@ vcType:%@",tempArray,@(self.memberVCType));
+    
+    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:tempArray completion:^(NSDictionary * _Nonnull userInfoDic) {
+        NSMutableArray *userInfos = NSMutableArray.new;
+        for (NSString *key in userInfoDic.allKeys) {
+            AgoraChatUserInfo *uInfo = userInfoDic[key];
+            [userInfos addObject:uInfo];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.dataArray removeAllObjects];
+            self.dataArray = userInfos;
+            [self.table reloadData];
+        });
+    }];
+    
 }
+
 
 #pragma mark refresh and load more
 - (void)didStartRefresh {
@@ -64,7 +120,6 @@
 - (void)didStartLoadMore {
     [self tableViewDidTriggerFooterRefresh];
 }
-
 
 
 #pragma mark NSNotification
@@ -104,21 +159,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-//    AgoraUserModel *model = nil;
-//    if (self.isSearchState) {
-//        model = self.searchResults[indexPath.row];
-//    }else {
-//        model = self.dataArray[indexPath.section][indexPath.row];
-//    }
-//
-//    cell.model = model;
-    cell.nameLabel.text =  self.dataArray[indexPath.row];
+    cell.chatroom = self.chatroom;
+    [cell updateWithObj:self.dataArray[indexPath.row]];
     
     ELD_WS
     cell.tapCellBlock = ^{
 //        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeBlock group:weakSelf.group];
-        
-        
+    
     };
     
     return cell;
@@ -187,6 +234,7 @@
 //    dispatch_async(dispatch_get_main_queue(), ^(){
 //        [self.table reloadData];
 //    });
+    
 }
 
 @end

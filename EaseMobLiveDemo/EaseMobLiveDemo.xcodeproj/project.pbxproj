@@ -222,6 +222,10 @@
 		C0602E9128003C6D00D39575 /* ELDLiveroomMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E9028003C6D00D39575 /* ELDLiveroomMemberCell.m */; };
 		C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E96280046B700D39575 /* ELDContainerTableViewController.m */; };
 		C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E97280046B700D39575 /* ELDBaseTableViewController.m */; };
+		C0602E9F2804135800D39575 /* AgoraChatUserInfo+expireTime.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E9C2804135800D39575 /* AgoraChatUserInfo+expireTime.m */; };
+		C0602EA02804135800D39575 /* AgoraChatUserInfoManagerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E9E2804135800D39575 /* AgoraChatUserInfoManagerHelper.m */; };
+		C0602EA32804195000D39575 /* ELDUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602EA22804195000D39575 /* ELDUserInfoModel.m */; };
+		C0602EA62804301000D39575 /* ELDContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602EA52804301000D39575 /* ELDContactView.m */; };
 		C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CC27FE900D005AC68E /* loading@2x.png */; };
 		C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CD27FE900D005AC68E /* loading@3x.png */; };
 		C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */; };
@@ -649,6 +653,14 @@
 		C0602E95280046B700D39575 /* ELDBaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDBaseTableViewController.h; sourceTree = "<group>"; };
 		C0602E96280046B700D39575 /* ELDContainerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDContainerTableViewController.m; sourceTree = "<group>"; };
 		C0602E97280046B700D39575 /* ELDBaseTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDBaseTableViewController.m; sourceTree = "<group>"; };
+		C0602E9B2804135800D39575 /* AgoraChatUserInfo+expireTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AgoraChatUserInfo+expireTime.h"; sourceTree = "<group>"; };
+		C0602E9C2804135800D39575 /* AgoraChatUserInfo+expireTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AgoraChatUserInfo+expireTime.m"; sourceTree = "<group>"; };
+		C0602E9D2804135800D39575 /* AgoraChatUserInfoManagerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraChatUserInfoManagerHelper.h; sourceTree = "<group>"; };
+		C0602E9E2804135800D39575 /* AgoraChatUserInfoManagerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraChatUserInfoManagerHelper.m; sourceTree = "<group>"; };
+		C0602EA12804195000D39575 /* ELDUserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDUserInfoModel.h; sourceTree = "<group>"; };
+		C0602EA22804195000D39575 /* ELDUserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDUserInfoModel.m; sourceTree = "<group>"; };
+		C0602EA42804301000D39575 /* ELDContactView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDContactView.h; sourceTree = "<group>"; };
+		C0602EA52804301000D39575 /* ELDContactView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDContactView.m; sourceTree = "<group>"; };
 		C08D31CC27FE900D005AC68E /* loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@2x.png"; sourceTree = "<group>"; };
 		C08D31CD27FE900D005AC68E /* loading@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@3x.png"; sourceTree = "<group>"; };
 		C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLivingCountdownView.h; sourceTree = "<group>"; };
@@ -912,6 +924,10 @@
 				3C9E316C260C7B4100CC3E3F /* EaseCustomMessageHelper.m */,
 				3C9E3167260C7B4100CC3E3F /* EaseDefaultDataHelper.h */,
 				3C9E316B260C7B4100CC3E3F /* EaseDefaultDataHelper.m */,
+				C0602E9B2804135800D39575 /* AgoraChatUserInfo+expireTime.h */,
+				C0602E9C2804135800D39575 /* AgoraChatUserInfo+expireTime.m */,
+				C0602E9D2804135800D39575 /* AgoraChatUserInfoManagerHelper.h */,
+				C0602E9E2804135800D39575 /* AgoraChatUserInfoManagerHelper.m */,
 				3C9E316E260C7B4100CC3E3F /* EaseEmojiHelper.h */,
 				3C9E3164260C7B4100CC3E3F /* EaseEmojiHelper.m */,
 				3C9E3168260C7B4100CC3E3F /* EaseHttpManager.h */,
@@ -980,6 +996,8 @@
 				3C9E3358260C800100CC3E3F /* EaseLiveRoom.m */,
 				3C9E3359260C800100CC3E3F /* EaseLiveSession.h */,
 				3C9E3354260C800000CC3E3F /* EaseLiveSession.m */,
+				C0602EA12804195000D39575 /* ELDUserInfoModel.h */,
+				C0602EA22804195000D39575 /* ELDUserInfoModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1007,6 +1025,8 @@
 				3C9E3199260C7B4200CC3E3F /* EaseAudienceBehaviorView.m */,
 				3C9E31B2260C7B4200CC3E3F /* EaseBaseSubView.h */,
 				3C9E31C9260C7B4200CC3E3F /* EaseBaseSubView.m */,
+				C0602EA42804301000D39575 /* ELDContactView.h */,
+				C0602EA52804301000D39575 /* ELDContactView.m */,
 				3C9E31D1260C7B4200CC3E3F /* EaseChatView.h */,
 				3C9E31B3260C7B4200CC3E3F /* EaseChatView.m */,
 				3C9E31CC260C7B4200CC3E3F /* EaseCustomKeyBoardView.h */,
@@ -1957,6 +1977,8 @@
 				C0602E8228001EF600D39575 /* MISScrollPageSegmentView.m in Sources */,
 				C0602E8128001EF600D39575 /* MISScrollPageStyle.m in Sources */,
 				3C9E329D260C7B4300CC3E3F /* EaseCustomKeyBoardView.m in Sources */,
+				C0602EA02804135800D39575 /* AgoraChatUserInfoManagerHelper.m in Sources */,
+				C0602E9F2804135800D39575 /* AgoraChatUserInfo+expireTime.m in Sources */,
 				C08DFC1327F16F4700862ADF /* ALSAppStyle.m in Sources */,
 				3C9E32AF260C7B4300CC3E3F /* EaseGiftFlyView.m in Sources */,
 				3C9E32A0260C7B4300CC3E3F /* EaseChatView.m in Sources */,
@@ -1990,12 +2012,14 @@
 				3C9E3297260C7B4300CC3E3F /* JPGiftShowView.m in Sources */,
 				3C9E3272260C7B4300CC3E3F /* NSDictionary+SafeValue.m in Sources */,
 				3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */,
+				C0602EA62804301000D39575 /* ELDContactView.m in Sources */,
 				3C9E3273260C7B4300CC3E3F /* UIImage+Color.m in Sources */,
 				C0602E8628001EF600D39575 /* MISScrollPageControllerDelegate.m in Sources */,
 				C0602E9128003C6D00D39575 /* ELDLiveroomMemberCell.m in Sources */,
 				3C9E32B4260C7B4300CC3E3F /* SRRefreshView.m in Sources */,
 				C08DFC7627F5B20E00862ADF /* ELDTitleDetailCell.m in Sources */,
 				3C9E32A7260C7B4300CC3E3F /* EaseLiveCollectionViewCell.m in Sources */,
+				C0602EA32804195000D39575 /* ELDUserInfoModel.m in Sources */,
 				3C9E3275260C7B4300CC3E3F /* EMEmoticonGroup.m in Sources */,
 				C0602E8328001EF600D39575 /* UIView+MISHelper.m in Sources */,
 				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
