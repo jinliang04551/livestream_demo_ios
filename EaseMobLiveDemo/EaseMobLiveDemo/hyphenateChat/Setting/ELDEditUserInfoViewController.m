@@ -83,11 +83,16 @@
         self.myNickName = newName;
         self.userHeaderView.nameLabel.text = self.myNickName;
 
-        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-            if (aError != nil) {
+        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:newName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+            if (aError == nil) {
 //                [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:AgoraChatClient.sharedClient.currentUsername];
-                self.userInfo = aUserInfo;
-                [self.table reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.updateUserInfoBlock) {
+                        self.updateUserInfoBlock(aUserInfo);
+                    }
+                    self.userInfo = aUserInfo;
+                    [self.table reloadData];
+                });
             }
         }];
 
@@ -120,7 +125,7 @@
     [secretAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Secret" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [cancelAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
@@ -137,9 +142,16 @@
 - (void)modifyGenderWithIndex:(NSInteger)index {
      
     [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:[@(index) stringValue] withType:AgoraChatUserInfoTypeGender completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-        if (aError != nil) {
-            self.userInfo = aUserInfo;
-            [self.table reloadData];
+        if (aError == nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (self.updateUserInfoBlock) {
+                    self.updateUserInfoBlock(aUserInfo);
+                }
+
+                self.userInfo = aUserInfo;
+                [self.table reloadData];
+            });
+
         }
     }];
 }
@@ -225,6 +237,10 @@
 
         [self uploadCoverImageView:^(BOOL success) {
             if (success) {
+                if (self.updateUserInfoBlock) {
+                    self.updateUserInfoBlock(self.userInfo);
+                }
+
                 self.userHeaderView.avatarImageView = _avatarImageView;
                 [self.table reloadData];
             }
@@ -259,7 +275,7 @@
 
     if (indexPath.row == 0) {
         cell.nameLabel.text = @"Username";
-        cell.detailLabel.text = self.userInfo.nickname;
+        cell.detailLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
         
         ELD_WS
         cell.tapCellBlock = ^{
@@ -275,7 +291,6 @@
         cell.tapCellBlock = ^{
             [weakSelf modifyGender];
             [weakSelf.table reloadData];
-
         };
     }
 
@@ -348,6 +363,8 @@
 - (ELDUserHeaderView *)userHeaderView {
     if (_userHeaderView == nil) {
         _userHeaderView = [[ELDUserHeaderView alloc] initWithFrame:CGRectZero isEditable:YES];
+        _userHeaderView.nameLabel.text = @"Click to Change Avatar";
+        
         ELD_WS
         _userHeaderView.tapHeaderViewBlock = ^{
             [weakSelf changeAvatarAction];

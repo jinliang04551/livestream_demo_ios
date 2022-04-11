@@ -347,6 +347,7 @@
     }
 }
 
+
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine tokenPrivilegeWillExpire:(NSString *)token
 {
     __weak typeof(self) weakSelf = self;

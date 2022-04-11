@@ -80,17 +80,22 @@
 }
 
 - (void)fetchUserInfo {
-    [[AgoraChatClient.sharedClient userInfoManager] fetchUserInfoById:@[@""] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {
+    [[AgoraChatClient.sharedClient userInfoManager] fetchUserInfoById:@[AgoraChatClient.sharedClient.currentUsername] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {
         if(!aError) {
             self.userInfo = [aUserDatas objectForKey:[AgoraChatClient sharedClient].currentUsername];
-            if(self.userInfo && self.userInfo.avatarUrl) {
-                NSURL* url = [NSURL URLWithString:self.userInfo.avatarUrl];
-                [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"")];
-                self.userHeaderView.nameLabel.text = self.userInfo.nickname;
-            }
+            [self updateUserHeaderView];
         }
-
     }];
+}
+
+- (void)updateUserHeaderView {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.userHeaderView.nameLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
+        if(self.userInfo && self.userInfo.avatarUrl) {
+            NSURL* url = [NSURL URLWithString:self.userInfo.avatarUrl];
+            [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"")];
+        }
+    });
 }
 
 #pragma mark Notification
@@ -98,7 +103,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         AgoraChatUserInfo *userInfo = notify.object;
         self.userInfo = userInfo;
-        self.userHeaderView.nameLabel.text = self.userInfo.nickname;
+        self.userHeaderView.nameLabel.text = self.userInfo.nickName;
 
     });
 }
@@ -113,6 +118,11 @@
 - (void)goEditUserInfoPage {
     ELDEditUserInfoViewController *vc = [[ELDEditUserInfoViewController alloc] init];
     vc.userInfo = self.userInfo;
+    ELD_WS
+    vc.updateUserInfoBlock = ^(AgoraChatUserInfo * _Nonnull userInfo) {
+        weakSelf.userInfo = userInfo;
+        [weakSelf updateUserHeaderView];
+    };
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
