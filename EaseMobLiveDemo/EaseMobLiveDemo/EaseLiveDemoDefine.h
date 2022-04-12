@@ -70,5 +70,30 @@ typedef enum : NSUInteger {
 } ELDMemberRoleType;
 
 
+typedef enum : NSUInteger {
+    ELDMemberActionTypeMakeAdmin = 1,
+    ELDMemberActionTypeRemoveAdmin,
+    ELDMemberActionTypeMakeMute,
+    ELDMemberActionTypeRemoveMute,
+    ELDMemberActionTypeMakeWhite,
+    ELDMemberActionTypeRemoveWhite,
+    ELDMemberActionTypeMakeBlock,
+    ELDMemberActionTypeRemoveBlock,
+} ELDMemberActionType;
+
+
+#define kMemberActionTypeMakeAdmin @"MemberActionTypeMakeAdmin"
+#define kMemberActionTypeRemoveAdmin @"MemberActionTypeRemoveAdmin"
+#define kMemberActionTypeMakeMute @"MemberActionTypeMakeMute"
+#define kMemberActionTypeRemoveMute @"MemberActionTypeRemoveMute"
+#define kMemberActionTypeMakeWhite @"MemberActionTypeMakeWhite"
+#define kMemberActionTypeRemoveWhite @"MemberActionTypeRemoveWhite"
+#define kMemberActionTypeMakeBlock @"MemberActionTypeMakeBlock"
+#define kMemberActionTypeRemoveBlock @"MemberActionTypeRemoveBlock"
+
+
+
+
+
 
 #endif /* EaseLiveDemoDefine_h */

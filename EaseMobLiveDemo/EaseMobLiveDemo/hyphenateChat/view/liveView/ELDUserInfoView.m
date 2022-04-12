@@ -11,7 +11,7 @@
 #import "ELDTitleSwitchCell.h"
 
 #define kUserInfoCellTitle @"kUserInfoCellTitle"
-#define kUserInfoCellAction @"kUserInfoCellAction"
+#define kUserInfoCellActionType @"kUserInfoCellActionType"
 
 #define kMeHeaderImageViewHeight 72.0
 
@@ -38,6 +38,8 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) ELDTitleSwitchCell *titleSwitchCell;
 
+@property (nonatomic, strong) NSMutableDictionary *actionTypeDic;
+
 //owner check oneself
 @property (nonatomic, assign) BOOL ownerSelf;
 
@@ -50,7 +52,6 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
                         chatroom:(AgoraChatroom *)chatroom {
     self = [super init];
     if (self) {
-        self.backgroundColor = UIColor.yellowColor;
         
         self.currentUsername = username;
         self.chatroom = chatroom;
@@ -107,13 +108,19 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     NSMutableArray *tempArray = NSMutableArray.new;
     
     //owner check oneself
-    if (self.roleType == ELDMemberRoleTypeOwner && self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
-        self.ownerSelf = YES;
-        [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+    if (self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
+        if (self.roleType == ELDMemberRoleTypeOwner) {
+            self.ownerSelf = YES;
+            [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+        }else {
+            [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+
+        }
     }
     
     if (self.chatroom.permissionType == AgoraChatroomPermissionTypeAdmin) {
-        [tempArray addObject:@{}];
+        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+
         
     }
     
@@ -330,22 +337,23 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 150.0)];
         
-        _headerView.clipsToBounds = NO;
+        UIView *headerBgView = UIView.alloc.init;
+        headerBgView.layer.cornerRadius = 10.0f;
+        headerBgView.backgroundColor = UIColor.whiteColor;
+        [_headerView addSubview:headerBgView];
         
-//        [_headerView addSubview:self.topBgImageVpod cache clean --alliew];
         [_headerView addSubview:self.avatarBgView];
         [_headerView addSubview:self.nameLabel];
         [_headerView addSubview:self.genderView];
         [_headerView addSubview:self.roleImageView];
         [_headerView addSubview:self.muteImageView];
-
-        _headerView.backgroundColor = UIColor.blueColor;
         
-//        [self.topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(_headerView).offset((kMeHeaderImageViewHeight + 2) * 0.5);
-//            make.centerX.equalTo(_headerView);
-//        }];
-
+        CGFloat topPadding = (kMeHeaderImageViewHeight + 2) * 0.5;
+        
+        [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_headerView).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
+        }];
+        
         [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_headerView);
             make.centerX.equalTo(_headerView);
@@ -413,9 +421,26 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     return _dataArray;
 }
 
+- (NSMutableDictionary *)actionTypeDic {
+    if (_actionTypeDic == nil) {
+        _actionTypeDic = NSMutableDictionary.new;
+        
+        _actionTypeDic[kMemberActionTypeMakeAdmin] = @{kUserInfoCellTitle:@"Assign as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeMakeAdmin)};
+        _actionTypeDic[kMemberActionTypeRemoveAdmin] = @{kUserInfoCellTitle:@"Remove as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveAdmin)};
+        _actionTypeDic[kMemberActionTypeMakeMute] = @{kUserInfoCellTitle:@"Mute",kUserInfoCellActionType:@(ELDMemberActionTypeMakeMute)};
+        _actionTypeDic[kMemberActionTypeRemoveMute] = @{kUserInfoCellTitle:@"Unmute",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveMute)};
+        _actionTypeDic[kMemberActionTypeMakeWhite] = @{kUserInfoCellTitle:@"Move to Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeMakeWhite)};
+        _actionTypeDic[kMemberActionTypeRemoveWhite] = @{kUserInfoCellTitle:@"Remove from Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveWhite)};
+        _actionTypeDic[kMemberActionTypeMakeBlock] = @{kUserInfoCellTitle:@"Ban",kUserInfoCellActionType:@(ELDMemberActionTypeMakeBlock)};
+        _actionTypeDic[kMemberActionTypeRemoveBlock] = @{kUserInfoCellTitle:@"Unban",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveBlock)};
+
+    }
+    return _actionTypeDic;
+}
+
 
 @end
 
 #undef kMeHeaderImageViewHeight
 #undef kUserInfoCellTitle
-#undef kUserInfoCellAction
+#undef kUserInfoCellActionType
