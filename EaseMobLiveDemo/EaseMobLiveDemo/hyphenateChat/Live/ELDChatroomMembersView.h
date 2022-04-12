@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EaseBaseSubView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ELDChatroomMembersView : UIView
+@interface ELDChatroomMembersView : EaseBaseSubView
+- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom;
 
 - (void)showFromParentView:(UIView *)view;
 - (void)removeFromParentView;

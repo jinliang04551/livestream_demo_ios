@@ -132,22 +132,6 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 }
 
 #pragma mark operation
-- (void)removeAdminAction {
-    if (_chatroom) {
-        ELD_WS
-        [[AgoraChatClient sharedClient].roomManager removeAdmin:self.currentUsername
-                                            fromChatroom:_chatroomId
-                                              completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                                  if (!aError) {
-
-                                                  } else {
-//                                                      [weakHud setLabelText:aError.errorDescription];
-                                                  }
-                                              }];
-    }
-}
-
-
 //全体禁言
 - (void)allTheSilence:(BOOL)isAllTheSilence
 {
@@ -166,6 +150,49 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     }
 }
 
+- (void)addAdminAction
+{
+    [[AgoraChatClient sharedClient].roomManager addAdmin:self.currentUsername
+                                       toChatroom:self.chatroom.chatroomId
+                                       completion:^(AgoraChatroom *aChatroomp, AgoraChatError *aError) {
+                                           if (!aError) {
+                                               
+                                           } else {
+                                              
+                                           }
+                                       }];
+}
+
+- (void)removeAdminAction {
+    if (_chatroom) {
+        ELD_WS
+        [[AgoraChatClient sharedClient].roomManager removeAdmin:self.currentUsername
+                                            fromChatroom:_chatroomId
+                                              completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                                                  if (!aError) {
+
+                                                  } else {
+//                                                      [weakHud setLabelText:aError.errorDescription];
+                                                  }
+                                              }];
+    }
+}
+
+
+
+- (void)muteAction {
+    [[AgoraChatClient sharedClient].roomManager muteMembers:@[self.currentUsername]
+                                    muteMilliseconds:-1
+                                        fromChatroom:self.chatroom.chatroomId
+                                          completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                                              if (!aError) {
+                                                 
+                                              } else {
+                                                  
+                                              }
+                                          }];
+}
+
 //解除禁言
 - (void)removeMuteAction
 {
@@ -177,14 +204,44 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
                                                     
                                                 
                                                 } else {
-//                                                    weakHud.label.text = aError.errorDescription;
-//                                                    [weakHud hideAnimated:YES afterDelay:0.5];
+
                                                 }
                                             }];
 }
 
+
+
+
+- (void)addBlockAction
+{
+    [[AgoraChatClient sharedClient].roomManager blockMembers:@[self.currentUsername]
+                                         fromChatroom:self.chatroom.chatroomId
+                                           completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                                               if (!aError) {
+                                                   
+                                               } else {
+                                                   
+                                               }
+                                           }];
+}
+
+
+- (void)unBlockAction {
+    [[AgoraChatClient sharedClient].roomManager unblockMembers:@[self.currentUsername] fromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+            
+    }];
+    
+}
+
+- (void)addWhiteAction {
+    [[AgoraChatClient sharedClient].roomManager addWhiteListMembers:@[self.currentUsername] fromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+            
+    }];
+}
+
+
 //从白名单移除
-- (void)removeWhitelistAction
+- (void)removeWhiteAction
 {
        [[AgoraChatClient sharedClient].roomManager removeWhiteListMembers:@[self.currentUsername]
                                            fromChatroom:self.chatroom.chatroomId
@@ -197,7 +254,18 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
                                              }];
 }
 
-
+- (void)kickAction
+{
+    [[AgoraChatClient sharedClient].roomManager removeMembers:@[self.currentUsername]
+                                          fromChatroom:self.chatroom.chatroomId
+                                            completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                                                if (!aError) {
+                                                    
+                                                } else {
+                                                   
+                                                }
+                                            }];
+}
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

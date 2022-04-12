@@ -601,6 +601,7 @@
     [vc showFromParentView:self.view];
     
 //    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+//    memberView.delegate = self;
 //    [memberView showFromParentView:self.view];
 }
 

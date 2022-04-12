@@ -14,15 +14,26 @@
 @property (nonatomic,strong) ELDLiveroomMembersViewController *blockListVC;
 
 @property (nonatomic, strong) UIView *alphaBgView;
+@property (nonatomic, strong) AgoraChatroom *chatroom;
 
 @end
 
 
 @implementation ELDChatroomMembersView
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+    }
+    return self;
+}
+
+- (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom {
+    self = [self init];
+    if (self) {
+        self.chatroom = aChatroom;
         [self placeAndLayoutSubviews];
+
     }
     return self;
 }

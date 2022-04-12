@@ -199,13 +199,23 @@ MISScrollPageControllerDelegate>
 //    }];
     
 
-    [[UIApplication sharedApplication].keyWindow addSubview:self.view];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeAction)];
+//    UIView *tapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
+//    tapView.backgroundColor = UIColor.yellowColor;
+//    [tapView addGestureRecognizer:tap];
+//    [self.view addSubview:tapView];
+    
+    [view addSubview:self.view];
     [UIView animateWithDuration:0.5 animations:^{
         
     } completion:^(BOOL finished) {
         view.userInteractionEnabled = YES;
     }];
 
+}
+
+- (void)closeAction {
+    [self removeFromParentView];
 }
 
 - (void)removeFromParentView
