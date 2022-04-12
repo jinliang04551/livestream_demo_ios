@@ -53,4 +53,22 @@
 #define USER_NICKNAME @"nick_name"
 #define LAST_LOGINUSER @"eld_lastLoginUser"
 
+
+typedef enum : NSUInteger {
+    ELDMemberVCTypeAll = 1,
+    ELDMemberVCTypeAdmin,
+    ELDMemberVCTypeAllow,
+    ELDMemberVCTypeMute,
+    ELDMemberVCTypeBlock,
+} ELDMemberVCType;
+
+
+typedef enum : NSUInteger {
+    ELDMemberRoleTypeMember = 1,
+    ELDMemberRoleTypeAdmin,
+    ELDMemberRoleTypeOwner,
+} ELDMemberRoleType;
+
+
+
 #endif /* EaseLiveDemoDefine_h */

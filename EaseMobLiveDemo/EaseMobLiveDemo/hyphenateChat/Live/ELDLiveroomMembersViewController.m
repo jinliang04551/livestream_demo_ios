@@ -222,19 +222,6 @@
     
 }
 
-- (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
-    
-//    if (isHeader) {
-//        [self.members removeAllObjects];
-//    }
-//    [self.members addObjectsFromArray:sourceList];
-//
-//    [self sortContacts:self.members];
-//
-//    dispatch_async(dispatch_get_main_queue(), ^(){
-//        [self.table reloadData];
-//    });
-    
-}
+
 
 @end

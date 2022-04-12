@@ -9,13 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ELDContainerTableViewController.h"
 
-typedef enum : NSUInteger {
-    ELDMemberVCTypeAll = 1,
-    ELDMemberVCTypeAdmin,
-    ELDMemberVCTypeAllow,
-    ELDMemberVCTypeMute,
-    ELDMemberVCTypeBlock,
-} ELDMemberVCType;
 
 NS_ASSUME_NONNULL_BEGIN
 

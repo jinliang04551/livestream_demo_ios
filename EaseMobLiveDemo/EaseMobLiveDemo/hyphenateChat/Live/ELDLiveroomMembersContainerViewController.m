@@ -25,12 +25,17 @@ MISScrollPageControllerDelegate>
 @property (nonatomic,strong) ELDLiveroomMembersViewController *blockListVC;
 
 @property (nonatomic, strong) UIView *alphaBgView;
+@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIButton *bgButton;
+
 @property (nonatomic, strong) UIImageView *topBgImageView;
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 
 @property (nonatomic, strong) NSMutableArray *navTitleArray;
 @property (nonatomic, strong) NSMutableArray *contentVCArray;
 @property (nonatomic, strong) UILabel *viewerTitleLabel;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+
 
 
 
@@ -49,11 +54,6 @@ MISScrollPageControllerDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColor.yellowColor;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self    action:@selector(tapGestureAction)];
-    [self.view addGestureRecognizer:tap];
-
     
     [self placeAndLayoutSubviews];
     
@@ -61,70 +61,101 @@ MISScrollPageControllerDelegate>
 }
 
 - (void)placeAndLayoutSubviewsForMember {
-    UIView *container = UIView.new;
-    container.backgroundColor = UIColor.whiteColor;
-    container.clipsToBounds = YES;
+
+    [self.containerView addSubview:self.topBgImageView];
+    [self.containerView addSubview:self.viewerTitleLabel];
+    [self.containerView addSubview:self.allVC.view];
     
-    [self.view addSubview:container];
-    [self.view addSubview:self.topBgImageView];
-    [self.view addSubview:self.viewerTitleLabel];
-    [container addSubview:self.allVC.view];
-    
-    CGFloat bottom = 0;
-    if (@available(iOS 11, *)) {
-        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
-    }
     
     [self.topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kViewTopPadding);
-        make.left.right.equalTo(self.view);
+        make.top.equalTo(self.containerView);
+        make.left.right.equalTo(self.containerView);
     }];
     
     [self.viewerTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBgImageView.mas_bottom);
-        make.left.right.equalTo(self.view);
+        make.left.right.equalTo(self.containerView);
     }];
     
-    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.allVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.viewerTitleLabel.mas_bottom);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+        make.left.right.bottom.equalTo(self.containerView);
     }];
 }
 
 
 - (void)placeAndLayoutSubviewsForAdmin {
-    UIView *container = UIView.new;
-    container.backgroundColor = UIColor.whiteColor;
-    container.clipsToBounds = YES;
+//    UIView *container = UIView.new;
+//    container.backgroundColor = UIColor.whiteColor;
+//    container.clipsToBounds = YES;
+//
+//    [self.view addSubview:container];
+//    [self.view addSubview:self.topBgImageView];
+//    [container addSubview:self.segView];
+//    [container addSubview:self.contentView];
+//
+//    CGFloat bottom = 0;;
+//    if (@available(iOS 11, *)) {
+//        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+//    }
+//
+//    [self.topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.view).offset(kViewTopPadding);
+//        make.left.right.equalTo(self.view);
+//    }];
+//
+//    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.topBgImageView.mas_bottom);
+//        make.left.equalTo(self.view);
+//        make.right.equalTo(self.view);
+//        make.bottom.equalTo(self.view).offset(-bottom);
+//    }];
     
-    [self.view addSubview:container];
-    [self.view addSubview:self.topBgImageView];
-    [container addSubview:self.segView];
-    [container addSubview:self.contentView];
+
+    [self.containerView addSubview:self.topBgImageView];
+    [self.containerView addSubview:self.segView];
+    [self.containerView addSubview:self.contentView];
     
-    CGFloat bottom = 0;;
-    if (@available(iOS 11, *)) {
-        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
-    }
     
     [self.topBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kViewTopPadding);
-        make.left.right.equalTo(self.view);
+        make.top.equalTo(self.containerView).offset(kViewTopPadding);
+        make.left.right.equalTo(self.containerView);
     }];
     
-    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.segView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBgImageView.mas_bottom);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-bottom);
+        make.left.equalTo(self.containerView);
+        make.right.equalTo(self.containerView);
+        make.height.equalTo(@50);
+    }];
+    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.segView.mas_bottom);
+        make.left.equalTo(self.containerView);
+        make.right.equalTo(self.containerView);
+        make.bottom.equalTo(self.containerView);
     }];
 }
 
 
 - (void)placeAndLayoutSubviews {
 
+    CGFloat bottom = 0;
+    if (@available(iOS 11, *)) {
+        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+    }
+    
+    [self.view addSubview:self.alphaBgView];
+    [self.view addSubview:self.containerView];
+
+    [self.alphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
+    [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(kViewTopPadding, 0, 0, bottom));
+    }];
+    
     if ([self isAdmin]) {
         [self placeAndLayoutSubviewsForAdmin];
     }else {
@@ -158,14 +189,23 @@ MISScrollPageControllerDelegate>
 #pragma mark show view
 - (void)showFromParentView:(UIView *)view
 {
-    view.userInteractionEnabled = NO;
+//    view.userInteractionEnabled = YES;
+//
+//    [view addSubview:self.view];
+//    [UIView animateWithDuration:0.5 animations:^{
+//
+//    } completion:^(BOOL finished) {
+//        view.userInteractionEnabled = YES;
+//    }];
+    
 
-    [view addSubview:self.view];
+    [[UIApplication sharedApplication].keyWindow addSubview:self.view];
     [UIView animateWithDuration:0.5 animations:^{
         
     } completion:^(BOOL finished) {
         view.userInteractionEnabled = YES;
     }];
+
 }
 
 - (void)removeFromParentView
@@ -258,6 +298,7 @@ MISScrollPageControllerDelegate>
 - (MISScrollPageContentView*)contentView {
     if(!_contentView){
         _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, KScreenWidth, KScreenHeight-64-kViewTopPadding)];
+        _contentView.backgroundColor = UIColor.whiteColor;
     }
     return _contentView;
 }
@@ -336,12 +377,25 @@ MISScrollPageControllerDelegate>
 - (UIView *)alphaBgView {
     if (_alphaBgView == nil) {
         _alphaBgView = [[UIView alloc] init];
-        _alphaBgView.backgroundColor = UIColor.redColor;
-        _alphaBgView.alpha = 0.5;
+        _alphaBgView.backgroundColor = UIColor.blackColor;
+        _alphaBgView.alpha = 0.01;
+        [_alphaBgView addGestureRecognizer:self.tapGestureRecognizer];
+//        _alphaBgView.userInteractionEnabled = YES;
+        
+//        [_alphaBgView addSubview:self.bgButton];
+//        [self.bgButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.edges.equalTo(_alphaBgView);
+//        }];
     }
     return _alphaBgView;
 }
 
+- (UITapGestureRecognizer *)tapGestureRecognizer {
+    if (_tapGestureRecognizer == nil) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self    action:@selector(tapGestureAction)];
+    }
+    return _tapGestureRecognizer;
+}
 
 - (UILabel *)viewerTitleLabel {
     if (_viewerTitleLabel == nil) {
@@ -349,11 +403,31 @@ MISScrollPageControllerDelegate>
 //        PingFangSC-Semibold
         _viewerTitleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:16.0f];
         _viewerTitleLabel.textColor = TextLabelBlackColor;
-        _viewerTitleLabel.textAlignment = NSTextAlignmentLeft;
+        _viewerTitleLabel.textAlignment = NSTextAlignmentCenter;
         _viewerTitleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _viewerTitleLabel.text = @"All Viewers";
+        _viewerTitleLabel.backgroundColor = UIColor.whiteColor;
     }
     return _viewerTitleLabel;
+}
+
+- (UIView *)containerView {
+    if (_containerView == nil) {
+        _containerView = [[UIView alloc] init];
+    }
+    return _containerView;
+}
+
+- (UIButton *)bgButton {
+    if (_bgButton == nil) {
+        _bgButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+        [_bgButton addTarget:self action:@selector(bgButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _bgButton;
+}
+
+- (void)bgButtonAction {
+    NSLog(@"%s",__func__);
 }
 
 

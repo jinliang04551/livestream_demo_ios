@@ -36,6 +36,10 @@
 
 #import "ELDLiveroomMembersContainerViewController.h"
 
+#import "ELDChatroomMembersView.h"
+
+#import "ELDUserInfoView.h"
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
@@ -547,29 +551,40 @@
         [self closeAction];
         return;
     }
-    BOOL isOwner = _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
-    BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || isOwner;
-    if (ret || _enableAdmin) {
-        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-                                                                                  chatroomId:_room.chatroomId
-                                                                                     isOwner:isOwner];
-        profileLiveView.delegate = self;
-        [profileLiveView showFromParentView:self.view];
-    } else {
-        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-                                                                                  chatroomId:_room.chatroomId];
-        profileLiveView.delegate = self;
-        [profileLiveView showFromParentView:self.view];
-    }
+//    BOOL isOwner = _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
+//    BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || isOwner;
+    
+//    if (ret || _enableAdmin) {
+//        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
+//                                                                                  chatroomId:_room.chatroomId
+//                                                                                     isOwner:isOwner];
+//        profileLiveView.delegate = self;
+//        [profileLiveView showFromParentView:self.view];
+//    } else {
+//        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
+//                                                                                  chatroomId:_room.chatroomId];
+//        profileLiveView.delegate = self;
+//        [profileLiveView showFromParentView:self.view];
+//    }
+    
+    
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom];
+    userInfoView.delegate = self;
+    [userInfoView showFromParentView:self.view];
 }
 
 //主播信息卡片
 - (void)didClickAnchorCard:(EaseLiveRoom *)room
 {
     [self.view endEditing:YES];
-    EaseAnchorCardView *anchorCardView = [[EaseAnchorCardView alloc]initWithLiveRoom:room];
-    anchorCardView.delegate = self;
-    [anchorCardView showFromParentView:self.view];
+//    EaseAnchorCardView *anchorCardView = [[EaseAnchorCardView alloc]initWithLiveRoom:room];
+//    anchorCardView.delegate = self;
+//    [anchorCardView showFromParentView:self.view];
+    
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:room.anchor chatroom:_chatroom];
+    userInfoView.delegate = self;
+    [userInfoView showFromParentView:self.view];
+
 }
 
 //成员列表
@@ -584,6 +599,9 @@
     
     ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_chatroom];
     [vc showFromParentView:self.view];
+    
+//    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+//    [memberView showFromParentView:self.view];
 }
 
 #pragma  mark - TapBackgroundViewDelegate
