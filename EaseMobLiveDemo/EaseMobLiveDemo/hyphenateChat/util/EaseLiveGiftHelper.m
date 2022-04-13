@@ -7,41 +7,59 @@
 //
 
 #import "EaseLiveGiftHelper.h"
+#import "ELDGiftModel.h"
 
 @interface EaseLiveGiftHelper()
 
 @property (nonatomic, strong) NSArray *giftNameArray;
+@property (nonatomic, strong) NSArray *giftValueArray;
 
 @end
 
 @implementation EaseLiveGiftHelper
 
 static dispatch_once_t onceToken;
-static EaseLiveGiftHelper *helper_;
+static EaseLiveGiftHelper *giftHelperInstance;
++ (EaseLiveGiftHelper *)sharedInstance {
+    dispatch_once(&onceToken, ^{
+        giftHelperInstance = [[EaseLiveGiftHelper alloc] init];
+//        helper_.giftNameArray = @[@"gift.rose",@"gift.wishs_come_true",@"gift.balloons",@"gift.cake",@"gift.box",@"gift.bouquet",@"gift.dog",@"gift.rings"];
+    });
+    return giftHelperInstance;
+}
+
+- (void)destoryInstance {
+    onceToken = 0;
+    giftHelperInstance = nil;
+}
+
+- (NSArray *)giftNameArray {
+    if (_giftNameArray == nil) {
+        _giftNameArray = @[@"gift.pinkHeart",@"gift.plasticFlower",@"gift.thePushBox",@"gift.bigAce",@"gift.star",@"gift.lollipop",@"gift.diamond",@"gift.crown"];
+    }
+    return _giftNameArray;
+}
+- (NSArray *)giftValueArray {
+    if (_giftValueArray == nil) {
+        _giftValueArray = @[@(1),@(5),@(10),@(20),@(50),@(100),@(500),@(1000)];
+    }
+    return _giftValueArray;
+}
 
 - (NSArray *)giftArray {
-    if(!_giftArray){
+    if( _giftArray == nil){
         NSMutableArray *mutableGiftArray = [[NSMutableArray alloc]init];
         for (int i = 0; i<8; i++) {
-            NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(i+i)] forKey:helper_.giftNameArray[i]];
-            [mutableGiftArray addObject:dict];
+            
+            NSString *giftName = giftHelperInstance.giftNameArray[i];
+            NSNumber *giftValue = giftHelperInstance.giftValueArray[i];
+            ELDGiftModel *giftModel = [[ELDGiftModel alloc] initWithGiftname:giftName giftValue:[giftValue integerValue]];
+            [mutableGiftArray addObject:giftModel];
         }
         _giftArray = [mutableGiftArray copy];
     }
     return _giftArray;
 }
 
-+ (EaseLiveGiftHelper *)sharedInstance {
-    dispatch_once(&onceToken, ^{
-        helper_ = [[EaseLiveGiftHelper alloc] init];
-        helper_.giftNameArray = @[@"gift.rose",@"gift.wishs_come_true",@"gift.balloons",@"gift.cake",@"gift.box",@"gift.bouquet",@"gift.dog",@"gift.rings"];
-    });
-    return helper_;
-}
-
-- (void)destoryInstance {
-    onceToken = 0;
-    helper_ = nil;
-}
 
 @end

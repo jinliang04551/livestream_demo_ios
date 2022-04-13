@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ELDGiftModel.h"
 
 @protocol EaseGiftCellDelegate;
 @interface EaseGiftCell : UICollectionViewCell
@@ -14,14 +15,12 @@
 @property (nonatomic, strong) UIImageView *giftImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *priceLabel;
-
 @property (nonatomic, assign) NSString *giftId;
-
 @property (nonatomic, weak) id<EaseGiftCellDelegate> delegate;
+@property (nonatomic, strong, readonly) ELDGiftModel *giftModel;
 
-- (void)setGiftWithImageName:(NSString*)imageName
-                        name:(NSString*)name
-                       price:(NSString*)price;
+
+- (void)updateWithGiftModel:(ELDGiftModel *)giftModel;
 
 @end
 

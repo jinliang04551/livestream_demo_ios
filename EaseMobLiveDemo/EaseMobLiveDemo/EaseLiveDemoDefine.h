@@ -92,6 +92,9 @@ typedef enum : NSUInteger {
 #define kMemberActionTypeRemoveBlock @"MemberActionTypeRemoveBlock"
 
 
+#define kGiftNameKey @"kGiftNameKey"
+#define kGiftSingleValueKey @"kGiftSingleValueKey"
+
 
 
 

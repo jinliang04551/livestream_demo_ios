@@ -240,8 +240,9 @@ BOOL isAllTheSilence;//全体禁言
         _giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _giftButton.frame = CGRectMake(KScreenWidth - kDefaultSpace - kButtonWitdh, 0, kButtonWitdh, kButtonHeight);
         _giftButton.backgroundColor = [UIColor colorWithRed:240/255.0 green:85/255.0 blue:34/255.0 alpha:1.0];
+         
         _giftButton.layer.cornerRadius = kButtonWitdh / 2;
-        [_giftButton setImage:[UIImage imageNamed:@"ic_Gift"] forState:UIControlStateNormal];
+        [_giftButton setImage:[UIImage imageNamed:@"live_gift"] forState:UIControlStateNormal];
         [_giftButton addTarget:self action:@selector(giftAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _giftButton;
