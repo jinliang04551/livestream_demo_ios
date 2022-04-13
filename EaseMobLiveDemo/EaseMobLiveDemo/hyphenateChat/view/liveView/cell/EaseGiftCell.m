@@ -42,7 +42,7 @@
     [self addSubview:self.priceLabel];
 
     [self.selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(-5.0, 0, 0, 0));
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {

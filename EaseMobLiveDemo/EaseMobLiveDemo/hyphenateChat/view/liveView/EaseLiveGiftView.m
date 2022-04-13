@@ -17,6 +17,7 @@
 #import "ELDGiftModel.h"
 
 #define kBottomViewHeight 320.0f
+#define kSendButtonHeight 32.0f
 
 @interface EaseLiveGiftView () <UICollectionViewDelegate,UICollectionViewDataSource,EaseGiftCellDelegate>
 {
@@ -69,9 +70,13 @@
     [self.bottomView addSubview:self.giftTotalValueLabel];
     [self.bottomView addSubview:self.sendGiftBtn];
 
-
+    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kBottomViewHeight, 0, 0, 0));
+    }];
+    
     [self.giftNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.bottomView.mas_top).offset(15.0);
+        make.top.equalTo(self.bottomView.mas_top).offset(15.0);
+        make.height.equalTo(@(20));
         make.centerX.equalTo(self.bottomView);
         make.bottom.equalTo(self.collectionView.mas_top).offset(-20.0);
     }];
@@ -83,8 +88,9 @@
     }];
     
     [self.sendGiftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-20.0);
+        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0);
         make.right.equalTo(self.bottomView).offset(-20.0);
+        make.height.equalTo(@(kSendButtonHeight));
     }];
 
     [self.giftTotalValueImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,8 +109,6 @@
         make.left.equalTo(self.bottomView.mas_left).offset(20.0);
     }];
     
-    
-
 }
 
 
@@ -120,7 +124,9 @@
         [_collectionView registerClass:[EaseGiftCell class] forCellWithReuseIdentifier:@"giftCollectionCell"];
         [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
         
-        _collectionView.backgroundColor = [UIColor clearColor];
+//        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.backgroundColor = UIColor.redColor;
+        
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
@@ -148,7 +154,7 @@
     if (_giftNameLabel == nil) {
         _giftNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(40.f, 10.f, 40.f, 20.f)];
         _giftNameLabel.text = @"Gifts";
-        _giftNameLabel.font = [UIFont systemFontOfSize:16.f];
+        _giftNameLabel.font = BFont(16.0f);
         _giftNameLabel.textColor = [UIColor whiteColor];
         _giftNameLabel.backgroundColor = [UIColor clearColor];
         _giftNameLabel.textAlignment = NSTextAlignmentCenter;
@@ -401,4 +407,6 @@
 @end
 
 #undef kBottomViewHeight
+#undef kSendButtonHeight
+
 
