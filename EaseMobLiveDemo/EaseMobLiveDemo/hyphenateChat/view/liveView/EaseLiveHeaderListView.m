@@ -57,6 +57,7 @@
 @property (nonatomic, assign) NSInteger occupantsCount;
 @property (nonatomic, strong) UIButton *numberBtn;
 @property (nonatomic, strong) EaseLiveRoom *room;
+@property (nonatomic, strong) UIButton *closeButton;
 
 @end
 
@@ -96,6 +97,7 @@
         [self addSubview:self.liveCastView];
         [self addSubview:self.numberBtn];
         
+        
         [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self);
             make.height.equalTo(@kNumberBtnHeight);
@@ -108,12 +110,32 @@
             make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
         }];
 
-        [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.bottom.equalTo(self.liveCastView);
-            make.height.equalTo(@kNumberBtnHeight);
-            make.width.greaterThanOrEqualTo(@70.0);
-            make.right.equalTo(self).offset(-12.0);
-        }];
+        //when chatroom owner is living
+        if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:room.anchor]) {
+            [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.bottom.equalTo(self.liveCastView);
+                make.height.equalTo(self.liveCastView);
+                make.width.greaterThanOrEqualTo(@70.0);
+                make.right.equalTo(self).offset(-12.0);
+            }];
+        }else {
+            
+            [self addSubview:self.closeButton];
+            
+            [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.bottom.equalTo(self.liveCastView);
+                make.size.height.equalTo(@(30));
+                make.right.equalTo(self).offset(-12.0);
+            }];
+            
+            [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.bottom.equalTo(self.liveCastView);
+                make.height.equalTo(self.liveCastView);
+                make.width.greaterThanOrEqualTo(@70.0);
+                make.right.equalTo(self.closeButton.mas_left).offset(-10.0);
+            }];
+        }
+
         
         [self startTimer];
     }
@@ -180,7 +202,7 @@
 - (EaseLiveCastView*)liveCastView
 {
     if (_liveCastView == nil) {
-        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, 36.0) room:_room];
+        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight) room:_room];
         _liveCastView.backgroundColor = AlphaBlackColor;
 
     }
@@ -211,6 +233,17 @@
     return _numberBtn;
 }
 
+
+- (UIButton *)closeButton
+{
+    if (_closeButton == nil) {
+        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_closeButton setImage:[UIImage imageNamed:@"live_close"] forState:UIControlStateNormal];
+        [_closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeButton;
+}
+
 #pragma Action
 
 - (void)memberListAction
@@ -223,6 +256,13 @@
         [self.delegate didSelectMemberListButton:isOwner currentMemberList:[_room.currentMemberList mutableCopy]];
         _numberBtn.selected = !_numberBtn.selected;
     }
+}
+
+- (void)closeAction {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(willCloseChatroom)]) {
+        [self.delegate willCloseChatroom];
+    }
+
 }
 
 #pragma mark - public

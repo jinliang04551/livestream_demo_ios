@@ -7,7 +7,7 @@
 
 #import "EaseChatView.h"
 #import "EaseInputTextView.h"
-#import "EaseChatCell.h"
+#import "ELDChatMessageCell.h"
 #import "EaseLiveRoom.h"
 #import "EaseCustomSwitch.h"
 #import "EaseEmoticonView.h"
@@ -19,11 +19,15 @@
 
 #define kBarrageAction @"is_barrage_msg"
 
-#define kButtonWitdh 40
+#define kSendTextButtonWitdh 190.0
+#define kSendTextButtonHeight 32.0
+
 #define kButtonHeight 40
 
 #define kDefaultSpace 8.f
 #define kDefaulfLeftSpace 10.f
+
+#define kExitButtonHeight 25.0
 
 NSMutableDictionary *audienceNickname;//直播间观众昵称库
 
@@ -55,6 +59,8 @@ NSMutableDictionary *audienceNickname;//直播间观众昵称库
 @property (strong, nonatomic) UIView *bottomView;
 @property (strong, nonatomic) UIButton *sendTextButton;
 @property (strong, nonatomic) UIButton *changeCameraButton;
+@property (strong, nonatomic) UIButton *chatListShowButton;
+
 @property (strong, nonatomic) UIButton *adminButton;//成员列表
 @property (strong, nonatomic) UIButton *exitButton;//退出
 @property (strong, nonatomic) UIButton *likeButton;//喜欢/赞
@@ -68,6 +74,9 @@ NSMutableDictionary *audienceNickname;//直播间观众昵称库
 
 @property (strong, nonatomic) UIView *faceView;
 @property (strong, nonatomic) UIView *activityView;
+
+@property (assign, nonatomic) BOOL isPublish;
+@property (assign, nonatomic) BOOL isHiddenChatListView;
 
 @end
 
@@ -85,42 +94,104 @@ BOOL isAllTheSilence;//全体禁言
         _isBarrageInfo = false;
         _praiseInterval = 0;
         _praiseCount = 0;
+        self.isPublish = isPublish;
+        
         [[AgoraChatClient sharedClient].chatManager addDelegate:self delegateQueue:dispatch_get_main_queue()];
         [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
         self.datasource = [NSMutableArray array];
         self.conversation = [[AgoraChatClient sharedClient].chatManager getConversation:_chatroomId type:AgoraChatConversationTypeChatRoom createIfNotExist:NO];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatKeyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-        
-        [self addSubview:self.tableView];
-
-        //底部消息发送按钮
-        [self addSubview:self.bottomSendMsgView];
-        [self.bottomSendMsgView addSubview:self.barrageSwitch];
-        [self.bottomSendMsgView addSubview:self.textView];
-        [self.bottomSendMsgView addSubview:self.sendButton];
-        [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.textView);
-            make.left.equalTo(self.textView.mas_right).offset(5);
-            make.right.equalTo(self).offset(-5);
-            make.height.equalTo(@30);
-        }];
-        //底部功能按钮
-        [self addSubview:self.bottomView];
-        [self.bottomView addSubview:self.sendTextButton];
-        [self.bottomView addSubview:self.exitButton];
-        if (!isPublish) {
-            [self.bottomView addSubview:self.likeButton];
-        } else {
-            [self.bottomView addSubview:self.changeCameraButton];
-        }
-        [self.bottomView addSubview:self.giftButton];
-        self.bottomSendMsgView.hidden = YES;
-        _curtime = (long long)([[NSDate date] timeIntervalSince1970]*1000);
+                _curtime = (long long)([[NSDate date] timeIntervalSince1970]*1000);
         _defaultHeight = self.height;
+        
+        [self placeAndLayoutSubviews];
 
     }
     audienceNickname = [[NSMutableDictionary alloc]init];
     return self;
+}
+
+- (void)placeAndLayoutSubviews {
+    self.backgroundColor = UIColor.yellowColor;
+    
+    [self addSubview:self.tableView];
+
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 0, 0, 50.0));
+//    }];
+    
+    //底部消息发送按钮
+    [self placeAndLayoutBottomSendView];
+    //底部功能按钮
+    [self placeAndLayoutBottomView];
+
+}
+
+- (void)placeAndLayoutBottomSendView {
+    [self addSubview:self.bottomSendMsgView];
+    self.bottomSendMsgView.hidden = YES;
+    
+    [self.bottomSendMsgView addSubview:self.barrageSwitch];
+    [self.bottomSendMsgView addSubview:self.textView];
+    [self.bottomSendMsgView addSubview:self.sendButton];
+    [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.textView);
+        make.left.equalTo(self.textView.mas_right).offset(5);
+        make.right.equalTo(self).offset(-5);
+        make.height.equalTo(@30);
+    }];
+
+}
+
+- (void)placeAndLayoutBottomView {
+    [self addSubview:self.bottomView];
+    [self.bottomView addSubview:self.sendTextButton];
+    [self.bottomView addSubview:self.chatListShowButton];
+
+    [self.sendTextButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.bottomView);
+        make.left.equalTo(self.bottomView).offset(12.0);
+        make.width.equalTo(@(kSendTextButtonWitdh));
+        make.height.equalTo(@(kSendTextButtonHeight));
+    }];
+
+
+    if (self.isPublish) {
+        [self.bottomView addSubview:self.exitButton];
+        [self.bottomView addSubview:self.changeCameraButton];
+        
+        [self.exitButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.bottomView);
+            make.right.equalTo(self.bottomView.mas_right).offset(-15.0);
+            make.size.equalTo(@(kExitButtonHeight));
+        }];
+
+        [self.changeCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.bottomView);
+            make.right.equalTo(self.exitButton.mas_left).offset(-15.0);
+            make.size.equalTo(self.exitButton);
+        }];
+        
+        [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.bottomView);
+            make.right.equalTo(self.changeCameraButton.mas_left).offset(-15.0);
+            make.size.equalTo(self.exitButton);
+        }];
+    }else {
+        [self.bottomView addSubview:self.giftButton];
+        [self.giftButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.bottomView);
+            make.right.equalTo(self.bottomView.mas_right).offset(-15.0);
+            make.size.equalTo(@(kExitButtonHeight));
+        }];
+
+        [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.bottomView);
+            make.right.equalTo(self.giftButton.mas_left).offset(-15.0);
+            make.size.equalTo(self.giftButton);
+        }];
+    }
+
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -171,6 +242,7 @@ BOOL isAllTheSilence;//全体禁言
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollsToTop = NO;
         _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.backgroundColor = UIColor.redColor;
     }
     return _tableView;
 }
@@ -188,9 +260,16 @@ BOOL isAllTheSilence;//全体禁言
 {
     if (_sendTextButton == nil) {
         _sendTextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sendTextButton.frame = CGRectMake(kDefaultSpace*1.5, 0, kButtonWitdh, kButtonHeight);
-        [_sendTextButton setImage:[UIImage imageNamed:@"chat"] forState:UIControlStateNormal];
+        _sendTextButton.frame = CGRectMake(kDefaultSpace*1.5, 0, kSendTextButtonWitdh, kButtonHeight);
+//        [_sendTextButton setImage:ImageWithName(@"send_text_bg") forState:UIControlStateNormal];
+        _sendTextButton.layer.cornerRadius = kSendTextButtonHeight* 0.5;
+        _sendTextButton.layer.borderWidth = 1.0;
+        _sendTextButton.layer.borderColor = TextLabelGrayColor.CGColor;
+        
         [_sendTextButton addTarget:self action:@selector(sendTextAction) forControlEvents:UIControlEventTouchUpInside];
+        [_sendTextButton setTitle:@"Say Hi to your Fans..." forState:UIControlStateNormal];
+        _sendTextButton.titleLabel.font = NFont(14.0f);
+        [_sendTextButton setTitleColor:TextLabelGrayColor forState:UIControlStateNormal];
     }
     return _sendTextButton;
 }
@@ -199,23 +278,34 @@ BOOL isAllTheSilence;//全体禁言
 {
     if (_changeCameraButton == nil) {
         _changeCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _changeCameraButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kButtonWitdh, 0, kButtonWitdh, kButtonHeight);
-        [_changeCameraButton setImage:[UIImage imageNamed:@"reversal_camera"] forState:UIControlStateNormal];
+        _changeCameraButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
+        [_changeCameraButton setImage:[UIImage imageNamed:@"flip_camera_ios"] forState:UIControlStateNormal];
         [_changeCameraButton addTarget:self action:@selector(changeCameraAction) forControlEvents:UIControlEventTouchUpInside];
+
     }
     return _changeCameraButton;
+}
+
+- (UIButton *)chatListShowButton {
+    if (_chatListShowButton == nil) {
+        _chatListShowButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _chatListShowButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
+        [_chatListShowButton setImage:ImageWithName(@"live_chatlist_hidden") forState:UIControlStateNormal];
+        
+        [_chatListShowButton addTarget:self action:@selector(chatListShowButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _chatListShowButton;
 }
 
 - (UIButton*)exitButton
 {
     if (_exitButton == nil) {
         _exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _exitButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*3 - 3*kButtonWitdh, 0, kButtonWitdh, kButtonHeight);
-        [_exitButton setImage:[UIImage imageNamed:@"ic_exit"] forState:UIControlStateNormal];
-        _exitButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
-        _exitButton.backgroundColor = [UIColor colorWithRed:255/255.0 green:92/255.0 blue:92/255.0 alpha:0.25];
-        _exitButton.layer.cornerRadius = kButtonWitdh / 2;
+        _exitButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*3 - 3*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
+        [_exitButton setImage:[UIImage imageNamed:@"stop_live"] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
+        
     }
     return _exitButton;
 }
@@ -224,9 +314,9 @@ BOOL isAllTheSilence;//全体禁言
 {
     if (_likeButton == nil) {
         _likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _likeButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kButtonWitdh, 0, kButtonWitdh, kButtonHeight);
+        _likeButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         _likeButton.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.25];
-        _likeButton.layer.cornerRadius = kButtonWitdh / 2;
+        _likeButton.layer.cornerRadius = kSendTextButtonWitdh / 2;
         [_likeButton setImage:[UIImage imageNamed:@"ic_praise"] forState:UIControlStateNormal];
         [_likeButton setImage:[UIImage imageNamed:@"ic_praised"] forState:UIControlStateHighlighted];
         [_likeButton addTarget:self action:@selector(praiseAction) forControlEvents:UIControlEventTouchUpInside];
@@ -238,10 +328,7 @@ BOOL isAllTheSilence;//全体禁言
 {
     if (_giftButton == nil) {
         _giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _giftButton.frame = CGRectMake(KScreenWidth - kDefaultSpace - kButtonWitdh, 0, kButtonWitdh, kButtonHeight);
-        _giftButton.backgroundColor = [UIColor colorWithRed:240/255.0 green:85/255.0 blue:34/255.0 alpha:1.0];
-         
-        _giftButton.layer.cornerRadius = kButtonWitdh / 2;
+        _giftButton.frame = CGRectMake(KScreenWidth - kDefaultSpace - kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         [_giftButton setImage:[UIImage imageNamed:@"live_gift"] forState:UIControlStateNormal];
         [_giftButton addTarget:self action:@selector(giftAction) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -252,7 +339,7 @@ BOOL isAllTheSilence;//全体禁言
 {
     if (_adminButton == nil) {
         _adminButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _adminButton.frame = CGRectMake(CGRectGetMaxX(_sendTextButton.frame) + kDefaultSpace*2, 0, kButtonWitdh, kButtonHeight);
+        _adminButton.frame = CGRectMake(CGRectGetMaxX(_sendTextButton.frame) + kDefaultSpace*2, 0, kSendTextButtonWitdh, kButtonHeight);
         [_adminButton setImage:[UIImage imageNamed:@"list"] forState:UIControlStateNormal];
         //[_adminButton addTarget:self action:@selector(adminAction) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -420,8 +507,10 @@ BOOL isAllTheSilence;//全体禁言
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
-    return [EaseChatCell heightForMessage:message];
+//    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
+//    return [ELDChatMessageCell heightForMessage:message];
+    
+    return 44.0f;
 }
 
 #pragma mark - UITableViewDataSource
@@ -438,15 +527,14 @@ BOOL isAllTheSilence;//全体禁言
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier = @"cell";
-    EaseChatCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    ELDChatMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDChatMessageCell reuseIdentifier]];
     if (cell == nil) {
-        cell = [[EaseChatCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[ELDChatMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDChatMessageCell reuseIdentifier]];
     }
     if (!self.datasource || [self.datasource count] < 1)
         return nil;
     AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
-    [cell setMesssage:message liveroom:_room];
+    [cell setMesssage:message chatroom:_chatroom];
     return cell;
 }
 
@@ -898,6 +986,22 @@ BOOL isAllTheSilence;//全体禁言
     }
 }
 
+- (void)chatListShowButtonAction:(id)sender {
+  
+    self.isHiddenChatListView = !self.isHiddenChatListView;
+    
+    
+    if (self.isHiddenChatListView) {
+        [_chatListShowButton setImage:ImageWithName(@"live_chatlist_normal") forState:UIControlStateNormal];
+    }else {
+        [_chatListShowButton setImage:ImageWithName(@"live_chatlist_hidden") forState:UIControlStateNormal];
+    }
+    
+    self.tableView.hidden = self.isHiddenChatListView;
+    self.sendTextButton.hidden = self.isHiddenChatListView;
+  
+}
+
 - (void)exitAction
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectedExitButton)]) {
@@ -989,3 +1093,7 @@ BOOL isAllTheSilence;//全体禁言
 }
 
 @end
+
+#undef kSendTextButtonWitdh
+#undef kExitButtonHeight
+#undef kSendTextButtonHeight

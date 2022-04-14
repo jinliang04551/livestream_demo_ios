@@ -16,6 +16,8 @@
 
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList;
 
+- (void)willCloseChatroom;
+
 @end
 
 @class EasePublishModel;

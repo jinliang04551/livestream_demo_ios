@@ -488,7 +488,7 @@
 - (EaseChatView*)chatview
 {
     if (_chatview == nil) {
-        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - 208, CGRectGetWidth(self.view.bounds), 200) room:_room isPublish:YES customMsgHelper:_customMsgHelper];
+        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) room:_room isPublish:YES customMsgHelper:_customMsgHelper];
         _chatview.delegate = self;
     }
     return _chatview;

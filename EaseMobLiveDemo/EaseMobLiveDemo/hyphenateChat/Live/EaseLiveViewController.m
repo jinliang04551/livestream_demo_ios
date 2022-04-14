@@ -503,6 +503,7 @@
         _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 40.f) room:_room];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
+        _headerListView.backgroundColor = UIColor.blueColor;
     }
     return _headerListView;
 }
@@ -522,7 +523,7 @@
 - (EaseChatView*)chatview
 {
     if (_chatview == nil) {
-        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - 208, CGRectGetWidth(self.view.frame), 200) room:_room isPublish:NO customMsgHelper:_customMsgHelper];
+        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];
         _chatview.delegate = self;
     }
     return _chatview;
@@ -603,6 +604,10 @@
 //    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
 //    memberView.delegate = self;
 //    [memberView showFromParentView:self.view];
+}
+
+- (void)willCloseChatroom {
+    [self closeButtonAction];
 }
 
 #pragma  mark - TapBackgroundViewDelegate
