@@ -169,7 +169,6 @@
             make.left.equalTo(self.headImageView.mas_right).offset(5.f);
             make.right.equalTo(_liveHeader).offset(-5.0f);
         }];
-        _liveHeader.backgroundColor = UIColor.yellowColor;
         
     }
     return _liveHeader;

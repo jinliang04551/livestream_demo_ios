@@ -107,6 +107,7 @@
     [self.countCaculateView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.sendGiftBtn);
         make.left.equalTo(self.bottomView.mas_left).offset(20.0);
+        make.height.equalTo(@(kSendButtonHeight));
     }];
     
 }
@@ -158,7 +159,6 @@
         _giftNameLabel.textColor = [UIColor whiteColor];
         _giftNameLabel.backgroundColor = [UIColor clearColor];
         _giftNameLabel.textAlignment = NSTextAlignmentCenter;
-        _giftNameLabel.backgroundColor = UIColor.yellowColor;
     }
     return _giftNameLabel;
 }
@@ -166,6 +166,9 @@
 - (ELDCountCaculateView *)countCaculateView {
     if (_countCaculateView == nil) {
         _countCaculateView = [[ELDCountCaculateView alloc] init];
+        _countCaculateView.layer.cornerRadius = kSendButtonHeight* 0.5;
+        _countCaculateView.layer.borderWidth = 1.0;
+        _countCaculateView.layer.borderColor = TextLabelGrayColor.CGColor;
         
         ELD_WS
         _countCaculateView.tapBlock = ^{
@@ -173,11 +176,27 @@
         };
         
         _countCaculateView.countBlock = ^(NSInteger count) {
-            
+            [weakSelf updateGiftTotalValueWithCount:count];
         };
         
     }
     return _countCaculateView;
+}
+
+- (void)updateGiftTotalValueWithCount:(NSInteger)count {
+    if (self.selectedGiftModel) {
+        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
+        
+        NSAttributedString *attributeString = [ELDUtil attributeContent:@"Subtotal:" color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
+        
+        NSAttributedString *totalAttString = [ELDUtil attributeContent:[NSString stringWithFormat:@" %@",@(self.selectedGiftModel.giftValue * count)] color:TextLabelWhiteColor font:Font(@"PingFang SC",14.0)];
+        
+        [mutableAttString appendAttributedString:attributeString];
+        [mutableAttString appendAttributedString:totalAttString];
+
+        self.giftTotalValueLabel.attributedText = mutableAttString;
+    }
+
 }
 
 - (UIView *)selectedGiftNumView
@@ -273,7 +292,6 @@
         _giftTotalValueLabel.textColor = [UIColor whiteColor];
         _giftTotalValueLabel.font = [UIFont systemFontOfSize:14.f];
         _giftTotalValueLabel.textAlignment = NSTextAlignmentCenter;
-        _giftTotalValueLabel.text = @"subTotal:10000";
     }
     return _giftTotalValueLabel;
 }

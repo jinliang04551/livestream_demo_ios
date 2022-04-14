@@ -8,14 +8,15 @@
 
 #import "ELDCountCaculateView.h"
 
-#define kPlusButtonHeight 36.0f
+#define kPlusButtonHeight 20.0
+#define kBgViewHeight 36.0f
 
 @interface ELDCountCaculateView ()
 
 @property (nonatomic, strong) UIButton *plusButton;
 @property (nonatomic, strong) UIButton *minusButton;
 @property (nonatomic, strong) UILabel *countLabel;
-@property (nonatomic, strong) UIImageView *bgImageView;
+@property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, assign) NSInteger giftCount;
 @property (nonatomic, strong)UITapGestureRecognizer *tapGestureRecognizer;
 
@@ -33,28 +34,27 @@
 
 - (void)placeAndLayoutSubviews {
 
-    self.backgroundColor = UIColor.yellowColor;
     [self addGestureRecognizer:self.tapGestureRecognizer];
     
-//    [self addSubview:self.bgImageView];
-    [self addSubview:self.minusButton];
-    [self addSubview:self.countLabel];
-    [self addSubview:self.plusButton];
+    [self addSubview:self.bgView];
+    [self.bgView addSubview:self.minusButton];
+    [self.bgView addSubview:self.countLabel];
+    [self.bgView addSubview:self.plusButton];
     
-//    [self.bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self).insets(UIEdgeInsetsMake(2.0, 2.0, 2.0, 2.0));
-//    }];
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(2.0, 2.0, 2.0, 2.0));
+    }];
     
     [self.minusButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(@(kPlusButtonHeight));
-        make.left.equalTo(self).offset(5.0);
+        make.left.equalTo(self.bgView).offset(5.0);
         make.right.equalTo(self.countLabel.mas_left).offset(-10.0);
         make.centerY.equalTo(self.countLabel);
     }];
 
     [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
-        make.centerY.equalTo(self);
+        make.centerX.equalTo(self.bgView);
+        make.centerY.equalTo(self.bgView);
         make.width.equalTo(@(24.0));
     }];
 
@@ -62,7 +62,7 @@
         make.size.equalTo(self.minusButton);
         make.centerY.equalTo(self.countLabel);
         make.left.equalTo(self.countLabel.mas_right).offset(10.0);
-        make.right.equalTo(self).offset(-5.0);
+        make.right.equalTo(self.bgView).offset(-5.0);
     }];
     
 }
@@ -75,6 +75,7 @@
         self.tapBlock();
     }
 }
+
 
 - (void)minusButtonAction {
     self.giftCount--;
@@ -111,8 +112,6 @@
         [_plusButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _plusButton.titleLabel.font = NFont(14.0f);
         [_plusButton addTarget:self action:@selector(plusButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _plusButton.backgroundColor = UIColor.blueColor;
-
     }
     return _plusButton;
 }
@@ -124,7 +123,6 @@
         [_minusButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _minusButton.titleLabel.font = NFont(14.0f);
         [_minusButton addTarget:self action:@selector(minusButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        _minusButton.backgroundColor = UIColor.blueColor;
         
     }
     return _minusButton;
@@ -137,18 +135,15 @@
         _countLabel.font = NFont(14.0f);
         _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.text = [@(self.giftCount) stringValue];
-        _countLabel.backgroundColor = UIColor.redColor;
     }
     return _countLabel;
 }
 
-- (UIImageView *)bgImageView {
-    if (_bgImageView == nil) {
-        _bgImageView = [[UIImageView alloc] initWithImage:ImageWithName(@"caculate_bg")];
-        _bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _bgImageView.layer.masksToBounds = YES;
+- (UIView *)bgView {
+    if (_bgView == nil) {
+        _bgView = [[UIView alloc] init];
     }
-    return _bgImageView;
+    return _bgView;
 }
 
 
@@ -164,3 +159,4 @@
 @end
 
 #undef kPlusButtonHeight
+#undef kBgViewHeight

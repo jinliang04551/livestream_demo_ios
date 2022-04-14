@@ -111,9 +111,8 @@ BOOL isAllTheSilence;//全体禁言
     return self;
 }
 
+
 - (void)placeAndLayoutSubviews {
-    self.backgroundColor = UIColor.yellowColor;
-    
     [self addSubview:self.tableView];
 
 //    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -242,7 +241,6 @@ BOOL isAllTheSilence;//全体禁言
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollsToTop = NO;
         _tableView.showsVerticalScrollIndicator = NO;
-        _tableView.backgroundColor = UIColor.redColor;
     }
     return _tableView;
 }
@@ -261,7 +259,6 @@ BOOL isAllTheSilence;//全体禁言
     if (_sendTextButton == nil) {
         _sendTextButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _sendTextButton.frame = CGRectMake(kDefaultSpace*1.5, 0, kSendTextButtonWitdh, kButtonHeight);
-//        [_sendTextButton setImage:ImageWithName(@"send_text_bg") forState:UIControlStateNormal];
         _sendTextButton.layer.cornerRadius = kSendTextButtonHeight* 0.5;
         _sendTextButton.layer.borderWidth = 1.0;
         _sendTextButton.layer.borderColor = TextLabelGrayColor.CGColor;
