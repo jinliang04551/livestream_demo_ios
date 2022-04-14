@@ -223,6 +223,7 @@
 		C04755252807CBB60094EAD3 /* gift.crown@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755112807CBB60094EAD3 /* gift.crown@3x.png */; };
 		C04755262807CBB60094EAD3 /* gift_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755122807CBB60094EAD3 /* gift_selected@2x.png */; };
 		C0475529280809410094EAD3 /* ELDChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475528280809410094EAD3 /* ELDChatMessageCell.m */; };
+		C047552C280824230094EAD3 /* ELDWatchMemberAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */; };
@@ -663,6 +664,8 @@
 		C04755122807CBB60094EAD3 /* gift_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift_selected@2x.png"; sourceTree = "<group>"; };
 		C0475527280809410094EAD3 /* ELDChatMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDChatMessageCell.h; sourceTree = "<group>"; };
 		C0475528280809410094EAD3 /* ELDChatMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDChatMessageCell.m; sourceTree = "<group>"; };
+		C047552A280824230094EAD3 /* ELDWatchMemberAvatarsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDWatchMemberAvatarsView.h; sourceTree = "<group>"; };
+		C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDWatchMemberAvatarsView.m; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersContainerViewController.h; sourceTree = "<group>"; };
@@ -1104,6 +1107,8 @@
 				3C9E31AE260C7B4200CC3E3F /* EaseKeyBoardView.m */,
 				3C9E31D4260C7B4200CC3E3F /* EaseLiveCastView.h */,
 				3C9E31B8260C7B4200CC3E3F /* EaseLiveCastView.m */,
+				C047552A280824230094EAD3 /* ELDWatchMemberAvatarsView.h */,
+				C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */,
 				3C9E31C7260C7B4200CC3E3F /* EaseLiveGiftView.h */,
 				3C9E319A260C7B4200CC3E3F /* EaseLiveGiftView.m */,
 				C0602F192806BBA600D39575 /* ELDCountCaculateView.h */,
@@ -2060,6 +2065,7 @@
 				D2F4E2721D12C8AB00BB7E1A /* main.m in Sources */,
 				C08DFC7327F5AFD100862ADF /* ELDUtil.m in Sources */,
 				C08DFC6827F592F300862ADF /* ELDUserHeaderView.m in Sources */,
+				C047552C280824230094EAD3 /* ELDWatchMemberAvatarsView.m in Sources */,
 				C08DFC2427F1CC4300862ADF /* ELDNoDataPlaceHolderView.m in Sources */,
 				C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */,
 				C08DFC4527F31BFA00862ADF /* ELDLiveContainerViewController.m in Sources */,

@@ -7,9 +7,9 @@
 //
 
 #import "EaseLiveHeaderListView.h"
-
 #import "EaseLiveCastView.h"
 #import "EaseLiveRoom.h"
+#import "ELDWatchMemberAvatarsView.h"
 
 #define kNumberBtnHeight 36.0f
 
@@ -53,6 +53,8 @@
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) ELDWatchMemberAvatarsView *watchMemberAvatarsView;
+
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) NSInteger occupantsCount;
 @property (nonatomic, strong) UIButton *numberBtn;
@@ -93,7 +95,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _room = room;
-        [self addSubview:self.collectionView];
+        [self addSubview:self.watchMemberAvatarsView];
         [self addSubview:self.liveCastView];
         [self addSubview:self.numberBtn];
         
@@ -104,9 +106,8 @@
             make.left.equalTo(self).offset(12.0f);
         }];
         
-        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.watchMemberAvatarsView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.bottom.equalTo(self.liveCastView);
-            make.left.equalTo(self.liveCastView.mas_right).offset(kEaseLiveDemoPadding * 5);
             make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
         }];
 
@@ -124,7 +125,7 @@
             
             [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.bottom.equalTo(self.liveCastView);
-                make.size.height.equalTo(@(30));
+                make.size.equalTo(@kNumberBtnHeight);
                 make.right.equalTo(self).offset(-12.0);
             }];
             
@@ -133,6 +134,8 @@
                 make.height.equalTo(self.liveCastView);
                 make.width.greaterThanOrEqualTo(@70.0);
                 make.right.equalTo(self.closeButton.mas_left).offset(-10.0);
+//                make.right.equalTo(self).offset(-10.0);
+
             }];
         }
 
@@ -198,6 +201,12 @@
     return _collectionView;
 }
 
+- (ELDWatchMemberAvatarsView *)watchMemberAvatarsView {
+    if (_watchMemberAvatarsView == nil) {
+        _watchMemberAvatarsView = [[ELDWatchMemberAvatarsView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    }
+    return _watchMemberAvatarsView;
+}
 
 - (EaseLiveCastView*)liveCastView
 {
@@ -282,11 +291,15 @@
                 [weakself.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)weakself.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
                 [weakself.dataArray removeAllObjects];
                 [weakself.dataArray addObjectsFromArray:_room.currentMemberList];
-                [weakself.collectionView reloadData];
+//                [weakself.collectionView reloadData];
+                [weakself.watchMemberAvatarsView updateWatchersAvatarWithUserIds:weakself.dataArray];
             });
         }
     }];
 }
+
+
+
 /*
 - (void)joinChatroomWithUsername:(NSString *)username
 {

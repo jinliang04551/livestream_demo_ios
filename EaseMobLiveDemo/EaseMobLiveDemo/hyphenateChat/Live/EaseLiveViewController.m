@@ -500,10 +500,9 @@
 - (EaseLiveHeaderListView*)headerListView
 {
     if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 40.f) room:_room];
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) room:_room];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
-        _headerListView.backgroundColor = UIColor.blueColor;
     }
     return _headerListView;
 }

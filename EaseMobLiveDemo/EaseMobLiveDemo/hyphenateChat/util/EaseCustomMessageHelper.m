@@ -15,6 +15,7 @@
 #import "EaseHeartFlyView.h"
 #import "EaseDefaultDataHelper.h"
 
+
 extern NSMutableDictionary *audienceNickname;
 extern NSArray<NSString*> *nickNameArray;
 extern NSMutableDictionary *anchorInfoDic;
@@ -95,8 +96,8 @@ extern NSMutableDictionary *anchorInfoDic;
         NSString *giftid = [customBody.ext objectForKey:@"id"];
         if (giftid) {
             int index = [[giftid substringFromIndex:5] intValue];
-            NSDictionary *dict = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
-            msgContent = [NSString stringWithFormat:@"赠送了 %@x%@",NSLocalizedString((NSString *)[dict allKeys][0],@""),(NSString*)[customBody.ext objectForKey:@"num"]];
+            ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
+            msgContent = [NSString stringWithFormat:@"赠送了 %@x%@",NSLocalizedString(model.giftname,@""),(NSString*)[customBody.ext objectForKey:@"num"]];
         } else {
             msgContent = @"";
         }
