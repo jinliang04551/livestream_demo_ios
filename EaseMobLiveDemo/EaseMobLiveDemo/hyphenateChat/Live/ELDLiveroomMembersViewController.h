@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom withMemberType:(ELDMemberVCType)memberVCType;
 
+- (void)updateUI;
+
 @end
 
 NS_ASSUME_NONNULL_END

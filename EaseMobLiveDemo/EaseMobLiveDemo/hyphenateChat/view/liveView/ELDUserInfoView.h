@@ -12,9 +12,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDUserInfoView : EaseBaseSubView
-
+//from member list
 - (instancetype)initWithUsername:(NSString *)username
-                        chatroom:(AgoraChatroom *)chatroom;
+                        chatroom:(AgoraChatroom *)chatroom
+                memberVCListType:(ELDMemberVCListType)memberVCListType;
+
 
 @end
 

@@ -81,6 +81,13 @@ typedef enum : NSUInteger {
     ELDMemberActionTypeRemoveBlock,
 } ELDMemberActionType;
 
+typedef enum : NSUInteger {
+    ELDMemberVCListTypeAll = 1,
+    ELDMemberVCListTypeAdmin,
+    ELDMemberVCListTypeWhite,
+    ELDMemberVCListTypeMute,
+    ELDMemberVCListTypeBlock,
+} ELDMemberVCListType;
 
 #define kMemberActionTypeMakeAdmin @"MemberActionTypeMakeAdmin"
 #define kMemberActionTypeRemoveAdmin @"MemberActionTypeRemoveAdmin"
@@ -97,7 +104,6 @@ typedef enum : NSUInteger {
 
 
 #define kChatViewHeight 320.0
-
 
 
 #endif /* EaseLiveDemoDefine_h */

@@ -11,6 +11,8 @@
 @implementation ELDTitleSwitchCell
 
 - (void)prepare {
+    self.nameLabel.textColor = TextLabelBlackColor;
+    
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.aSwitch];
 }

@@ -24,10 +24,7 @@
     if (self) {
         self.chatroom = aChatroom;
         self.memberVCType = memberVCType;
-        
-        
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
-        
+                
     }
     
     return self;
@@ -111,6 +108,10 @@
     
 }
 
+#pragma mark public method
+- (void)updateUI {
+    [self.table reloadData];
+}
 
 #pragma mark refresh and load more
 - (void)didStartRefresh {

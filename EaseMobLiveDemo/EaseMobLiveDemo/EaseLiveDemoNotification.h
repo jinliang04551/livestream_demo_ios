@@ -9,10 +9,13 @@
 #ifndef EaseLiveDemoNotification_h
 #define EaseLiveDemoNotification_h
 
+//login
 #define  ELDloginStateChange @"loginStateChange"
 #define  ELDautoRegistAccount @"autoRegistAccount"
 #define  ELDUSERINFO_UPDATE  @"USERINFO_UPDATE"
 
+//chatroom
+#define  ELDChatroomUpdateNotification  @"ELDChatroomUpdateNotification"
 
 
 #endif /* EaseLiveDemoNotification_h */

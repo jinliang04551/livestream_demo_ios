@@ -46,7 +46,7 @@ MISScrollPageControllerDelegate>
     self = [self init];
     if (self) {
         self.chatroom = aChatroom;
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatroomUpdateNotification:) name:ELDChatroomUpdateNotification object:nil];
 
     }
     return self;
@@ -241,13 +241,13 @@ MISScrollPageControllerDelegate>
 //    }
 }
 
-- (void)updateWithGroup:(AgoraChatGroup *)agoraGroup {
+- (void)chatroomUpdateNotification:(AgoraChatroom *)chatroom {
 //    self.group = agoraGroup;
-//    [self updateNavTitle];
 //    [self.allVC updateUI];
 //    [self.adminListVC updateUI];
 //    [self.blockListVC updateUI];
 //    [self.mutedListVC updateUI];
+    
 }
 
 #pragma mark action
