@@ -12,6 +12,7 @@
 #import "ELDEditUserInfoViewController.h"
 #import "ELDUserHeaderView.h"
 #import "ELDTitleDetailCell.h"
+#import "LXCalendarOneController.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -158,10 +159,20 @@
 }
 
 - (void)modifyBirth {
-    [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:@"" withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-            
-    }];
-
+    LXCalendarOneController *vc = [[LXCalendarOneController alloc] init];
+    vc.selectedBlock = ^(NSString *dateString) {
+        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:dateString withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+            if (aError == nil) {
+                self.userInfo = aUserInfo;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.table reloadData];
+                });
+            }else {
+                [self showHint:aError.description];
+            }
+        }];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

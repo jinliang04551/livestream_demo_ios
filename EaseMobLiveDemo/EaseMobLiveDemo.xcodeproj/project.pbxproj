@@ -226,6 +226,21 @@
 		C047552C280824230094EAD3 /* ELDWatchMemberAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */; };
 		C047552F280912F00094EAD3 /* UIView+Bottom.m in Sources */ = {isa = PBXBuildFile; fileRef = C047552E280912F00094EAD3 /* UIView+Bottom.m */; };
 		C0475535280913BE0094EAD3 /* UIViewController+Bottom.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475534280913BE0094EAD3 /* UIViewController+Bottom.m */; };
+		C047554B28095CCE0094EAD3 /* LXCalendarOneController.m in Sources */ = {isa = PBXBuildFile; fileRef = C047553728095CCE0094EAD3 /* LXCalendarOneController.m */; };
+		C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = C047553A28095CCE0094EAD3 /* LXCalendarWeekView.m */; };
+		C047554D28095CCE0094EAD3 /* LXCalendarHearder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C047553C28095CCE0094EAD3 /* LXCalendarHearder.xib */; };
+		C047554E28095CCE0094EAD3 /* LXCalendarHearder.m in Sources */ = {isa = PBXBuildFile; fileRef = C047553E28095CCE0094EAD3 /* LXCalendarHearder.m */; };
+		C047554F28095CCE0094EAD3 /* LXCalenderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C047553F28095CCE0094EAD3 /* LXCalenderCell.xib */; };
+		C047555028095CCE0094EAD3 /* LXCalendarDayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C047554128095CCE0094EAD3 /* LXCalendarDayModel.m */; };
+		C047555128095CCE0094EAD3 /* LXCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C047554328095CCE0094EAD3 /* LXCalendarView.m */; };
+		C047555228095CCE0094EAD3 /* NSDate+GFCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = C047554528095CCE0094EAD3 /* NSDate+GFCalendar.m */; };
+		C047555328095CCE0094EAD3 /* LXCalendarMonthModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C047554728095CCE0094EAD3 /* LXCalendarMonthModel.m */; };
+		C047555428095CCE0094EAD3 /* LXCalenderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C047554928095CCE0094EAD3 /* LXCalenderCell.m */; };
+		C047556028095E370094EAD3 /* UIView+FTCornerdious.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555928095E370094EAD3 /* UIView+FTCornerdious.m */; };
+		C047556128095E370094EAD3 /* UIView+LX_Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555B28095E370094EAD3 /* UIView+LX_Frame.m */; };
+		C047556228095E370094EAD3 /* UILabel+LXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555C28095E370094EAD3 /* UILabel+LXLabel.m */; };
+		C047556328095E370094EAD3 /* LxButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555D28095E370094EAD3 /* LxButton.m */; };
+		C047556428095E370094EAD3 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555E28095E370094EAD3 /* UIColor+Expanded.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */; };
@@ -673,6 +688,36 @@
 		C047552E280912F00094EAD3 /* UIView+Bottom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Bottom.m"; sourceTree = "<group>"; };
 		C0475533280913BE0094EAD3 /* UIViewController+Bottom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Bottom.h"; sourceTree = "<group>"; };
 		C0475534280913BE0094EAD3 /* UIViewController+Bottom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Bottom.m"; sourceTree = "<group>"; };
+		C047553728095CCE0094EAD3 /* LXCalendarOneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarOneController.m; sourceTree = "<group>"; };
+		C047553928095CCE0094EAD3 /* NSDate+GFCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+GFCalendar.h"; sourceTree = "<group>"; };
+		C047553A28095CCE0094EAD3 /* LXCalendarWeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarWeekView.m; sourceTree = "<group>"; };
+		C047553B28095CCE0094EAD3 /* LXCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarView.h; sourceTree = "<group>"; };
+		C047553C28095CCE0094EAD3 /* LXCalendarHearder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LXCalendarHearder.xib; sourceTree = "<group>"; };
+		C047553D28095CCE0094EAD3 /* LXCalendarMonthModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarMonthModel.h; sourceTree = "<group>"; };
+		C047553E28095CCE0094EAD3 /* LXCalendarHearder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarHearder.m; sourceTree = "<group>"; };
+		C047553F28095CCE0094EAD3 /* LXCalenderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LXCalenderCell.xib; sourceTree = "<group>"; };
+		C047554028095CCE0094EAD3 /* LXCalenderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalenderCell.h; sourceTree = "<group>"; };
+		C047554128095CCE0094EAD3 /* LXCalendarDayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarDayModel.m; sourceTree = "<group>"; };
+		C047554228095CCE0094EAD3 /* LXCalender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalender.h; sourceTree = "<group>"; };
+		C047554328095CCE0094EAD3 /* LXCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarView.m; sourceTree = "<group>"; };
+		C047554428095CCE0094EAD3 /* LXCalendarWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarWeekView.h; sourceTree = "<group>"; };
+		C047554528095CCE0094EAD3 /* NSDate+GFCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+GFCalendar.m"; sourceTree = "<group>"; };
+		C047554628095CCE0094EAD3 /* LXCalendarHearder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarHearder.h; sourceTree = "<group>"; };
+		C047554728095CCE0094EAD3 /* LXCalendarMonthModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalendarMonthModel.m; sourceTree = "<group>"; };
+		C047554828095CCE0094EAD3 /* LXCalendarDayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarDayModel.h; sourceTree = "<group>"; };
+		C047554928095CCE0094EAD3 /* LXCalenderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXCalenderCell.m; sourceTree = "<group>"; };
+		C047554A28095CCE0094EAD3 /* LXCalendarOneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXCalendarOneController.h; sourceTree = "<group>"; };
+		C047555628095E370094EAD3 /* UILabel+LXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+LXLabel.h"; sourceTree = "<group>"; };
+		C047555728095E370094EAD3 /* UIView+LX_Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LX_Frame.h"; sourceTree = "<group>"; };
+		C047555828095E370094EAD3 /* LxButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LxButton.h; sourceTree = "<group>"; };
+		C047555928095E370094EAD3 /* UIView+FTCornerdious.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FTCornerdious.m"; sourceTree = "<group>"; };
+		C047555A28095E370094EAD3 /* UIColor+Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Expanded.h"; sourceTree = "<group>"; };
+		C047555B28095E370094EAD3 /* UIView+LX_Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LX_Frame.m"; sourceTree = "<group>"; };
+		C047555C28095E370094EAD3 /* UILabel+LXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+LXLabel.m"; sourceTree = "<group>"; };
+		C047555D28095E370094EAD3 /* LxButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LxButton.m; sourceTree = "<group>"; };
+		C047555E28095E370094EAD3 /* UIColor+Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Expanded.m"; sourceTree = "<group>"; };
+		C047555F28095E370094EAD3 /* UIView+FTCornerdious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FTCornerdious.h"; sourceTree = "<group>"; };
+		C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXCalendarCategoryHeader.h; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersContainerViewController.h; sourceTree = "<group>"; };
@@ -1207,6 +1252,7 @@
 		3C9E31DF260C7B4200CC3E3F /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				C047553628095C920094EAD3 /* Calendar */,
 				C0602E6A28001EF600D39575 /* MISScrollPage */,
 				C08DFC8827F84D6F00862ADF /* Reachability.h */,
 				C08DFC8927F84D6F00862ADF /* Reachability.m */,
@@ -1439,6 +1485,59 @@
 				C04755122807CBB60094EAD3 /* gift_selected@2x.png */,
 			);
 			path = Gift;
+			sourceTree = "<group>";
+		};
+		C047553628095C920094EAD3 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				C047555528095E370094EAD3 /* Category */,
+				C047553828095CCE0094EAD3 /* LXCalendar */,
+				C047554A28095CCE0094EAD3 /* LXCalendarOneController.h */,
+				C047553728095CCE0094EAD3 /* LXCalendarOneController.m */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		C047553828095CCE0094EAD3 /* LXCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				C047553928095CCE0094EAD3 /* NSDate+GFCalendar.h */,
+				C047553A28095CCE0094EAD3 /* LXCalendarWeekView.m */,
+				C047553B28095CCE0094EAD3 /* LXCalendarView.h */,
+				C047553C28095CCE0094EAD3 /* LXCalendarHearder.xib */,
+				C047553D28095CCE0094EAD3 /* LXCalendarMonthModel.h */,
+				C047553E28095CCE0094EAD3 /* LXCalendarHearder.m */,
+				C047553F28095CCE0094EAD3 /* LXCalenderCell.xib */,
+				C047554028095CCE0094EAD3 /* LXCalenderCell.h */,
+				C047554128095CCE0094EAD3 /* LXCalendarDayModel.m */,
+				C047554228095CCE0094EAD3 /* LXCalender.h */,
+				C047554328095CCE0094EAD3 /* LXCalendarView.m */,
+				C047554428095CCE0094EAD3 /* LXCalendarWeekView.h */,
+				C047554528095CCE0094EAD3 /* NSDate+GFCalendar.m */,
+				C047554628095CCE0094EAD3 /* LXCalendarHearder.h */,
+				C047554728095CCE0094EAD3 /* LXCalendarMonthModel.m */,
+				C047554828095CCE0094EAD3 /* LXCalendarDayModel.h */,
+				C047554928095CCE0094EAD3 /* LXCalenderCell.m */,
+			);
+			path = LXCalendar;
+			sourceTree = "<group>";
+		};
+		C047555528095E370094EAD3 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C047555828095E370094EAD3 /* LxButton.h */,
+				C047555D28095E370094EAD3 /* LxButton.m */,
+				C047555A28095E370094EAD3 /* UIColor+Expanded.h */,
+				C047555E28095E370094EAD3 /* UIColor+Expanded.m */,
+				C047555628095E370094EAD3 /* UILabel+LXLabel.h */,
+				C047555C28095E370094EAD3 /* UILabel+LXLabel.m */,
+				C047555F28095E370094EAD3 /* UIView+FTCornerdious.h */,
+				C047555928095E370094EAD3 /* UIView+FTCornerdious.m */,
+				C047555728095E370094EAD3 /* UIView+LX_Frame.h */,
+				C047555B28095E370094EAD3 /* UIView+LX_Frame.m */,
+				C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		C0602E6A28001EF600D39575 /* MISScrollPage */ = {
@@ -1877,6 +1976,7 @@
 				C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */,
 				C08D31E827FEDDDD005AC68E /* live_unread_msg_bg@3x.png in Resources */,
 				3C9E331C260C7B4400CC3E3F /* icon-setting-unSelected@3x.png in Resources */,
+				C047554F28095CCE0094EAD3 /* LXCalenderCell.xib in Resources */,
 				C08D31E527FEDDDD005AC68E /* live_chatlist_normal@2x.png in Resources */,
 				C08D31EC27FEDDDD005AC68E /* stop_live@3x.png in Resources */,
 				3C9E3318260C7B4400CC3E3F /* giftrecord@3x.png in Resources */,
@@ -1970,6 +2070,7 @@
 				C047551F2807CBB60094EAD3 /* gift.lollipop@3x.png in Resources */,
 				C08DFC3E27F2FD9A00862ADF /* Live_edit_name@3x.png in Resources */,
 				3C9E32F0260C7B4300CC3E3F /* avatat_5@2x.png in Resources */,
+				C047554D28095CCE0094EAD3 /* LXCalendarHearder.xib in Resources */,
 				C08E8F3A27EDD46100DE47C4 /* strat_live_stream@2x.png in Resources */,
 				3C9E32FF260C7B4300CC3E3F /* kick@3x.png in Resources */,
 				3C9E32F3260C7B4300CC3E3F /* gift.bouquet@3x.png in Resources */,
@@ -2076,7 +2177,9 @@
 				C0602EA928052D4300D39575 /* ELDChatroomMembersView.m in Sources */,
 				3C9E3276260C7B4300CC3E3F /* EaseEmojiHelper.m in Sources */,
 				3C9E32AA260C7B4300CC3E3F /* EaseEmoticonView.m in Sources */,
+				C047555328095CCE0094EAD3 /* LXCalendarMonthModel.m in Sources */,
 				3C9E3277260C7B4300CC3E3F /* RealtimeSearchUtil.m in Sources */,
+				C047555428095CCE0094EAD3 /* LXCalenderCell.m in Sources */,
 				3C9E3283260C7B4300CC3E3F /* EaseAboutHuanxinViewController.m in Sources */,
 				D2F4E2721D12C8AB00BB7E1A /* main.m in Sources */,
 				C08DFC7327F5AFD100862ADF /* ELDUtil.m in Sources */,
@@ -2089,12 +2192,15 @@
 				3C9E3284260C7B4300CC3E3F /* EaseLiveTVListViewController.m in Sources */,
 				3C9E335A260C800100CC3E3F /* EaseLiveSession.m in Sources */,
 				3C9E3331260C7B4400CC3E3F /* EaseLoginViewController.m in Sources */,
+				C047556228095E370094EAD3 /* UILabel+LXLabel.m in Sources */,
 				3C9E3394260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m in Sources */,
 				3C9E32AB260C7B4300CC3E3F /* EaseAnchorCardView.m in Sources */,
 				3C9E3285260C7B4300CC3E3F /* EaseSettingsViewController.m in Sources */,
 				3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */,
+				C047554E28095CCE0094EAD3 /* LXCalendarHearder.m in Sources */,
 				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
 				F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */,
+				C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */,
 				C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */,
 				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
@@ -2104,6 +2210,7 @@
 				3C9E32A4260C7B4300CC3E3F /* EaseGiftListView.m in Sources */,
 				3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */,
 				C0602E8228001EF600D39575 /* MISScrollPageSegmentView.m in Sources */,
+				C047554B28095CCE0094EAD3 /* LXCalendarOneController.m in Sources */,
 				C0602E8128001EF600D39575 /* MISScrollPageStyle.m in Sources */,
 				3C9E329D260C7B4300CC3E3F /* EaseCustomKeyBoardView.m in Sources */,
 				C0602EA02804135800D39575 /* AgoraChatUserInfoManagerHelper.m in Sources */,
@@ -2113,6 +2220,7 @@
 				ECCBE3152808781100CDFD2E /* ELDUserInfoHeaderView.m in Sources */,
 				3C9E32A0260C7B4300CC3E3F /* EaseChatView.m in Sources */,
 				C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */,
+				C047555228095CCE0094EAD3 /* NSDate+GFCalendar.m in Sources */,
 				3C9E329C260C7B4300CC3E3F /* EaseKeyBoardView.m in Sources */,
 				3C9E3294260C7B4300CC3E3F /* JPGiftModel.m in Sources */,
 				3C9E3292260C7B4300CC3E3F /* EaseLiveHeaderListView.m in Sources */,
@@ -2130,12 +2238,14 @@
 				C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */,
 				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */,
+				C047555028095CCE0094EAD3 /* LXCalendarDayModel.m in Sources */,
 				3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */,
 				C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */,
 				3C9E3274260C7B4300CC3E3F /* EaseHttpManager.m in Sources */,
 				3C9E32B2260C7B4300CC3E3F /* MBProgressHUD+Add.m in Sources */,
 				3C9E32AD260C7B4300CC3E3F /* EaseCustomSwitch.m in Sources */,
 				3C9E32AE260C7B4300CC3E3F /* EaseProfileLiveView.m in Sources */,
+				C047555128095CCE0094EAD3 /* LXCalendarView.m in Sources */,
 				3C9E3291260C7B4300CC3E3F /* EaseLiveGiftView.m in Sources */,
 				C0602E8028001EF600D39575 /* MISScrollPageController.m in Sources */,
 				3C9E327B260C7B4300CC3E3F /* EaseSignUpViewController.m in Sources */,
@@ -2157,6 +2267,7 @@
 				C0602E8328001EF600D39575 /* UIView+MISHelper.m in Sources */,
 				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
 				3C9E32A5260C7B4300CC3E3F /* EaseGiftCell.m in Sources */,
+				C047556328095E370094EAD3 /* LxButton.m in Sources */,
 				C047552F280912F00094EAD3 /* UIView+Bottom.m in Sources */,
 				C08E8F4327EDD9CA00DE47C4 /* ELDLoadingView.m in Sources */,
 				C0602E8728001EF600D39575 /* UIView+MISRedPoint.m in Sources */,
@@ -2171,6 +2282,8 @@
 				C08DFC6227F58C0F00862ADF /* ELDEditUserInfoViewController.m in Sources */,
 				C0602E8A2800246900D39575 /* ELDLiveroomMembersViewController.m in Sources */,
 				3C9E335B260C800100CC3E3F /* EaseBoradCastCard.m in Sources */,
+				C047556128095E370094EAD3 /* UIView+LX_Frame.m in Sources */,
+				C047556428095E370094EAD3 /* UIColor+Expanded.m in Sources */,
 				3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */,
 				3C9E32B0260C7B4300CC3E3F /* EaseHeartFlyView.m in Sources */,
 				C08DFC2727F1D18C00862ADF /* ELDHintGoLiveView.m in Sources */,
@@ -2178,6 +2291,7 @@
 				3C9E32AC260C7B4300CC3E3F /* EaseInputTextView.m in Sources */,
 				3C9E3286260C7B4300CC3E3F /* EaseBroadCastTabViewController.m in Sources */,
 				C0602E8528001EF600D39575 /* MISScrollPageSegmentTitleView.m in Sources */,
+				C047556028095E370094EAD3 /* UIView+FTCornerdious.m in Sources */,
 				C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */,
 				3C9E327A260C7B4300CC3E3F /* EaseLiveGiftHelper.m in Sources */,
 				3C9E327D260C7B4300CC3E3F /* EaseTransitionViewController.m in Sources */,
