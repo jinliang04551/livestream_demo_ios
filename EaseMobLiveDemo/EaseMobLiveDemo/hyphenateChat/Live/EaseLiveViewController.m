@@ -567,8 +567,7 @@
 //        [profileLiveView showFromParentView:self.view];
 //    }
     
-    
-    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom];
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom memberVCListType:ELDMemberVCListTypeAll];
     userInfoView.delegate = self;
     [userInfoView showFromParentView:self.view];
 }
@@ -581,7 +580,7 @@
 //    anchorCardView.delegate = self;
 //    [anchorCardView showFromParentView:self.view];
     
-    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:room.anchor chatroom:_chatroom];
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:_chatroom];
     userInfoView.delegate = self;
     [userInfoView showFromParentView:self.view];
 

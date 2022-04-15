@@ -24,8 +24,9 @@
 @property (nonatomic, strong) UITableView *table;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 @property (nonatomic, strong) NSData *fileData;
-@property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) NSString *myNickName;
+@property (nonatomic, strong) UIImage *currentImage;
+
 
 
 @end
@@ -85,7 +86,7 @@
 
         [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:newName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             if (aError == nil) {
-//                [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:AgoraChatClient.sharedClient.currentUsername];
+
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (self.updateUserInfoBlock) {
                         self.updateUserInfoBlock(aUserInfo);
@@ -229,7 +230,7 @@
     UIImage *editImage = info[UIImagePickerControllerEditedImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     if (editImage) {
-        _avatarImageView.image = editImage;
+        self.currentImage = editImage;
         _fileData = UIImageJPEGRepresentation(editImage, 1.0);
         if (!_fileData) {
             _fileData = [NSData new];
@@ -240,8 +241,13 @@
                 if (self.updateUserInfoBlock) {
                     self.updateUserInfoBlock(self.userInfo);
                 }
-
-                self.userHeaderView.avatarImageView = _avatarImageView;
+                
+                //save userinfo
+                [AgoraChatUserInfoManagerHelper updateUserInfo:self.userInfo completion:^(AgoraChatUserInfo * _Nonnull aUserInfo) {
+                                    
+                }];
+                
+                [self.userHeaderView.avatarImageView setImage:self.currentImage];
                 [self.table reloadData];
             }
         }];
@@ -364,7 +370,8 @@
     if (_userHeaderView == nil) {
         _userHeaderView = [[ELDUserHeaderView alloc] initWithFrame:CGRectZero isEditable:YES];
         _userHeaderView.nameLabel.text = @"Click to Change Avatar";
-        
+        [_userHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
+
         ELD_WS
         _userHeaderView.tapHeaderViewBlock = ^{
             [weakSelf changeAvatarAction];

@@ -24,6 +24,7 @@ MISScrollPageControllerDelegate>
 @property (nonatomic,strong) ELDLiveroomMembersViewController *mutedListVC;
 @property (nonatomic,strong) ELDLiveroomMembersViewController *blockListVC;
 
+@property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIView *alphaBgView;
 @property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UIButton *bgButton;
@@ -61,7 +62,9 @@ MISScrollPageControllerDelegate>
 }
 
 - (void)placeAndLayoutSubviewsForMember {
-
+    
+    self.view.backgroundColor = UIColor.yellowColor;
+    
     [self.containerView addSubview:self.topBgImageView];
     [self.containerView addSubview:self.viewerTitleLabel];
     [self.containerView addSubview:self.allVC.view];
@@ -145,8 +148,13 @@ MISScrollPageControllerDelegate>
         bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
     }
     
+    [self.view addSubview:self.bgView];
     [self.view addSubview:self.alphaBgView];
     [self.view addSubview:self.containerView];
+
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 
     [self.alphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -198,12 +206,6 @@ MISScrollPageControllerDelegate>
 //        view.userInteractionEnabled = YES;
 //    }];
     
-
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeAction)];
-//    UIView *tapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
-//    tapView.backgroundColor = UIColor.yellowColor;
-//    [tapView addGestureRecognizer:tap];
-//    [self.view addSubview:tapView];
     
     [view addSubview:self.view];
     [UIView animateWithDuration:0.5 animations:^{
@@ -389,7 +391,6 @@ MISScrollPageControllerDelegate>
         _alphaBgView = [[UIView alloc] init];
         _alphaBgView.backgroundColor = UIColor.blackColor;
         _alphaBgView.alpha = 0.01;
-        [_alphaBgView addGestureRecognizer:self.tapGestureRecognizer];
 //        _alphaBgView.userInteractionEnabled = YES;
         
 //        [_alphaBgView addSubview:self.bgButton];
@@ -398,6 +399,15 @@ MISScrollPageControllerDelegate>
 //        }];
     }
     return _alphaBgView;
+}
+
+- (UIView *)bgView {
+    if (_bgView == nil) {
+        _bgView = [[UIView alloc] init];
+        _bgView.backgroundColor = UIColor.grayColor;
+        [_bgView addGestureRecognizer:self.tapGestureRecognizer];
+    }
+    return _bgView;
 }
 
 - (UITapGestureRecognizer *)tapGestureRecognizer {

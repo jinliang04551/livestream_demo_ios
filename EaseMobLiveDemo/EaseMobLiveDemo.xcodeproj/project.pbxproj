@@ -224,6 +224,8 @@
 		C04755262807CBB60094EAD3 /* gift_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755122807CBB60094EAD3 /* gift_selected@2x.png */; };
 		C0475529280809410094EAD3 /* ELDChatMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475528280809410094EAD3 /* ELDChatMessageCell.m */; };
 		C047552C280824230094EAD3 /* ELDWatchMemberAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */; };
+		C047552F280912F00094EAD3 /* UIView+Bottom.m in Sources */ = {isa = PBXBuildFile; fileRef = C047552E280912F00094EAD3 /* UIView+Bottom.m */; };
+		C0475535280913BE0094EAD3 /* UIViewController+Bottom.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475534280913BE0094EAD3 /* UIViewController+Bottom.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */; };
@@ -667,6 +669,10 @@
 		C0475528280809410094EAD3 /* ELDChatMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDChatMessageCell.m; sourceTree = "<group>"; };
 		C047552A280824230094EAD3 /* ELDWatchMemberAvatarsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDWatchMemberAvatarsView.h; sourceTree = "<group>"; };
 		C047552B280824230094EAD3 /* ELDWatchMemberAvatarsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDWatchMemberAvatarsView.m; sourceTree = "<group>"; };
+		C047552D280912F00094EAD3 /* UIView+Bottom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Bottom.h"; sourceTree = "<group>"; };
+		C047552E280912F00094EAD3 /* UIView+Bottom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Bottom.m"; sourceTree = "<group>"; };
+		C0475533280913BE0094EAD3 /* UIViewController+Bottom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Bottom.h"; sourceTree = "<group>"; };
+		C0475534280913BE0094EAD3 /* UIViewController+Bottom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Bottom.m"; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersContainerViewController.h; sourceTree = "<group>"; };
@@ -965,6 +971,10 @@
 				3C9E315F260C7B4100CC3E3F /* UIImage+Color.m */,
 				3C9E315E260C7B4100CC3E3F /* UIView+Position.h */,
 				3C9E3158260C7B4100CC3E3F /* UIView+Position.m */,
+				C047552D280912F00094EAD3 /* UIView+Bottom.h */,
+				C047552E280912F00094EAD3 /* UIView+Bottom.m */,
+				C0475533280913BE0094EAD3 /* UIViewController+Bottom.h */,
+				C0475534280913BE0094EAD3 /* UIViewController+Bottom.m */,
 				3C9E315C260C7B4100CC3E3F /* UIViewController+HUD.h */,
 				3C9E315A260C7B4100CC3E3F /* UIViewController+HUD.m */,
 				C08DFC5127F5661E00862ADF /* EaseLiveCategory.h */,
@@ -2060,6 +2070,7 @@
 				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
 				3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */,
 				3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */,
+				C0475535280913BE0094EAD3 /* UIViewController+Bottom.m in Sources */,
 				3C9E32B1260C7B4300CC3E3F /* EaseBarrageFlyView.m in Sources */,
 				3C9E32A3260C7B4300CC3E3F /* EaseLiveCastView.m in Sources */,
 				C0602EA928052D4300D39575 /* ELDChatroomMembersView.m in Sources */,
@@ -2146,6 +2157,7 @@
 				C0602E8328001EF600D39575 /* UIView+MISHelper.m in Sources */,
 				C08DFC4D27F54F4400862ADF /* ELDPreLivingViewController.m in Sources */,
 				3C9E32A5260C7B4300CC3E3F /* EaseGiftCell.m in Sources */,
+				C047552F280912F00094EAD3 /* UIView+Bottom.m in Sources */,
 				C08E8F4327EDD9CA00DE47C4 /* ELDLoadingView.m in Sources */,
 				C0602E8728001EF600D39575 /* UIView+MISRedPoint.m in Sources */,
 				3C9E3270260C7B4300CC3E3F /* UIView+Position.m in Sources */,

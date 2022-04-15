@@ -93,7 +93,7 @@
         self.userHeaderView.nameLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
         if(self.userInfo && self.userInfo.avatarUrl) {
             NSURL* url = [NSURL URLWithString:self.userInfo.avatarUrl];
-            [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"")];
+            [self.userHeaderView.avatarImageView sd_setImageWithURL:url placeholderImage:ImageWithName(@"avatat_2")];
         }
     });
 }

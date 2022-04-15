@@ -41,6 +41,12 @@
     [self loadDatas];
 }
 
+- (void)placeSubViews {
+    
+    [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view).offset(-[self bottomPadding]);
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

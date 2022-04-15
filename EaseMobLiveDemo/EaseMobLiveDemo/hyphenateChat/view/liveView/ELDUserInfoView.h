@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
                         chatroom:(AgoraChatroom *)chatroom
                 memberVCListType:(ELDMemberVCListType)memberVCListType;
 
+//check owner userinfo
+- (instancetype)initWithOwnerId:(NSString *)ownerId
+                       chatroom:(AgoraChatroom *)chatroom;
 
 @end
 

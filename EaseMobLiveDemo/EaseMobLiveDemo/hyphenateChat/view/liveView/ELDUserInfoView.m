@@ -35,6 +35,10 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 //owner check oneself
 @property (nonatomic, assign) BOOL ownerSelf;
 
+//whether isMute
+@property (nonatomic, assign) BOOL isMute;
+
+
 @property (nonatomic, assign) ELDMemberVCListType memberVCListType;
 
 
@@ -50,25 +54,45 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
         
         self.currentUsername = username;
         self.chatroom = chatroom;
-        self.memberVCListType = memberVCListType;
-        
         self.chatroomId = self.chatroom.chatroomId;
+        self.memberVCListType = memberVCListType;
+
+        [self placeAndlayoutSubviews];
         [self fetchUserInfoWithUsername:username];
      
     }
     return self;
 }
 
+- (instancetype)initWithOwnerId:(NSString *)ownerId
+                       chatroom:(AgoraChatroom *)chatroom {
+    self = [super init];
+    if (self) {
+        self.currentUsername = ownerId;
+        self.chatroom = chatroom;
+        
+        if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:ownerId]) {
+            self.ownerSelf = YES;
+            self.roleType = ELDMemberRoleTypeOwner;
+            self.isMute = NO;
+        }
+        
+        [self placeAndlayoutSubviews];
+        [self fetchUserInfoWithUsername:self.currentUsername];
+     
+    }
+    return self;
+}
+
+
 - (void)fetchUserInfoWithUsername:(NSString *)username {
     [AgoraChatClient.sharedClient.userInfoManager fetchUserInfoById:@[username] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {
         if (aError == nil) {
             self.userInfo = aUserDatas[username];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self placeAndlayoutSubviews];
-                [self.headerView updateUIWithUserInfo:self.userInfo roleType:self.roleType isMute:[self isMute]];
-                [self.table reloadData];
-                
+                [self.headerView updateUIWithUserInfo:self.userInfo roleType:self.roleType isMute:self.isMute];
                 [self buildCells];
+                
             });
         }
     }];
@@ -78,42 +102,44 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     [self addSubview:self.table];
 
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(200.0f, 0, 0, 0));
+        make.top.equalTo(self).offset(kChatViewHeight);
+        make.left.right.equalTo(self);
+        make.bottom.equalTo(self).offset(-[self bottomPadding]);
     }];
-    
 }
 
 
 - (void)buildCells {
     NSMutableArray *tempArray = NSMutableArray.new;
-    
-    //owner check oneself
-    if (self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
-        if (self.roleType == ELDMemberRoleTypeOwner) {
-            self.ownerSelf = YES;
-            [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
-        }else {
+
+    if (self.ownerSelf) {
+        [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+    }else {
+        //owner check oneself
+        if (self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
+            if (self.roleType == ELDMemberRoleTypeOwner) {
+                self.ownerSelf = YES;
+                [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+            }else {
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+            }
+        }
+        
+        if (self.chatroom.permissionType == AgoraChatroomPermissionTypeAdmin) {
             [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
 
+            
+        }
+        
+        if (self.chatroom.permissionType == AgoraChatroomPermissionTypeMember) {
+           // no operate permission
         }
     }
-    
-    if (self.chatroom.permissionType == AgoraChatroomPermissionTypeAdmin) {
-        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
 
-        
-    }
-    
-    if (self.chatroom.permissionType == AgoraChatroomPermissionTypeMember) {
-       
-    }
-        
-    
-    self.ownerSelf = YES;
-    self.dataArray = @[@{kUserInfoCellTitle:@"nihao"}];
-    
+    self.dataArray = tempArray;
     [self.table reloadData];
 }
+
 
 #pragma mark operation
 //全体禁言
@@ -288,83 +314,6 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 
 
 #pragma mark getter and setter
-//- (UIImageView*)topBgImageView
-//{
-//    if (_topBgImageView == nil) {
-//        _topBgImageView = [[UIImageView alloc] init];
-//        _topBgImageView.image = [UIImage imageNamed:@"member_bg_top"];
-//        _topBgImageView.contentMode = UIViewContentModeScaleAspectFill;
-//        _topBgImageView.layer.masksToBounds = YES;
-//    }
-//    return _topBgImageView;
-//}
-//
-//- (UIImageView *)avatarImageView {
-//    if (_avatarImageView == nil) {
-//        _avatarImageView = [[UIImageView alloc] init];
-//        _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        _avatarImageView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
-//        _avatarImageView.layer.masksToBounds = YES;
-//        _avatarImageView.clipsToBounds = YES;
-//        _avatarImageView.backgroundColor = UIColor.greenColor;
-//    }
-//    return _avatarImageView;
-//}
-//
-//- (UIView *)avatarBgView {
-//    if (_avatarBgView == nil) {
-//        _avatarBgView = [[UIView alloc] init];
-//        _avatarBgView.backgroundColor = UIColor.whiteColor;
-//        _avatarBgView.layer.cornerRadius = (kMeHeaderImageViewHeight + 2)* 0.5;
-//        
-//        [_avatarBgView addSubview:self.avatarImageView];
-//        [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.edges.equalTo(_avatarBgView).insets(UIEdgeInsetsMake(2.0, 2.0, 2.0, 2.0));
-//        }];
-//    }
-//    return _avatarBgView;
-//}
-//
-//- (UILabel*)nameLabel
-//{
-//    if (_nameLabel == nil) {
-//        _nameLabel = [[UILabel alloc] init];
-//        _nameLabel.font = NFont(16.0f);
-//        _nameLabel.textColor = TextLabelBlackColor;
-//        _nameLabel.textAlignment = NSTextAlignmentLeft;
-//        _nameLabel.text = @"123";
-//    }
-//    return _nameLabel;
-//}
-//
-//
-//- (ELDGenderView *)genderView {
-//    if (_genderView == nil) {
-//        _genderView = [[ELDGenderView alloc] initWithFrame:CGRectZero];
-//        [_genderView updateWithGender:2 birthday:@""];
-//    }
-//    return _genderView;
-//}
-//
-//
-//- (UIImageView *)muteImageView {
-//    if (_muteImageView == nil) {
-//        _muteImageView = [[UIImageView alloc] init];
-//        _muteImageView.contentMode = UIViewContentModeScaleAspectFit;
-//        [_muteImageView setImage:ImageWithName(@"member_mute_icon")];
-//    }
-//    return _muteImageView;
-//}
-//
-//- (UIImageView *)roleImageView {
-//    if (_roleImageView == nil) {
-//        _roleImageView = [[UIImageView alloc] init];
-//        _roleImageView.contentMode = UIViewContentModeScaleAspectFit;
-//    }
-//    return _roleImageView;
-//}
-
-
 - (UITableView*)table
 {
     if (_table == nil) {

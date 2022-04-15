@@ -118,21 +118,19 @@
 {
     if (_collectionView == nil) {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, _bottomView.height - 54.f) collectionViewLayout:flowLayout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         [_collectionView registerClass:[EaseGiftCell class] forCellWithReuseIdentifier:@"giftCollectionCell"];
         [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
         
-//        _collectionView.backgroundColor = [UIColor clearColor];
-        _collectionView.backgroundColor = UIColor.redColor;
-        
+        _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
-        _collectionView.alwaysBounceHorizontal = YES;
+        _collectionView.alwaysBounceVertical = YES;
         _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
         _collectionView.pagingEnabled = YES;
         _collectionView.userInteractionEnabled = YES;

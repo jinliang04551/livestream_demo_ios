@@ -14,6 +14,8 @@
 #import "UIImage+Color.h"
 #import "UIView+Position.h"
 #import "UIViewController+HUD.h"
+#import "UIView+Bottom.h"
+#import "UIViewController+Bottom.h"
 
 
 #endif /* EaseLiveCategory_h */

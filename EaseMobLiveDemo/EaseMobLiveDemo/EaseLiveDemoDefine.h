@@ -105,5 +105,10 @@ typedef enum : NSUInteger {
 
 #define kChatViewHeight 320.0
 
+//    CGFloat bottom = 0;
+//    if (@available(iOS 11, *)) {
+//        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+//    }
+
 
 #endif /* EaseLiveDemoDefine_h */

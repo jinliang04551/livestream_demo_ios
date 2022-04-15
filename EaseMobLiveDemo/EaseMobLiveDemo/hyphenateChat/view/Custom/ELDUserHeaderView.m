@@ -52,6 +52,7 @@
         [self addSubview:self.alphaView];
         [self.alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.avatarImageView);
+            make.size.equalTo(self.avatarImageView);
         }];
     }
 
@@ -102,9 +103,9 @@
 
 - (UIView *)alphaView {
     if (_alphaView == nil) {
-        _alphaView = UIView.new;
+        _alphaView = [[UIView alloc] init];
         _alphaView.backgroundColor = ViewControllerBgBlackColor;
-        _alphaView.alpha = 0.2;
+        _alphaView.alpha = 0.5;
         _alphaView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
         _alphaView.layer.masksToBounds = YES;
         _alphaView.clipsToBounds = YES;
