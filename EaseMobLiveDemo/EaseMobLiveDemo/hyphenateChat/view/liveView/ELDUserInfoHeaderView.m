@@ -60,12 +60,14 @@
       [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self.avatarBgView.mas_bottom).offset(15.0f);
           make.centerX.equalTo(self.avatarBgView).offset(-kEaseLiveDemoPadding);
-          make.height.equalTo(@16.0);
+          make.height.equalTo(@(kGenderViewHeight));
       }];
 
       [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.centerY.equalTo(self.nameLabel);
           make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
+          make.width.equalTo(@(30));
+          make.height.equalTo(@(16));
       }];
 
       [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -162,7 +164,9 @@
 
 - (ELDGenderView *)genderView {
     if (_genderView == nil) {
-        _genderView = [[ELDGenderView alloc] initWithFrame:CGRectZero];
+        _genderView = [[ELDGenderView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
+        _genderView.layer.cornerRadius = kGenderViewHeight * 0.5;
+        _genderView.clipsToBounds = YES;
         [_genderView updateWithGender:2 birthday:@""];
     }
     return _genderView;

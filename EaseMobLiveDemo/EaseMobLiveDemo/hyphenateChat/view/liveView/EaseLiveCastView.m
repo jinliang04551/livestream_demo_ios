@@ -78,6 +78,8 @@ extern NSMutableDictionary *anchorInfoDic;
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
         make.right.equalTo(self).offset(-8.0);
+        make.width.equalTo(@(30));
+        make.height.equalTo(@(kGenderViewHeight));
     }];
 
     [self.giftIconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -93,7 +95,13 @@ extern NSMutableDictionary *anchorInfoDic;
     }];
 }
 
-
+- (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo {
+    
+    self.nameLabel.text = userInfo.nickName ?:userInfo.userId;
+    [self.headImageView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] placeholderImage:kDefultUserImage];
+    [self.genderView updateWithGender:userInfo.gender birthday:userInfo.birth];
+    
+}
 
 #pragma mark getter and setter
 - (UIImageView*)headImageView
@@ -149,7 +157,8 @@ extern NSMutableDictionary *anchorInfoDic;
 - (ELDGenderView *)genderView {
     if (_genderView == nil) {
         _genderView = [[ELDGenderView alloc] initWithFrame:CGRectZero];
-        [_genderView updateWithGender:2 birthday:@""];
+        _genderView.layer.cornerRadius = kGenderViewHeight * 0.5;
+        _genderView.clipsToBounds = YES;
     }
     return _genderView;
 }

@@ -147,7 +147,7 @@
     [self.chatview joinChatroomWithIsCount:YES
                                 completion:^(BOOL success) {
                                     if (success) {
-                                        [weakSelf.headerListView loadHeaderListWithChatroomId:[_room.chatroomId copy]];
+                                        [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
                                         _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
@@ -365,7 +365,7 @@
             [weakSelf.chatview joinChatroomWithIsCount:NO
                                         completion:^(BOOL success) {
                                             if (success) {
-                                                [weakSelf.headerListView loadHeaderListWithChatroomId:_room.chatroomId];
+                                                [weakSelf.headerListView updateHeaderViewWithChatroomId:_room.chatroomId];
                                             }
                                         }];
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {

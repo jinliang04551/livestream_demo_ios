@@ -152,7 +152,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(loadHeaderListWithChatroomId:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(updateHeaderViewWithChatroomId:) userInfo:nil repeats:YES];
     [_timer fire];
 }
 
@@ -276,7 +276,7 @@
 
 #pragma mark - public
 
-- (void)loadHeaderListWithChatroomId:(NSString*)chatroomId
+- (void)updateHeaderViewWithChatroomId:(NSString*)chatroomId
 {
     __weak typeof(self) weakself = self;
     [[EaseHttpManager sharedInstance] fetchLiveroomDetail:_room.chatroomId completion:^(EaseLiveRoom *room, BOOL success) {
@@ -296,8 +296,19 @@
             });
         }
     }];
+    
+    [self fetchliveUserInfoWithUserId:_room.anchor];
 }
 
+- (void)fetchliveUserInfoWithUserId:(NSString *)userId {
+    
+    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            AgoraChatUserInfo *userInfo = userInfoDic[userId];
+            [self.liveCastView updateUIWithUserInfo:userInfo];
+        });
+    }];
+}
 
 
 /*

@@ -33,7 +33,7 @@
 
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;
 
-- (void)loadHeaderListWithChatroomId:(NSString*)chatroomId;
+- (void)updateHeaderViewWithChatroomId:(NSString*)chatroomId;
 /*
 - (void)joinChatroomWithUsername:(NSString*)username;
 

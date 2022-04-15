@@ -40,6 +40,8 @@
 
 #import "ELDUserInfoView.h"
 
+#import "EaseLiveCastView.h"
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
@@ -122,11 +124,17 @@
     [self.chatview joinChatroomWithIsCount:YES
                                 completion:^(BOOL success) {
                                     if (success) {
-                                        [weakSelf.headerListView loadHeaderListWithChatroomId:[_room.chatroomId copy]];
+                                        [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
+
                                         _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
-                                                                                     }];
+                                            if (success) {
+                                                
+                                            }else {
+                                                [weakSelf showHint:@"加入聊天室失败"];
+                                            }
+                                        }];
                                     } else {
                                         [weakSelf showHint:@"加入聊天室失败"];
                                         [weakSelf.view bringSubviewToFront:weakSelf.liveView];
@@ -164,6 +172,8 @@
 {
     [self.chatview endEditing:YES];
 }
+
+
 
 #pragma mark - fetchlivingstream
 

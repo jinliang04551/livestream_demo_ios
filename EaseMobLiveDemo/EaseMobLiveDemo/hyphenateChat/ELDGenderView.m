@@ -6,6 +6,9 @@
 //  Copyright © 2022 zmw. All rights reserved.
 //
 
+#define kBgViewWidth 30.0
+#define kBgViewHeight 16.0
+
 #import "ELDGenderView.h"
 @interface ELDGenderView ()
 @property (nonatomic, strong)UILabel *ageLabel;
@@ -25,12 +28,13 @@
 }
 
 
-- (void)placeAndLayoutSubviews {
+- (void)placeAndLayoutSubviews {    
     [self addSubview:self.bgView];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
 }
+
 
 - (void)updateWithGender:(NSInteger)gender birthday:(NSString *)birthday {
     if (birthday.length > 0) {
@@ -77,8 +81,6 @@
     if (_genderImageView == nil) {
         _genderImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gender_male"]];
         _genderImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _genderImageView.layer.masksToBounds = YES;
-
     }
     return _genderImageView;
 }
@@ -86,8 +88,6 @@
 - (UIView *)bgView {
     if (_bgView == nil) {
         _bgView = [[UIView alloc] init];
-        _bgView.layer.cornerRadius = 8.0;
-        _bgView.alpha = 1.0;
         _bgView.backgroundColor = GenderSecretBgColor;
         
         [_bgView addSubview:self.genderImageView];
@@ -108,3 +108,7 @@
 }
 
 @end
+
+#undef kBgViewWidth
+#undef kBgViewHeight
+

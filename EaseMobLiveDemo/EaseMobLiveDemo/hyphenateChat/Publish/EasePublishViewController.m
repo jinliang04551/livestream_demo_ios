@@ -122,7 +122,7 @@
     [self.chatview joinChatroomWithIsCount:NO
                                 completion:^(BOOL success) {
                                     if (success) {
-                                        [self.headerListView loadHeaderListWithChatroomId:_room.chatroomId];
+                                        [self.headerListView updateHeaderViewWithChatroomId:_room.chatroomId];
                                     }
                                 }];
     //[self.view addSubview:self.roomNameLabel];
@@ -345,7 +345,7 @@
             [weakSelf.chatview joinChatroomWithIsCount:NO
                                         completion:^(BOOL success) {
                                             if (success) {
-                                                [weakSelf.headerListView loadHeaderListWithChatroomId:_room.chatroomId];
+                                                [weakSelf.headerListView updateHeaderViewWithChatroomId:_room.chatroomId];
                                             }
                                         }];
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {

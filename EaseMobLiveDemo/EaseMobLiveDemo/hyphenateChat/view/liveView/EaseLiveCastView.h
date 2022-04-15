@@ -22,4 +22,6 @@
 
 - (void)setNumberOfGift:(NSInteger)number;
 
+- (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo;
+
 @end
