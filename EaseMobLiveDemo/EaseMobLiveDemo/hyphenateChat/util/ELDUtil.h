@@ -21,6 +21,12 @@ NS_ASSUME_NONNULL_BEGIN
                                    action:(SEL)action
                              actionTarget:(id)actionTarget;
 
++ (NSDate *)dateFromString:(NSString *)dateString;
+
++ (NSInteger)ageFromDateOfBirth:(NSDate *)date;
+
++ (NSInteger)ageFromBirthString:(NSString *)birthString;
+
 @end
 
 NS_ASSUME_NONNULL_END

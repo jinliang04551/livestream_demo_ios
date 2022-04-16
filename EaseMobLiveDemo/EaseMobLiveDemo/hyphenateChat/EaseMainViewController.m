@@ -56,23 +56,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-//    if (@available(iOS 15.0, *)) {
-//        UINavigationBarAppearance * bar = [UINavigationBarAppearance new];
-//        bar.backgroundColor = [UIColor whiteColor];
-//        bar.backgroundEffect = nil;
-//        self.navigationController.navigationBar.scrollEdgeAppearance = bar;
-//                self.navigationController.navigationBar.standardAppearance = bar;
-//
-//        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
-//        UIColor* color = [UIColor blackColor];
-//        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
-//        self.navigationController.navigationBar.titleTextAttributes = dict;
-//    }else{
-//        [self.navigationController.navigationBar setBarTintColor:[UIColor whiteColor]];
-//        UIColor* color = [UIColor blackColor];
-//        NSDictionary* dict=[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName];
-//        self.navigationController.navigationBar.titleTextAttributes = dict;
-//    }
     
     broadCastBtnScale = 0.9;
     [self loadViewControllers];

@@ -243,7 +243,6 @@
 		C047556428095E370094EAD3 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555E28095E370094EAD3 /* UIColor+Expanded.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
-		C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */; };
 		C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */; };
 		C0602E8028001EF600D39575 /* MISScrollPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6E28001EF600D39575 /* MISScrollPageController.m */; };
 		C0602E8128001EF600D39575 /* MISScrollPageStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E7228001EF600D39575 /* MISScrollPageStyle.m */; };
@@ -302,7 +301,7 @@
 		C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */; };
 		C08DFC0F27F16A9500862ADF /* TabbarBg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0D27F16A9400862ADF /* TabbarBg@3x.png */; };
 		C08DFC1027F16A9500862ADF /* TabbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC0E27F16A9500862ADF /* TabbarBg@2x.png */; };
-		C08DFC1327F16F4700862ADF /* ALSAppStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC1227F16F4700862ADF /* ALSAppStyle.m */; };
+		C08DFC1327F16F4700862ADF /* ELDAppStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC1227F16F4700862ADF /* ELDAppStyle.m */; };
 		C08DFC1727F1AFB200862ADF /* LiveStreamer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC1527F1AFB200862ADF /* LiveStreamer@2x.png */; };
 		C08DFC1827F1AFB200862ADF /* LiveStreamer@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC1627F1AFB200862ADF /* LiveStreamer@3x.png */; };
 		C08DFC1D27F1B08A00862ADF /* Live_watch@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC1927F1B08A00862ADF /* Live_watch@3x.png */; };
@@ -720,8 +719,6 @@
 		C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXCalendarCategoryHeader.h; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
-		C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLiveroomMembersContainerViewController.h; sourceTree = "<group>"; };
-		C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDLiveroomMembersContainerViewController.m; sourceTree = "<group>"; };
 		C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageCollectionView.m; sourceTree = "<group>"; };
 		C0602E6D28001EF600D39575 /* UIView+MISHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MISHelper.h"; sourceTree = "<group>"; };
 		C0602E6E28001EF600D39575 /* MISScrollPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageController.m; sourceTree = "<group>"; };
@@ -806,8 +803,8 @@
 		C08DFC0C27F15E8B00862ADF /* EaseLiveDemoDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveDemoDefine.h; sourceTree = "<group>"; };
 		C08DFC0D27F16A9400862ADF /* TabbarBg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabbarBg@3x.png"; sourceTree = "<group>"; };
 		C08DFC0E27F16A9500862ADF /* TabbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TabbarBg@2x.png"; sourceTree = "<group>"; };
-		C08DFC1127F16F4700862ADF /* ALSAppStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSAppStyle.h; sourceTree = "<group>"; };
-		C08DFC1227F16F4700862ADF /* ALSAppStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSAppStyle.m; sourceTree = "<group>"; };
+		C08DFC1127F16F4700862ADF /* ELDAppStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDAppStyle.h; sourceTree = "<group>"; };
+		C08DFC1227F16F4700862ADF /* ELDAppStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDAppStyle.m; sourceTree = "<group>"; };
 		C08DFC1427F18D6900862ADF /* EaseLiveColorDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveColorDefine.h; sourceTree = "<group>"; };
 		C08DFC1527F1AFB200862ADF /* LiveStreamer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiveStreamer@2x.png"; sourceTree = "<group>"; };
 		C08DFC1627F1AFB200862ADF /* LiveStreamer@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiveStreamer@3x.png"; sourceTree = "<group>"; };
@@ -978,12 +975,6 @@
 				C08E8F4527EDDB0500DE47C4 /* ELDLiveViewController.m */,
 				C08DFC4327F31BFA00862ADF /* ELDLiveContainerViewController.h */,
 				C08DFC4427F31BFA00862ADF /* ELDLiveContainerViewController.m */,
-				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
-				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
-				C08D320727FEF062005AC68E /* ELDGenderView.h */,
-				C08D320827FEF062005AC68E /* ELDGenderView.m */,
-				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
-				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
 				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
 				C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */,
 				3C9E317E260C7B4200CC3E3F /* Live */,
@@ -1087,8 +1078,6 @@
 				3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */,
 				3C9E3186260C7B4200CC3E3F /* EaseSettingsViewController.h */,
 				3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */,
-				C0602E6728001DF700D39575 /* ELDLiveroomMembersContainerViewController.h */,
-				C0602E6828001DF700D39575 /* ELDLiveroomMembersContainerViewController.m */,
 				C0602E882800246900D39575 /* ELDLiveroomMembersViewController.h */,
 				C0602E892800246900D39575 /* ELDLiveroomMembersViewController.m */,
 				C0602EA728052D4300D39575 /* ELDChatroomMembersView.h */,
@@ -1577,12 +1566,18 @@
 		C08DFC2127F1CC4300862ADF /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
+				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
+				C08D320727FEF062005AC68E /* ELDGenderView.h */,
+				C08D320827FEF062005AC68E /* ELDGenderView.m */,
 				C08DFC2227F1CC4300862ADF /* ELDNoDataPlaceHolderView.h */,
 				C08DFC2327F1CC4300862ADF /* ELDNoDataPlaceHolderView.m */,
 				C08DFC2527F1D18C00862ADF /* ELDHintGoLiveView.h */,
 				C08DFC2627F1D18C00862ADF /* ELDHintGoLiveView.m */,
 				C08DFC6627F592F300862ADF /* ELDUserHeaderView.h */,
 				C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */,
+				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
+				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -1711,8 +1706,8 @@
 				3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */,
 				D2F4E0EF1D12C8AB00BB7E1A /* AppDelegate.h */,
 				D2F4E0F01D12C8AB00BB7E1A /* AppDelegate.m */,
-				C08DFC1127F16F4700862ADF /* ALSAppStyle.h */,
-				C08DFC1227F16F4700862ADF /* ALSAppStyle.m */,
+				C08DFC1127F16F4700862ADF /* ELDAppStyle.h */,
+				C08DFC1227F16F4700862ADF /* ELDAppStyle.m */,
 				3C9E3153260C7B4100CC3E3F /* hyphenateChat */,
 				3C9E31EB260C7B4200CC3E3F /* Resource */,
 				D2F4E0F11D12C8AB00BB7E1A /* LaunchScreen.xib */,
@@ -2201,7 +2196,6 @@
 				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
 				F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */,
 				C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */,
-				C0602E6928001DF700D39575 /* ELDLiveroomMembersContainerViewController.m in Sources */,
 				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
 				3C9E329B260C7B4300CC3E3F /* JPGiftOperation.m in Sources */,
@@ -2215,7 +2209,7 @@
 				3C9E329D260C7B4300CC3E3F /* EaseCustomKeyBoardView.m in Sources */,
 				C0602EA02804135800D39575 /* AgoraChatUserInfoManagerHelper.m in Sources */,
 				C0602E9F2804135800D39575 /* AgoraChatUserInfo+expireTime.m in Sources */,
-				C08DFC1327F16F4700862ADF /* ALSAppStyle.m in Sources */,
+				C08DFC1327F16F4700862ADF /* ELDAppStyle.m in Sources */,
 				3C9E32AF260C7B4300CC3E3F /* EaseGiftFlyView.m in Sources */,
 				ECCBE3152808781100CDFD2E /* ELDUserInfoHeaderView.m in Sources */,
 				3C9E32A0260C7B4300CC3E3F /* EaseChatView.m in Sources */,

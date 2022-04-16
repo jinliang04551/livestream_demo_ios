@@ -13,7 +13,7 @@
 #import "EaseTransitionViewController.h"
 #import <PLMediaStreamingKit/PLMediaStreamingKit.h>
 
-#import "ALSAppStyle.h"
+#import "ELDAppStyle.h"
 #import "EaseHttpManager.h"
 
 @interface AppDelegate ()
@@ -24,7 +24,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [ALSAppStyle shareAppStyle];
+    [ELDAppStyle shareAppStyle];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];

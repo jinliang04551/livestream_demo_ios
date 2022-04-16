@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ALSAppStyle : NSObject
+@interface ELDAppStyle : NSObject
 
 + (instancetype)shareAppStyle;
 - (void)defaultStyle;

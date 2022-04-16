@@ -34,8 +34,6 @@
 
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
 
-#import "ELDLiveroomMembersContainerViewController.h"
-
 #import "ELDChatroomMembersView.h"
 
 #import "ELDUserInfoView.h"
@@ -606,12 +604,10 @@
 //    adminView.delegate = self;
 //    [adminView showFromParentView:self.view];
     
-    ELDLiveroomMembersContainerViewController *vc = [[ELDLiveroomMembersContainerViewController alloc] initWithChatroom:_chatroom];
-    [vc showFromParentView:self.view];
     
-//    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
-//    memberView.delegate = self;
-//    [memberView showFromParentView:self.view];
+    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithChatroom:_chatroom];
+    memberView.delegate = self;
+    [memberView showFromParentView:self.view];
 }
 
 - (void)willCloseChatroom {

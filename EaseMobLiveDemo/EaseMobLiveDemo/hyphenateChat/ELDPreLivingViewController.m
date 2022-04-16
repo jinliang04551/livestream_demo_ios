@@ -277,7 +277,6 @@
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 
     if (editImage) {
-//        _coverImageView.image = editImage;
         _fileData = UIImageJPEGRepresentation(editImage, 1.0);
         [self.changeAvatarButton setImage:editImage forState:UIControlStateNormal];
     }
@@ -381,20 +380,10 @@
 {
     if (_goLiveButton == nil) {
         _goLiveButton = [[UIButton alloc] init];
-        [_goLiveButton setImage:[UIImage imageNamed:@"goLive_button_bg"] forState:UIControlStateNormal];
         [_goLiveButton addTarget:self action:@selector(goLiveAction) forControlEvents:UIControlEventTouchUpInside];
         
-        UILabel *titleLabel = UILabel.new;
-        titleLabel.textColor = COLOR_HEX(0xFFFFFF);
-        titleLabel.font = NFont(16.0);
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.text = @"Go LIVE!";
+        [_goLiveButton setBackgroundImage:ImageWithName(@"goLive_button_bg") forState:UIControlStateNormal];
         
-        [_goLiveButton addSubview:titleLabel];
-        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_goLiveButton);
-            make.centerY.equalTo(_goLiveButton);
-        }];
     }
     return _goLiveButton;
 }

@@ -6,14 +6,14 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ALSAppStyle.h"
+#import "ELDAppStyle.h"
 
-@implementation ALSAppStyle
+@implementation ELDAppStyle
 + (instancetype)shareAppStyle {
-    static ALSAppStyle *instance = nil;
+    static ELDAppStyle *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = ALSAppStyle.new;
+        instance = ELDAppStyle.new;
     });
     
     return instance;

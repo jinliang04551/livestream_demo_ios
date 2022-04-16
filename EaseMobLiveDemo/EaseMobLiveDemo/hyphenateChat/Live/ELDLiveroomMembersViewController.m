@@ -38,13 +38,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.table.backgroundColor = UIColor.redColor;
     [self loadDatas];
 }
 
 - (void)placeSubViews {
     
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(-[self bottomPadding]);
+        make.edges.equalTo(self.view);
     }];
 }
 
@@ -60,39 +61,55 @@
         case 1:
         {
             [tempArray addObject:self.chatroom.owner];
-            [tempArray addObjectsFromArray:self.chatroom.adminList];
-            [tempArray addObjectsFromArray:self.chatroom.memberList];
+            if (self.chatroom.adminList) {
+                [tempArray addObjectsFromArray:self.chatroom.adminList];
+            }
+            if (self.chatroom.memberList) {
+                [tempArray addObjectsFromArray:self.chatroom.memberList];
+            }
         }
             break;
         case 2:
         {
             [tempArray addObject:self.chatroom.owner];
-            [tempArray addObjectsFromArray:self.chatroom.adminList];
+            if (self.chatroom.adminList) {
+                [tempArray addObjectsFromArray:self.chatroom.adminList];
+            }
         }
             break;
         case 3:
         {
-            [tempArray addObjectsFromArray:self.chatroom.whitelist];
+            if (self.chatroom.whitelist) {
+                [tempArray addObjectsFromArray:self.chatroom.whitelist];
+            }
         }
             break;
 
         case 4:
         {
-            [tempArray addObjectsFromArray:self.chatroom.muteList];
+            if (self.chatroom.muteList) {
+                [tempArray addObjectsFromArray:self.chatroom.muteList];
+            }
         }
             break;
 
         case 5:
         {
-            [tempArray addObject:self.chatroom.blacklist];
+            if (self.chatroom.blacklist) {
+                [tempArray addObject:self.chatroom.blacklist];
+            }
         }
             break;
 
         default:
         {
             [tempArray addObject:self.chatroom.owner];
-            [tempArray addObject:self.chatroom.adminList];
-            [tempArray addObject:self.chatroom.memberList];
+            if (self.chatroom.adminList) {
+                [tempArray addObjectsFromArray:self.chatroom.adminList];
+            }
+            if (self.chatroom.memberList) {
+                [tempArray addObjectsFromArray:self.chatroom.memberList];
+            }
         }
             break;
     }
@@ -108,6 +125,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.dataArray removeAllObjects];
             self.dataArray = userInfos;
+            NSLog(@"self.type:%@ self.dataArray:%@",@(self.memberVCType),self.dataArray);
             [self.table reloadData];
         });
     }];
@@ -229,6 +247,7 @@
     
 }
 
+#pragma mark gette and setter
 
 
 @end

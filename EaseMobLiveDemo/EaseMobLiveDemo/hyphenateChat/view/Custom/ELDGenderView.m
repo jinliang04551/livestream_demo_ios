@@ -38,8 +38,8 @@
 
 - (void)updateWithGender:(NSInteger)gender birthday:(NSString *)birthday {
     if (birthday.length > 0) {
-        
-        
+        NSInteger age = [ELDUtil ageFromBirthString:birthday];
+        self.ageLabel.text = [@(age) stringValue];
     }
     
     if (gender == 1) {
