@@ -223,6 +223,7 @@
     }];
 }
 
+
 - (void)_setupLocalVideo {
     self.agoraLocalVideoView = [[UIView alloc]init];
     self.agoraLocalVideoView.frame = self.view.bounds;

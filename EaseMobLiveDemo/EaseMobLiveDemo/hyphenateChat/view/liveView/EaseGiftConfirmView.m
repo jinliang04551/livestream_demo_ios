@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) NSString *giftId;
 
+@property (nonatomic, strong) ELDGiftModel *giftModel;
+
 @end
 
 @implementation EaseGiftConfirmView
@@ -35,6 +37,21 @@
        }
     return self;
 }
+
+- (instancetype)initWithGiftModel:(ELDGiftModel *)giftModel
+                          giftNum:(NSInteger)num
+                        titleText:(NSString *)titleText
+{
+    self = [super init];
+       if (self) {
+           _giftModel = giftModel;
+           _titleText = titleText;
+           _giftNum = num;
+           [self _setupSuviews];
+       }
+    return self;
+}
+
 
 - (void)_setupSuviews
 {
@@ -73,7 +90,7 @@
         make.right.equalTo(confirmView).offset(-32);
         make.height.equalTo(@90);
     }];
-    UIImageView *avatarView = [[UIImageView alloc]initWithImage:self.giftCell.giftImageView.image];
+    UIImageView *avatarView = [[UIImageView alloc]initWithImage:ImageWithName(self.giftModel.giftname)];
     [memberView addSubview:avatarView];
     [avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.equalTo(memberView).offset(22);
@@ -81,7 +98,7 @@
         make.width.equalTo(@46);
     }];
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = [NSString stringWithFormat:@"%ld个 %@",(long)_giftNum,self.giftCell.nameLabel.text];
+    nameLabel.text = [NSString stringWithFormat:@"%ld个 %@",(long)_giftNum,self.giftModel.giftname];
     nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     nameLabel.font = [UIFont fontWithName:@"PingFangSC" size: 18];
     nameLabel.textAlignment = NSTextAlignmentLeft;
@@ -138,14 +155,24 @@
         confirm = true;
     }
     if (_doneCompletion) {
+//        JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
+//        cellModel.id = _giftId;
+//        cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
+//        cellModel.icon = _giftCell.giftImageView.image;
+//        cellModel.name = _giftCell.nameLabel.text;
+//        cellModel.username = AgoraChatClient.sharedClient.currentUsername;
+//        cellModel.count = (NSInteger)_giftNum;
+//        _doneCompletion(confirm,cellModel);
+        
         JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-        cellModel.id = _giftId;
+        cellModel.id = self.giftModel.giftId;
         cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
-        cellModel.icon = _giftCell.giftImageView.image;
-        cellModel.name = _giftCell.nameLabel.text;
+        cellModel.icon = ImageWithName(self.giftModel.giftname);
+        cellModel.name = self.giftModel.giftname;
         cellModel.username = AgoraChatClient.sharedClient.currentUsername;
         cellModel.count = (NSInteger)_giftNum;
         _doneCompletion(confirm,cellModel);
+        
     }
     [self removeFromParentView];
 }

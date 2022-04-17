@@ -258,6 +258,9 @@
                                     
                 }];
                 
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:ELDUserAvatarUpdateNotification object:self.currentImage];
+                
                 [self.userHeaderView.avatarImageView setImage:self.currentImage];
                 [self.table reloadData];
             }

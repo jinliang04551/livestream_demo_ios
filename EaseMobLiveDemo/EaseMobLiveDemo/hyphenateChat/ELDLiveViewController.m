@@ -210,6 +210,7 @@
         }
     };
 }
+
 - (void)_setupAgoreKit
 {
     self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];

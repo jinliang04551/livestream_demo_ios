@@ -21,7 +21,7 @@
 
 @protocol EaseLiveGiftViewDelegate <NSObject>
 
-- (void)didConfirmGift:(EaseGiftCell *)giftCell giftNum:(long)num;
+- (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num;
 
 - (void)giftNumCustom:(EaseLiveGiftView *)liveGiftView;
 

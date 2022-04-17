@@ -249,6 +249,8 @@
     }];
 }
 
+
+
 - (void)createLiveRoom:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion{
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"开始直播..." toView:self.view];
     __weak MBProgressHUD *weakHud = hud;

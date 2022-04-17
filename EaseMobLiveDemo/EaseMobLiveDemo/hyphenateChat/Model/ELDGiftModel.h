@@ -11,12 +11,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDGiftModel : NSObject
+@property (nonatomic, strong) NSString *giftId;
 @property (nonatomic, strong) NSString *giftname;
 @property (nonatomic, assign) NSInteger giftValue;
 @property (nonatomic, assign) BOOL selected;
 
 - (instancetype)initWithGiftname:(NSString *)giftname
-                       giftValue:(NSInteger)giftValue;
+                       giftValue:(NSInteger)giftValue
+                          giftId:(NSString *)giftId;
 
 @end
 

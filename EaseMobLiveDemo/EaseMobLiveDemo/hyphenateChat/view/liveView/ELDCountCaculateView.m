@@ -67,6 +67,11 @@
     
 }
 
+- (void)resetCaculateView {
+    self.giftCount = 1;
+    self.countLabel.text = [@(self.giftCount) stringValue];
+}
+
 #pragma mark action
 - (void)tapAction {
     NSLog(@"%s",__func__);

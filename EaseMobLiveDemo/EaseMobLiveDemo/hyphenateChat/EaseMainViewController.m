@@ -21,6 +21,8 @@
 #import "ELDSettingViewController.h"
 #import "ELDLiveViewController.h"
 
+#import "ELDTabBar.h"
+
 
 #define IS_iPhoneX (\
 {\
@@ -33,21 +35,64 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
 #define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
 
+#define kBroadCastBtnHeight  70.0
+
 @interface EaseMainViewController () <UITabBarDelegate>
-{
-    EaseBroadCastTabViewController *_broadCastTabViewController;
-    ELDLiveListViewController *_liveListVC;
-    ELDSettingViewController *_settingVC;
-    CGFloat broadCastBtnScale;//比例
-}
+
+
+
+@property (nonatomic, strong) EaseBroadCastTabViewController *_broadCastTabViewController;
+@property (nonatomic, strong) ELDLiveListViewController *liveListVC;
+@property (nonatomic, strong) ELDSettingViewController *settingVC;
+@property (nonatomic, assign) CGFloat broadCastBtnScale;//比例
+
 
 @property (nonatomic, strong) UIView *addView;
 @property (nonatomic, strong) UITabBar *tabBar;
 @property (strong, nonatomic) NSArray *viewControllers;
+
 @property (strong, nonatomic) UIButton *broadCastBtn;
+@property (nonatomic,strong) ELDTabBar *bottomBar;
+@property (nonatomic,strong) UINavigationController* nav1;
+@property (nonatomic,strong) UINavigationController* nav2;
+
+
 @end
 
 @implementation EaseMainViewController
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+    
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAvatarUpdateNotification:) name:ELDUserAvatarUpdateNotification object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc {
+    EASELIVEDEMO_REMOVENOTIFY(self);
+}
+
+#pragma mark NOtification
+- (void)userAvatarUpdateNotification:(NSNotification *)notify {
+    UIImage *userImage = (UIImage *)notify.object;
+    [self.bottomBar updateTabbarItemIndex:1 withImage:userImage selectedImage:userImage];
+    
+}
+
+
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    self.navigationController.navigationBarHidden = YES;
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+//    self.navigationController.navigationBarHidden = NO;
+//}
+
 
 - (void)viewDidLoad
 {
@@ -57,9 +102,114 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     }
     
     
-    broadCastBtnScale = 0.9;
-    [self loadViewControllers];
+    self.broadCastBtnScale = 0.9;
+//    [self loadViewControllers];
     [self fetchLiveroomStatus];
+    
+    [self placeAndLayoutSubNavs];
+    
+//    [self placeAndLayoutSuviews];
+}
+
+
+- (void)placeAndLayoutSuviews {
+    self.view.backgroundColor = UIColor.blueColor;
+    
+    _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBroadCastingTypeLIVE];
+    ELD_WS
+    _liveListVC.goNextBlock = ^{
+
+    };
+    
+    
+    _settingVC = [[ELDSettingViewController alloc] init];
+
+
+    [self.view addSubview:self.liveListVC.view];
+    [self.view addSubview:self.settingVC.view];
+    
+    [self.view addSubview:self.bottomBar];
+    [self.view addSubview:self.broadCastBtn];
+
+    [self.liveListVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 0, 0));
+    }];
+    
+    [self.settingVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.liveListVC.view);
+    }];
+    
+    
+    __weak UIView *wkView = self.bottomBar;
+    [self.bottomBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.view);
+        make.height.equalTo(@(kCustomTabbarHeight));
+        if (@available(iOS 11.0, *)) {
+            [wkView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
+        } else {
+            make.bottom.equalTo(self.view);
+        }
+    }];
+    
+    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@(kBroadCastBtnHeight));
+        make.top.equalTo(_bottomBar.mas_top).offset(-kBroadCastBtnHeight *0.5);
+        make.centerX.equalTo(self.view);
+    }];
+
+}
+
+- (void)placeAndLayoutSubNavs {
+    self.view.backgroundColor = UIColor.blueColor;
+    
+    _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBroadCastingTypeLIVE];
+    ELD_WS
+    _liveListVC.goNextBlock = ^{
+
+    };
+    
+    
+    _settingVC = [[ELDSettingViewController alloc] init];
+
+    
+    self.nav1 = [[UINavigationController alloc] initWithRootViewController:_liveListVC];
+    self.nav2 = [[UINavigationController alloc] initWithRootViewController:_settingVC];
+    [self.view addSubview:self.nav1.view];
+    [self.view addSubview:self.nav2.view];
+    
+    [self.view addSubview:self.bottomBar];
+    [self.view addSubview:self.broadCastBtn];
+
+
+    self.nav1.view.backgroundColor = UIColor.yellowColor;
+    self.nav2.view.backgroundColor = UIColor.redColor;
+
+    [self.nav1.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 0, 0));
+    }];
+    
+    [self.nav2.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.nav1.view);
+    }];
+    
+    
+    __weak UIView *wkView = self.bottomBar;
+    [self.bottomBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.view);
+        make.height.equalTo(@(kCustomTabbarHeight));
+        if (@available(iOS 11.0, *)) {
+            [wkView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
+        } else {
+            make.bottom.equalTo(self.view);
+        }
+    }];
+    
+    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@(kBroadCastBtnHeight));
+        make.top.equalTo(_bottomBar.mas_top).offset(-kBroadCastBtnHeight *0.5);
+        make.centerX.equalTo(self.view);
+    }];
+
 }
 
 //判断之前直播的直播间owner是否是自己
@@ -139,16 +289,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         make.right.equalTo(self.view.mas_right);
         make.height.mas_equalTo(50);
     }];
-    
-//    UIView *lineView = [[UIView alloc] init];
-//    lineView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-//    [self.tabBar addSubview:lineView];
-//    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.tabBar.mas_top);
-//        make.left.equalTo(self.tabBar.mas_left);
-//        make.right.equalTo(self.tabBar.mas_right);
-//        make.height.equalTo(@1);
-//    }];
+
     
     [self _setupChildController];
     [self.view addSubview:self.broadCastBtn];
@@ -159,34 +300,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     }];
 }
 
-- (UIButton *)broadCastBtn
-{
-    if (_broadCastBtn == nil) {
-        _broadCastBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_broadCastBtn setImage:[UIImage imageNamed:@"strat_live_stream"] forState:UIControlStateNormal];
-        [_broadCastBtn addTarget:self action:@selector(broadCastFeedBack:) forControlEvents:UIControlEventTouchDown];
-        [_broadCastBtn addTarget:self action:@selector(createBroadcastRoom) forControlEvents:UIControlEventTouchUpInside];
-        _broadCastBtn.layer.cornerRadius = 35;
-
-    }
-    return _broadCastBtn;
-}
-
-- (void)broadCastFeedBack:(UIButton *)sender
-{
-    [UIView animateWithDuration:0.25 animations:^{
-        sender.transform = CGAffineTransformMakeScale(broadCastBtnScale, broadCastBtnScale);
-    }];
-}
-
-- (void)createBroadcastRoom
-{
-//    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
-    
-    ELDLiveContainerViewController *vc = [[ELDLiveContainerViewController alloc] init];
-    vc.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:vc animated:true completion:nil];
-}
 
 - (void)loadViewControllers
 {
@@ -218,27 +331,49 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     
     self.viewControllers = @[nav1, nav2];
     
-    [self customTabbar];
+//    [self customTabbar];
     
-    [self.view addSubview:self.broadCastBtn];
-    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tabBar.mas_top).offset(-30);
-        make.centerX.equalTo(self.view);
-    }];
+//    [self.view addSubview:self.broadCastBtn];
+//    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.tabBar.mas_top).offset(-30);
+//        make.centerX.equalTo(self.view);
+//    }];
 
+    [self customTransTabbar];
 }
 
 
 - (void)customTabbar {
-    UIImageView *ima = [[UIImageView alloc] initWithImage:ImageWithName(@"TabbarBg")];
-    ima.frame = CGRectMake(0,0,self.view.frame.size.width, 49);
     
-    UIView *alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, ima.frame.size.width,ima.frame.size.height)];
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0,100,KScreenWidth, 49)];
+    bgView.backgroundColor = UIColor.clearColor;
+    
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:ImageWithName(@"TabbarBg")];
+    
+    UIView *alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth,49)];
     alphaView.alpha = 0.0;
-    [self.tabBar insertSubview:ima atIndex:0];
+    
+    [bgView addSubview:alphaView];
+    [bgView addSubview:bgImageView];
+    [bgView addSubview:self.broadCastBtn];
+    
+    [alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(bgView);
+    }];
+    
+    [bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(bgView);
+    }];
+    
+    [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@70);
+        make.centerY.equalTo(bgView.mas_top);
+        make.centerX.equalTo(bgView);
+    }];
 
-    self.tabBar.opaque = YES;
-    [self.tabBar insertSubview:ima atIndex:0];
+    
+     [self.tabBar insertSubview:bgView atIndex:0];
+
 }
 
     
@@ -255,7 +390,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
     
     
-    _settingVC = [[EaseSettingsViewController alloc] init];
+    _settingVC = [[ELDSettingViewController alloc] init];
     _settingVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
                                                    image:[ImageWithName(@"Channel_normal")
                                                           imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
@@ -274,6 +409,23 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     [self customTabbar];
 }
 
+- (void)customTransTabbar {
+    __weak UIView *wkView = self.bottomBar;
+    
+    [self.view addSubview:self.bottomBar];
+    
+   [self.bottomBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.and.right.equalTo(self.view);
+        make.height.equalTo(@49.0f);
+        if (@available(iOS 11.0, *)) {
+            [wkView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
+        } else {
+            make.bottom.equalTo(self.view);
+        }
+    }];
+}
+
+
 
 - (UITabBarItem *)_setupTabBarItemWithTitle:(NSString *)aTitle
                                     imgName:(NSString *)aImgName
@@ -286,6 +438,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
  
     return retItem;
 }
+
 /*
 #pragma mark - UITabBarControllerDelegate
 
@@ -298,4 +451,88 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     return YES;
 }*/
 
+
+
+#pragma mark getter and setter
+
+- (ELDTabBar *)bottomBar {
+    if (_bottomBar == nil) {
+        _bottomBar = ELDTabBar.new;
+        
+        ELD_TabItem* item1 = [[ELD_TabItem alloc] initWithTitle:@""
+                                                                image:ImageWithName(@"Channel_normal")
+                                                        selectedImage:ImageWithName(@"Channels_focus")];
+
+        ELD_TabItem* item2 = [[ELD_TabItem alloc] initWithTitle:@""
+                                                                image:ImageWithName(@"Channel_normal")
+                                                        selectedImage:ImageWithName(@"Channels_focus")];
+        _bottomBar.tabItems = @[item1, item2];
+
+        ELD_WS
+        _bottomBar.selectedBlock = ^(NSInteger index) {
+            [weakSelf updateNavBottomBarWithSelectedIndex:index];
+//            [weakSelf updateBottomBarWithSelectedIndex:index];
+            
+        };
+        _bottomBar.selectedIndex = 0;
+    }
+    return _bottomBar;
+}
+
+- (void)updateBottomBarWithSelectedIndex:(NSInteger)index {
+    if (index == 0) {
+        self.liveListVC.view.hidden = NO;
+        self.settingVC.view.hidden = YES;
+    }else {
+        self.liveListVC.view.hidden = YES;
+        self.settingVC.view.hidden = NO;
+    }
+}
+
+- (void)updateNavBottomBarWithSelectedIndex:(NSInteger)index {
+    if (index == 0) {
+        self.nav1.view.hidden = NO;
+        self.nav2.view.hidden = YES;
+    }else {
+        self.nav1.view.hidden = YES;
+        self.nav2.view.hidden = NO;
+    }
+}
+
+
+
+
+- (UIButton *)broadCastBtn
+{
+    if (_broadCastBtn == nil) {
+        _broadCastBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_broadCastBtn setImage:[UIImage imageNamed:@"strat_live_stream"] forState:UIControlStateNormal];
+        [_broadCastBtn addTarget:self action:@selector(broadCastFeedBack:) forControlEvents:UIControlEventTouchDown];
+        [_broadCastBtn addTarget:self action:@selector(createBroadcastRoom) forControlEvents:UIControlEventTouchUpInside];
+        _broadCastBtn.layer.cornerRadius = kBroadCastBtnHeight * 0.5;
+        _broadCastBtn.backgroundColor = UIColor.cyanColor;
+
+    }
+    return _broadCastBtn;
+}
+
+- (void)broadCastFeedBack:(UIButton *)sender
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        sender.transform = CGAffineTransformMakeScale(self.broadCastBtnScale, self.broadCastBtnScale);
+    }];
+}
+
+- (void)createBroadcastRoom
+{
+//    EaseLiveCreateViewController *createLiveVC = [[EaseLiveCreateViewController alloc] init];
+    
+    ELDLiveContainerViewController *vc = [[ELDLiveContainerViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:vc animated:true completion:nil];
+}
+
+
 @end
+
+#undef kBroadCastBtnHeight

@@ -44,9 +44,7 @@
     [self initHyphenateChatSDK];
     //初始化七牛sdk
     [PLStreamingEnv initEnv];
-        
-//    [self loadMainView];
-        
+                
     [self.window makeKeyAndVisible];
 
     return YES;
@@ -65,6 +63,13 @@
         EaseMainViewController *main = [[EaseMainViewController alloc] init];
         _mainVC = main;
         self.window.rootViewController = main;
+        
+//        EaseMainViewController *main = [[EaseMainViewController alloc] init];
+//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
+//
+//        _mainVC = main;
+//        self.window.rootViewController = nav;
+        
     }
     else{//登录失败加载登录页面控制器
         _mainVC = nil;

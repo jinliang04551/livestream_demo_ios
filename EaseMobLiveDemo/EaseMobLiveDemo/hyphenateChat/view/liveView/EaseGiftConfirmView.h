@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithGiftInfo:(EaseGiftCell *)giftCell giftNum:(long)num titleText:(NSString *)titleText giftId:(NSString *)giftId;
 
+- (instancetype)initWithGiftModel:(ELDGiftModel *)giftModel
+                          giftNum:(NSInteger)num
+                        titleText:(NSString *)titleText;
 @end
 
 NS_ASSUME_NONNULL_END

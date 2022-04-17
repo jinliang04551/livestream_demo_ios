@@ -241,6 +241,7 @@
 		C047556228095E370094EAD3 /* UILabel+LXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555C28095E370094EAD3 /* UILabel+LXLabel.m */; };
 		C047556328095E370094EAD3 /* LxButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555D28095E370094EAD3 /* LxButton.m */; };
 		C047556428095E370094EAD3 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555E28095E370094EAD3 /* UIColor+Expanded.m */; };
+		C0475568280B0FD20094EAD3 /* ELDTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475566280B0FD20094EAD3 /* ELDTabBar.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */; };
@@ -717,6 +718,8 @@
 		C047555E28095E370094EAD3 /* UIColor+Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Expanded.m"; sourceTree = "<group>"; };
 		C047555F28095E370094EAD3 /* UIView+FTCornerdious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FTCornerdious.h"; sourceTree = "<group>"; };
 		C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXCalendarCategoryHeader.h; sourceTree = "<group>"; };
+		C0475566280B0FD20094EAD3 /* ELDTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDTabBar.m; sourceTree = "<group>"; };
+		C0475567280B0FD20094EAD3 /* ELDTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDTabBar.h; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageCollectionView.m; sourceTree = "<group>"; };
@@ -1180,21 +1183,21 @@
 		3C9E319D260C7B4200CC3E3F /* JPGiftManager */ = {
 			isa = PBXGroup;
 			children = (
-				3C9E319E260C7B4200CC3E3F /* JPGiftShowView.h */,
-				3C9E319F260C7B4200CC3E3F /* JPGiftShowManager.h */,
-				3C9E31A0260C7B4200CC3E3F /* X.png */,
 				3C9E31A1260C7B4200CC3E3F /* JPGiftCellModel.h */,
-				3C9E31A2260C7B4200CC3E3F /* JPGiftModel.m */,
-				3C9E31A3260C7B4200CC3E3F /* JPGiftCountLabel.m */,
-				3C9E31A4260C7B4200CC3E3F /* JPGiftOperation.h */,
-				3C9E31A5260C7B4200CC3E3F /* JPGiftShowManager.m */,
-				3C9E31A6260C7B4200CC3E3F /* JPGiftShowView.m */,
-				3C9E31A7260C7B4200CC3E3F /* JPGiftCountLabel.h */,
-				3C9E31A8260C7B4200CC3E3F /* JPGiftModel.h */,
 				3C9E31A9260C7B4200CC3E3F /* JPGiftCellModel.m */,
-				3C9E31AA260C7B4200CC3E3F /* X@3x.png */,
-				3C9E31AB260C7B4200CC3E3F /* X@2x.png */,
+				3C9E31A7260C7B4200CC3E3F /* JPGiftCountLabel.h */,
+				3C9E31A3260C7B4200CC3E3F /* JPGiftCountLabel.m */,
+				3C9E31A8260C7B4200CC3E3F /* JPGiftModel.h */,
+				3C9E31A2260C7B4200CC3E3F /* JPGiftModel.m */,
+				3C9E31A4260C7B4200CC3E3F /* JPGiftOperation.h */,
 				3C9E31AC260C7B4200CC3E3F /* JPGiftOperation.m */,
+				3C9E319F260C7B4200CC3E3F /* JPGiftShowManager.h */,
+				3C9E31A5260C7B4200CC3E3F /* JPGiftShowManager.m */,
+				3C9E319E260C7B4200CC3E3F /* JPGiftShowView.h */,
+				3C9E31A6260C7B4200CC3E3F /* JPGiftShowView.m */,
+				3C9E31A0260C7B4200CC3E3F /* X.png */,
+				3C9E31AB260C7B4200CC3E3F /* X@2x.png */,
+				3C9E31AA260C7B4200CC3E3F /* X@3x.png */,
 			);
 			path = JPGiftManager;
 			sourceTree = "<group>";
@@ -1578,6 +1581,8 @@
 				C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */,
 				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
 				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
+				C0475567280B0FD20094EAD3 /* ELDTabBar.h */,
+				C0475566280B0FD20094EAD3 /* ELDTabBar.m */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -2163,6 +2168,7 @@
 			files = (
 				C0602E8428001EF600D39575 /* MISScrollPageContentView.m in Sources */,
 				3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */,
+				C0475568280B0FD20094EAD3 /* ELDTabBar.m in Sources */,
 				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
 				3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */,
 				3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */,

@@ -701,6 +701,26 @@
         }
     }];
 }
+
+- (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num {
+    EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc] initWithGiftModel:giftModel giftNum:num titleText:@"是否赠送"];
+    confirmView.delegate = self;
+    [confirmView showFromParentView:self.view];
+    __weak typeof(self) weakself = self;
+    [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
+        if (aConfirm) {
+            //发送礼物消息
+            [weakself.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
+                if (success) {
+                    //显示礼物UI
+                    giftModel.username = [self randomNickName:giftModel.username];
+                    [_customMsgHelper sendGiftAction:giftModel backView:self.view];
+                }
+            }];
+        }
+    }];
+}
+
 extern NSMutableDictionary *audienceNickname;
 extern NSArray<NSString*> *nickNameArray;
 extern NSMutableDictionary *anchorInfoDic;
@@ -885,6 +905,7 @@ extern NSMutableDictionary *anchorInfoDic;
                                              [[AgoraChatClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
                                          }
                                          [weakSelf dismissViewControllerAnimated:YES completion:NULL];
+        
                                      }];
     [self.agoraKit leaveChannel:nil];
     [_burstTimer invalidate];

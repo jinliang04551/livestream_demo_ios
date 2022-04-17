@@ -12,8 +12,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDCountCaculateView : UIView
 @property (nonatomic, strong, readonly) UILabel *countLabel;
+@property (nonatomic, assign, readonly) NSInteger giftCount;
 @property (nonatomic, copy) void(^countBlock)(NSInteger count);
 @property (nonatomic, copy) void(^tapBlock)();
+
+- (void)resetCaculateView;
+
 
 @end
 

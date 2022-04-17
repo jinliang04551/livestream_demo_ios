@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSArray *giftNameArray;
 @property (nonatomic, strong) NSArray *giftValueArray;
+@property (nonatomic, strong) NSArray *giftIdArray;
 
 @end
 
@@ -46,6 +47,19 @@ static EaseLiveGiftHelper *giftHelperInstance;
     return _giftValueArray;
 }
 
+- (NSArray *)giftIdArray {
+    if (_giftIdArray == nil) {
+        _giftIdArray = [NSArray array];
+
+        NSMutableArray *idArray = [[NSMutableArray alloc]init];
+        for (NSInteger i = 1; i < 9; ++i) {
+            NSString *giftId = [NSString stringWithFormat:@"gift_%@",@(i)];
+            [idArray addObject:giftId];
+        }
+        _giftIdArray = [idArray copy];
+    }
+    return _giftIdArray;
+}
 - (NSArray *)giftArray {
     if( _giftArray == nil){
         NSMutableArray *mutableGiftArray = [[NSMutableArray alloc]init];
@@ -53,7 +67,9 @@ static EaseLiveGiftHelper *giftHelperInstance;
             
             NSString *giftName = giftHelperInstance.giftNameArray[i];
             NSNumber *giftValue = giftHelperInstance.giftValueArray[i];
-            ELDGiftModel *giftModel = [[ELDGiftModel alloc] initWithGiftname:giftName giftValue:[giftValue integerValue]];
+            NSString *giftId = giftHelperInstance.giftIdArray[i];
+
+            ELDGiftModel *giftModel = [[ELDGiftModel alloc] initWithGiftname:giftName giftValue:[giftValue integerValue] giftId:giftId];
             [mutableGiftArray addObject:giftModel];
         }
         _giftArray = [mutableGiftArray copy];

@@ -17,5 +17,7 @@
 //chatroom
 #define  ELDChatroomUpdateNotification  @"ELDChatroomUpdateNotification"
 
+//user avatar update
+#define  ELDUserAvatarUpdateNotification  @"ELDUserAvatarUpdateNotification"
 
 #endif /* EaseLiveDemoNotification_h */

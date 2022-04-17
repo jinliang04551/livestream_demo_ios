@@ -7,11 +7,6 @@
 //
 
 #import "ELDLiveListViewController.h"
-#define kCollectionCellDefaultHeight 150
-#define kDefaultPageSize 8
-#define kCollectionIdentifier @"collectionCell"
-
-#import "EaseLiveTVListViewController.h"
 #import "EaseLiveCollectionViewCell.h"
 #import "EaseLiveViewController.h"
 #import "SRRefreshView.h"
@@ -25,6 +20,11 @@
 #import "EasePublishViewController.h"
 #import "ELDNoDataPlaceHolderView.h"
 #import "ELDHintGoLiveView.h"
+
+#define kCollectionCellDefaultHeight 150
+#define kDefaultPageSize 8
+#define kCollectionIdentifier @"collectionCell"
+
 
 @interface ELDLiveListViewController () <UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,SRRefreshDelegate,AgoraChatClientDelegate>
 {
@@ -126,7 +126,6 @@
         return;
     }
     _isLoading = YES;
-//    __weak EaseLiveTVListViewController *weakSelf = self;
     
     ELD_WS
     if (self.tabBarBehavior == kTabbarItemTag_Live) {
@@ -468,7 +467,7 @@
                 return;
             } else {
                 EaseLiveViewController *view = [[EaseLiveViewController alloc] initWithLiveRoom:room];
-                view.modalPresentationStyle = 0;
+                view.modalPresentationStyle = UIModalPresentationFullScreen;
                 [view setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
                     if (isUpdate) {
                         EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:liveRoom];
@@ -476,7 +475,17 @@
                         [weakSelf.navigationController presentViewController:publishView animated:YES completion:nil];
                     }
                 }];
-                [weakSelf.navigationController presentViewController:view animated:YES completion:nil];
+                
+//                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:view];
+//                [weakSelf.navigationController presentViewController:nav animated:YES completion:nil];
+
+//                [weakSelf presentViewController:view animated:YES completion:nil];
+                
+                [weakSelf.navigationController presentViewController:view animated:YES completion:^{
+                    if (weakSelf.goNextBlock) {
+                        weakSelf.goNextBlock();
+                    }
+                }];
             }
         }];
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {

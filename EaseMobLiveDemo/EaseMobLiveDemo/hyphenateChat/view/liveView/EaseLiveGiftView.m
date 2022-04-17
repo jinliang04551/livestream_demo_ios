@@ -27,7 +27,7 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIView *bottomView;
 
-@property (nonatomic, strong) UIButton *sendGiftBtn;
+@property (nonatomic, strong) UIButton *sendGiftButton;
 @property (nonatomic, strong) UILabel *giftNameLabel;
 
 
@@ -68,7 +68,7 @@
     [self.bottomView addSubview:self.countCaculateView];
     [self.bottomView addSubview:self.giftTotalValueImageView];
     [self.bottomView addSubview:self.giftTotalValueLabel];
-    [self.bottomView addSubview:self.sendGiftBtn];
+    [self.bottomView addSubview:self.sendGiftButton];
 
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self).insets(UIEdgeInsetsMake(kBottomViewHeight, 0, 0, 0));
@@ -82,30 +82,30 @@
     }];
 
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.sendGiftBtn.mas_top).offset(-20.0);
+        make.bottom.equalTo(self.sendGiftButton.mas_top).offset(-20.0);
         make.left.right.equalTo(self.bottomView);
         make.height.equalTo(@(_collectionView.height));
     }];
     
-    [self.sendGiftBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.sendGiftButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0);
         make.right.equalTo(self.bottomView).offset(-20.0);
         make.height.equalTo(@(kSendButtonHeight));
     }];
 
     [self.giftTotalValueImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.sendGiftBtn);
+        make.centerY.equalTo(self.sendGiftButton);
         make.right.equalTo(self.giftTotalValueLabel.mas_left).offset(-5.0);
         make.size.equalTo(@(20.0));
     }];
     
     [self.giftTotalValueLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.sendGiftBtn);
-        make.right.equalTo(self.sendGiftBtn.mas_left).offset(-15.0);
+        make.centerY.equalTo(self.sendGiftButton);
+        make.right.equalTo(self.sendGiftButton.mas_left).offset(-15.0);
     }];
 
     [self.countCaculateView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.sendGiftBtn);
+        make.centerY.equalTo(self.sendGiftButton);
         make.left.equalTo(self.bottomView.mas_left).offset(20.0);
         make.height.equalTo(@(kSendButtonHeight));
     }];
@@ -193,6 +193,7 @@
         [mutableAttString appendAttributedString:totalAttString];
 
         self.giftTotalValueLabel.attributedText = mutableAttString;
+    
     }
 
 }
@@ -262,16 +263,16 @@
     return _selectedGiftDesc;
 }
 
-- (UIButton*)sendGiftBtn
+- (UIButton*)sendGiftButton
 {
-    if (_sendGiftBtn == nil) {
-        _sendGiftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _sendGiftBtn.frame = CGRectMake(self.width - 94.f, _collectionView.bottom + 10.f, 80.f, 34.f);
-        [_sendGiftBtn setImage:ImageWithName(@"sendGift") forState:UIControlStateNormal];
-        _sendGiftBtn.layer.cornerRadius = 10.f;
-        [_sendGiftBtn addTarget:self action:@selector(sendGiftAction) forControlEvents:UIControlEventTouchUpInside];
+    if (_sendGiftButton == nil) {
+        _sendGiftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _sendGiftButton.frame = CGRectMake(self.width - 94.f, _collectionView.bottom + 10.f, 80.f, 34.f);
+        [_sendGiftButton setImage:ImageWithName(@"sendGift") forState:UIControlStateNormal];
+        _sendGiftButton.layer.cornerRadius = 10.f;
+        [_sendGiftButton addTarget:self action:@selector(sendGiftAction) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _sendGiftBtn;
+    return _sendGiftButton;
 }
 
 - (UIImageView *)giftTotalValueImageView {
@@ -351,9 +352,8 @@
 {
     
     self.selectedGiftDesc.text = aCell.nameLabel.text;
-    _giftNum = 1;
-    [self.giftNumBtn setTitle:[NSString stringWithFormat:@"%lu",_giftNum] forState:UIControlStateNormal];
-    
+    [self.countCaculateView resetCaculateView];
+
     //
     self.selectedGiftCell = aCell;
     self.selectedGiftModel = aCell.giftModel;
@@ -374,21 +374,18 @@
 //刷礼物
 - (void)sendGiftAction
 {
-//    self.selectedGiftDesc.hidden = YES;
-//    self.selectedGiftNumView.hidden = YES;
+    
     if (self.selectedGiftCell) {
-        if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(didConfirmGift:giftNum:)]) {
-            [self.giftDelegate didConfirmGift:self.selectedGiftCell giftNum:_giftNum];
+        if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(didConfirmGiftModel:giftNum:)]) {
+            [self.giftDelegate didConfirmGiftModel:self.selectedGiftModel giftNum:self.countCaculateView.giftCount];
             self.selectedGiftCell = nil;
             self.selectedGiftModel = nil;
             
             _giftNum = 1;
-            [self.giftNumBtn setTitle:[NSString stringWithFormat:@"%lu",_giftNum] forState:UIControlStateNormal];
-            
-            self.countCaculateView.countLabel.text = @"1";
-            
+            [self.countCaculateView resetCaculateView];
         }
     }
+
 }
 
 //增加礼物数量

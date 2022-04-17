@@ -39,13 +39,15 @@
                                                       NSForegroundColorAttributeName : COLOR_HEX(0x114EFF)
                                                       } forState:UIControlStateSelected];
 
-    UITabBar.appearance.shadowImage = [[UIImage alloc] init];
     UITabBarItem.appearance.badgeColor = TextLabelPinkColor;
-    //去黑线
-    [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];
-    [UITabBar appearance].layer.borderWidth = 0.0f;
-    [UITabBar appearance].clipsToBounds = YES;
 
+    //去黑线
+//    [[UITabBar appearance] setShadowImage:[[UIImage alloc] init]];
+//    [UITabBar appearance].layer.borderWidth = 0.0f;
+//    [UITabBar appearance].clipsToBounds = YES;
+//    [[UITabBar appearance] setTranslucent:YES];
+
+    
 }
 
 - (void)matchNavigation {

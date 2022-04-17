@@ -107,6 +107,9 @@ typedef enum : NSUInteger {
 
 #define kGenderViewHeight 16.0
 
+#define kCustomTabbarHeight  49.0
+
+
 #define kDefultUserImage   ImageWithName(@"avatat_2")
 
 

@@ -13,10 +13,12 @@
 
 @implementation ELDGiftModel
 - (instancetype)initWithGiftname:(NSString *)giftname
-                       giftValue:(NSInteger)giftValue {
+                       giftValue:(NSInteger)giftValue
+                          giftId:(NSString *)giftId {
     if (self) {
         self.giftname = giftname;
         self.giftValue = giftValue;
+        self.giftId = giftId;
     }
     return self;
 }
