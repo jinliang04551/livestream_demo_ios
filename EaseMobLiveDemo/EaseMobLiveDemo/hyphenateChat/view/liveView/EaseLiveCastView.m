@@ -71,6 +71,7 @@ extern NSMutableDictionary *anchorInfoDic;
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(4.0);
         make.left.equalTo(self.headImageView.mas_right).offset(kEaseLiveDemoPadding);
+        make.width.lessThanOrEqualTo(@80.0);
         make.height.equalTo(@16.0);
     }];
 

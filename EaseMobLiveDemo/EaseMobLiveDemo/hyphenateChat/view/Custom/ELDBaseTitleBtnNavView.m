@@ -43,8 +43,8 @@
         make.size.equalTo(@(kButtonHeight));
         make.right.equalTo(self).offset(-16.0);
     }];
-
 }
+
 
 - (void)rightButtonAction {
     if (self.rightButtonBlock) {

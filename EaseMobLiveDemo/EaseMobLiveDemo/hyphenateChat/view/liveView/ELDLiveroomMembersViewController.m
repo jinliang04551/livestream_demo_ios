@@ -185,12 +185,16 @@
     }
     
     cell.chatroom = self.chatroom;
-    [cell updateWithObj:self.dataArray[indexPath.row]];
+    AgoraChatUserInfo *userInfo = self.dataArray[indexPath.row];
+
+    [cell updateWithObj:userInfo];
     
     ELD_WS
     cell.tapCellBlock = ^{
-//        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeBlock group:weakSelf.group];
-    
+        if (self.selectedUserBlock) {
+            self.selectedUserBlock(userInfo.userId, self.memberVCType);
+        }
+        
     };
     
     return cell;
@@ -200,6 +204,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
 
 #pragma mark - data
 

@@ -11,9 +11,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class EaseBaseSubView;
+@protocol ELDChatroomMembersViewDelegate <NSObject>
+
+- (void)selectedUser:(NSString *)userId memberVCType:(ELDMemberVCType)memberVCType chatRoom:(AgoraChatroom *)chatroom;
+
+@end
+
+
 @interface ELDChatroomMembersView : EaseBaseSubView
+@property (nonatomic, weak) id<ELDChatroomMembersViewDelegate> selectedUserDelegate;
+
 - (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom;
-- (void)showFromParentView:(UIView *)view;
 
 @end
 

@@ -73,8 +73,10 @@
     }
     
     
-    if ([self.chatroom.blacklist containsObject:self.userInfo.userId]) {
-        
+    if ([self.chatroom.muteList containsObject:self.userInfo.userId]) {
+        self.muteImageView.hidden = NO;
+    }else {
+        self.muteImageView.hidden = YES;
     }
     
 }

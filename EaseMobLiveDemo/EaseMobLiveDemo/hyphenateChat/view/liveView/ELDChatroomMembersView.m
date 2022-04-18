@@ -148,35 +148,14 @@ MISScrollPageControllerDelegate>
 }
 
 
-#pragma mark show view
-- (void)showFromParentView:(UIView *)view
-{
-    view.userInteractionEnabled = YES;
-
-    [view addSubview:self];
-    [UIView animateWithDuration:0.5 animations:^{
-
-    } completion:^(BOOL finished) {
-        view.userInteractionEnabled = YES;
-    }];
-    
+- (void)handleSelectedWithUserId:(NSString *)userId memberVCType:(ELDMemberVCType)memberVCType {
+    if (self.selectedUserDelegate && [self.selectedUserDelegate respondsToSelector:@selector(selectedUser:memberVCType:chatRoom:)]) {
+        [self.selectedUserDelegate selectedUser:userId memberVCType:memberVCType chatRoom:self.chatroom];
+    }
 }
-
 
 
 #pragma mark Notification
-- (void)updateUIWithNotification:(NSNotification *)aNotification
-{
-//    id obj = aNotification.object;
-//    if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
-//        AgoraChatGroup *group = (AgoraChatGroup *)obj;
-//        if ([group.groupId isEqualToString:self.group.groupId]) {
-//            self.group = group;
-//            [self updateNavTitle];
-//        }
-//    }
-}
-
 - (void)chatroomUpdateNotification:(AgoraChatroom *)chatroom {
 //    self.group = agoraGroup;
 //    [self.allVC updateUI];
@@ -246,6 +225,10 @@ MISScrollPageControllerDelegate>
 - (ELDLiveroomMembersViewController *)allVC {
     if (_allVC == nil) {
         _allVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAll];
+        ELD_WS
+        _allVC.selectedUserBlock = ^(NSString * _Nonnull userId, ELDMemberVCType memberVCType) {
+            [weakSelf handleSelectedWithUserId:userId memberVCType:memberVCType];
+        };
     }
     return _allVC;
 }
@@ -253,6 +236,10 @@ MISScrollPageControllerDelegate>
 - (ELDLiveroomMembersViewController *)adminListVC {
     if (_adminListVC == nil) {
         _adminListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAdmin];
+        ELD_WS
+        _adminListVC.selectedUserBlock = ^(NSString * _Nonnull userId, ELDMemberVCType memberVCType) {
+            [weakSelf handleSelectedWithUserId:userId memberVCType:memberVCType];
+        };
     }
     return _adminListVC;
 }
@@ -260,6 +247,10 @@ MISScrollPageControllerDelegate>
 - (ELDLiveroomMembersViewController *)allowListVC {
     if (_allowListVC == nil) {
         _allowListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeAllow];
+        ELD_WS
+        _allowListVC.selectedUserBlock = ^(NSString * _Nonnull userId, ELDMemberVCType memberVCType) {
+            [weakSelf handleSelectedWithUserId:userId memberVCType:memberVCType];
+        };
     }
     return _allowListVC;
 }
@@ -267,6 +258,11 @@ MISScrollPageControllerDelegate>
 - (ELDLiveroomMembersViewController *)mutedListVC {
     if (_mutedListVC == nil) {
         _mutedListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeMute];
+        ELD_WS
+        _mutedListVC.selectedUserBlock = ^(NSString * _Nonnull userId, ELDMemberVCType memberVCType) {
+            [weakSelf handleSelectedWithUserId:userId memberVCType:memberVCType];
+        };
+
     }
     return _mutedListVC;
 }
@@ -274,6 +270,11 @@ MISScrollPageControllerDelegate>
 - (ELDLiveroomMembersViewController *)blockListVC {
     if (_blockListVC == nil) {
         _blockListVC = [[ELDLiveroomMembersViewController alloc] initWithChatroom:self.chatroom withMemberType:ELDMemberVCTypeBlock];
+        ELD_WS
+        _blockListVC.selectedUserBlock = ^(NSString * _Nonnull userId, ELDMemberVCType memberVCType) {
+            [weakSelf handleSelectedWithUserId:userId memberVCType:memberVCType];
+        };
+
     }
     return _blockListVC;
 }
@@ -359,7 +360,6 @@ MISScrollPageControllerDelegate>
     }
     return _containerView;
 }
-
 
 
 @end

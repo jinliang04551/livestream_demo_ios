@@ -10,23 +10,23 @@
 #import "ELDGenderView.h"
 #import "ELDTitleSwitchCell.h"
 #import "ELDUserInfoHeaderView.h"
+#import "ELDTitleDetailCell.h"
 
 #define kUserInfoCellTitle @"kUserInfoCellTitle"
 #define kUserInfoCellActionType @"kUserInfoCellActionType"
+#define kUserInfoAlertTitle @"kUserInfoAlertTitle"
 
-
-static NSString *reusecellIndentify = @"reusecellIndentify";
 
 @interface ELDUserInfoView ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) ELDUserInfoHeaderView *headerView;
 @property (nonatomic, strong) UITableView *table;
-@property (nonatomic, strong) ELDTitleSwitchCell *titleSwitchCell;
+@property (nonatomic, strong) ELDTitleSwitchCell *muteCell;
 
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 @property (nonatomic, strong) NSString *currentUsername;
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 @property (nonatomic, strong) NSString *chatroomId;
-@property (nonatomic, assign) ELDMemberRoleType roleType;
+@property (nonatomic, assign) ELDMemberRoleType beOperationedMemberRoleType;
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
@@ -39,8 +39,9 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 @property (nonatomic, assign) BOOL isMute;
 
 
-@property (nonatomic, assign) ELDMemberVCListType memberVCListType;
+@property (nonatomic, assign) ELDMemberVCType memberVCType;
 
+@property (nonatomic, strong) NSString *displayName;
 
 @end
 
@@ -48,14 +49,14 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 @implementation ELDUserInfoView
 - (instancetype)initWithUsername:(NSString *)username
                         chatroom:(AgoraChatroom *)chatroom
-                memberVCListType:(ELDMemberVCListType)memberVCListType {
+                    memberVCType:(ELDMemberVCType)memberVCType {
     self = [super init];
     if (self) {
         
         self.currentUsername = username;
         self.chatroom = chatroom;
         self.chatroomId = self.chatroom.chatroomId;
-        self.memberVCListType = memberVCListType;
+        self.memberVCType = memberVCType;
 
         [self placeAndlayoutSubviews];
         [self fetchUserInfoWithUsername:username];
@@ -73,7 +74,7 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
         
         if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:ownerId]) {
             self.ownerSelf = YES;
-            self.roleType = ELDMemberRoleTypeOwner;
+            self.beOperationedMemberRoleType = ELDMemberRoleTypeOwner;
             self.isMute = NO;
         }
         
@@ -90,7 +91,7 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
         if (aError == nil) {
             self.userInfo = aUserDatas[username];
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.headerView updateUIWithUserInfo:self.userInfo roleType:self.roleType isMute:self.isMute];
+                [self.headerView updateUIWithUserInfo:self.userInfo roleType:self.beOperationedMemberRoleType isMute:self.isMute];
                 [self buildCells];
                 
             });
@@ -117,18 +118,31 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     }else {
         //owner check oneself
         if (self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
-            if (self.roleType == ELDMemberRoleTypeOwner) {
+            if (self.beOperationedMemberRoleType == ELDMemberRoleTypeOwner) {
                 self.ownerSelf = YES;
                 [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
-            }else {
+            }else if(self.beOperationedMemberRoleType == ELDMemberRoleTypeAdmin){
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveAdmin]];
                 [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+            }else {
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
             }
         }
         
         if (self.chatroom.permissionType == AgoraChatroomPermissionTypeAdmin) {
-            [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
-
-            
+            if (self.beOperationedMemberRoleType == ELDMemberRoleTypeOwner || self.beOperationedMemberRoleType == ELDMemberRoleTypeAdmin) {
+                // no operate permission
+            }else {
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+            }
         }
         
         if (self.chatroom.permissionType == AgoraChatroomPermissionTypeMember) {
@@ -190,7 +204,7 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 
 
 
-- (void)muteAction {
+- (void)addMuteAction {
     [[AgoraChatClient sharedClient].roomManager muteMembers:@[self.currentUsername]
                                     muteMilliseconds:-1
                                         fromChatroom:self.chatroom.chatroomId
@@ -236,7 +250,7 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 }
 
 
-- (void)unBlockAction {
+- (void)removeBlockAction {
     [[AgoraChatClient sharedClient].roomManager unblockMembers:@[self.currentUsername] fromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             
     }];
@@ -277,6 +291,60 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
                                             }];
 }
 
+
+
+
+- (void)confirmActionWithActionType:(ELDMemberActionType)actionType {
+    switch (actionType) {
+        case ELDMemberActionTypeMakeAdmin:
+        {
+            [self addAdminAction];
+        }
+            break;
+        case ELDMemberActionTypeRemoveAdmin:
+        {
+            [self removeAdminAction];
+        }
+            break;
+        case ELDMemberActionTypeMakeMute:
+        {
+            [self addMuteAction];
+        }
+            break;
+        case ELDMemberActionTypeRemoveMute:
+        {
+            [self removeMuteAction];
+        }
+            break;
+
+        case ELDMemberActionTypeMakeWhite:
+        {
+            [self addWhiteAction];
+        }
+            break;
+        case ELDMemberActionTypeRemoveWhite:
+        {
+            [self removeWhiteAction];
+        }
+            break;
+        case ELDMemberActionTypeMakeBlock:
+        {
+            [self addBlockAction];
+        }
+            break;
+        case ELDMemberActionTypeRemoveBlock:
+        {
+            [self removeBlockAction];
+        }
+            break;
+
+        default:
+            break;
+    }
+    
+}
+
+
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataArray.count;
@@ -290,24 +358,32 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:reusecellIndentify];
+    ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reusecellIndentify];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.font = NFont(14.0);
+        cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
+        cell.contentView.backgroundColor = ViewControllerBgBlackColor;
+        cell.backgroundColor = ViewControllerBgBlackColor;
+
+        cell.nameLabel.font = NFont(14.0);
     }
-    
+
     NSDictionary *dic = self.dataArray[indexPath.row];
     NSString *title = dic[kUserInfoCellTitle];
-    
+    NSString *alertTitle = dic[kUserInfoAlertTitle];
+    NSInteger actionType = [dic[kUserInfoCellActionType] integerValue];
+
     if (self.ownerSelf) {
-        self.titleSwitchCell.nameLabel.text = title;
-        return self.titleSwitchCell;
+        self.muteCell.nameLabel.text = title;
+        return self.muteCell;
+    }else {
+        cell.nameLabel.text = title;
+        
+        cell.tapCellBlock = ^{
+            if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(showAlertWithTitle:messsage:actionType:)]) {
+                [self.userInfoViewDelegate showAlertWithTitle:alertTitle messsage:@"" actionType:actionType];
+            }
+        };
     }
-    
-    cell.textLabel.text = @"111";
-    
-    
     
     return cell;
 }
@@ -341,7 +417,7 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     return _headerView;
 }
 
-- (ELDMemberRoleType)roleType {
+- (ELDMemberRoleType)beOperationedMemberRoleType {
     NSString *currentUserId = self.userInfo.userId;
     if ([self.chatroom.owner isEqualToString:currentUserId]) {
         return ELDMemberRoleTypeOwner;
@@ -356,16 +432,16 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     return [self.chatroom.muteList containsObject:self.userInfo.userId];
 }
 
-- (ELDTitleSwitchCell *)titleSwitchCell {
-    if (_titleSwitchCell == nil) {
-        _titleSwitchCell = [[ELDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDTitleSwitchCell reuseIdentifier]];
-        _titleSwitchCell.selectionStyle = UITableViewCellSelectionStyleNone;
+- (ELDTitleSwitchCell *)muteCell {
+    if (_muteCell == nil) {
+        _muteCell = [[ELDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDTitleSwitchCell reuseIdentifier]];
+        _muteCell.selectionStyle = UITableViewCellSelectionStyleNone;
         ELD_WS
-        _titleSwitchCell.switchActionBlock = ^(BOOL isOn) {
+        _muteCell.switchActionBlock = ^(BOOL isOn) {
             [weakSelf allTheSilence:isOn];
         };
     }
-    return _titleSwitchCell;
+    return _muteCell;
 }
 
 
@@ -376,21 +452,38 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
     return _dataArray;
 }
 
+
+//解禁：Want to unban Username?  添加白名单：Want to Move Username From the Allowed List? 从白名单移出：Want to Remove Username From the Allowed List? 设定管理员：Want to Move Username as a Moderator? 罢免管理员：Want to Remove Username as Moderator?
+
 - (NSMutableDictionary *)actionTypeDic {
     if (_actionTypeDic == nil) {
         _actionTypeDic = NSMutableDictionary.new;
         
-        _actionTypeDic[kMemberActionTypeMakeAdmin] = @{kUserInfoCellTitle:@"Assign as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeMakeAdmin)};
-        _actionTypeDic[kMemberActionTypeRemoveAdmin] = @{kUserInfoCellTitle:@"Remove as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveAdmin)};
-        _actionTypeDic[kMemberActionTypeMakeMute] = @{kUserInfoCellTitle:@"Mute",kUserInfoCellActionType:@(ELDMemberActionTypeMakeMute)};
-        _actionTypeDic[kMemberActionTypeRemoveMute] = @{kUserInfoCellTitle:@"Unmute",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveMute)};
-        _actionTypeDic[kMemberActionTypeMakeWhite] = @{kUserInfoCellTitle:@"Move to Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeMakeWhite)};
-        _actionTypeDic[kMemberActionTypeRemoveWhite] = @{kUserInfoCellTitle:@"Remove from Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveWhite)};
-        _actionTypeDic[kMemberActionTypeMakeBlock] = @{kUserInfoCellTitle:@"Ban",kUserInfoCellActionType:@(ELDMemberActionTypeMakeBlock)};
-        _actionTypeDic[kMemberActionTypeRemoveBlock] = @{kUserInfoCellTitle:@"Unban",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveBlock)};
+        _actionTypeDic[kMemberActionTypeMakeAdmin] = @{kUserInfoCellTitle:@"Assign as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeMakeAdmin),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Move %@ as a Moderator?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeRemoveAdmin] = @{kUserInfoCellTitle:@"Remove as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveAdmin),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Remove %@ as Moderator?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeMakeMute] = @{kUserInfoCellTitle:@"Mute",kUserInfoCellActionType:@(ELDMemberActionTypeMakeMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Mute %@?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeRemoveMute] = @{kUserInfoCellTitle:@"Unmute",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Unmute %@?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeMakeWhite] = @{kUserInfoCellTitle:@"Move to Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeMakeWhite),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Move %@ From the Allowed List?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeRemoveWhite] = @{kUserInfoCellTitle:@"Remove from Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveWhite),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Remove %@ From the Allowed List?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeMakeBlock] = @{kUserInfoCellTitle:@"Ban",kUserInfoCellActionType:@(ELDMemberActionTypeMakeBlock),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Ban %@?",self.displayName]};
+        
+        _actionTypeDic[kMemberActionTypeRemoveBlock] = @{kUserInfoCellTitle:@"Unban",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveBlock),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Unban %@?",self.displayName]};
 
     }
     return _actionTypeDic;
+}
+
+- (NSString *)displayName {
+    if (self.userInfo) {
+        return self.userInfo.nickName ?: self.userInfo.userId;
+    }
+    return @"";
 }
 
 
@@ -398,3 +491,5 @@ static NSString *reusecellIndentify = @"reusecellIndentify";
 
 #undef kUserInfoCellTitle
 #undef kUserInfoCellActionType
+#undef kUserInfoAlertTitle
+

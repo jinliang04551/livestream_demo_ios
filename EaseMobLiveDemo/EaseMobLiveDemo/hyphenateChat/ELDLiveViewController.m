@@ -38,10 +38,13 @@
 #import <CallKit/CXCallObserver.h>
 #import "ELDChatroomMembersView.h"
 
+#import "ELDUserInfoView.h"
+
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface ELDLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate>
+@interface ELDLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate>
 {
     BOOL _isload;
     BOOL _isShutDown;
@@ -88,6 +91,8 @@
 
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 
+@property (nonatomic, strong) ELDChatroomMembersView *memberView;
+@property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
 
 @end
@@ -513,6 +518,16 @@
     return _chatview;
 }
 
+- (ELDChatroomMembersView *)memberView {
+    if (_memberView == nil) {
+        _memberView = [[ELDChatroomMembersView alloc] initWithChatroom:_chatroom];
+        _memberView.delegate = self;
+        _memberView.selectedUserDelegate = self;
+    }
+    return _memberView;
+}
+
+
 - (CTCallCenter *)callCenter {
     if (!_callCenter) {
         _callCenter = [[CTCallCenter alloc] init];
@@ -567,11 +582,16 @@
         [self closeAction];
         return;
     }
-    EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-                                                                              chatroomId:_room.chatroomId
-                                                                                 isOwner:YES];
-    profileLiveView.delegate = self;
-    [profileLiveView showFromParentView:self.view];
+//    EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
+//                                                                              chatroomId:_room.chatroomId
+//                                                                                 isOwner:YES];
+//    profileLiveView.delegate = self;
+//    [profileLiveView showFromParentView:self.view];
+    
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom memberVCType:ELDMemberVCTypeAll];
+    userInfoView.delegate = self;
+    userInfoView.userInfoViewDelegate = self;
+    [userInfoView showFromParentView:self.view];
 }
 
 #pragma  mark - TapBackgroundViewDelegate
@@ -580,6 +600,39 @@
 {
     [profileView removeFromParentView];
 }
+
+#pragma  mark ELDChatroomMembersViewDelegate
+- (void)selectedUser:(NSString *)userId memberVCType:(ELDMemberVCType)memberVCType chatRoom:(AgoraChatroom *)chatroom {
+    
+    [self.memberView removeFromParentView];
+    
+    self.userInfoView = [[ELDUserInfoView alloc] initWithUsername:userId chatroom:chatroom memberVCType:memberVCType];
+    self.userInfoView.delegate = self;
+    self.userInfoView.userInfoViewDelegate = self;
+    [self.userInfoView showFromParentView:self.view];
+
+}
+
+#pragma mark ELDUserInfoViewDelegate
+- (void)showAlertWithTitle:(NSString *)title messsage:(NSString *)messsage actionType:(ELDMemberActionType)actionType {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertController addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"ok" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.userInfoView confirmActionWithActionType:actionType];
+    }];
+
+    [alertController addAction:okAction];
+
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
+
 
 - (void)didClickFinishButton
 {
@@ -726,9 +779,11 @@
 - (void)didClickAnchorCard:(EaseLiveRoom *)room
 {
     [self.view endEditing:YES];
-    EaseAnchorCardView *anchorCardView = [[EaseAnchorCardView alloc]initWithLiveRoom:room];
-    anchorCardView.delegate = self;
-    [anchorCardView showFromParentView:self.view];
+
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:_chatroom];
+    userInfoView.delegate = self;
+    [userInfoView showFromParentView:self.view];
+    
 }
 
 //成员列表
@@ -740,11 +795,8 @@
 //                                                                currentMemberList:currentMemberList];
 //    adminView.delegate = self;
 //    [adminView showFromParentView:self.view];
-
     
-    ELDChatroomMembersView *memberView = [[ELDChatroomMembersView alloc] initWithChatroom:_chatroom];
-    memberView.delegate = self;
-    [memberView showFromParentView:self.view];
+    [self.memberView showFromParentView:self.view];
 
 }
 

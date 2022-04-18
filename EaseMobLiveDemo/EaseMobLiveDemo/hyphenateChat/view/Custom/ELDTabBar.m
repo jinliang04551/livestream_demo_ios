@@ -8,7 +8,7 @@
 #import "ELDTabBar.h"
 #import <Masonry/Masonry.h>
 
-
+#define kAvatarImageViewHeight 26.0f
 
 @interface ELD_TabItem()
 @property (nonatomic, strong) UILabel* titleLabel;
@@ -77,7 +77,8 @@
                     selectedImage:(UIImage *)selectedImage {
     _image = image;
     _selectedImage = selectedImage;
-    
+//    self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
+//    self.iconImageView.clipsToBounds = YES;
 }
 
 @end
@@ -240,4 +241,8 @@
     NSLog(@"%s",__func__);
 }
 
+
 @end
+
+#undef kAvatarImageViewHeight
+

@@ -13,6 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLiveroomMembersViewController : ELDContainerTableViewController
+@property (nonatomic, copy)void (^selectedUserBlock)(NSString *userId,ELDMemberVCType memberVCType);
 
 - (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom withMemberType:(ELDMemberVCType)memberVCType;
 

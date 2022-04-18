@@ -81,13 +81,13 @@ typedef enum : NSUInteger {
     ELDMemberActionTypeRemoveBlock,
 } ELDMemberActionType;
 
-typedef enum : NSUInteger {
-    ELDMemberVCListTypeAll = 1,
-    ELDMemberVCListTypeAdmin,
-    ELDMemberVCListTypeWhite,
-    ELDMemberVCListTypeMute,
-    ELDMemberVCListTypeBlock,
-} ELDMemberVCListType;
+//typedef enum : NSUInteger {
+//    ELDMemberVCListTypeAll = 1,
+//    ELDMemberVCListTypeAdmin,
+//    ELDMemberVCListTypeWhite,
+//    ELDMemberVCListTypeMute,
+//    ELDMemberVCListTypeBlock,
+//} ELDMemberVCListType;
 
 #define kMemberActionTypeMakeAdmin @"MemberActionTypeMakeAdmin"
 #define kMemberActionTypeRemoveAdmin @"MemberActionTypeRemoveAdmin"

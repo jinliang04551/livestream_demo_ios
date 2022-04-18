@@ -16,6 +16,12 @@ pod 'SDWebImage/GIF'
 pod 'AFNetworking', '~> 4.0.1'
 pod 'PLMediaStreamingKit', '~> 3.0.0'
 pod 'PLPlayerKit', '~> 3.4.3'
+
+#pod "PLMediaStreamingKit", :podspec => 'https://raw.githubusercontent.com/pili-engineering/PLMediaStreamingKit/master/PLMediaStreamingKit-Universal.podspec'
+#
+#pod "PLPlayerKit", :podspec => 'https://raw.githubusercontent.com/pili-engineering/PLPlayerKit/master/PLPlayerKit-Universal.podspec'
+
 pod 'AgoraRtcEngine_iOS', '~> 3.6.0.1'
+
 
 end
