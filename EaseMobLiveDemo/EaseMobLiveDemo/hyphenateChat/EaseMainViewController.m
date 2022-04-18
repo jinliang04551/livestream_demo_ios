@@ -26,6 +26,7 @@
 #import "EaseLiveViewController.h"
 #import "EasePublishViewController.h"
 #import "ELDAboutViewController.h"
+#import "ELDPreLivingViewController.h"
 
 
 #define IS_iPhoneX (\
@@ -279,9 +280,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 - (void)createBroadcastRoom
 {
-    ELDLiveContainerViewController *vc = [[ELDLiveContainerViewController alloc] init];
+    ELDPreLivingViewController *vc = [[ELDPreLivingViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:vc animated:true completion:nil];
+    
 }
 
 - (ELDLiveListViewController *)liveListVC {

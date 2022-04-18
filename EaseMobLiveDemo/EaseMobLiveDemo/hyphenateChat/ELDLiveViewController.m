@@ -81,6 +81,7 @@
 @property (strong, nonatomic) EaseChatView *chatview;
 @property(nonatomic,strong) UIImageView *backImageView;
 
+
 //七牛媒体流
 @property (nonatomic, strong) PLMediaStreamingSession *session;
 

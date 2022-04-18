@@ -8,11 +8,15 @@
 
 #import "ELDPreLivingViewController.h"
 #import <CoreServices/CoreServices.h>
-#import "EasePublishViewController.h"
+#import "ELDLivingCountdownView.h"
+#import "ELDLiveViewController.h"
+#import <AgoraRtcKit/AgoraRtcEngineKit.h>
 
 
 @interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate>
 
+
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *headerBgView;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UIButton *changeAvatarButton;
@@ -21,12 +25,18 @@
 @property (nonatomic, strong) UIButton *flipButton;
 @property (nonatomic, strong) UILabel *flipHintLabel;
 @property (nonatomic, strong) UIButton *goLiveButton;
+
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 @property (nonatomic, strong) NSData *fileData;
 @property (nonatomic, strong) EaseLiveRoom *liveRoom;
 @property (nonatomic, strong) UIImageView *coverImageView;
+
 @property (nonatomic, strong) UIImageView *loadingImageView;
 @property (nonatomic, assign) CGFloat loadingAngle;
+
+@property (nonatomic, strong) ELDLivingCountdownView *livingCountDownView;
+@property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;
+@property (nonatomic, strong) UIView *agoraLocalVideoView;
 
 @end
 
@@ -34,11 +44,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = ViewControllerBgBlackColor;
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEdit)];
-    
     [self.view addGestureRecognizer:tap];
     
     [self placeAndLayoutSubviews];
+    [self _setupAgoreKit];
 }
 
 - (void)endEdit {
@@ -48,48 +60,43 @@
 
 - (void)placeAndLayoutSubviews {
 
-    [self.view addSubview:self.closeButton];
-    [self.view addSubview:self.headerBgView];
-    [self.view addSubview:self.flipButton];
-    [self.view addSubview:self.flipHintLabel];
-    [self.view addSubview:self.goLiveButton];
+    [self.view addSubview:self.contentView];
+    [self.view addSubview:self.livingCountDownView];
 
-    [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view).offset(kEaseLiveDemoPadding * 2.6);
-        make.right.equalTo(self.view).offset(-kEaseLiveDemoPadding * 1.6);
-        make.size.equalTo(@30.0);
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
     }];
 
-    
-    [self.headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.closeButton).offset(kEaseLiveDemoPadding * 2.6);
-        make.left.equalTo(self.view).offset(kEaseLiveDemoPadding * 1.6);
-        make.right.equalTo(self.view).offset(-kEaseLiveDemoPadding * 1.6);
-    }];
-        
-    
-    [self.flipButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.bottom.equalTo(self.flipHintLabel.mas_top).offset(-14.0);
-    }];
-    
-    [self.flipHintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.height.equalTo(@12.0);
-        make.bottom.equalTo(self.goLiveButton.mas_top).offset(-26.0);
+    [self.livingCountDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
     }];
 
-    
-    [self.goLiveButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@48.0);
-        make.left.equalTo(self.view).offset(kEaseLiveDemoPadding * 4.8);
-        make.right.equalTo(self.view).offset(-kEaseLiveDemoPadding * 4.8);
-        make.bottom.equalTo(self.view).offset(-62.0);
-    }];
-    
 }
 
 #pragma mark private method
+- (void)_setupAgoreKit
+{
+    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];
+    [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
+    [self.agoraKit setClientRole:AgoraClientRoleBroadcaster options:nil];
+    [self.agoraKit enableVideo];
+    [self.agoraKit enableAudio];
+    [self _setupLocalVideo];
+}
+
+- (void)_setupLocalVideo {
+    self.agoraLocalVideoView = [[UIView alloc]init];
+    self.agoraLocalVideoView.frame = self.view.bounds;
+    [self.view insertSubview:self.agoraLocalVideoView atIndex:0];
+    
+    AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
+    videoCanvas.uid = 0;
+    videoCanvas.view = self.agoraLocalVideoView;
+    videoCanvas.renderMode = AgoraVideoRenderModeHidden;
+    // 设置本地视图。
+    [self.agoraKit setupLocalVideo:videoCanvas];
+}
+
 - (void)startAnimation {
     CGAffineTransform endAngle = CGAffineTransformMakeRotation(self.loadingAngle * (M_PI /180.0f));
 
@@ -118,9 +125,7 @@
 
 #pragma mark action
 - (void)closeAction {
-    if (self.closeBlock) {
-        self.closeBlock();
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -298,6 +303,53 @@
 }
 
 #pragma mark gette and setter
+- (UIView *)contentView {
+    if (_contentView == nil) {
+        _contentView = [[UIView alloc] init];
+        _contentView.backgroundColor = ViewControllerBgBlackColor;
+        _contentView.alpha = 0.5;
+        _contentView.hidden = YES;
+        
+        [_contentView addSubview:self.closeButton];
+        [_contentView addSubview:self.headerBgView];
+        [_contentView addSubview:self.flipButton];
+        [_contentView addSubview:self.flipHintLabel];
+        [_contentView addSubview:self.goLiveButton];
+
+        [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_contentView).offset(kEaseLiveDemoPadding * 2.6);
+            make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
+            make.size.equalTo(@30.0);
+        }];
+
+        [self.headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.closeButton).offset(kEaseLiveDemoPadding * 2.6);
+            make.left.equalTo(_contentView).offset(kEaseLiveDemoPadding * 1.6);
+            make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
+        }];
+            
+        
+        [self.flipButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_contentView);
+            make.bottom.equalTo(self.flipHintLabel.mas_top).offset(-14.0);
+        }];
+        
+        [self.flipHintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_contentView);
+            make.height.equalTo(@12.0);
+            make.bottom.equalTo(self.goLiveButton.mas_top).offset(-26.0);
+        }];
+
+        [self.goLiveButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@48.0);
+            make.left.equalTo(_contentView).offset(kEaseLiveDemoPadding * 4.8);
+            make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 4.8);
+            make.bottom.equalTo(_contentView).offset(-62.0);
+        }];
+    }
+    return _contentView;
+}
+
 - (UIView *)headerBgView {
     if (_headerBgView == nil) {
 
@@ -435,6 +487,30 @@
         _loadingImageView.hidden = YES;
     }
     return _loadingImageView;
+}
+
+- (ELDLivingCountdownView *)livingCountDownView {
+    if (_livingCountDownView == nil) {
+        _livingCountDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+        _livingCountDownView.hidden = YES;
+        
+        ELD_WS
+        _livingCountDownView.CountDownFinishBlock = ^{
+            [weakSelf.livingCountDownView removeFromSuperview];
+            
+            ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:weakSelf.liveRoom];
+            livingVC.modalPresentationStyle =  UIModalPresentationFullScreen;
+            [weakSelf presentViewController:livingVC
+                                   animated:YES
+                                 completion:^{
+                [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
+                    if (isFinish)
+                        [weakSelf dismissViewControllerAnimated:false completion:nil];
+                }];
+            }];
+        };
+    }
+    return _livingCountDownView;
 }
 
 
