@@ -56,4 +56,21 @@
     return _prompt;
 }
 
+- (UIBarButtonItem*)searchBarItem
+{
+    if (_searchBarItem == nil) {
+        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        searchButton.frame = CGRectMake(0, 0, 30.f, 30.f);
+        [searchButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+        [searchButton addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
+        [searchButton setImageEdgeInsets:UIEdgeInsetsMake(0, -25, 0, 0)];
+        _searchBarItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+    }
+    return _searchBarItem;
+}
+
+- (void)searchAction {
+    
+}
+
 @end

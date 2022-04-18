@@ -34,6 +34,21 @@
     return customNavItem;
 }
 
+
++ (UIBarButtonItem *)customBarButtonItemImage:(NSString *)imageName
+                                       action:(SEL)action
+                                 actionTarget:(id)actionTarget {
+    UIButton *customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    customButton.frame = CGRectMake(0, 0, 44.f, 44.f);
+    [customButton setImage:ImageWithName(imageName) forState:UIControlStateNormal];
+    [customButton addTarget:actionTarget action:action forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *customNavItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+
+    return customNavItem;
+}
+
+
+
 + (UIBarButtonItem *)customLeftButtonItem:(NSString *)title
                                    action:(SEL)action
                              actionTarget:(id)actionTarget {

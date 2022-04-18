@@ -12,9 +12,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLiveListViewController : EaseBaseViewController
-@property (nonatomic, strong) UIBarButtonItem *searchBarItem;
-@property (nonatomic, strong) UIBarButtonItem *logoutItem;
-@property (nonatomic, copy) void (^goNextBlock)(void);
+@property (nonatomic, strong, readonly) NSMutableArray *dataArray;
+@property (nonatomic, copy) void (^liveRoomSelectedBlock)(EaseLiveRoom *room);
+
 
 - (instancetype)initWithBehavior:(kTabbarItemBehavior)tabBarBehavior video_type:(NSString *)video_type;
 

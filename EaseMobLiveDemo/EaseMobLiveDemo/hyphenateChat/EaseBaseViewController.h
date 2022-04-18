@@ -17,7 +17,9 @@ typedef enum : NSInteger{
 @interface EaseBaseViewController : UIViewController
 @property (nonatomic, strong) UILabel *prompt;
 @property (nonatomic, strong) UIButton *backButton;
+@property (nonatomic, strong) UIBarButtonItem *searchBarItem;
 
 - (void)backAction;
+- (void)searchAction;
 
 @end

@@ -242,6 +242,7 @@
 		C047556328095E370094EAD3 /* LxButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555D28095E370094EAD3 /* LxButton.m */; };
 		C047556428095E370094EAD3 /* UIColor+Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = C047555E28095E370094EAD3 /* UIColor+Expanded.m */; };
 		C0475568280B0FD20094EAD3 /* ELDTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C0475566280B0FD20094EAD3 /* ELDTabBar.m */; };
+		C05C2C7B280C562900BDD8D4 /* ELDBaseTitleBtnNavView.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C2C7A280C562900BDD8D4 /* ELDBaseTitleBtnNavView.m */; };
 		C0602E6527FF198800D39575 /* receive_gift_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */; };
 		C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */; };
 		C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */; };
@@ -720,6 +721,8 @@
 		C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXCalendarCategoryHeader.h; sourceTree = "<group>"; };
 		C0475566280B0FD20094EAD3 /* ELDTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDTabBar.m; sourceTree = "<group>"; };
 		C0475567280B0FD20094EAD3 /* ELDTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDTabBar.h; sourceTree = "<group>"; };
+		C05C2C79280C562900BDD8D4 /* ELDBaseTitleBtnNavView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDBaseTitleBtnNavView.h; sourceTree = "<group>"; };
+		C05C2C7A280C562900BDD8D4 /* ELDBaseTitleBtnNavView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDBaseTitleBtnNavView.m; sourceTree = "<group>"; };
 		C0602E6327FF198800D39575 /* receive_gift_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@3x.png"; sourceTree = "<group>"; };
 		C0602E6427FF198800D39575 /* receive_gift_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "receive_gift_icon@2x.png"; sourceTree = "<group>"; };
 		C0602E6C28001EF600D39575 /* MISScrollPageCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MISScrollPageCollectionView.m; sourceTree = "<group>"; };
@@ -1583,6 +1586,8 @@
 				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
 				C0475567280B0FD20094EAD3 /* ELDTabBar.h */,
 				C0475566280B0FD20094EAD3 /* ELDTabBar.m */,
+				C05C2C79280C562900BDD8D4 /* ELDBaseTitleBtnNavView.h */,
+				C05C2C7A280C562900BDD8D4 /* ELDBaseTitleBtnNavView.m */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -2255,6 +2260,7 @@
 				3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */,
 				C0602EA62804301000D39575 /* ELDUserInfoView.m in Sources */,
 				C0602EAC28056A1C00D39575 /* ELDTitleSwitchCell.m in Sources */,
+				C05C2C7B280C562900BDD8D4 /* ELDBaseTitleBtnNavView.m in Sources */,
 				3C9E3273260C7B4300CC3E3F /* UIImage+Color.m in Sources */,
 				C0602E8628001EF600D39575 /* MISScrollPageControllerDelegate.m in Sources */,
 				C0602E9128003C6D00D39575 /* ELDLiveroomMemberCell.m in Sources */,

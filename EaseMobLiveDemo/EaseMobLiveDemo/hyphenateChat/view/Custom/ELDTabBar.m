@@ -115,7 +115,7 @@
 - (void)updateTabbarItemIndex:(NSInteger )itemIndex
                     withImage:(UIImage *)image
                 selectedImage:(UIImage *)selectedImage {
-    if (itemIndex >= self.tabItems.count) {
+    if (itemIndex < self.tabItems.count) {
         ELD_TabItem *tabItem = self.tabItems[itemIndex];
         if (tabItem) {
             [tabItem updateTabbarItemWithImage:image selectedImage:selectedImage];

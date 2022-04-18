@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "EaseBaseViewController.h"
-
+#import "ELDEditUserInfoViewController.h"
+#import "ELDAboutViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDSettingViewController : EaseBaseViewController
+@property (nonatomic, strong, readonly) AgoraChatUserInfo *userInfo;
+@property (nonatomic, copy) void (^goAboutBlock)(void);
+
+- (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo;
 
 @end
 

@@ -62,6 +62,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
 }
 
+
 - (void)_initNickNameArray
 {
     nickNameArray = @[@"东方漆",@"孟闾裆",@"曹秆",@"游龙纸",@"熊龛",@"元阊",@"闵茂",@"姚宠",@"印虹",@"尚仕",@"蔚光",@"钦亭",@"京俳",@"牧奖",

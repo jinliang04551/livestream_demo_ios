@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EaseBaseViewController.h"
 
-@interface EaseMainViewController : UIViewController
+@interface EaseMainViewController : EaseBaseViewController
 
 @end

@@ -9,9 +9,7 @@
 #import "ELDSettingViewController.h"
 #import "ELDInfoDetailCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "ELDEditUserInfoViewController.h"
 #import "ELDUserHeaderView.h"
-#import "ELDAboutViewController.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -24,7 +22,6 @@
 @property (nonatomic, strong) ELDUserHeaderView *userHeaderView;
 @property (nonatomic, strong) UITableView *table;
 @property (nonatomic, strong) ELDInfoDetailCell *aboutCell;
-@property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 
 
@@ -76,7 +73,8 @@
     self.prompt.text = @"Profile";
     [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.prompt];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.editButton];
+    self.navigationItem.rightBarButtonItem = [ELDUtil customBarButtonItemImage:@"setting_edit" action:@selector(goEditUserInfoPage) actionTarget:self];
+
 }
 
 - (void)fetchUserInfo {
@@ -98,6 +96,12 @@
     });
 }
 
+- (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo {
+    self.userInfo = userInfo;
+    [self updateUserHeaderView];
+}
+
+
 #pragma mark Notification
 - (void)updateUserInfo:(NSNotification *)notify {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -109,22 +113,31 @@
 }
 
 #pragma mark public method
-- (void)goAboutPage {    
-    ELDAboutViewController *vc = [[ELDAboutViewController alloc] init];
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)goAboutPage {
+    if (self.goAboutBlock) {
+        self.goAboutBlock();
+    }
+    
+//    ELDAboutViewController *vc = [[ELDAboutViewController alloc] init];
+//    vc.hidesBottomBarWhenPushed = YES;
+////    [self.navigationController pushViewController:vc animated:YES];
+//
+//    AppDelegate *appdelegate =(AppDelegate *) [UIApplication sharedApplication].delegate;
+//    UIViewController *rootViewController1 = appdelegate.window.rootViewController;
+//    [rootViewController1.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (void)goEditUserInfoPage {
-    ELDEditUserInfoViewController *vc = [[ELDEditUserInfoViewController alloc] init];
-    vc.userInfo = self.userInfo;
-    ELD_WS
-    vc.updateUserInfoBlock = ^(AgoraChatUserInfo * _Nonnull userInfo) {
-        weakSelf.userInfo = userInfo;
-        [weakSelf updateUserHeaderView];
-    };
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
+//    ELDEditUserInfoViewController *vc = [[ELDEditUserInfoViewController alloc] init];
+//    vc.userInfo = self.userInfo;
+//    ELD_WS
+//    vc.updateUserInfoBlock = ^(AgoraChatUserInfo * _Nonnull userInfo) {
+//        weakSelf.userInfo = userInfo;
+//        [weakSelf updateUserHeaderView];
+//    };
+//    vc.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -224,16 +237,6 @@
     return  _aboutCell;
 }
 
-- (UIButton*)editButton
-{
-    if (_editButton == nil) {
-        _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _editButton.frame = CGRectMake(0, 0, 44.f, 44.f);
-        [_editButton setImage:[UIImage imageNamed:@"setting_edit"] forState:UIControlStateNormal];
-        [_editButton addTarget:self action:@selector(goEditUserInfoPage) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _editButton;
-}
 
 
 @end

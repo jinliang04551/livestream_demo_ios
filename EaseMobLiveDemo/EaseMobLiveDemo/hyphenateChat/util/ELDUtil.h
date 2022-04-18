@@ -17,6 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
                                   action:(SEL)action
                             actionTarget:(id)actionTarget;
 
++ (UIBarButtonItem *)customBarButtonItemImage:(NSString *)imageName
+                                       action:(SEL)action
+                                 actionTarget:(id)actionTarget;
+
 + (UIBarButtonItem *)customLeftButtonItem:(NSString *)title
                                    action:(SEL)action
                              actionTarget:(id)actionTarget;

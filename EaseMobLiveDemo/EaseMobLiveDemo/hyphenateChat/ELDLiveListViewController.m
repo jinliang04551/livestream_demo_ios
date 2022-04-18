@@ -94,7 +94,7 @@
 - (void)setupNavbar {
     [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.prompt];
-    self.navigationItem.rightBarButtonItem = [self searchBarItem];
+    self.navigationItem.rightBarButtonItem = [ELDUtil customBarButtonItemImage:@"search" action:@selector(searchAction) actionTarget:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -268,32 +268,6 @@
 
 
 #pragma mark - getter
-- (UIBarButtonItem*)searchBarItem
-{
-    if (_searchBarItem == nil) {
-        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        searchButton.frame = CGRectMake(0, 0, 30.f, 30.f);
-        [searchButton setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
-        [searchButton addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
-        [searchButton setImageEdgeInsets:UIEdgeInsetsMake(0, -25, 0, 0)];
-        _searchBarItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
-    }
-    return _searchBarItem;
-}
-
-- (UIBarButtonItem*)logoutItem
-{
-    if (_logoutItem == nil) {
-        UIButton *liveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        liveButton.frame = CGRectMake(0, 0, 80.f, 44.f);
-        [liveButton addTarget:self action:@selector(logoutAction) forControlEvents:UIControlEventTouchUpInside];
-        [liveButton setTitle:NSLocalizedString(@"button.logout", @"Log out") forState:UIControlStateNormal];
-        [liveButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, -5, -55)];
-        [liveButton.titleLabel setFont:[UIFont systemFontOfSize:17.f]];
-        _logoutItem = [[UIBarButtonItem alloc] initWithCustomView:liveButton];
-    }
-    return _logoutItem;
-}
 
 - (UICollectionView*)collectionView
 {
@@ -466,26 +440,29 @@
                 [weakSelf presentViewController:publishView animated:YES completion:nil];
                 return;
             } else {
-                EaseLiveViewController *view = [[EaseLiveViewController alloc] initWithLiveRoom:room];
-                view.modalPresentationStyle = UIModalPresentationFullScreen;
-                [view setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
-                    if (isUpdate) {
-                        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:liveRoom];
-                        publishView.modalPresentationStyle = 0;
-                        [weakSelf.navigationController presentViewController:publishView animated:YES completion:nil];
-                    }
-                }];
                 
-//                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:view];
-//                [weakSelf.navigationController presentViewController:nav animated:YES completion:nil];
-
+                if (weakSelf.liveRoomSelectedBlock) {
+                    weakSelf.liveRoomSelectedBlock(room);
+                }
+                
+//                EaseLiveViewController *view = [[EaseLiveViewController alloc] initWithLiveRoom:room];
+//                view.modalPresentationStyle = UIModalPresentationFullScreen;
+//                [view setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
+//                    if (isUpdate) {
+//                        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:liveRoom];
+//                        publishView.modalPresentationStyle = 0;
+//                        [weakSelf.navigationController presentViewController:publishView animated:YES completion:nil];
+//                    }
+//                }];
+//
+////                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:view];
+////                [weakSelf presentViewController:nav animated:YES completion:nil];
+//
+////                [weakSelf.navigationController presentViewController:nav animated:YES completion:nil];
+//
 //                [weakSelf presentViewController:view animated:YES completion:nil];
                 
-                [weakSelf.navigationController presentViewController:view animated:YES completion:^{
-                    if (weakSelf.goNextBlock) {
-                        weakSelf.goNextBlock();
-                    }
-                }];
+
             }
         }];
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {

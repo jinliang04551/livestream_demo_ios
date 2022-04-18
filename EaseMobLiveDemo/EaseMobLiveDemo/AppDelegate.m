@@ -60,15 +60,15 @@
 {
     BOOL loginSuccess = [notification.object boolValue];
     if (loginSuccess) {//登录成功加载主窗口控制器
-        EaseMainViewController *main = [[EaseMainViewController alloc] init];
-        _mainVC = main;
-        self.window.rootViewController = main;
-        
 //        EaseMainViewController *main = [[EaseMainViewController alloc] init];
-//        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
-//
 //        _mainVC = main;
-//        self.window.rootViewController = nav;
+//        self.window.rootViewController = main;
+        
+        EaseMainViewController *main = [[EaseMainViewController alloc] init];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
+
+        _mainVC = main;
+        self.window.rootViewController = nav;
         
     }
     else{//登录失败加载登录页面控制器
