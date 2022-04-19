@@ -11,6 +11,7 @@
 #import "ELDLivingCountdownView.h"
 #import "ELDLiveViewController.h"
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 
 @interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate>
@@ -38,19 +39,25 @@
 @property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;
 @property (nonatomic, strong) UIView *agoraLocalVideoView;
 
+
+@property (nonatomic, strong)AVCaptureSession *session;
+@property (nonatomic, strong)AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, strong)AVCaptureDevice *backDevice;
+@property (nonatomic, strong)AVCaptureDevice *frontDevice;
+@property (nonatomic, strong)AVCaptureDevice *imageDevice;
+
+
 @end
 
 @implementation ELDPreLivingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = ViewControllerBgBlackColor;
-
+        
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEdit)];
     [self.view addGestureRecognizer:tap];
     
     [self placeAndLayoutSubviews];
-    [self _setupAgoreKit];
 }
 
 - (void)endEdit {
@@ -60,14 +67,20 @@
 
 - (void)placeAndLayoutSubviews {
 
-    [self.view addSubview:self.contentView];
-    [self.view addSubview:self.livingCountDownView];
+    [self startBgCamera];
+    
 
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIView *cameraView = [[UIView alloc] init];
+    [cameraView.layer addSublayer:self.previewLayer];
+    
+    [self.view addSubview:cameraView];
+    [self.view addSubview:self.contentView];
+
+    [cameraView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-
-    [self.livingCountDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
 
@@ -176,13 +189,18 @@
 }
 
 
-
 - (void)editAction {
-    
+    [self.liveNameTextField becomeFirstResponder];
 }
 
 - (void)flipAction {
+    if (self.imageDevice == self.backDevice) {
+        self.imageDevice = self.frontDevice;
+    }
     
+    if (self.imageDevice == self.frontDevice) {
+        self.imageDevice = self.backDevice;
+    }
 }
 
 - (void)goLiveAction {
@@ -191,30 +209,7 @@
         return;
     }
     
-    if (!_fileData) {
-        _fileData = [NSData new];
-    }
-    
-    _liveRoom = [[EaseLiveRoom alloc] init];
-    _liveRoom.title =_liveNameTextField.text;
-    _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
-    _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
-
-//    [self showHudInView:self.view hint:@"上传直播间封面..."];
-    
-    if (_coverImageView.image) {
-        [self uploadCoverImageView:^(BOOL success) {
-            [self hideHud];
-            
-            if (success) {
-                [self createLiveRoom:self.liveRoom];
-            }else{
-                [self showHint:@"设置封面图失败"];
-            }
-        }];
-    }else {
-        [self createLiveRoom:self.liveRoom];
-    }
+    [self createLiveRoom:self.liveRoom];
 }
 
 - (void)createLiveRoom:(EaseLiveRoom *)liveRoom {
@@ -228,9 +223,7 @@
                 [self updateLoginStateWithStart:NO];
                 if (success) {
                     weakSelf.liveRoom = liveRoom;
-                    if (self.createSuccessBlock) {
-                        self.createSuccessBlock(weakSelf.liveRoom);
-                    }
+                    [weakSelf showStartCountDownView];
                 }else  {
                     [weakSelf showHint:@"开始直播失败"];
                 }
@@ -238,18 +231,28 @@
         }else{
             [weakSelf showHint:@"开始直播失败"];
         }
-    }];}
+    }];
+    
+}
+
+- (void)showStartCountDownView {
+    self.contentView.hidden = YES;
+    
+    [self.view addSubview:self.livingCountDownView];
+    [self.livingCountDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    [self.livingCountDownView startCountDown];
+}
 
 
 #pragma mark - CreateRoom
 -(void)uploadCoverImageView:(void(^)(BOOL success))completion{
-    __block typeof(_liveRoom) blockLiveRoom = _liveRoom;
+    ELD_WS
     [EaseHttpManager.sharedInstance uploadFileWithData:_fileData completion:^(NSString *url, BOOL success) {
-        
         if (success) {
-            blockLiveRoom.coverPictureUrl = url;
+            weakSelf.liveRoom.coverPictureUrl = url;
         }
-        
         completion(success);
     }];
 }
@@ -257,10 +260,8 @@
 
 
 - (void)createLiveRoom:(EaseLiveRoom *)liveRoom completion:(void(^)(EaseLiveRoom *liveRoom,BOOL success))completion{
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"开始直播..." toView:self.view];
-    __weak MBProgressHUD *weakHud = hud;
+
     [EaseHttpManager.sharedInstance createLiveRoomWithRoom:liveRoom completion:^(EaseLiveRoom *room, BOOL success) {
-        [weakHud hideAnimated:YES];
         
         if (success) {
             _liveRoom = room;
@@ -281,11 +282,21 @@
 #pragma mark - UIImagePickerController
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *editImage = info[UIImagePickerControllerEditedImage];
+    _fileData = UIImageJPEGRepresentation(editImage, 1.0);
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 
     if (editImage) {
-        _fileData = UIImageJPEGRepresentation(editImage, 1.0);
-        [self.changeAvatarButton setImage:editImage forState:UIControlStateNormal];
+        [self uploadCoverImageView:^(BOOL success) {
+            [self hideHud];
+            
+            if (success) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.changeAvatarButton setImage:editImage forState:UIControlStateNormal];
+                });
+            }else{
+                [self showHint:@"设置封面图失败"];
+            }
+        }];
     }
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 
@@ -305,10 +316,9 @@
 #pragma mark gette and setter
 - (UIView *)contentView {
     if (_contentView == nil) {
-        _contentView = [[UIView alloc] init];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
         _contentView.backgroundColor = ViewControllerBgBlackColor;
-        _contentView.alpha = 0.5;
-        _contentView.hidden = YES;
+        _contentView.backgroundColor = UIColor.clearColor;
         
         [_contentView addSubview:self.closeButton];
         [_contentView addSubview:self.headerBgView];
@@ -354,7 +364,7 @@
     if (_headerBgView == nil) {
 
         _headerBgView = [[UIView alloc] init];
-        _headerBgView.backgroundColor = UIColor.grayColor;
+        _headerBgView.backgroundColor = UIColor.blackColor;
         _headerBgView.alpha = 0.5;
         _headerBgView.layer.cornerRadius = 8.0;
         
@@ -435,8 +445,18 @@
     if (_goLiveButton == nil) {
         _goLiveButton = [[UIButton alloc] init];
         [_goLiveButton addTarget:self action:@selector(goLiveAction) forControlEvents:UIControlEventTouchUpInside];
+        _goLiveButton.titleLabel.font = NFont(16.0f);
+        [_goLiveButton setTitle:@"Go LIVE!" forState:UIControlStateNormal];
+        [_goLiveButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+
+        [_goLiveButton setBackgroundImage:ImageWithName(@"go_live_btn_bg") forState:UIControlStateNormal];
         
-        [_goLiveButton setBackgroundImage:ImageWithName(@"goLive_button_bg") forState:UIControlStateNormal];
+        [_goLiveButton addSubview:self.loadingImageView];
+        
+        [self.loadingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(_goLiveButton);
+        }];
+
         
     }
     return _goLiveButton;
@@ -479,6 +499,7 @@
     return _imagePicker;
 }
 
+
 - (UIImageView *)loadingImageView {
     if (_loadingImageView == nil) {
         _loadingImageView = [[UIImageView alloc] init];
@@ -489,30 +510,119 @@
     return _loadingImageView;
 }
 
+
+- (AVCaptureSession *)session {
+    if (!_session) {
+        _session = [[AVCaptureSession alloc] init];
+        if ([_session canSetSessionPreset:AVCaptureSessionPresetHigh]){
+            _session.sessionPreset = AVCaptureSessionPresetHigh;
+        } else if ([_session canSetSessionPreset:AVCaptureSessionPresetiFrame1280x720]) {
+            _session.sessionPreset = AVCaptureSessionPresetiFrame1280x720;
+        }
+    }
+    return _session;
+}
+
+- (AVCaptureVideoPreviewLayer *)previewLayer {
+    if (!_previewLayer) {
+        _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+        _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//AVLayerVideoGravityResize;
+        _previewLayer.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
+    }
+    return _previewLayer;
+}
+
+- (AVCaptureDevice *)backDevice {
+    if (!_backDevice) {
+        _backDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionBack];
+    }
+    return _backDevice;
+}
+
+- (AVCaptureDevice *)frontDevice {
+    if (!_frontDevice) {
+        _frontDevice = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionFront];
+    }
+    return _frontDevice;
+}
+
+- (void)setImageDevice:(AVCaptureDevice *)imageDevice {
+    _imageDevice = imageDevice;
+    
+    [self.session beginConfiguration];
+    for (AVCaptureDeviceInput *input in self.session.inputs) {
+        if (input.device.deviceType == AVCaptureDeviceTypeBuiltInWideAngleCamera) {
+            [self.session removeInput:input];
+        }
+    }
+    NSError *error;
+    AVCaptureDeviceInput *imageInput = [AVCaptureDeviceInput deviceInputWithDevice:_imageDevice error:&error];
+    if (error) {
+        NSLog(@"photoInput init error: %@", error);
+    } else {//设置输入
+        if ([self.session canAddInput:imageInput]) {
+            [self.session addInput:imageInput];
+        }
+    }
+    [self.session commitConfiguration];
+}
+
+- (void)startBgCamera {
+      self.imageDevice = self.backDevice;
+    
+      AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
+      if ([self.session canAddOutput:photoOutput]) {
+          [self.session addOutput:photoOutput];
+      }
+    
+    [self.session startRunning];
+
+}
+
+
 - (ELDLivingCountdownView *)livingCountDownView {
     if (_livingCountDownView == nil) {
         _livingCountDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
-        _livingCountDownView.hidden = YES;
+        _livingCountDownView.backgroundColor = UIColor.clearColor;
         
         ELD_WS
         _livingCountDownView.CountDownFinishBlock = ^{
             [weakSelf.livingCountDownView removeFromSuperview];
-            
+            [weakSelf.session stopRunning];
+
+                        
             ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:weakSelf.liveRoom];
             livingVC.modalPresentationStyle =  UIModalPresentationFullScreen;
             [weakSelf presentViewController:livingVC
                                    animated:YES
                                  completion:^{
-                [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
+            [livingVC setFinishBroadcastCompletion:^(BOOL isFinish) {
                     if (isFinish)
                         [weakSelf dismissViewControllerAnimated:false completion:nil];
-                }];
+            }];
             }];
         };
     }
     return _livingCountDownView;
 }
 
+- (NSData *)fileData {
+    if (_fileData == nil) {
+        _fileData = [NSData data];
+    }
+    return _fileData;
+}
+
+
+- (EaseLiveRoom *)liveRoom {
+    if (_liveRoom == nil) {
+        _liveRoom = [[EaseLiveRoom alloc] init];
+        _liveRoom.title =_liveNameTextField.text;
+        _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
+        _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
+    }
+    return _liveRoom;
+}
 
 @end
 

@@ -33,6 +33,7 @@
 #define SectionIndexTextColor    COLOR_HEX(0x353535)
 
 #define ViewControllerBgBlackColor    UIColor.blackColor
+#define ViewControllerBgWhiteColor    UIColor.whiteColor
 
 #define AlphaBlackColor  [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.6]
 #define GenderMaleBgColor     COLOR_HEX(0xE50037)

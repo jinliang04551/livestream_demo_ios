@@ -44,8 +44,8 @@
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.avatarImageView.mas_bottom).offset(kEaseLiveDemoPadding * 1.2);
-        make.left.equalTo(self).offset(kEaseLiveDemoPadding * 5);
-        make.right.equalTo(self).offset(-kEaseLiveDemoPadding * 5);
+        make.left.equalTo(self).offset(kEaseLiveDemoPadding * 10);
+        make.right.equalTo(self).offset(-kEaseLiveDemoPadding * 10);
     }];
     
     if (self.isEditable) {

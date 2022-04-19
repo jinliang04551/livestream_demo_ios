@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class EaseLiveRoom;
 @interface ELDPreLivingViewController : UIViewController
 @property (nonatomic, copy) void (^closeBlock)(void);
-@property (nonatomic, copy) void (^createSuccessBlock)(EaseLiveRoom *liveRoom);
+@property (nonatomic, copy) void (^startLivingBlock)(EaseLiveRoom *liveRoom);
 
 @end
 

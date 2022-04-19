@@ -71,7 +71,7 @@
       }];
 
       [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.top.equalTo(self.nameLabel.mas_bottom).offset(7.0);
+          make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
           make.centerX.equalTo(self.avatarImageView).offset(-kEaseLiveDemoPadding);
       }];
 

@@ -247,6 +247,7 @@ extern NSMutableDictionary *anchorInfoDic;
     cellModel.name = NSLocalizedString((NSString *)[dict allKeys][0], @"");
     cellModel.username = [self randomNickName:msg.from];
     cellModel.count = count;
+        
     [self sendGiftAction:cellModel backView:backView];
 }
 

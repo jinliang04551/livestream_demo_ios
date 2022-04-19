@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ELDUserInfoViewDelegate <NSObject>
 - (void)showAlertWithTitle:(NSString *)title  messsage:(NSString *)messsage actionType:(ELDMemberActionType)actionType;
 
+- (void)updateLiveViewWithChatroom:(AgoraChatroom *)chatroom error:(AgoraChatError *)error;
+
+
 @end
 
 

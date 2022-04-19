@@ -178,12 +178,10 @@
 {
     [[AgoraChatClient sharedClient].roomManager addAdmin:self.currentUsername
                                        toChatroom:self.chatroom.chatroomId
-                                       completion:^(AgoraChatroom *aChatroomp, AgoraChatError *aError) {
-                                           if (!aError) {
-                                               
-                                           } else {
-                                              
-                                           }
+                                       completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
                                        }];
 }
 
@@ -193,11 +191,9 @@
         [[AgoraChatClient sharedClient].roomManager removeAdmin:self.currentUsername
                                             fromChatroom:_chatroomId
                                               completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                                  if (!aError) {
-
-                                                  } else {
-//                                                      [weakHud setLabelText:aError.errorDescription];
-                                                  }
+            if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+                [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+            }
                                               }];
     }
 }
@@ -209,11 +205,9 @@
                                     muteMilliseconds:-1
                                         fromChatroom:self.chatroom.chatroomId
                                           completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                              if (!aError) {
-                                                 
-                                              } else {
-                                                  
-                                              }
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
                                           }];
 }
 
@@ -224,12 +218,9 @@
     [[AgoraChatClient sharedClient].roomManager unmuteMembers:@[self.currentUsername]
                                           fromChatroom:self.chatroomId
                                             completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                                if (!aError) {
-                                                    
-                                                
-                                                } else {
-
-                                                }
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
                                             }];
 }
 
@@ -241,25 +232,29 @@
     [[AgoraChatClient sharedClient].roomManager blockMembers:@[self.currentUsername]
                                          fromChatroom:self.chatroom.chatroomId
                                            completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                               if (!aError) {
-                                                   
-                                               } else {
-                                                   
-                                               }
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
                                            }];
 }
 
 
 - (void)removeBlockAction {
     [[AgoraChatClient sharedClient].roomManager unblockMembers:@[self.currentUsername] fromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-            
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
+
     }];
     
 }
 
 - (void)addWhiteAction {
     [[AgoraChatClient sharedClient].roomManager addWhiteListMembers:@[self.currentUsername] fromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-            
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
+
     }];
 }
 
@@ -267,27 +262,23 @@
 //从白名单移除
 - (void)removeWhiteAction
 {
-       [[AgoraChatClient sharedClient].roomManager removeWhiteListMembers:@[self.currentUsername]
+[[AgoraChatClient sharedClient].roomManager removeWhiteListMembers:@[self.currentUsername]
                                            fromChatroom:self.chatroom.chatroomId
                                              completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                                 if (!aError) {
-                                                     
-                                                 } else {
-                                                
-                                                 }
+    if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+        [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+    }
                                              }];
 }
 
 - (void)kickAction
 {
     [[AgoraChatClient sharedClient].roomManager removeMembers:@[self.currentUsername]
-                                          fromChatroom:self.chatroom.chatroomId
-                                            completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-                                                if (!aError) {
-                                                    
-                                                } else {
-                                                   
-                                                }
+                                                 fromChatroom:self.chatroom.chatroomId
+                                                   completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+            [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
+        }
                                             }];
 }
 
@@ -361,10 +352,11 @@
     ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
     if (cell == nil) {
         cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
-        cell.contentView.backgroundColor = ViewControllerBgBlackColor;
-        cell.backgroundColor = ViewControllerBgBlackColor;
+        cell.contentView.backgroundColor = ViewControllerBgWhiteColor;
+        cell.backgroundColor = ViewControllerBgWhiteColor;
 
         cell.nameLabel.font = NFont(14.0);
+        cell.nameLabel.textColor = TextLabelBlackColor;
     }
 
     NSDictionary *dic = self.dataArray[indexPath.row];

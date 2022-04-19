@@ -20,8 +20,13 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addSubview:self.countLabel];
+        UIView *bgView = [[UIView alloc] init];
+        bgView.backgroundColor = UIColor.whiteColor;
+        [self addSubview:bgView];
+        [bgView addSubview:self.countLabel];
+        
         [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(bgView);
             make.top.bottom.equalTo(self);
             make.centerX.centerY.equalTo(self);
             make.height.equalTo(@80);
@@ -65,7 +70,6 @@
         _countLabel.textColor = TextLabelWhiteColor;
         _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-
     }
     return _countLabel;
 }

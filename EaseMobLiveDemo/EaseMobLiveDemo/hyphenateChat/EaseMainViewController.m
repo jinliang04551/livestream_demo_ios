@@ -12,7 +12,6 @@
 #import "EaseSettingsViewController.h"
 #import "EaseDefaultDataHelper.h"
 #import "ELDLiveListViewController.h"
-#import "ELDLiveContainerViewController.h"
 #import "ELDSettingViewController.h"
 #import "ELDLiveViewController.h"
 
@@ -286,7 +285,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     ELDPreLivingViewController *vc = [[ELDPreLivingViewController alloc] init];
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:vc animated:true completion:nil];
-    
 }
 
 - (ELDLiveListViewController *)liveListVC {

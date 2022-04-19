@@ -94,6 +94,8 @@
 @property (nonatomic, strong) ELDChatroomMembersView *memberView;
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
+@property (nonatomic, strong) UILabel *hintLabel;
+
 
 @end
 
@@ -151,7 +153,7 @@
                                 completion:^(BOOL success) {
                                     if (success) {
                                         [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
-                                        _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
+                                        weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
                                                                                      }];
@@ -535,30 +537,41 @@
     return _callCenter;
 }
 
+- (UILabel *)hintLabel {
+    if (_hintLabel == nil) {
+        _hintLabel = [[UILabel alloc] init];
+        _hintLabel.font = NFont(18.0);
+        _hintLabel.textColor = COLOR_HEX(0xBDBDBD);
+        _hintLabel.text = @"The Live Stream has ended";
+        _hintLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _hintLabel;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (void)didSelectedExitButton
 {
-    EaseFinishLiveView *finishView = [[EaseFinishLiveView alloc]initWithTitleInfo:@"确定结束直播?"];
-    [self.view addSubview:finishView];
-    [finishView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view).offset(16);
-        make.right.equalTo(self.view).offset(-16);
-        make.height.equalTo(@220);
-        make.center.equalTo(self.view);
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"End your Livestream?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
     }];
-    __weak EaseFinishLiveView *weakFinishView = finishView;
-    ELD_WS
-    [finishView setDoneCompletion:^(BOOL isFinish) {
-        if (isFinish) {
-            _isFinishBroadcast = YES;
-            _session.delegate = nil;
-            [weakSelf didClickFinishButton];
-        }
-        [weakFinishView removeFromSuperview];
+    [alertController addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _isFinishBroadcast = YES;
+        _session.delegate = nil;
+        [self didClickFinishButton];
     }];
+
+    [alertController addAction:okAction];
+
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+
+    
 }
 
 #pragma mark - Action
@@ -582,11 +595,7 @@
         [self closeAction];
         return;
     }
-//    EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-//                                                                              chatroomId:_room.chatroomId
-//                                                                                 isOwner:YES];
-//    profileLiveView.delegate = self;
-//    [profileLiveView showFromParentView:self.view];
+
     
     ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom memberVCType:ELDMemberVCTypeAll];
     userInfoView.delegate = self;
@@ -621,7 +630,7 @@
     }];
     [alertController addAction:cancelAction];
 
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"ok" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.userInfoView confirmActionWithActionType:actionType];
     }];
 
@@ -631,6 +640,15 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)updateLiveViewWithChatroom:(AgoraChatroom *)chatroom error:(AgoraChatError *)error {
+    if (error == nil) {
+        self.chatroom = chatroom;
+    }else {
+        [self showHint:error.description];
+    }
+    
+    [self.userInfoView removeFromParentView];
+}
 
 
 
@@ -665,6 +683,7 @@
 //                [weakSelf.agoraKit leaveChannel:nil];
 //                [AgoraRtcEngineKit destroy];
 //            }
+            
             [EaseHttpManager.sharedInstance deleteLiveRoomWithRoomId:_room.roomId completion:^(BOOL success) {
                 [weakSelf.agoraKit leaveChannel:nil];
                 [AgoraRtcEngineKit destroy];
@@ -790,12 +809,6 @@
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList
 {
     [self.view endEditing:YES];
-//    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
-//                                                                 isOwner:isOwner
-//                                                                currentMemberList:currentMemberList];
-//    adminView.delegate = self;
-//    [adminView showFromParentView:self.view];
-    
     [self.memberView showFromParentView:self.view];
 
 }
@@ -817,7 +830,6 @@
     return YES;
 }
 
-#pragma mark - EaseProfileLiveViewDelegate
 
 #pragma mark - AgoraChatroomManagerDelegate
 

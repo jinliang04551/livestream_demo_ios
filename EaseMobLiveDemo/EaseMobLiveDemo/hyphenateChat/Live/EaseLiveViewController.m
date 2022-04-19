@@ -80,6 +80,8 @@
 @property (nonatomic, strong) ELDChatroomMembersView *memberView;
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
+@property (nonatomic, strong) UILabel *hintLabel;
+
 @end
 
 @implementation EaseLiveViewController
@@ -562,6 +564,17 @@
     return _memberView;
 }
 
+- (UILabel *)hintLabel {
+    if (_hintLabel == nil) {
+        _hintLabel = [[UILabel alloc] init];
+        _hintLabel.font = NFont(18.0);
+        _hintLabel.textColor = COLOR_HEX(0xBDBDBD);
+        _hintLabel.text = @"The Live Stream has ended";
+        _hintLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _hintLabel;
+}
+
 
 #pragma mark - EaseLiveHeaderListViewDelegate
 
@@ -944,6 +957,7 @@ extern NSMutableDictionary *anchorInfoDic;
                                          if (success) {
                                              [[AgoraChatClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
                                          }
+        
                                          [weakSelf dismissViewControllerAnimated:YES completion:NULL];
         
                                      }];
@@ -951,6 +965,7 @@ extern NSMutableDictionary *anchorInfoDic;
     [_burstTimer invalidate];
     _burstTimer = nil;
 }
+
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
