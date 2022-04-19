@@ -6,16 +6,11 @@
 //
 
 #import "EaseMainViewController.h"
-
-#import "EaseLiveTVListViewController.h"
 #import "UIImage+Color.h"
-#import "EaseCreateLiveViewController.h"
-#import "EaseLiveCreateViewController.h"
 #import "EaseSearchDisplayController.h"
 #import "Masonry.h"
 #import "EaseSettingsViewController.h"
 #import "EaseDefaultDataHelper.h"
-#import "EaseBroadCastTabViewController.h"
 #import "ELDLiveListViewController.h"
 #import "ELDLiveContainerViewController.h"
 #import "ELDSettingViewController.h"
@@ -24,7 +19,6 @@
 #import "ELDTabBar.h"
 
 #import "EaseLiveViewController.h"
-#import "EasePublishViewController.h"
 #import "ELDAboutViewController.h"
 #import "ELDPreLivingViewController.h"
 
@@ -168,15 +162,24 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     ELD_WS
     [vc setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
         if (isUpdate) {
-            EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:liveRoom];
-            publishView.modalPresentationStyle = 0;
-            [weakSelf.navigationController presentViewController:publishView animated:YES completion:nil];
+            ELDLiveViewController *liveVC = [[ELDLiveViewController alloc] initWithLiveRoom:liveRoom];
+            liveVC.modalPresentationStyle = 0;
+            [weakSelf.navigationController presentViewController:liveVC animated:YES completion:nil];
         }
     }];
     
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 
 }
+
+- (void)goSelfLiveRoomWithRoom:(EaseLiveRoom *)liveroom {
+    
+    ELDLiveViewController *vc = [[ELDLiveViewController alloc] initWithLiveRoom:liveroom];
+    vc.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+
+}
+
 
 - (void)goAboutPage {
     ELDAboutViewController *vc = [[ELDAboutViewController alloc] init];
@@ -292,6 +295,10 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         ELD_WS
         _liveListVC.liveRoomSelectedBlock = ^(EaseLiveRoom * _Nonnull room) {
             [weakSelf goLiveRoomWithRoom:room];
+        };
+        
+        _liveListVC.selfLiveRoomSelectedBlock = ^(EaseLiveRoom * _Nonnull room) {
+            [weakSelf goSelfLiveRoomWithRoom:room];
         };
     }
     return _liveListVC;

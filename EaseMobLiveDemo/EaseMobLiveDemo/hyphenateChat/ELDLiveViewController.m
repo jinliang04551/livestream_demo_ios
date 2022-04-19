@@ -18,7 +18,6 @@
 #import "EaseAdminView.h"
 #import "EaseLiveRoom.h"
 #import "EaseAnchorCardView.h"
-#import "EaseCreateLiveViewController.h"
 #import "EaseDefaultDataHelper.h"
 #import "EaseAudienceBehaviorView.h"
 #import "EaseGiftListView.h"

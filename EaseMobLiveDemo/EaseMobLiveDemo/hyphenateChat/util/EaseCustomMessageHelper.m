@@ -86,7 +86,7 @@ extern NSMutableDictionary *anchorInfoDic;
 //解析消息内容
 + (NSString*)getMsgContent:(AgoraChatMessageBody*)messageBody
 {
-    NSString *msgContent = nil;
+    NSString *msgContent = @"";
     AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)messageBody;
     if ([customBody.event isEqualToString:kCustomMsgChatroomBarrage]) {
         msgContent = (NSString*)[customBody.ext objectForKey:@"txt"];
@@ -94,10 +94,15 @@ extern NSMutableDictionary *anchorInfoDic;
         msgContent = [NSString stringWithFormat:@"给主播点了%ld个赞",(long)[(NSString*)[customBody.ext objectForKey:@"num"] integerValue]];
     } else if ([customBody.event isEqualToString:kCustomMsgChatroomGift]) {
         NSString *giftid = [customBody.ext objectForKey:@"id"];
+        NSString *giftNum = [customBody.ext objectForKey:@"num"];
+        
         if (giftid) {
             int index = [[giftid substringFromIndex:5] intValue];
-            ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
-            msgContent = [NSString stringWithFormat:@"赠送了 %@x%@",NSLocalizedString(model.giftname,@""),(NSString*)[customBody.ext objectForKey:@"num"]];
+            if (index >= EaseLiveGiftHelper.sharedInstance.giftArray.count) {
+                ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
+                msgContent = [NSString stringWithFormat:@"赠送了 %@x%@",NSLocalizedString(model.giftname,@""),giftNum];
+            }
+            
         } else {
             msgContent = @"";
         }

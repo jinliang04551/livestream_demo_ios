@@ -28,13 +28,9 @@
 		3C9E327D260C7B4300CC3E3F /* EaseTransitionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3171260C7B4200CC3E3F /* EaseTransitionViewController.m */; };
 		3C9E327E260C7B4300CC3E3F /* EaseBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3172260C7B4200CC3E3F /* EaseBaseViewController.m */; };
 		3C9E327F260C7B4300CC3E3F /* EaseLiveroomCoverSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3176260C7B4200CC3E3F /* EaseLiveroomCoverSettingView.m */; };
-		3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3177260C7B4200CC3E3F /* EaseCreateLiveViewController.m */; };
 		3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E317B260C7B4200CC3E3F /* EaseTextField.m */; };
-		3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E317C260C7B4200CC3E3F /* EasePublishViewController.m */; };
 		3C9E3283260C7B4300CC3E3F /* EaseAboutHuanxinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E317F260C7B4200CC3E3F /* EaseAboutHuanxinViewController.m */; };
-		3C9E3284260C7B4300CC3E3F /* EaseLiveTVListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3180260C7B4200CC3E3F /* EaseLiveTVListViewController.m */; };
 		3C9E3285260C7B4300CC3E3F /* EaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */; };
-		3C9E3286260C7B4300CC3E3F /* EaseBroadCastTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3182260C7B4200CC3E3F /* EaseBroadCastTabViewController.m */; };
 		3C9E3287260C7B4300CC3E3F /* EaseSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */; };
 		3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */; };
 		3C9E3290260C7B4300CC3E3F /* EaseAudienceBehaviorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3199260C7B4200CC3E3F /* EaseAudienceBehaviorView.m */; };
@@ -380,8 +376,6 @@
 		ECCBE3152808781100CDFD2E /* ELDUserInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCBE3142808781100CDFD2E /* ELDUserInfoHeaderView.m */; };
 		F5D6F693277B144E000F3FD2 /* interactionBroadCast@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5D6F692277B144E000F3FD2 /* interactionBroadCast@2x.png */; };
 		F5D6F695277B1456000F3FD2 /* interactionBroadCast@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F5D6F694277B1456000F3FD2 /* interactionBroadCast@3x.png */; };
-		F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5EB0FDC274CDCB300EDFCE9 /* EaseLiveCreateViewController.m */; };
-		F5EB0FDF274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5EB0FDD274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -434,22 +428,14 @@
 		3C9E3173260C7B4200CC3E3F /* EaseLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLoginViewController.h; sourceTree = "<group>"; };
 		3C9E3175260C7B4200CC3E3F /* EaseTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseTextField.h; sourceTree = "<group>"; };
 		3C9E3176260C7B4200CC3E3F /* EaseLiveroomCoverSettingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveroomCoverSettingView.m; sourceTree = "<group>"; };
-		3C9E3177260C7B4200CC3E3F /* EaseCreateLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseCreateLiveViewController.m; sourceTree = "<group>"; };
-		3C9E3178260C7B4200CC3E3F /* EasePublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasePublishViewController.h; sourceTree = "<group>"; };
-		3C9E3179260C7B4200CC3E3F /* EaseCreateLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCreateLiveViewController.h; sourceTree = "<group>"; };
 		3C9E317A260C7B4200CC3E3F /* EaseLiveroomCoverSettingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveroomCoverSettingView.h; sourceTree = "<group>"; };
 		3C9E317B260C7B4200CC3E3F /* EaseTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseTextField.m; sourceTree = "<group>"; };
-		3C9E317C260C7B4200CC3E3F /* EasePublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasePublishViewController.m; sourceTree = "<group>"; };
 		3C9E317D260C7B4200CC3E3F /* EaseSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseSignUpViewController.h; sourceTree = "<group>"; };
 		3C9E317F260C7B4200CC3E3F /* EaseAboutHuanxinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseAboutHuanxinViewController.m; sourceTree = "<group>"; };
-		3C9E3180260C7B4200CC3E3F /* EaseLiveTVListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveTVListViewController.m; sourceTree = "<group>"; };
 		3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseSettingsViewController.m; sourceTree = "<group>"; };
-		3C9E3182260C7B4200CC3E3F /* EaseBroadCastTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseBroadCastTabViewController.m; sourceTree = "<group>"; };
 		3C9E3183260C7B4200CC3E3F /* EaseSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseSearchDisplayController.h; sourceTree = "<group>"; };
 		3C9E3184260C7B4200CC3E3F /* EaseLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveViewController.h; sourceTree = "<group>"; };
-		3C9E3185260C7B4200CC3E3F /* EaseBroadCastTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseBroadCastTabViewController.h; sourceTree = "<group>"; };
 		3C9E3186260C7B4200CC3E3F /* EaseSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseSettingsViewController.h; sourceTree = "<group>"; };
-		3C9E3187260C7B4200CC3E3F /* EaseLiveTVListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveTVListViewController.h; sourceTree = "<group>"; };
 		3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseAboutHuanxinViewController.h; sourceTree = "<group>"; };
 		3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseSearchDisplayController.m; sourceTree = "<group>"; };
 		3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveViewController.m; sourceTree = "<group>"; };
@@ -918,9 +904,6 @@
 		ECCBE3142808781100CDFD2E /* ELDUserInfoHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDUserInfoHeaderView.m; sourceTree = "<group>"; };
 		F5D6F692277B144E000F3FD2 /* interactionBroadCast@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "interactionBroadCast@2x.png"; sourceTree = "<group>"; };
 		F5D6F694277B1456000F3FD2 /* interactionBroadCast@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "interactionBroadCast@3x.png"; sourceTree = "<group>"; };
-		F5EB0FDB274CDCB300EDFCE9 /* EaseLiveCreateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EaseLiveCreateViewController.h; sourceTree = "<group>"; };
-		F5EB0FDC274CDCB300EDFCE9 /* EaseLiveCreateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EaseLiveCreateViewController.m; sourceTree = "<group>"; };
-		F5EB0FDD274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EaseLiveCreateViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1054,15 +1037,8 @@
 		3C9E3174260C7B4200CC3E3F /* Publish */ = {
 			isa = PBXGroup;
 			children = (
-				3C9E3179260C7B4200CC3E3F /* EaseCreateLiveViewController.h */,
-				3C9E3177260C7B4200CC3E3F /* EaseCreateLiveViewController.m */,
-				F5EB0FDB274CDCB300EDFCE9 /* EaseLiveCreateViewController.h */,
-				F5EB0FDC274CDCB300EDFCE9 /* EaseLiveCreateViewController.m */,
-				F5EB0FDD274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib */,
 				3C9E317A260C7B4200CC3E3F /* EaseLiveroomCoverSettingView.h */,
 				3C9E3176260C7B4200CC3E3F /* EaseLiveroomCoverSettingView.m */,
-				3C9E3178260C7B4200CC3E3F /* EasePublishViewController.h */,
-				3C9E317C260C7B4200CC3E3F /* EasePublishViewController.m */,
 				3C9E3175260C7B4200CC3E3F /* EaseTextField.h */,
 				3C9E317B260C7B4200CC3E3F /* EaseTextField.m */,
 			);
@@ -1074,10 +1050,6 @@
 			children = (
 				3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */,
 				3C9E317F260C7B4200CC3E3F /* EaseAboutHuanxinViewController.m */,
-				3C9E3185260C7B4200CC3E3F /* EaseBroadCastTabViewController.h */,
-				3C9E3182260C7B4200CC3E3F /* EaseBroadCastTabViewController.m */,
-				3C9E3187260C7B4200CC3E3F /* EaseLiveTVListViewController.h */,
-				3C9E3180260C7B4200CC3E3F /* EaseLiveTVListViewController.m */,
 				3C9E3184260C7B4200CC3E3F /* EaseLiveViewController.h */,
 				3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */,
 				3C9E3183260C7B4200CC3E3F /* EaseSearchDisplayController.h */,
@@ -2051,7 +2023,6 @@
 				C08DFC6C27F59A0E00862ADF /* photo_icon@3x.png in Resources */,
 				C08E8F3027EDC36900DE47C4 /* hintLive@2x.png in Resources */,
 				3C9E332E260C7B4400CC3E3F /* iconfont.svg in Resources */,
-				F5EB0FDF274CDCB300EDFCE9 /* EaseLiveCreateViewController.xib in Resources */,
 				C08DFC0F27F16A9500862ADF /* TabbarBg@3x.png in Resources */,
 				E96F3D8A1C17FE410099718A /* Default-568h@2x.png in Resources */,
 				F5D6F693277B144E000F3FD2 /* interactionBroadCast@2x.png in Resources */,
@@ -2175,7 +2146,6 @@
 				3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */,
 				C0475568280B0FD20094EAD3 /* ELDTabBar.m in Sources */,
 				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
-				3C9E3282260C7B4300CC3E3F /* EasePublishViewController.m in Sources */,
 				3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */,
 				C0475535280913BE0094EAD3 /* UIViewController+Bottom.m in Sources */,
 				3C9E32B1260C7B4300CC3E3F /* EaseBarrageFlyView.m in Sources */,
@@ -2195,7 +2165,6 @@
 				C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */,
 				C08DFC4527F31BFA00862ADF /* ELDLiveContainerViewController.m in Sources */,
 				3C9E3287260C7B4300CC3E3F /* EaseSearchDisplayController.m in Sources */,
-				3C9E3284260C7B4300CC3E3F /* EaseLiveTVListViewController.m in Sources */,
 				3C9E335A260C800100CC3E3F /* EaseLiveSession.m in Sources */,
 				3C9E3331260C7B4400CC3E3F /* EaseLoginViewController.m in Sources */,
 				C047556228095E370094EAD3 /* UILabel+LXLabel.m in Sources */,
@@ -2205,7 +2174,6 @@
 				3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */,
 				C047554E28095CCE0094EAD3 /* LXCalendarHearder.m in Sources */,
 				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
-				F5EB0FDE274CDCB300EDFCE9 /* EaseLiveCreateViewController.m in Sources */,
 				C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */,
 				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
@@ -2244,7 +2212,6 @@
 				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				3C9E3281260C7B4300CC3E3F /* EaseTextField.m in Sources */,
 				C047555028095CCE0094EAD3 /* LXCalendarDayModel.m in Sources */,
-				3C9E3280260C7B4300CC3E3F /* EaseCreateLiveViewController.m in Sources */,
 				C0602E7F28001EF600D39575 /* MISScrollPageCollectionView.m in Sources */,
 				3C9E3274260C7B4300CC3E3F /* EaseHttpManager.m in Sources */,
 				3C9E32B2260C7B4300CC3E3F /* MBProgressHUD+Add.m in Sources */,
@@ -2295,7 +2262,6 @@
 				C08DFC2727F1D18C00862ADF /* ELDHintGoLiveView.m in Sources */,
 				C08DFC8A27F84D6F00862ADF /* Reachability.m in Sources */,
 				3C9E32AC260C7B4300CC3E3F /* EaseInputTextView.m in Sources */,
-				3C9E3286260C7B4300CC3E3F /* EaseBroadCastTabViewController.m in Sources */,
 				C0602E8528001EF600D39575 /* MISScrollPageSegmentTitleView.m in Sources */,
 				C047556028095E370094EAD3 /* UIView+FTCornerdious.m in Sources */,
 				C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */,

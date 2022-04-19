@@ -24,7 +24,6 @@
 #import "EaseCustomKeyBoardView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
-#import "EasePublishViewController.h"
 #import "EaseDefaultDataHelper.h"
 
 #import "UIImageView+WebCache.h"

@@ -10,14 +10,12 @@
 #import "EaseLiveCollectionViewCell.h"
 #import "EaseLiveViewController.h"
 #import "SRRefreshView.h"
-#import "EaseCreateLiveViewController.h"
 #import "MJRefresh.h"
 #import "EaseHttpManager.h"
 #import "EaseLiveRoom.h"
 #import "EaseSearchDisplayController.h"
 #import "SDImageCache.h"
 #import "SDWebImageDownloader.h"
-#import "EasePublishViewController.h"
 #import "ELDNoDataPlaceHolderView.h"
 #import "ELDHintGoLiveView.h"
 
@@ -25,6 +23,7 @@
 #define kDefaultPageSize 8
 #define kCollectionIdentifier @"collectionCell"
 
+#import "ELDLiveViewController.h"
 
 @interface ELDLiveListViewController () <UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,SRRefreshDelegate,AgoraChatClientDelegate>
 {
@@ -45,7 +44,6 @@
 @property (nonatomic, strong) SRRefreshView *slimeView;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UIButton *liveButton;
 @property (nonatomic) kTabbarItemBehavior tabBarBehavior; //tabbar行为：看直播/开播
 
 
@@ -88,8 +86,10 @@
     [self setupCollectionView];
     
     [self setRefreshHeaderAndFooter];
-    
+ 
+    [self loadData:YES];
 }
+
 
 - (void)setupNavbar {
     [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
@@ -317,20 +317,6 @@
     return _slimeView;
 }
 
-- (UIButton*)liveButton
-{
-    if (_liveButton == nil) {
-        _liveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _liveButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        _liveButton.frame = CGRectMake(KScreenWidth - 75, KScreenHeight - 130, 60, 60);
-        _liveButton.layer.cornerRadius = _liveButton.width/2;
-        _liveButton.backgroundColor = kDefaultLoginButtonColor;
-        [_liveButton setImage:[UIImage imageNamed:@"live"] forState:UIControlStateNormal];
-        [_liveButton addTarget:self action:@selector(liveAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _liveButton;
-}
-
 - (ELDNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
         _noDataPromptView = ELDNoDataPlaceHolderView.new;
@@ -432,37 +418,15 @@
             }
             
             if (room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-                EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
-                [publishView setFinishBroadcastCompletion:^(BOOL isFinish) {
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }];
-                publishView.modalPresentationStyle = 0;
-                [weakSelf presentViewController:publishView animated:YES completion:nil];
-                return;
+                if (weakSelf.selfLiveRoomSelectedBlock) {
+                    weakSelf.selfLiveRoomSelectedBlock(room);
+                }
+                
             } else {
                 
                 if (weakSelf.liveRoomSelectedBlock) {
                     weakSelf.liveRoomSelectedBlock(room);
                 }
-                
-//                EaseLiveViewController *view = [[EaseLiveViewController alloc] initWithLiveRoom:room];
-//                view.modalPresentationStyle = UIModalPresentationFullScreen;
-//                [view setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
-//                    if (isUpdate) {
-//                        EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:liveRoom];
-//                        publishView.modalPresentationStyle = 0;
-//                        [weakSelf.navigationController presentViewController:publishView animated:YES completion:nil];
-//                    }
-//                }];
-//
-////                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:view];
-////                [weakSelf presentViewController:nav animated:YES completion:nil];
-//
-////                [weakSelf.navigationController presentViewController:nav animated:YES completion:nil];
-//
-//                [weakSelf presentViewController:view animated:YES completion:nil];
-                
-
             }
         }];
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {
@@ -471,7 +435,7 @@
         room.anchor = [AgoraChatClient sharedClient].currentUsername;
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success) {
-                EasePublishViewController *publishView = [[EasePublishViewController alloc] initWithLiveRoom:room];
+                ELDLiveViewController *publishView = [[ELDLiveViewController alloc] initWithLiveRoom:room];
                 publishView.modalPresentationStyle = 0;
                 [weakSelf presentViewController:publishView
                                        animated:YES
@@ -511,21 +475,6 @@
 }
 
 #pragma mark - action
-
-- (void)liveAction
-{
-    CATransition *transition = [CATransition animation];
-    transition.duration = 0.3f;
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    transition.type = kCATransitionPush;
-    transition.subtype = kCATransitionFromTop;
-    [self.navigationController.view.layer addAnimation:transition forKey:nil];
-    
-    EaseCreateLiveViewController *createLiveView = [[EaseCreateLiveViewController alloc] init];
-    [self.navigationController pushViewController:createLiveView animated:NO];
-}
-
-
 - (void)searchAction
 {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
