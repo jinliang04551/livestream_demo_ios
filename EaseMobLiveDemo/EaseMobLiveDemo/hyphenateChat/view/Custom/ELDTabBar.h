@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
                     withImage:(UIImage *)image
                 selectedImage:(UIImage *)selectedImage;
 
+- (void)updateTabbarItemIndex:(NSInteger )itemIndex
+                withUrlString:(NSString *)urlString;
 
 @end
 

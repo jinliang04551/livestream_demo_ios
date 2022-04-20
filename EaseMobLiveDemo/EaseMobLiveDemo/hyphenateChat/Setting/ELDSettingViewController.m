@@ -82,6 +82,8 @@
         if(!aError) {
             self.userInfo = [aUserDatas objectForKey:[AgoraChatClient sharedClient].currentUsername];
             [self updateUserHeaderView];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ELDFetchUserInfoNotification object:self.userInfo];
         }
     }];
 }

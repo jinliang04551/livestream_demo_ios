@@ -45,6 +45,7 @@
         [self.iconImageView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).offset(7.0f);
             make.centerX.equalTo(self);
+            make.size.equalTo(@(kAvatarImageViewHeight));
         }];
         
         [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -77,8 +78,25 @@
                     selectedImage:(UIImage *)selectedImage {
     _image = image;
     _selectedImage = selectedImage;
-//    self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
-//    self.iconImageView.clipsToBounds = YES;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
+        self.iconImageView.clipsToBounds = YES;
+    });}
+
+- (void)updateTabbarItemWithUrlString:(NSString *)urlString {
+    ELD_WS
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:ImageWithName(@"avatat_2") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        if (error == nil) {
+            weakSelf.image = image;
+            weakSelf.selectedImage = image;
+        }
+    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
+        self.iconImageView.clipsToBounds = YES;
+    });
 }
 
 @end
@@ -96,15 +114,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-//        self.backgroundColor = UIColor.whiteColor;
         _selectedIndex = -1;
-//        self.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
-//        self.layer.shadowColor = [UIColor colorWithRed:224/255.0 green:231/255.0 blue:239/255.0 alpha:0.5].CGColor;
-//        self.layer.shadowOffset = CGSizeMake(0,0);
-//        self.layer.shadowOpacity = 1;
-//        self.layer.shadowRadius = 13;
         [self addSubview:self.bottomBarBgView];
-        
         [self.bottomBarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
@@ -120,6 +131,16 @@
         ELD_TabItem *tabItem = self.tabItems[itemIndex];
         if (tabItem) {
             [tabItem updateTabbarItemWithImage:image selectedImage:selectedImage];
+        }
+    }
+}
+
+- (void)updateTabbarItemIndex:(NSInteger )itemIndex
+                withUrlString:(NSString *)urlString {
+    if (itemIndex < self.tabItems.count) {
+        ELD_TabItem *tabItem = self.tabItems[itemIndex];
+        if (tabItem) {
+            [tabItem updateTabbarItemWithUrlString:urlString];
         }
     }
 }

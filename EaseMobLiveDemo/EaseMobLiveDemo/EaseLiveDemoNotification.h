@@ -20,4 +20,7 @@
 //user avatar update
 #define  ELDUserAvatarUpdateNotification  @"ELDUserAvatarUpdateNotification"
 
+#define  ELDFetchUserInfoNotification  @"ELDFetchUserInfoNotification"
+
+
 #endif /* EaseLiveDemoNotification_h */

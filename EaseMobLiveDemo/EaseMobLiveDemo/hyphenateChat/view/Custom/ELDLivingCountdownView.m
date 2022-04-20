@@ -76,7 +76,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:YES];
 }
 
 - (void)stopTimer {

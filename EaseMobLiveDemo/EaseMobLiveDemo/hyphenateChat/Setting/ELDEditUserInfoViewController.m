@@ -164,6 +164,9 @@
         [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:dateString withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             if (aError == nil) {
                 self.userInfo = aUserInfo;
+                if (self.updateUserInfoBlock) {
+                    self.updateUserInfoBlock(self.userInfo);
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.table reloadData];
                 });

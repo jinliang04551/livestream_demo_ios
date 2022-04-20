@@ -49,6 +49,9 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAvatarUpdateNotification:) name:ELDUserAvatarUpdateNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserInfoNotification:) name:ELDFetchUserInfoNotification object:nil];
+
     }
     return self;
 }
@@ -61,6 +64,13 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 - (void)userAvatarUpdateNotification:(NSNotification *)notify {
     UIImage *userImage = (UIImage *)notify.object;
     [self.bottomBar updateTabbarItemIndex:1 withImage:userImage selectedImage:userImage];
+}
+
+- (void)fetchUserInfoNotification:(NSNotification *)notify {
+    AgoraChatUserInfo *userInfo = notify.object;
+    if (userInfo) {
+        [self.bottomBar updateTabbarItemIndex:1 withUrlString:userInfo.avatarUrl];
+    }
 }
 
 //- (void)viewWillAppear:(BOOL)animated
@@ -239,8 +249,8 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
                                                         selectedImage:ImageWithName(@"Channels_focus")];
 
         ELD_TabItem* item2 = [[ELD_TabItem alloc] initWithTitle:@""
-                                                                image:ImageWithName(@"Channel_normal")
-                                                        selectedImage:ImageWithName(@"Channels_focus")];
+                                                                image:ImageWithName(@"avatat_2")
+                                                        selectedImage:ImageWithName(@"avatat_2")];
         _bottomBar.tabItems = @[item1, item2];
 
         ELD_WS

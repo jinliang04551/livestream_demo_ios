@@ -161,14 +161,14 @@
 {
     if (isAllTheSilence) {
         [[AgoraChatClient sharedClient].roomManager muteAllMembersFromChatroom:self.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-            if (aError == nil) {
-                
+            if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+                [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
             }
         }];
     } else {
         [[AgoraChatClient sharedClient].roomManager unmuteAllMembersFromChatroom:self.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-            if (aError == nil) {
-
+            if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
+                [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
             }
         }];
     }
