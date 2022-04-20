@@ -51,9 +51,7 @@ MISScrollPageControllerDelegate>
 }
 
 - (void)placeAndLayoutSubviewsForMember {
-    
-    self.backgroundColor = UIColor.yellowColor;
-    
+        
     [self.containerView addSubview:self.topBgImageView];
     [self.containerView addSubview:self.viewerTitleLabel];
     [self.containerView addSubview:self.allVC.view];
@@ -137,6 +135,18 @@ MISScrollPageControllerDelegate>
 }
 
 
+- (void)updateWithChatroom:(AgoraChatroom *)aChatroom {
+    self.chatroom = aChatroom;
+    [self placeAndLayoutSubviews];
+
+    [self.allVC updateUIWithChatroom:self.chatroom];
+    [self.adminListVC updateUIWithChatroom:self.chatroom];
+    [self.allowListVC updateUIWithChatroom:self.chatroom];
+    [self.blockListVC updateUIWithChatroom:self.chatroom];
+    [self.mutedListVC updateUIWithChatroom:self.chatroom];
+}
+
+
 #pragma mark private method
 - (void)tapGestureAction {
     [self removeFromSuperview];
@@ -157,12 +167,7 @@ MISScrollPageControllerDelegate>
 
 #pragma mark Notification
 - (void)chatroomUpdateNotification:(AgoraChatroom *)chatroom {
-//    self.group = agoraGroup;
-//    [self.allVC updateUI];
-//    [self.adminListVC updateUI];
-//    [self.blockListVC updateUI];
-//    [self.mutedListVC updateUI];
-    
+    [self updateWithChatroom:chatroom];
 }
 
 #pragma mark - scrool pager data source and delegate

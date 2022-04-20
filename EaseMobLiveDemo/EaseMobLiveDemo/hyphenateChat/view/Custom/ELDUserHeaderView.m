@@ -82,7 +82,7 @@
         _avatarImageView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
         _avatarImageView.layer.masksToBounds = YES;
         _avatarImageView.clipsToBounds = YES;
-        _avatarImageView.backgroundColor = UIColor.greenColor;
+        _avatarImageView.image = kDefultUserImage;
     }
     return _avatarImageView;
 }

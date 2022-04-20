@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom;
 
+- (void)updateWithChatroom:(AgoraChatroom *)aChatroom;
+
 @end
 
 NS_ASSUME_NONNULL_END

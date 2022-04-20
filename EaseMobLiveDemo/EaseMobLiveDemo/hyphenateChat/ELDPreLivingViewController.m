@@ -9,7 +9,7 @@
 #import "ELDPreLivingViewController.h"
 #import <CoreServices/CoreServices.h>
 #import "ELDLivingCountdownView.h"
-#import "ELDLiveViewController.h"
+#import "ELDPublishLiveViewController.h"
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -472,6 +472,7 @@
         _liveNameTextField.font = NFont(16.0f);
         _liveNameTextField.textColor = TextLabelWhiteColor;
         _liveNameTextField.tintColor = TextLabelWhiteColor;
+        _liveNameTextField.text = @"welcome to my channel!";
     }
     return _liveNameTextField;
 }
@@ -591,7 +592,7 @@
             [weakSelf.session stopRunning];
 
                         
-            ELDLiveViewController *livingVC = [[ELDLiveViewController alloc] initWithLiveRoom:weakSelf.liveRoom];
+            ELDPublishLiveViewController *livingVC = [[ELDPublishLiveViewController alloc] initWithLiveRoom:weakSelf.liveRoom];
             livingVC.modalPresentationStyle =  UIModalPresentationFullScreen;
             [weakSelf presentViewController:livingVC
                                    animated:YES

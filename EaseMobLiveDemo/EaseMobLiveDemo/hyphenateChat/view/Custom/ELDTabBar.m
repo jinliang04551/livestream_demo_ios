@@ -79,10 +79,9 @@
     _image = image;
     _selectedImage = selectedImage;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
-        self.iconImageView.clipsToBounds = YES;
-    });}
+    self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
+    self.iconImageView.clipsToBounds = YES;
+}
 
 - (void)updateTabbarItemWithUrlString:(NSString *)urlString {
     ELD_WS

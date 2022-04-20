@@ -46,13 +46,14 @@
 {
     NSTimer *_burstTimer;
     EaseLiveRoom *_room;
-    AgoraChatroom *_chatroom;
     BOOL _enableAdmin;
     EaseCustomMessageHelper *_customMsgHelper;
     NSTimer *_timer;
     NSInteger _clock; //重复次数时钟
     id _observer;
 }
+
+@property (nonatomic, strong) AgoraChatroom *chatroom;
 
 @property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) EaseChatView *chatview;
@@ -81,6 +82,7 @@
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
 @property (nonatomic, strong) UILabel *hintLabel;
+
 
 @end
 
@@ -122,19 +124,19 @@
 }
 
 - (void)joinChatroom {
-    __weak EaseLiveViewController *weakSelf = self;
+    ELD_WS
     [self.chatview joinChatroomWithIsCount:YES
                                 completion:^(BOOL success) {
                                     if (success) {
                                         [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
 
-                                        _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
+                                        weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
                                             if (success) {
                                                 
                                             }else {
-                                                [weakSelf showHint:@"加入聊天室失败"];
+
                                             }
                                         }];
                                     } else {
@@ -557,7 +559,7 @@
 
 - (ELDChatroomMembersView *)memberView {
     if (_memberView == nil) {
-        _memberView = [[ELDChatroomMembersView alloc] initWithChatroom:_chatroom];
+        _memberView = [[ELDChatroomMembersView alloc] initWithChatroom:self.chatroom];
         _memberView.delegate = self;
         _memberView.selectedUserDelegate = self;
     }
@@ -584,21 +586,6 @@
         [self closeAction];
         return;
     }
-//    BOOL isOwner = _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
-//    BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || isOwner;
-    
-//    if (ret || _enableAdmin) {
-//        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-//                                                                                  chatroomId:_room.chatroomId
-//                                                                                     isOwner:isOwner];
-//        profileLiveView.delegate = self;
-//        [profileLiveView showFromParentView:self.view];
-//    } else {
-//        EaseProfileLiveView *profileLiveView = [[EaseProfileLiveView alloc] initWithUsername:username
-//                                                                                  chatroomId:_room.chatroomId];
-//        profileLiveView.delegate = self;
-//        [profileLiveView showFromParentView:self.view];
-//    }
     
     ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:username chatroom:_chatroom memberVCType:ELDMemberVCTypeAll];
     userInfoView.delegate = self;
@@ -611,7 +598,7 @@
 {
     [self.view endEditing:YES];
 
-    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:_chatroom];
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:self.chatroom];
     userInfoView.delegate = self;
     [userInfoView showFromParentView:self.view];
 }
@@ -620,13 +607,6 @@
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList
 {
     [self.view endEditing:YES];
-
-//    EaseAdminView *adminView = [[EaseAdminView alloc] initWithChatroomId:_room
-//                                                                 isOwner:isOwner
-//                                                                currentMemberList:currentMemberList];
-//    adminView.delegate = self;
-//    [adminView showFromParentView:self.view];
-        
     [self.memberView showFromParentView:self.view];
     
 }
@@ -678,7 +658,7 @@
 
 - (void)liveRoomOwnerDidUpdate:(AgoraChatroom *)aChatroom newOwner:(NSString *)aNewOwner
 {
-    _chatroom = aChatroom;
+    self.chatroom = aChatroom;
     _room.anchor = aNewOwner;
     [self fetchLivingStream];
 }
@@ -810,9 +790,12 @@ extern NSMutableDictionary *anchorInfoDic;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
             [self showHint:@"主播已开启全员禁言状态，不可发言！"];
+            self.chatview.isMuted = YES;
         } else {
             [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
         }
+        
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
 
@@ -833,6 +816,8 @@ extern NSMutableDictionary *anchorInfoDic;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = YES;
+            [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+
             [self.view layoutSubviews];
         }
     }
@@ -844,6 +829,7 @@ extern NSMutableDictionary *anchorInfoDic;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = NO;
+            [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
             [self.view layoutSubviews];
         }
     }
@@ -858,9 +844,11 @@ extern NSMutableDictionary *anchorInfoDic;
         for (NSString *name in aMutes) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"禁言成员:%@",text]];
-        //[self showHudInView:[[[UIApplication sharedApplication] windows] firstObject] hint:[NSString stringWithFormat:@"禁言成员:%@",text]];
+        
+        self.chatview.isMuted = YES;
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         [self showHint:@"已被禁言"];
+        
     }
 }
 
@@ -872,7 +860,8 @@ extern NSMutableDictionary *anchorInfoDic;
         for (NSString *name in aMutes) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"解除禁言:%@",text]];
+        self.chatview.isMuted = NO;
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         [self showHint:[NSString stringWithFormat:@"已解除禁言"]];
     }
 }
@@ -884,8 +873,8 @@ extern NSMutableDictionary *anchorInfoDic;
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"被加入白名单:%@",text]];
         [self showHint:@"被加入白名单"];
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
 
@@ -896,8 +885,8 @@ extern NSMutableDictionary *anchorInfoDic;
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"从白名单移除:%@",text]];
         [self showHint:@"已被从白名单中移除"];
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
 
@@ -918,6 +907,7 @@ extern NSMutableDictionary *anchorInfoDic;
                     if (_chatroomUpdateCompletion) {
                         _chatroomUpdateCompletion(YES,_room);
                     }
+                    [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
                 }];
             }
         }];
@@ -927,6 +917,19 @@ extern NSMutableDictionary *anchorInfoDic;
         [self presentViewController:alert animated:YES completion:nil];
     }
 }
+
+
+- (void)fetchChatroomSpecificationWithRoomId:(NSString *)roomId {
+    [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (aError == nil) {
+            self.chatroom = aChatroom;
+            [self.memberView updateWithChatroom:self.chatroom];
+        }else {
+            [self showHint:aError.description];
+        }
+    }];
+}
+
 
 #pragma mark - AgoraChatClientDelegate
 

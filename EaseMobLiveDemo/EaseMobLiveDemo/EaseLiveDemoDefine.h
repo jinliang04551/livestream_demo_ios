@@ -103,7 +103,7 @@ typedef enum : NSUInteger {
 #define kGiftSingleValueKey @"kGiftSingleValueKey"
 
 
-#define kChatViewHeight 320.0
+#define kChatViewHeight 350.0
 
 #define kGenderViewHeight 16.0
 

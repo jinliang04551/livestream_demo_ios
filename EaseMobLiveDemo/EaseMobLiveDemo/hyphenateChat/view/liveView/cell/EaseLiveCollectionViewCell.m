@@ -87,7 +87,7 @@
         _liveStreamerNameLabel = [[UILabel alloc] init];
         _liveStreamerNameLabel.font = [UIFont systemFontOfSize:10.f];
         _liveStreamerNameLabel.textColor = [UIColor whiteColor];
-        _liveStreamerNameLabel.textAlignment = NSTextAlignmentRight;
+        _liveStreamerNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveStreamerNameLabel.backgroundColor = [UIColor clearColor];
         _liveStreamerNameLabel.shadowColor = [UIColor blackColor];
         _liveStreamerNameLabel.shadowOffset = CGSizeMake(1, 1);
@@ -128,13 +128,14 @@
         [self.liveStreamerNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.liveStreamerImageView);
             make.left.equalTo(self.liveStreamerImageView.mas_right).offset(kEaseLiveDemoPadding * 0.5);
+            make.width.equalTo(@100.0);
             make.height.equalTo(@12);
         }];
         
         [self.liveroomNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.liveStreamerImageView.mas_top).offset(-2.0);
             make.left.equalTo(self.liveStreamerImageView);
-            make.right.equalTo(_liveFooter);
+            make.right.equalTo(_liveFooter).offset(-kEaseLiveDemoPadding);
 //            make.height.equalTo(@12);
         }];
         

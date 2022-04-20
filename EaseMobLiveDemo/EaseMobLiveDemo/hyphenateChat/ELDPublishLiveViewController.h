@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ELDLiveViewController : UIViewController
+@interface ELDPublishLiveViewController : UIViewController
 
 - (instancetype)initWithLiveRoom:(EaseLiveRoom*)room;
 

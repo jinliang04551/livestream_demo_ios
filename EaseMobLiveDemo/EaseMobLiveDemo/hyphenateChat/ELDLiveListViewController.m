@@ -23,7 +23,7 @@
 #define kDefaultPageSize 8
 #define kCollectionIdentifier @"collectionCell"
 
-#import "ELDLiveViewController.h"
+#import "ELDPublishLiveViewController.h"
 
 @interface ELDLiveListViewController () <UIScrollViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,SRRefreshDelegate,AgoraChatClientDelegate>
 {
@@ -435,7 +435,7 @@
         room.anchor = [AgoraChatClient sharedClient].currentUsername;
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success) {
-                ELDLiveViewController *publishView = [[ELDLiveViewController alloc] initWithLiveRoom:room];
+                ELDPublishLiveViewController *publishView = [[ELDPublishLiveViewController alloc] initWithLiveRoom:room];
                 publishView.modalPresentationStyle = 0;
                 [weakSelf presentViewController:publishView
                                        animated:YES

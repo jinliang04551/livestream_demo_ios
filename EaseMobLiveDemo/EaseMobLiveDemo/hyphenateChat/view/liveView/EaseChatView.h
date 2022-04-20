@@ -50,6 +50,8 @@
 
 @property (nonatomic, weak) id<EaseChatViewDelegate> delegate;
 
+@property (nonatomic,assign) BOOL isMuted;
+
 - (void)joinChatroomWithIsCount:(BOOL)aIsCount
                      completion:(void (^)(BOOL success))aCompletion;
 

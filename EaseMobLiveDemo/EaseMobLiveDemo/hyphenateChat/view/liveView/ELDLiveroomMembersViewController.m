@@ -38,7 +38,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.table.backgroundColor = UIColor.redColor;
     [self loadDatas];
 }
 
@@ -61,10 +60,10 @@
         case 1:
         {
             [tempArray addObject:self.chatroom.owner];
-            if (self.chatroom.adminList) {
+            if (self.chatroom.adminList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.adminList];
             }
-            if (self.chatroom.memberList) {
+            if (self.chatroom.memberList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.memberList];
             }
         }
@@ -72,14 +71,14 @@
         case 2:
         {
             [tempArray addObject:self.chatroom.owner];
-            if (self.chatroom.adminList) {
+            if (self.chatroom.adminList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.adminList];
             }
         }
             break;
         case 3:
         {
-            if (self.chatroom.whitelist) {
+            if (self.chatroom.whitelist.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.whitelist];
             }
         }
@@ -87,7 +86,7 @@
 
         case 4:
         {
-            if (self.chatroom.muteList) {
+            if (self.chatroom.muteList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.muteList];
             }
         }
@@ -95,7 +94,7 @@
 
         case 5:
         {
-            if (self.chatroom.blacklist) {
+            if (self.chatroom.blacklist.count > 0) {
                 [tempArray addObject:self.chatroom.blacklist];
             }
         }
@@ -133,7 +132,9 @@
 }
 
 #pragma mark public method
-- (void)updateUI {
+- (void)updateUIWithChatroom:(AgoraChatroom *)chatroom {
+    self.chatroom = chatroom;
+    [self loadDatas];
     [self.table reloadData];
 }
 

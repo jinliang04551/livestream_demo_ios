@@ -34,22 +34,32 @@
 }
 
 - (void)placeAndlayoutSubviews {
+//    UIView *alphaBgView = UIView.alloc.init;
+//    alphaBgView.alpha = 0.0;
+//    [self addSubview:alphaBgView];
+//
+//    [alphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self);
+//    }];
+
+    
       UIView *headerBgView = UIView.alloc.init;
       headerBgView.layer.cornerRadius = 10.0f;
-      headerBgView.backgroundColor = UIColor.whiteColor;
       [self addSubview:headerBgView];
 
+    CGFloat topPadding = (kMeHeaderImageViewHeight + 2) * 0.5;
+
+    [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
+    }];
+    
       [self addSubview:self.avatarBgView];
       [self addSubview:self.nameLabel];
       [self addSubview:self.genderView];
       [self addSubview:self.roleImageView];
       [self addSubview:self.muteImageView];
 
-      CGFloat topPadding = (kMeHeaderImageViewHeight + 2) * 0.5;
-
-      [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.edges.equalTo(self).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
-      }];
+     
 
       [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self);
@@ -130,7 +140,7 @@
         _avatarImageView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
         _avatarImageView.layer.masksToBounds = YES;
         _avatarImageView.clipsToBounds = YES;
-        _avatarImageView.backgroundColor = UIColor.greenColor;
+        _avatarImageView.image = kDefultUserImage;
     }
     return _avatarImageView;
 }

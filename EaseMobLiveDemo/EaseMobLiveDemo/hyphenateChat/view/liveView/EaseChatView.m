@@ -422,6 +422,12 @@ BOOL isAllTheSilence;//全体禁言
     return _faceView;
 }
 
+- (void)setIsMuted:(BOOL)isMuted {
+    _isMuted = isMuted;
+    self.sendTextButton.enabled = !_isMuted;
+}
+
+
 #pragma mark - AgoraChatManagerDelegate
 
 - (void)messagesDidReceive:(NSArray *)aMessages

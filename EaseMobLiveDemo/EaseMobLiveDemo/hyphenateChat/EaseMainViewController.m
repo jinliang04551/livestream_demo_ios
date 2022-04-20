@@ -13,7 +13,7 @@
 #import "EaseDefaultDataHelper.h"
 #import "ELDLiveListViewController.h"
 #import "ELDSettingViewController.h"
-#import "ELDLiveViewController.h"
+#import "ELDPublishLiveViewController.h"
 
 #import "ELDTabBar.h"
 
@@ -171,7 +171,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     ELD_WS
     [vc setChatroomUpdateCompletion:^(BOOL isUpdate, EaseLiveRoom *liveRoom) {
         if (isUpdate) {
-            ELDLiveViewController *liveVC = [[ELDLiveViewController alloc] initWithLiveRoom:liveRoom];
+            ELDPublishLiveViewController *liveVC = [[ELDPublishLiveViewController alloc] initWithLiveRoom:liveRoom];
             liveVC.modalPresentationStyle = 0;
             [weakSelf.navigationController presentViewController:liveVC animated:YES completion:nil];
         }
@@ -183,7 +183,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 - (void)goSelfLiveRoomWithRoom:(EaseLiveRoom *)liveroom {
     
-    ELDLiveViewController *vc = [[ELDLiveViewController alloc] initWithLiveRoom:liveroom];
+    ELDPublishLiveViewController *vc = [[ELDPublishLiveViewController alloc] initWithLiveRoom:liveroom];
     vc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 
@@ -217,7 +217,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
         if (success) {
             if (room.status == ongoing && [room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
-                    ELDLiveViewController *publishView = [[ELDLiveViewController alloc] initWithLiveRoom:room];
+                    ELDPublishLiveViewController *publishView = [[ELDPublishLiveViewController alloc] initWithLiveRoom:room];
                     publishView.modalPresentationStyle = 0;
                     [weakSelf presentViewController:publishView animated:YES completion:^{
                         [weakSelf.navigationController popToRootViewControllerAnimated:NO];

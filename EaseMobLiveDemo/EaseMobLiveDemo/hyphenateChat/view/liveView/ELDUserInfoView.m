@@ -38,6 +38,12 @@
 //whether isMute
 @property (nonatomic, assign) BOOL isMute;
 
+//whether isBlock
+@property (nonatomic, assign) BOOL isBlock;
+
+//whether isWhite
+@property (nonatomic, assign) BOOL isWhite;
+
 
 @property (nonatomic, assign) ELDMemberVCType memberVCType;
 
@@ -100,6 +106,8 @@
 }
 
 - (void)placeAndlayoutSubviews {
+    self.backgroundColor = UIColor.clearColor;
+
     [self addSubview:self.table];
 
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -122,15 +130,43 @@
                 self.ownerSelf = YES;
                 [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
             }else if(self.beOperationedMemberRoleType == ELDMemberRoleTypeAdmin){
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveAdmin]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                
+                if (self.memberVCType == ELDMemberVCTypeAll) {
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveAdmin]];
+                    if (self.isMute) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveMute]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                    }
+                    
+                    if (self.isWhite) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveWhite]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                    }
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                }else {
+                    [tempArray  addObjectsFromArray:[self addOperationNotInAllView]];
+                }
+                
             }else {
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                if (self.memberVCType == ELDMemberVCTypeAll) {
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
+                    if (self.isMute) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveMute]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                    }
+                    
+                    if (self.isWhite) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveWhite]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                    }
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                }else {
+                    [tempArray  addObjectsFromArray:[self addOperationNotInAllView]];
+                }
             }
         }
         
@@ -138,10 +174,23 @@
             if (self.beOperationedMemberRoleType == ELDMemberRoleTypeOwner || self.beOperationedMemberRoleType == ELDMemberRoleTypeAdmin) {
                 // no operate permission
             }else {
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
-                [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                if (self.memberVCType == ELDMemberVCTypeAll) {
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeAdmin]];
+                    if (self.isMute) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveMute]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeMute]];
+                    }
+                    
+                    if (self.isWhite) {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeRemoveWhite]];
+                    }else {
+                        [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeWhite]];
+                    }
+                    [tempArray addObject:self.actionTypeDic[kMemberActionTypeMakeBlock]];
+                }else {
+                    [tempArray  addObjectsFromArray:[self addOperationNotInAllView]];
+                }
             }
         }
         
@@ -152,6 +201,27 @@
 
     self.dataArray = tempArray;
     [self.table reloadData];
+}
+
+- (NSArray *)addOperationNotInAllView {
+    NSMutableArray *tArray = NSMutableArray.array;
+    if (self.memberVCType == ELDMemberVCTypeAdmin) {
+        [tArray addObject:self.actionTypeDic[kMemberActionTypeRemoveAdmin]];
+    }
+    
+    if (self.memberVCType == ELDMemberVCTypeAllow) {
+        [tArray addObject:self.actionTypeDic[kMemberActionTypeRemoveWhite]];
+    }
+
+    if (self.memberVCType == ELDMemberVCTypeMute) {
+        [tArray addObject:self.actionTypeDic[kMemberActionTypeRemoveMute]];
+    }
+
+    if (self.memberVCType == ELDMemberVCTypeBlock) {
+        [tArray addObject:self.actionTypeDic[kMemberActionTypeRemoveBlock]];
+    }
+    
+    return [tArray copy];
 }
 
 
@@ -396,7 +466,6 @@
         _table.backgroundView = nil;
         _table.rowHeight = 44.0;
         _table.tableHeaderView = [self headerView];
-        _table.backgroundColor = UIColor.redColor;
     }
     return _table;
 }
@@ -423,6 +492,15 @@
 - (BOOL)isMute {
     return [self.chatroom.muteList containsObject:self.userInfo.userId];
 }
+
+- (BOOL)isBlock {
+    return [self.chatroom.blacklist containsObject:self.userInfo.userId];
+}
+
+- (BOOL)isWhite {
+    return [self.chatroom.whitelist containsObject:self.userInfo.userId];
+}
+
 
 - (ELDTitleSwitchCell *)muteCell {
     if (_muteCell == nil) {

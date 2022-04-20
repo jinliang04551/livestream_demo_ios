@@ -31,7 +31,7 @@ static AgoraChatroom *_chatroom;
 
 @implementation ELDChatMessageCell
 - (void)prepare {
-    self.contentView.backgroundColor = UIColor.redColor;
+    self.backgroundColor = UIColor.clearColor;
     
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];

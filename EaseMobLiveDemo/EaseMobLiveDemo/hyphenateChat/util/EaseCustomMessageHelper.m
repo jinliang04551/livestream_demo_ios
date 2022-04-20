@@ -242,13 +242,15 @@ extern NSMutableDictionary *anchorInfoDic;
     cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
     NSString *giftid = [msgBody.ext objectForKey:@"id"];
     int index = [[giftid substringFromIndex:5] intValue];
-    NSDictionary *dict = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
-    cellModel.icon = [UIImage imageNamed:(NSString *)[dict allKeys][0]];
-    cellModel.name = NSLocalizedString((NSString *)[dict allKeys][0], @"");
+      
+    ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
+    cellModel.icon = ImageWithName(model.giftname);
+    cellModel.name = model.giftname;
     cellModel.username = [self randomNickName:msg.from];
     cellModel.count = count;
-        
+    
     [self sendGiftAction:cellModel backView:backView];
+    
 }
 
 //礼物动画
