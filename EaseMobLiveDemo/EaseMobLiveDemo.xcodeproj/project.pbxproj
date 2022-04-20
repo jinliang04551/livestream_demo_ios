@@ -198,6 +198,12 @@
 		3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3358260C800100CC3E3F /* EaseLiveRoom.m */; };
 		3C9E3394260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */; };
 		625C061F1FC1BDF3DB48A4DC /* Pods_EaseMobLiveDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0268EF83D5154996F91646CD /* Pods_EaseMobLiveDemo.framework */; };
+		C005E17428100E260004583B /* ELDNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C005E17328100E260004583B /* ELDNotificationView.m */; };
+		C005E17728100F390004583B /* live_notify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E17528100F390004583B /* live_notify@2x.png */; };
+		C005E17828100F390004583B /* live_notify@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E17628100F390004583B /* live_notify@3x.png */; };
+		C005E17B281016170004583B /* live_join@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E179281016170004583B /* live_join@2x.png */; };
+		C005E17C281016170004583B /* live_join@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E17A281016170004583B /* live_join@3x.png */; };
+		C005E17F281017590004583B /* ELDChatJoinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C005E17E281017590004583B /* ELDChatJoinCell.m */; };
 		C04755132807CBB60094EAD3 /* gift.thePushBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04754FF2807CBB60094EAD3 /* gift.thePushBox@2x.png */; };
 		C04755142807CBB60094EAD3 /* gift.star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755002807CBB60094EAD3 /* gift.star@2x.png */; };
 		C04755152807CBB60094EAD3 /* gift.bigAce@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755012807CBB60094EAD3 /* gift.bigAce@2x.png */; };
@@ -668,6 +674,14 @@
 		3C9E3393260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+HyphenateChat.m"; sourceTree = "<group>"; };
 		689F2F915A9D8BCBC505C84F /* Pods-EaseMobLiveDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.debug.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		70D4B5700D415AE2BD0470A4 /* Pods-EaseMobLiveDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EaseMobLiveDemo.release.xcconfig"; path = "Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C005E17228100E260004583B /* ELDNotificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDNotificationView.h; sourceTree = "<group>"; };
+		C005E17328100E260004583B /* ELDNotificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDNotificationView.m; sourceTree = "<group>"; };
+		C005E17528100F390004583B /* live_notify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_notify@2x.png"; sourceTree = "<group>"; };
+		C005E17628100F390004583B /* live_notify@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_notify@3x.png"; sourceTree = "<group>"; };
+		C005E179281016170004583B /* live_join@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_join@2x.png"; sourceTree = "<group>"; };
+		C005E17A281016170004583B /* live_join@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_join@3x.png"; sourceTree = "<group>"; };
+		C005E17D281017590004583B /* ELDChatJoinCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDChatJoinCell.h; sourceTree = "<group>"; };
+		C005E17E281017590004583B /* ELDChatJoinCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDChatJoinCell.m; sourceTree = "<group>"; };
 		C04754FF2807CBB60094EAD3 /* gift.thePushBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.thePushBox@2x.png"; sourceTree = "<group>"; };
 		C04755002807CBB60094EAD3 /* gift.star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.star@2x.png"; sourceTree = "<group>"; };
 		C04755012807CBB60094EAD3 /* gift.bigAce@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.bigAce@2x.png"; sourceTree = "<group>"; };
@@ -1181,6 +1195,8 @@
 				C0602F1A2806BBA600D39575 /* ELDCountCaculateView.m */,
 				3C9E31C6260C7B4200CC3E3F /* EaseLiveHeaderListView.h */,
 				3C9E319B260C7B4200CC3E3F /* EaseLiveHeaderListView.m */,
+				C005E17228100E260004583B /* ELDNotificationView.h */,
+				C005E17328100E260004583B /* ELDNotificationView.m */,
 				3C9E319C260C7B4200CC3E3F /* giftAnimation */,
 			);
 			path = liveView;
@@ -1225,6 +1241,8 @@
 				3C9E31C1260C7B4200CC3E3F /* EaseChatCell.m */,
 				C0475527280809410094EAD3 /* ELDChatMessageCell.h */,
 				C0475528280809410094EAD3 /* ELDChatMessageCell.m */,
+				C005E17D281017590004583B /* ELDChatJoinCell.h */,
+				C005E17E281017590004583B /* ELDChatJoinCell.m */,
 				3C9E31C4260C7B4200CC3E3F /* EaseGiftCell.h */,
 				3C9E31C0260C7B4200CC3E3F /* EaseGiftCell.m */,
 				3C9E31BE260C7B4200CC3E3F /* EaseLiveCollectionViewCell.h */,
@@ -1680,6 +1698,10 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C005E17528100F390004583B /* live_notify@2x.png */,
+				C005E17628100F390004583B /* live_notify@3x.png */,
+				C005E179281016170004583B /* live_join@2x.png */,
+				C005E17A281016170004583B /* live_join@3x.png */,
 				C04754FE2807CBB60094EAD3 /* Gift */,
 				C0602E8B280029F200D39575 /* member_bg_top@2x.png */,
 				C0602E8C280029F200D39575 /* member_bg_top@3x.png */,
@@ -1933,6 +1955,7 @@
 				C08D31ED27FEDDDD005AC68E /* stop_live@2x.png in Resources */,
 				3C9E32BF260C7B4300CC3E3F /* huanxin-logo@2x.png in Resources */,
 				3C9E32FD260C7B4300CC3E3F /* createBtnBackImg@3x.png in Resources */,
+				C005E17B281016170004583B /* live_join@2x.png in Resources */,
 				C0714B9B280EB62900DE18D1 /* gift.crown@2x.png in Resources */,
 				C08D31FF27FEE846005AC68E /* gender_secret@2x.png in Resources */,
 				3C9E32D9260C7B4300CC3E3F /* icon-setting-unSelected@2x.png in Resources */,
@@ -1964,6 +1987,7 @@
 				3C9E32BB260C7B4300CC3E3F /* createBtnBackImg@2x.png in Resources */,
 				3C9E32EF260C7B4300CC3E3F /* icon-living@2x.png in Resources */,
 				C08DFC4127F3039F00862ADF /* camera_flip@2x.png in Resources */,
+				C005E17828100F390004583B /* live_notify@3x.png in Resources */,
 				3C9E3323260C7B4400CC3E3F /* close@3x.png in Resources */,
 				C0602E6627FF198800D39575 /* receive_gift_icon@2x.png in Resources */,
 				3C9E331D260C7B4400CC3E3F /* ic_chat@3x.png in Resources */,
@@ -1985,6 +2009,7 @@
 				C08DFC7027F5AB2800862ADF /* gray_right_arrow@2x.png in Resources */,
 				C08DFC5527F5884000862ADF /* about_icon@2x.png in Resources */,
 				3C9E330E260C7B4300CC3E3F /* gift.rings@3x.png in Resources */,
+				C005E17728100F390004583B /* live_notify@2x.png in Resources */,
 				3C9E32DD260C7B4300CC3E3F /* giftrecord@2x.png in Resources */,
 				C08D31F327FEDDDD005AC68E /* flip_camera_ios@3x.png in Resources */,
 				C08DFC2027F1B08A00862ADF /* LiveStreamer_watch_bg@2x.png in Resources */,
@@ -2012,6 +2037,7 @@
 				C08D320D27FF0FCA005AC68E /* liveroom_people_icon@2x.png in Resources */,
 				3C9E32CA260C7B4300CC3E3F /* avatat_6@2x.png in Resources */,
 				3C9E32E0260C7B4300CC3E3F /* avatat_3@2x.png in Resources */,
+				C005E17C281016170004583B /* live_join@3x.png in Resources */,
 				3C9E32D1260C7B4300CC3E3F /* gift.wishs_come_true@2x.png in Resources */,
 				3C9E331F260C7B4400CC3E3F /* icon-living@3x.png in Resources */,
 				3C9E32C9260C7B4300CC3E3F /* gift.rings@2x.png in Resources */,
@@ -2234,6 +2260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0602E8428001EF600D39575 /* MISScrollPageContentView.m in Sources */,
+				C005E17F281017590004583B /* ELDChatJoinCell.m in Sources */,
 				3C9E335C260C800100CC3E3F /* EaseLiveRoom.m in Sources */,
 				C0475568280B0FD20094EAD3 /* ELDTabBar.m in Sources */,
 				C08D320927FEF062005AC68E /* ELDGenderView.m in Sources */,
@@ -2253,6 +2280,7 @@
 				C08DFC6827F592F300862ADF /* ELDUserHeaderView.m in Sources */,
 				C047552C280824230094EAD3 /* ELDWatchMemberAvatarsView.m in Sources */,
 				C08DFC2427F1CC4300862ADF /* ELDNoDataPlaceHolderView.m in Sources */,
+				C005E17428100E260004583B /* ELDNotificationView.m in Sources */,
 				C08DFC0B27F15BDC00862ADF /* ELDLiveListViewController.m in Sources */,
 				3C9E3287260C7B4300CC3E3F /* EaseSearchDisplayController.m in Sources */,
 				3C9E335A260C800100CC3E3F /* EaseLiveSession.m in Sources */,

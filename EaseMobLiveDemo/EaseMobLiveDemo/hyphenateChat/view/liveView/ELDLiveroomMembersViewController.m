@@ -24,7 +24,6 @@
     if (self) {
         self.chatroom = aChatroom;
         self.memberVCType = memberVCType;
-                
     }
     
     return self;

@@ -17,7 +17,6 @@
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
-    [self.contentView addSubview:self.bottomLine];
 }
 
 - (void)placeSubViews {
@@ -32,11 +31,6 @@
         make.right.equalTo(self.contentView).offset(-kEaseLiveDemoPadding * 1.6);
     }];
     
-    [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
-        make.height.equalTo(@ELD_ONE_PX);
-        make.bottom.equalTo(self.contentView);
-    }];
 }
 
 #pragma mark getter and setter

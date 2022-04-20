@@ -12,6 +12,8 @@
 #import "EaseCustomSwitch.h"
 #import "EaseEmoticonView.h"
 #import "Masonry.h"
+#import "ELDChatJoinCell.h"
+
 
 #define kGiftAction @"cmd_gift"
 #define kPraiseAction @"cmd_live_praise"
@@ -241,6 +243,8 @@ BOOL isAllTheSilence;//全体禁言
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableView.scrollsToTop = NO;
         _tableView.showsVerticalScrollIndicator = NO;
+        
+        [_tableView registerClass:[ELDChatJoinCell class] forCellReuseIdentifier:[ELDChatJoinCell reuseIdentifier]];
     }
     return _tableView;
 }
@@ -478,7 +482,6 @@ BOOL isAllTheSilence;//全体禁言
 {
     if ([aChatroom.chatroomId isEqualToString:_chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
-            //[self.bottomView addSubview:self.adminButton];
             [self layoutSubviews];
         }
     }
@@ -512,7 +515,6 @@ BOOL isAllTheSilence;//全体禁言
 {
 //    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
 //    return [ELDChatMessageCell heightForMessage:message];
-    
     return 44.0f;
 }
 
@@ -534,10 +536,18 @@ BOOL isAllTheSilence;//全体禁言
     if (cell == nil) {
         cell = [[ELDChatMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDChatMessageCell reuseIdentifier]];
     }
+    
+    ELDChatJoinCell *joinCell = [tableView dequeueReusableCellWithIdentifier:[ELDChatJoinCell reuseIdentifier]];
+    
     if (!self.datasource || [self.datasource count] < 1)
         return nil;
     AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
-    [cell setMesssage:message chatroom:_chatroom];
+    if ([message.ext objectForKey:@"em_join"]) {
+        [joinCell updateWithObj:message];
+        return joinCell;
+    }else {
+        [cell setMesssage:message chatroom:_chatroom];
+    }
     return cell;
 }
 

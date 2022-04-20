@@ -137,6 +137,8 @@ MISScrollPageControllerDelegate>
 
 - (void)updateWithChatroom:(AgoraChatroom *)aChatroom {
     self.chatroom = aChatroom;
+    
+    [self removeAllSubviews];
     [self placeAndLayoutSubviews];
 
     [self.allVC updateUIWithChatroom:self.chatroom];
@@ -312,9 +314,11 @@ MISScrollPageControllerDelegate>
 
 - (void)setChatroom:(AgoraChatroom *)chatroom {
     _chatroom = chatroom;
-    self.navTitleArray = [@[@"All",@"Moderators",@"Allowed",@"Mute",@"Banned"] mutableCopy];
-
-    self.contentVCArray = [@[self.allVC,self.adminListVC,self.allowListVC,self.mutedListVC,self.blockListVC] mutableCopy];
+    
+    if ([self isAdmin]) {
+        self.navTitleArray = [@[@"All",@"Moderators",@"Allowed",@"Mute",@"Banned"] mutableCopy];
+        self.contentVCArray = [@[self.allVC,self.adminListVC,self.allowListVC,self.mutedListVC,self.blockListVC] mutableCopy];
+    }
 }
 
 

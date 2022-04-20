@@ -436,6 +436,8 @@
 
     if (self.ownerSelf) {
         self.muteCell.nameLabel.text = title;
+        [self.muteCell.aSwitch setOn:self.chatroom.isMuteAllMembers];
+        
         return self.muteCell;
     }else {
         cell.nameLabel.text = title;

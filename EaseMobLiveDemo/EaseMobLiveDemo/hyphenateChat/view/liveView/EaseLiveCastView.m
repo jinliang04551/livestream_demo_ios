@@ -20,7 +20,6 @@
 
 @property (nonatomic, strong) UIImageView *headImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
-//@property (nonatomic, strong) UILabel *numberLabel;
 @property (nonatomic, strong) UILabel *praiseLabel;
 @property (nonatomic, strong) UILabel *giftValuesLabel;
 @property (nonatomic, strong) ELDGenderView *genderView;

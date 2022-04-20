@@ -655,7 +655,8 @@
     [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
         if (aError == nil) {
             self.chatroom = aChatroom;
-            [self.memberView updateWithChatroom:self.chatroom];
+            // reset memberView
+            self.memberView = nil;
         }else {
             [self showHint:aError.description];
         }
@@ -843,6 +844,12 @@
 
 
 #pragma mark - AgoraChatroomManagerDelegate
+- (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    NSLog(@"userDidJoinChatroom:%s",__func__);
+    if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
+        [self.headerListView updateHeaderViewWithChatroomId:aChatroom.chatroomId];
+    }
+}
 
 extern bool isAllTheSilence;
 - (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
@@ -856,6 +863,7 @@ extern bool isAllTheSilence;
         }
     }
 }
+
 
 - (void)chatroomWhiteListDidUpdate:(AgoraChatroom *)aChatroom addedWhiteListMembers:(NSArray *)aMembers
 {

@@ -131,6 +131,9 @@
                                         [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
 
                                         weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
+                                        
+                                        [weakSelf updateSendTextButtonStatus];
+                                        
                                         [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
                                                                                      completion:^(EaseLiveRoom *room, BOOL success) {
                                             if (success) {
@@ -138,6 +141,8 @@
                                             }else {
 
                                             }
+                                            
+                                            
                                         }];
                                     } else {
                                         [weakSelf showHint:@"加入聊天室失败"];
@@ -147,6 +152,12 @@
                                 }];
     
 
+}
+
+- (void)updateSendTextButtonStatus {
+    if ([self.chatroom.muteList containsObject:AgoraChatClient.sharedClient.currentUsername]) {
+        self.chatview.isMuted = YES;
+    }
 }
 
 - (void)viewWillLayoutSubviews
@@ -817,8 +828,6 @@ extern NSMutableDictionary *anchorInfoDic;
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = YES;
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-
-            [self.view layoutSubviews];
         }
     }
 }
@@ -830,7 +839,6 @@ extern NSMutableDictionary *anchorInfoDic;
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = NO;
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-            [self.view layoutSubviews];
         }
     }
 }
@@ -923,7 +931,8 @@ extern NSMutableDictionary *anchorInfoDic;
     [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
         if (aError == nil) {
             self.chatroom = aChatroom;
-            [self.memberView updateWithChatroom:self.chatroom];
+            //reset memberView
+            self.memberView = nil;
         }else {
             [self showHint:aError.description];
         }
