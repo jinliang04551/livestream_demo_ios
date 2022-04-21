@@ -203,6 +203,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     
     vc.updateUserInfoBlock = ^(AgoraChatUserInfo * _Nonnull userInfo) {
         [weakSelf.settingVC updateUIWithUserInfo:userInfo];
+        [weakSelf.bottomBar updateTabbarItemIndex:1 withUrlString:userInfo.avatarUrl];
     };
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];

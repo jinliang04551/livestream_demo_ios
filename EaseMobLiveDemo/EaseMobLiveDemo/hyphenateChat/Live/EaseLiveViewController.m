@@ -39,6 +39,8 @@
 
 #import "EaseLiveCastView.h"
 
+#import "ELDEnterLiveroomAnimationView.h"
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
@@ -82,6 +84,8 @@
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
 @property (nonatomic, strong) UILabel *hintLabel;
+
+@property (nonatomic, strong) ELDEnterLiveroomAnimationView *enterAnimationView;
 
 
 @end
@@ -239,6 +243,8 @@
                     @"streamKey":_room.channel ? _room.channel : _room.chatroomId
                 };
                 [EaseHttpManager.sharedInstance getAgroLiveRoomPlayStreamUrlParamtars:paramtars Completion:^(NSString *playStreamStr) {
+                    NSLog(@"%s  playStreamStr:%@",__func__,playStreamStr);
+
                     AgoraLiveInjectStreamConfig *config = [[AgoraLiveInjectStreamConfig alloc] init];
                     config.videoGop=30;
                     config.videoBitrate=400;
@@ -264,6 +270,7 @@
     } else {
         [self.view insertSubview:self.agoraRemoteVideoView atIndex:0];
         [self.backgroudImageView removeFromSuperview];
+        
     }
     AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
     videoCanvas.uid = uid;
@@ -492,23 +499,17 @@
     if (_backgroudImageView == nil) {
         _backgroudImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
         _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
-        UIImage *image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:_room.coverPictureUrl];
-        __weak typeof(self) weakSelf = self;
-        if (!image) {
-            [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:_room.coverPictureUrl]
-                                                                     options:SDWebImageDownloaderUseNSURLCache
-                                                                    progress:NULL
-                                                                   completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                                                                       if (image) {
-                                                                           [[SDImageCache sharedImageCache] storeImage:image forKey:_room.coverPictureUrl toDisk:NO completion:^{
-                                                                               weakSelf.backgroudImageView.image = image;
-                                                                           }];
-                                                                       } else {
-                                                                           weakSelf.backgroudImageView.image = [UIImage imageNamed:@"default_back_image"];
-                                                                       }
-                                                                   }];
-           }
-        _backgroudImageView.image = image;
+        [_backgroudImageView sd_setImageWithURL:[NSURL URLWithString:_room.coverPictureUrl] placeholderImage:ImageWithName(@"default_back_image")];
+        
+        [_backgroudImageView addSubview:self.enterAnimationView];
+        
+        [self.enterAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_backgroudImageView);
+            make.centerY.equalTo(_backgroudImageView);
+        }];
+        
+        [self.enterAnimationView startAnimation];
+
     }
     return _backgroudImageView;
 }
@@ -586,6 +587,14 @@
         _hintLabel.textAlignment = NSTextAlignmentLeft;
     }
     return _hintLabel;
+}
+
+- (ELDEnterLiveroomAnimationView *)enterAnimationView {
+    if (_enterAnimationView == nil) {
+        _enterAnimationView = [[ELDEnterLiveroomAnimationView alloc] init];
+        _enterAnimationView.backgroundColor = UIColor.yellowColor;
+    }
+    return _enterAnimationView;
 }
 
 

@@ -241,7 +241,9 @@
                     @"expire":@"3600"
                 };
                 [EaseHttpManager.sharedInstance getArgoLiveRoomPushStreamUrlParamtars:paramtars Completion:^(NSString *pushStreamStr) {
+                    NSLog(@"%s  pushStreamStr:%@",__func__,pushStreamStr);
                     [weakSelf.agoraKit startRtmpStreamWithoutTranscoding:pushStreamStr];
+//                    [weakSelf.agoraKit startRtmpStreamWithTranscoding:pushStreamStr transcoding:[AgoraLiveTranscoding defaultTranscoding]];
                 }];
             }
             

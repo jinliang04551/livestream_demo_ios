@@ -83,7 +83,6 @@
     if (newName.length > 0 && ![_myNickName isEqualToString:newName])
     {
         self.myNickName = newName;
-        self.userHeaderView.nameLabel.text = self.myNickName;
 
         [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:newName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             if (aError == nil) {

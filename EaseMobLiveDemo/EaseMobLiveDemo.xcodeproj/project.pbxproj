@@ -204,6 +204,11 @@
 		C005E17B281016170004583B /* live_join@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E179281016170004583B /* live_join@2x.png */; };
 		C005E17C281016170004583B /* live_join@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E17A281016170004583B /* live_join@3x.png */; };
 		C005E17F281017590004583B /* ELDChatJoinCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C005E17E281017590004583B /* ELDChatJoinCell.m */; };
+		C005E18528110A7E0004583B /* redpoint_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E18128110A7E0004583B /* redpoint_large@2x.png */; };
+		C005E18628110A7E0004583B /* bluepoint_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E18228110A7E0004583B /* bluepoint_small@2x.png */; };
+		C005E18728110A7E0004583B /* bluepoint_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E18328110A7E0004583B /* bluepoint_large@2x.png */; };
+		C005E18828110A7E0004583B /* redpoint_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C005E18428110A7E0004583B /* redpoint_small@2x.png */; };
+		C005E18B28110BAB0004583B /* ELDEnterLiveroomAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C005E18A28110BAB0004583B /* ELDEnterLiveroomAnimationView.m */; };
 		C04755132807CBB60094EAD3 /* gift.thePushBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04754FF2807CBB60094EAD3 /* gift.thePushBox@2x.png */; };
 		C04755142807CBB60094EAD3 /* gift.star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755002807CBB60094EAD3 /* gift.star@2x.png */; };
 		C04755152807CBB60094EAD3 /* gift.bigAce@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C04755012807CBB60094EAD3 /* gift.bigAce@2x.png */; };
@@ -682,6 +687,12 @@
 		C005E17A281016170004583B /* live_join@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_join@3x.png"; sourceTree = "<group>"; };
 		C005E17D281017590004583B /* ELDChatJoinCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDChatJoinCell.h; sourceTree = "<group>"; };
 		C005E17E281017590004583B /* ELDChatJoinCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDChatJoinCell.m; sourceTree = "<group>"; };
+		C005E18128110A7E0004583B /* redpoint_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redpoint_large@2x.png"; sourceTree = "<group>"; };
+		C005E18228110A7E0004583B /* bluepoint_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bluepoint_small@2x.png"; sourceTree = "<group>"; };
+		C005E18328110A7E0004583B /* bluepoint_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bluepoint_large@2x.png"; sourceTree = "<group>"; };
+		C005E18428110A7E0004583B /* redpoint_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redpoint_small@2x.png"; sourceTree = "<group>"; };
+		C005E18928110BAB0004583B /* ELDEnterLiveroomAnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDEnterLiveroomAnimationView.h; sourceTree = "<group>"; };
+		C005E18A28110BAB0004583B /* ELDEnterLiveroomAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDEnterLiveroomAnimationView.m; sourceTree = "<group>"; };
 		C04754FF2807CBB60094EAD3 /* gift.thePushBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.thePushBox@2x.png"; sourceTree = "<group>"; };
 		C04755002807CBB60094EAD3 /* gift.star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.star@2x.png"; sourceTree = "<group>"; };
 		C04755012807CBB60094EAD3 /* gift.bigAce@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gift.bigAce@2x.png"; sourceTree = "<group>"; };
@@ -1484,6 +1495,17 @@
 			path = iconfront;
 			sourceTree = "<group>";
 		};
+		C005E18028110A5A0004583B /* enter_animation */ = {
+			isa = PBXGroup;
+			children = (
+				C005E18328110A7E0004583B /* bluepoint_large@2x.png */,
+				C005E18228110A7E0004583B /* bluepoint_small@2x.png */,
+				C005E18128110A7E0004583B /* redpoint_large@2x.png */,
+				C005E18428110A7E0004583B /* redpoint_small@2x.png */,
+			);
+			path = enter_animation;
+			sourceTree = "<group>";
+		};
 		C04754FE2807CBB60094EAD3 /* Gift */ = {
 			isa = PBXGroup;
 			children = (
@@ -1640,6 +1662,8 @@
 				C08DFC6727F592F300862ADF /* ELDUserHeaderView.m */,
 				C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */,
 				C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */,
+				C005E18928110BAB0004583B /* ELDEnterLiveroomAnimationView.h */,
+				C005E18A28110BAB0004583B /* ELDEnterLiveroomAnimationView.m */,
 				C0475567280B0FD20094EAD3 /* ELDTabBar.h */,
 				C0475566280B0FD20094EAD3 /* ELDTabBar.m */,
 				C05C2C79280C562900BDD8D4 /* ELDBaseTitleBtnNavView.h */,
@@ -1698,6 +1722,7 @@
 		C08E8F2927EDC20800DE47C4 /* live */ = {
 			isa = PBXGroup;
 			children = (
+				C005E18028110A5A0004583B /* enter_animation */,
 				C005E17528100F390004583B /* live_notify@2x.png */,
 				C005E17628100F390004583B /* live_notify@3x.png */,
 				C005E179281016170004583B /* live_join@2x.png */,
@@ -1966,6 +1991,7 @@
 				3C9E32F5260C7B4300CC3E3F /* backPic@3x.png in Resources */,
 				3C9E3302260C7B4300CC3E3F /* like@3x.png in Resources */,
 				3C9E330C260C7B4300CC3E3F /* live@3x.png in Resources */,
+				C005E18728110A7E0004583B /* bluepoint_large@2x.png in Resources */,
 				C08DFC1027F16A9500862ADF /* TabbarBg@2x.png in Resources */,
 				C08D31EF27FEDDDD005AC68E /* member_mute_icon@3x.png in Resources */,
 				3C9E32EC260C7B4300CC3E3F /* notalk@2x.png in Resources */,
@@ -2011,6 +2037,7 @@
 				3C9E330E260C7B4300CC3E3F /* gift.rings@3x.png in Resources */,
 				C005E17728100F390004583B /* live_notify@2x.png in Resources */,
 				3C9E32DD260C7B4300CC3E3F /* giftrecord@2x.png in Resources */,
+				C005E18828110A7E0004583B /* redpoint_small@2x.png in Resources */,
 				C08D31F327FEDDDD005AC68E /* flip_camera_ios@3x.png in Resources */,
 				C08DFC2027F1B08A00862ADF /* LiveStreamer_watch_bg@2x.png in Resources */,
 				C08E8F4A27EDE1FA00DE47C4 /* live_camera@3x.png in Resources */,
@@ -2028,6 +2055,7 @@
 				3C9E3317260C7B4400CC3E3F /* gift.rose@3x.png in Resources */,
 				3C9E32B7260C7B4300CC3E3F /* input_bar_1_icon_face@2x.png in Resources */,
 				C0714B8F280EB62900DE18D1 /* gift.thePushBox@3x.png in Resources */,
+				C005E18528110A7E0004583B /* redpoint_large@2x.png in Resources */,
 				3C9E3307260C7B4300CC3E3F /* gift.wishs_come_true@3x.png in Resources */,
 				3C9E32C4260C7B4300CC3E3F /* gift.cake@2x.png in Resources */,
 				C08DFC1827F1AFB200862ADF /* LiveStreamer@3x.png in Resources */,
@@ -2141,6 +2169,7 @@
 				F5D6F693277B144E000F3FD2 /* interactionBroadCast@2x.png in Resources */,
 				3C9E32D8260C7B4300CC3E3F /* ic_chat@2x.png in Resources */,
 				C0714B9D280EB62900DE18D1 /* gift_selected@2x.png in Resources */,
+				C005E18628110A7E0004583B /* bluepoint_small@2x.png in Resources */,
 				C0714B8E280EB62900DE18D1 /* gift.bigAce@3x.png in Resources */,
 				C08DFC6F27F5AB2800862ADF /* gray_right_arrow@3x.png in Resources */,
 				3C9E3306260C7B4300CC3E3F /* icon-backAction@3x.png in Resources */,
@@ -2270,6 +2299,7 @@
 				3C9E32A3260C7B4300CC3E3F /* EaseLiveCastView.m in Sources */,
 				C0602EA928052D4300D39575 /* ELDChatroomMembersView.m in Sources */,
 				3C9E3276260C7B4300CC3E3F /* EaseEmojiHelper.m in Sources */,
+				C005E18B28110BAB0004583B /* ELDEnterLiveroomAnimationView.m in Sources */,
 				3C9E32AA260C7B4300CC3E3F /* EaseEmoticonView.m in Sources */,
 				C047555328095CCE0094EAD3 /* LXCalendarMonthModel.m in Sources */,
 				3C9E3277260C7B4300CC3E3F /* RealtimeSearchUtil.m in Sources */,

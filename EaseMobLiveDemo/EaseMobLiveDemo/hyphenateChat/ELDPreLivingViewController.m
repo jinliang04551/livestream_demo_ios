@@ -196,11 +196,10 @@
 - (void)flipAction {
     if (self.imageDevice == self.backDevice) {
         self.imageDevice = self.frontDevice;
-    }
-    
-    if (self.imageDevice == self.frontDevice) {
+    }else {
         self.imageDevice = self.backDevice;
     }
+    
 }
 
 - (void)goLiveAction {
