@@ -152,7 +152,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(updateHeaderViewWithChatroomId:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateHeaderViewWithChatroomId:) userInfo:nil repeats:YES];
     [_timer fire];
 }
 

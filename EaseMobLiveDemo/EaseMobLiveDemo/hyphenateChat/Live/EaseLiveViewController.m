@@ -149,7 +149,6 @@
                                             
                                         }];
                                     } else {
-                                        [weakSelf showHint:@"加入聊天室失败"];
                                         [weakSelf.view bringSubviewToFront:weakSelf.liveView];
                                         [weakSelf.view layoutSubviews];
                                     }
@@ -262,8 +261,8 @@
     self.agoraRemoteVideoView.frame = self.view.bounds;
 }
 
-- (void)rtcEngine:(AgoraRtcEngineKit *)engine remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state reason:(AgoraVideoRemoteStateReason)reason elapsed:(NSInteger)elapsed
-{
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine
+remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state reason:(AgoraVideoRemoteReason)reason elapsed:(NSInteger)elapsed {
     if (state == AgoraVideoRemoteStateFailed || state == AgoraVideoRemoteStateStopped) {
         [self.agoraRemoteVideoView removeFromSuperview];
         [self.view insertSubview:self.backgroudImageView atIndex:0];
@@ -279,6 +278,7 @@
     // 设置远端视图。
     [self.agoraKit setupRemoteVideo:videoCanvas];
 }
+
 
 - (PLPlayerOption *)_getPlayerOPtion
 {
@@ -334,6 +334,7 @@
     }];
 }
 
+
 //看直播
 - (void)startPLayVideoStream:(NSURL *)streamUrl
 {
@@ -350,10 +351,11 @@
 }
 
 #pragma mark - AgoraRtcEngineDelegate
-
-- (void)rtcEngine:(AgoraRtcEngineKit *)engine connectionChangedToState:(AgoraConnectionStateType)state reason:(AgoraConnectionChangedReason)reason
-{
-    if (reason == AgoraConnectionChangedTokenExpired || reason == AgoraConnectionChangedInvalidToken) {
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine
+                    connectionStateChanged:(AgoraConnectionState)state
+           reason:(AgoraConnectionChangedReason)reason {
+    
+    if (reason == AgoraConnectionChangedReasonTokenExpired || reason == AgoraConnectionChangedReasonInvalidToken) {
         __weak typeof(self) weakSelf = self;
         [self fetchAgoraRtcToken:^(NSString *rtcToken,NSUInteger agoraUserId) {
             [weakSelf.agoraKit renewToken:rtcToken];
@@ -382,6 +384,7 @@
         [self startTimer];
     }
 }
+
 
 
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine tokenPrivilegeWillExpire:(NSString *)token

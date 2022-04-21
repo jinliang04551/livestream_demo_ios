@@ -43,7 +43,7 @@
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface ELDPublishLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate>
+@interface ELDPublishLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraDirectCdnStreamingEventDelegate>
 {
     BOOL _isload;
     BOOL _isShutDown;
@@ -242,8 +242,14 @@
                 };
                 [EaseHttpManager.sharedInstance getArgoLiveRoomPushStreamUrlParamtars:paramtars Completion:^(NSString *pushStreamStr) {
                     NSLog(@"%s  pushStreamStr:%@",__func__,pushStreamStr);
-                    [weakSelf.agoraKit startRtmpStreamWithoutTranscoding:pushStreamStr];
-//                    [weakSelf.agoraKit startRtmpStreamWithTranscoding:pushStreamStr transcoding:[AgoraLiveTranscoding defaultTranscoding]];
+//                    [weakSelf.agoraKit startRtmpStreamWithoutTranscoding:pushStreamStr];
+
+                    AgoraRtcBoolOptional *optional = [AgoraRtcBoolOptional of:YES];
+                    AgoraDirectCdnStreamingMediaOptions *option =  [[AgoraDirectCdnStreamingMediaOptions alloc] init];
+                    option.publishCameraTrack = optional;
+                    option.publishMicrophoneTrack = optional;
+                    
+        [weakSelf.agoraKit startDirectCdnStreaming:self publishUrl:pushStreamStr mediaOptions:option];
                 }];
             }
             
@@ -264,13 +270,28 @@
     [self.agoraKit setupLocalVideo:videoCanvas];
 }
 
+#pragma mark AgoraDirectCdnStreamingEventDelegate
+- (void)onDirectCdnStreamingStateChanged:(AgoraDirectCdnStreamingState)state
+                                   error:(AgoraDirectCdnStreamingError)error
+                                 message:(NSString *_Nullable)message {
+
+}
+
+- (void)onDirectCdnStreamingStats:(AgoraDirectCdnStreamingStats *_Nonnull)stats {
+    
+}
+
+
 #pragma mark - AgoraRtcEngineDelegate
 -(void)rtcEngine:(AgoraRtcEngineKit *)engine didJoinChannel:(NSString *)channel withUid:(NSUInteger)uid elapsed:(NSInteger)elapsed{
     
 }
-- (void)rtcEngine:(AgoraRtcEngineKit *)engine connectionChangedToState:(AgoraConnectionStateType)state reason:(AgoraConnectionChangedReason)reason
-{
-    if (reason == AgoraConnectionChangedTokenExpired || reason == AgoraConnectionChangedInvalidToken) {
+
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine
+                    connectionStateChanged:(AgoraConnectionState)state
+           reason:(AgoraConnectionChangedReason)reason {
+    
+    if (reason == AgoraConnectionChangedReasonTokenExpired || reason == AgoraConnectionChangedReasonInvalidToken) {
         __weak typeof(self) weakSelf = self;
         [self fetchAgoraRtcToken:^(NSString *rtcToken,NSUInteger agoraUserId) {
             [weakSelf.agoraKit renewToken:rtcToken];
@@ -294,6 +315,7 @@
     }
 }
 
+
 - (void)rtcEngine:(AgoraRtcEngineKit *)engine tokenPrivilegeWillExpire:(NSString *)token
 {
     __weak typeof(self) weakSelf = self;
@@ -310,6 +332,7 @@
         }];
     }];
 }
+
 #pragma mark CNDDelegate
 -(void)rtcEngine:(AgoraRtcEngineKit *)engine rtmpStreamingChangedToState:(NSString *)url state:(AgoraRtmpStreamingState)state errorCode:(AgoraRtmpStreamingErrorCode)errorCode{
     
@@ -320,6 +343,7 @@
 -(void)rtcEngine:(AgoraRtcEngineKit *)engine streamInjectedStatusOfUrl:(NSString *)url uid:(NSUInteger)uid status:(AgoraInjectStreamStatus)status{
     
 }
+
 -(void)rtcEngine:(AgoraRtcEngineKit *)engine streamPublishedWithUrl:(NSString *)url errorCode:(AgoraErrorCode)errorCode{
     
 }

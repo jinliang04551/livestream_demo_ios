@@ -21,7 +21,9 @@ pod 'PLPlayerKit', '~> 3.4.3'
 #
 #pod "PLPlayerKit", :podspec => 'https://raw.githubusercontent.com/pili-engineering/PLPlayerKit/master/PLPlayerKit-Universal.podspec'
 
-pod 'AgoraRtcEngine_iOS', '~> 3.6.0.1'
+#pod 'AgoraRtcEngine_iOS', '~> 3.6.0.1'
+
+pod 'AgoraRtcEngine_iOS_Beta', '4.0.0-beta.1'
 
 
 end

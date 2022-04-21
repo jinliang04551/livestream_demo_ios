@@ -208,6 +208,7 @@
         return;
     }
     
+    self.liveRoom.title = self.liveNameTextField.text;
     [self createLiveRoom:self.liveRoom];
 }
 
@@ -413,8 +414,9 @@
     if (_changeAvatarButton == nil) {
         _changeAvatarButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_changeAvatarButton addTarget:self action:@selector(changeAvatarAction) forControlEvents:UIControlEventTouchUpInside];
-        _changeAvatarButton.backgroundColor = UIColor.yellowColor;
         _changeAvatarButton.layer.cornerRadius = 4.0f;
+        [_changeAvatarButton setBackgroundImage:ImageWithName(@"default_back_image") forState:UIControlStateNormal];
+        
     }
     return _changeAvatarButton;
 }

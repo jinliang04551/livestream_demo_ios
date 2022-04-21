@@ -24,6 +24,7 @@
 }
 
 - (void)placeAndlayoutSubviews {
+
     [self addSubview:self.firstMemberImageView];
     [self addSubview:self.secondMemberImageView];
 
@@ -42,10 +43,9 @@
 }
 
 - (void)updateWatchersAvatarWithUserIds:(NSArray *)userIds {
-    if (userIds.count == 0) {
-        return;
-    }
     
+    self.hidden = [userIds count] > 0 ? NO : YES;
+
     [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:userIds userInfoTypes:@[@(AgoraChatUserInfoTypeAvatarURL)] completion:^(NSDictionary * _Nonnull userInfoDic) {
         NSMutableArray *tempArray = NSMutableArray.array;
         for (NSString *key in userInfoDic.allKeys) {
