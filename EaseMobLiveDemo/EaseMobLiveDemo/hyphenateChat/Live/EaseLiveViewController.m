@@ -64,7 +64,6 @@
 @property (nonatomic, strong) UIWindow *window;
 
 @property (nonatomic, strong) UIView *liveView;
-@property (nonatomic, strong) UILabel *roomNameLabel;
 
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGR;
 
@@ -534,18 +533,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         [_headerListView setLiveCastDelegate];
     }
     return _headerListView;
-}
-
-- (UILabel*)roomNameLabel
-{
-    if (_roomNameLabel == nil) {
-        _roomNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 69.f, KScreenWidth - 20.f, 15)];
-        _roomNameLabel.text = [NSString stringWithFormat:@"%@: %@" ,NSLocalizedString(@"live.room.name", @"Room ID") ,_room.roomId];
-        _roomNameLabel.font = [UIFont systemFontOfSize:12.f];
-        _roomNameLabel.textAlignment = NSTextAlignmentRight;
-        _roomNameLabel.textColor = [UIColor whiteColor];
-    }
-    return _roomNameLabel;
 }
 
 - (EaseChatView*)chatview

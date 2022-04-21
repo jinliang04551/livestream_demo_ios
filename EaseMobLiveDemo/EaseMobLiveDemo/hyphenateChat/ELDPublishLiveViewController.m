@@ -134,9 +134,8 @@
     
     [self joinChatroom];
     
-    [self.view layoutSubviews];
-    [self setBtnStateInSel:0];
     [self _setupAgoreKit];
+    
 //    if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]||[_room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
 //        [self _setupAgoreKit];
 //    }
@@ -1000,16 +999,6 @@ extern bool isAllTheSilence;
     
 }
 
-- (void)setBtnStateInSel:(NSInteger)num
-{
-    if (num == 1) {
-        self.chatview.hidden = YES;
-        self.headerListView.hidden = YES;
-    } else {
-        self.chatview.hidden = NO;
-        self.headerListView.hidden = NO;
-    }
-}
 
 - (void)_recoverLive
 {

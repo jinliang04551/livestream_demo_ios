@@ -13,7 +13,6 @@
 #import "MJRefresh.h"
 #import "EaseHttpManager.h"
 #import "EaseLiveRoom.h"
-#import "EaseSearchDisplayController.h"
 #import "SDImageCache.h"
 #import "SDWebImageDownloader.h"
 #import "ELDNoDataPlaceHolderView.h"
@@ -80,9 +79,7 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = ViewControllerBgBlackColor;
-    
-    [self setupNavbar];
-    
+        
     [self setupCollectionView];
     
     [self setRefreshHeaderAndFooter];
@@ -90,12 +87,6 @@
     [self loadData:YES];
 }
 
-
-- (void)setupNavbar {
-    [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.prompt];
-    self.navigationItem.rightBarButtonItem = [ELDUtil customBarButtonItemImage:@"search" action:@selector(searchAction) actionTarget:self];
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -474,28 +465,7 @@
     }
 }
 
-#pragma mark - action
-- (void)searchAction
-{
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    EaseSearchDisplayController *searchVC = [[EaseSearchDisplayController alloc] initWithCollectionViewLayout:flowLayout];
-    searchVC.searchSource = [NSMutableArray arrayWithArray:self.dataArray];
-    searchVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:searchVC animated:YES];
-}
-
-- (void)logoutAction
-{
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"退出中..." toView:nil];
-    [[AgoraChatClient sharedClient] logout:NO];
-    [hud hideAnimated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
-}
-
-
 #pragma mark - private
-
 - (void)_collectionViewDidFinishTriggerHeader:(BOOL)isHeader reload:(BOOL)reload
 {
     ELD_WS

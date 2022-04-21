@@ -51,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = ViewControllerBgBlackColor;
     self.navigationItem.hidesBackButton = YES;
     [self.navigationItem setTitleView:self.searchBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:ImageWithName(@"back_icon_white") style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
@@ -200,29 +200,23 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
-    __weak typeof(self) weakSelf = self;
-    [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:searchBar.text
-                                                 completion:^(EaseLiveRoom *room, BOOL success) {
-                                                     if (success) {
-                                                         [weakSelf.resultsSource removeAllObjects];
-                                                         if (room.chatroomId.length > 0) {
-                                                             [[EaseHttpManager sharedInstance] getLiveRoomCurrentWithRoomId:searchBar.text
-                                                                                                                 completion:^(EaseLiveSession *session, BOOL success) {
-                                                                                                                     if (success) {
-                                                                                                                         room.session.currentUserCount = session.currentUserCount;
-                                                                                                                     }
-                                                                                                                     [weakSelf.resultsSource addObject:room];
-                                                                                                                     [weakSelf.collectionView reloadData];
-                                                                                                                 }];
-                                                             
-                                                         } else {
-                                                             [weakSelf.collectionView reloadData];
-                                                         }
-                                                     } else {
-                                                         [weakSelf.resultsSource removeAllObjects];
-                                                         [weakSelf.collectionView reloadData];
-                                                     }
-                                                 }];
+    if (searchBar.text.length == 0) {
+        [self.resultsSource removeAllObjects];
+        [self.collectionView reloadData];
+    } else {
+        
+        ELD_WS
+        [[RealtimeSearchUtil currentUtil] realtimeSearchWithSource:self.searchSource searchText:searchBar.text collationStringSelector:@selector(title) resultBlock:^(NSArray *results) {
+            if (results) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.resultsSource removeAllObjects];
+                    [weakSelf.resultsSource addObjectsFromArray:results];
+                    [weakSelf.collectionView reloadData];
+                });
+            }
+        }];
+    }
+    
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar

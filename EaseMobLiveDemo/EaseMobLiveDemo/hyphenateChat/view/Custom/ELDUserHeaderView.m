@@ -6,7 +6,6 @@
 //  Copyright © 2022 zmw. All rights reserved.
 //
 
-#define kMeHeaderImageViewHeight 90.0
 
 #import "ELDUserHeaderView.h"
 
@@ -127,4 +126,3 @@
 
 @end
 
-#undef kMeHeaderImageViewHeight

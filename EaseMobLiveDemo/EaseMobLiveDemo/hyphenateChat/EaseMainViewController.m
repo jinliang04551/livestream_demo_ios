@@ -159,7 +159,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    EaseSearchDisplayController *searchDisplay = [[EaseSearchDisplayController alloc] initWithCollectionViewLayout:flowLayout];
+    EaseSearchDisplayController *searchDisplay = [[EaseSearchDisplayController alloc] initWithCollectionViewLayout:flowLayout liveBehavior:kTabbarItemTag_Live];
     searchDisplay.searchSource = [NSMutableArray arrayWithArray:self.liveListVC.dataArray];
     [self.navigationController pushViewController:searchDisplay animated:YES];
 }
