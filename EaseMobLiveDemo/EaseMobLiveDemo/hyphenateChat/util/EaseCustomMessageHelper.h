@@ -26,8 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didReceivePraiseMessage:(AgoraChatMessage *)message;
 //弹幕消息
 - (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg;
+
 //观众刷礼物
-- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count;//观众送礼物
+- (void)steamerReceiveGiftMessage:(AgoraChatMessage*)msg;//观众送礼物
 
 @end
 
@@ -106,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param backView        展示在哪个页面
  */
 //有观众送礼物
-- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count backView:(UIView*)backView;
+- (void)userSendGifts:(AgoraChatMessage*)msg backView:(UIView*)backView;
 
 //礼物动画
 - (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView;

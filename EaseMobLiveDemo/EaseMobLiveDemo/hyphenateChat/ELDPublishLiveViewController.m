@@ -45,13 +45,8 @@
 
 @interface ELDPublishLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLMediaStreamingSessionDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraDirectCdnStreamingEventDelegate>
 {
-    BOOL _isload;
-    BOOL _isShutDown;
+    
         
-    BOOL _isPublish;
-    
-    BOOL _isAllMute;
-    
     BOOL _isFinishBroadcast;
         
     NSInteger _praiseNum;//赞
@@ -736,10 +731,6 @@
     }];
 }
 
-- (void)didClickContinueButton
-{
-    [self _recoverLive];
-}
 
 #pragma mark - EaseChatViewDelegate
 
@@ -754,31 +745,34 @@
 }
 
 //有观众送礼物
-- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count
-{
-    [_customMsgHelper userSendGifts:msg count:count backView:self.view];
+- (void)steamerReceiveGiftMessage:(AgoraChatMessage *)msg {
     
-    AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
-    NSString *giftid = [msgBody.ext objectForKey:@"id"];
+    [_customMsgHelper userSendGifts:msg backView:self.view];
     
-    _totalGifts += count;
-    ++_giftsNum;
-    [self.headerListView.liveCastView setNumberOfGift:_totalGifts];
-    //礼物份数
-    EaseDefaultDataHelper.shared.giftNumbers = [NSString stringWithFormat:@"%ld",(long)_giftsNum];
-    //礼物合计总数
-    EaseDefaultDataHelper.shared.totalGifts = [NSString stringWithFormat:@"%ld",(long)_totalGifts];
-    //送礼物人列表
-    if (![EaseDefaultDataHelper.shared.rewardCount containsObject:msg.from]) {
-        [EaseDefaultDataHelper.shared.rewardCount addObject:msg.from];
-    }
-    NSMutableDictionary *giftDetailDic = (NSMutableDictionary*)[EaseDefaultDataHelper.shared.giftStatisticsCount objectForKey:giftid];
-    if (!giftDetailDic) giftDetailDic = [[NSMutableDictionary alloc]init];
-    long long num = [(NSString*)[giftDetailDic objectForKey:msg.from] longLongValue];
-    [giftDetailDic setObject:[NSString stringWithFormat:@"%lld",(num+count)] forKey:msg.from];
-    //礼物统计字典
-    [EaseDefaultDataHelper.shared.giftStatisticsCount setObject:giftDetailDic forKey:giftid];
-    [EaseDefaultDataHelper.shared archive];
+    /*
+     * gift message is local create message ,can not caculate gift count
+    */
+    
+//    AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
+//    NSString *giftid = [msgBody.ext objectForKey:kGiftIdKey];
+//
+//    _totalGifts += count;
+//    ++_giftsNum;
+//    //礼物份数
+//    EaseDefaultDataHelper.shared.giftNumbers = [NSString stringWithFormat:@"%ld",(long)_giftsNum];
+//    //礼物合计总数
+//    EaseDefaultDataHelper.shared.totalGifts = [NSString stringWithFormat:@"%ld",(long)_totalGifts];
+//    //送礼物人列表
+//    if (![EaseDefaultDataHelper.shared.rewardCount containsObject:msg.from]) {
+//        [EaseDefaultDataHelper.shared.rewardCount addObject:msg.from];
+//    }
+//    NSMutableDictionary *giftDetailDic = (NSMutableDictionary*)[EaseDefaultDataHelper.shared.giftStatisticsCount objectForKey:giftid];
+//    if (!giftDetailDic) giftDetailDic = [[NSMutableDictionary alloc]init];
+//    long long num = [(NSString*)[giftDetailDic objectForKey:msg.from] longLongValue];
+//    [giftDetailDic setObject:[NSString stringWithFormat:@"%lld",(num+count)] forKey:msg.from];
+//    //礼物统计字典
+//    [EaseDefaultDataHelper.shared.giftStatisticsCount setObject:giftDetailDic forKey:giftid];
+//    [EaseDefaultDataHelper.shared archive];
 }
 
 //弹幕
@@ -1000,12 +994,6 @@ extern bool isAllTheSilence;
 }
 
 
-- (void)_recoverLive
-{
-    while (!_isload) {
-        _isload = YES;
-    }
-}
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {

@@ -707,10 +707,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 #pragma mark - EaseCustomMessageHelperDelegate
 
 //有观众送礼物
-- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count
-{
-    [_customMsgHelper userSendGifts:msg count:count backView:self.view];
+- (void)steamerReceiveGiftMessage:(AgoraChatMessage *)msg {
+    [_customMsgHelper userSendGifts:msg backView:self.view];
 }
+
 //弹幕
 - (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg
 {
@@ -734,7 +734,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
         if (aConfirm) {
             //发送礼物消息
-            [weakself.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
+            [weakself.chatview sendGiftAction:giftModel num:giftModel.count completion:^(BOOL success) {
                 if (success) {
                     //显示礼物UI
                     giftModel.username = [self randomNickName:giftModel.username];

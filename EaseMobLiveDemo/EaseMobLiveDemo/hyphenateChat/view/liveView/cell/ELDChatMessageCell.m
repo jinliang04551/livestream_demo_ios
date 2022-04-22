@@ -17,6 +17,10 @@
 
 #define KCustomerWidth [[UIScreen mainScreen] bounds].size.width - 32
 
+#define kContentLabelMaxWidth KScreenWidth -kIconImageViewHeight -kEaseLiveDemoPadding *3
+
+#define kNameLabelHeight 14.0
+
 static AgoraChatroom *_chatroom;
 
 @interface ELDChatMessageCell ()
@@ -27,11 +31,12 @@ static AgoraChatroom *_chatroom;
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 
+
 @end
 
 @implementation ELDChatMessageCell
 - (void)prepare {
-    self.backgroundColor = UIColor.clearColor;
+    self.backgroundColor = UIColor.blueColor;
     
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
@@ -47,13 +52,14 @@ static AgoraChatroom *_chatroom;
 - (void)placeSubViews {
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(kCellVPadding);
-        make.left.equalTo(self.contentView).offset(10.0f);
+        make.left.equalTo(self.contentView).offset(kEaseLiveDemoPadding);
         make.size.equalTo(@(kIconImageViewHeight));
     }];
         
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.iconImageView);
-        make.left.equalTo(self.iconImageView.mas_right).offset(10.0f);
+        make.height.equalTo(@(kNameLabelHeight));
+        make.left.equalTo(self.iconImageView.mas_right).offset(kEaseLiveDemoPadding);
     }];
     
     
@@ -63,8 +69,9 @@ static AgoraChatroom *_chatroom;
     }];
     
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(kCellVPadding);
         make.left.equalTo(self.nameLabel);
+        make.right.equalTo(self.contentView).offset(-kEaseLiveDemoPadding);
         make.bottom.equalTo(self.contentView).offset(-kCellVPadding);
     }];
     
@@ -107,36 +114,52 @@ static AgoraChatroom *_chatroom;
 
 + (CGFloat)heightForMessage:(AgoraChatMessage *)message
 {
-    if (message) {
-        CGRect rect = [[ELDChatMessageCell _attributedStringWithMessage:message] boundingRectWithSize:CGSizeMake(KCustomerWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-        
-        if (rect.size.height < 25.f) {
-            return 25.f;
-        }
-        return rect.size.height;
-    }
-    return 25.f;
+    CGFloat height = 0;
+//    if (message) {
+//        CGRect rect = [[ELDChatMessageCell _attributedStringWithMessage:message] boundingRectWithSize:CGSizeMake(kContentLabelMaxWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
+//
+//        height = rect.size.height;
+//        NSLog(@"%s contentlabel height:%@",__func__,@(height));
+//
+//        height += kCellVPadding * 3 + kNameLabelHeight;
+//    }
+    
+    
+    
+    CGSize textBlockMinSize = {kContentLabelMaxWidth, CGFLOAT_MAX};
+    CGSize retSize;
+    NSString *text = [ELDChatMessageCell contentWithMessage:message];
+    retSize = [text boundingRectWithSize:textBlockMinSize options:NSStringDrawingUsesLineFragmentOrigin
+                              attributes:@{
+                                           NSFontAttributeName:[ELDChatMessageCell contentFont],
+                                           NSParagraphStyleAttributeName:[ELDChatMessageCell contentLabelParaStyle]
+                                           }
+                                 context:nil].size;
+    height = retSize.height;
+    
+    NSLog(@"%s contentlabel height:%@",__func__,@(height));
+
+    height += kCellVPadding * 3 + kNameLabelHeight;
+
+    
+    return height;
 }
+
 
 + (NSMutableAttributedString*)_attributedStringWithMessage:(AgoraChatMessage*)message
 {
-    NSMutableAttributedString *text = [ELDChatMessageCell latestMessageTitleForConversationModel:message];
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    paraStyle.lineBreakMode = NSLineBreakByWordWrapping;
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName: paraStyle,NSFontAttributeName :BFont(14.0f)};
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:[ELDChatMessageCell contentWithMessage:message]];
+    
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName: [ELDChatMessageCell contentLabelParaStyle],NSFontAttributeName :[ELDChatMessageCell contentFont]};
     [text addAttributes:attributes range:NSMakeRange(0, text.length)];
     return text;
 }
 
-extern NSMutableDictionary *audienceNickname;
-extern NSArray<NSString*> *nickNameArray;
-extern NSMutableDictionary *anchorInfoDic;
 
-+ (NSMutableAttributedString *)latestMessageTitleForConversationModel:(AgoraChatMessage*)lastMessage;
-{
++ (NSString *)contentWithMessage:(AgoraChatMessage *)message {
     NSString *latestMessageTitle = @"";
-    if (lastMessage) {
-        AgoraChatMessageBody *messageBody = lastMessage.body;
+    if (message) {
+        AgoraChatMessageBody *messageBody = message.body;
         switch (messageBody.type) {
             case AgoraChatMessageBodyTypeImage:{
                 latestMessageTitle = @"[图片]";
@@ -165,98 +188,23 @@ extern NSMutableDictionary *anchorInfoDic;
             } break;
         }
     }
-    
-    
-    
-    int random = (arc4random() % 100);
-    NSString *randomNickname = nickNameArray[random];
-    if (![audienceNickname objectForKey:lastMessage.from]) {
-        [audienceNickname setObject:randomNickname forKey:lastMessage.from];
-    } else {
-        randomNickname = [audienceNickname objectForKey:lastMessage.from];
-    }
-    
-    if ([lastMessage.from isEqualToString:_chatroom.owner]) {
-        NSMutableDictionary *anchorInfo = [anchorInfoDic objectForKey:_chatroom.chatroomId];
-        if (anchorInfo && [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] && ![[anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] isEqualToString:@""]) {
-            randomNickname = [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];
-        }
-    }
-    if ([lastMessage.from isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-        randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
-    }
-    
-    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:@""];
-    if (lastMessage.ext) {
-        if ([lastMessage.ext objectForKey:@"em_leave"] || [lastMessage.ext objectForKey:@"em_join"]) {
-            latestMessageTitle = [NSString stringWithFormat:@"%@ %@",randomNickname,latestMessageTitle];
-            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.6]} range:NSMakeRange(randomNickname.length + 1, latestMessageTitle.length - randomNickname.length - 1)];
-        } else {
-            latestMessageTitle = [NSString stringWithFormat:@"%@: %@",randomNickname,latestMessageTitle];
-            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-            NSRange range = [[attributedStr string] rangeOfString:[NSString stringWithFormat:@"%@: " ,randomNickname] options:NSCaseInsensitiveSearch];
-            [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(255, 199, 0, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-        }
-    } else {
-        latestMessageTitle = [NSString stringWithFormat:@"%@: %@",randomNickname,latestMessageTitle];
-        attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-        NSRange range = [[attributedStr string] rangeOfString:[NSString stringWithFormat:@"%@: " ,randomNickname] options:NSCaseInsensitiveSearch];
-        [attributedStr addAttribute:NSForegroundColorAttributeName value:TextLabelWhiteColor range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-        if (lastMessage.body.type == AgoraChatMessageBodyTypeCustom) {
-            AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)lastMessage.body;
-            if ([customBody.event isEqualToString:kCustomMsgChatroomPraise] || [customBody.event isEqualToString:kCustomMsgChatroomGift]) {
-                [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(104, 255, 149, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-            }
-        }
-    }
-    return attributedStr;
-    
-    
-    
-//    int random = (arc4random() % 100);
-//    NSString *randomNickname = nickNameArray[random];
-//    if (![audienceNickname objectForKey:lastMessage.from]) {
-//        [audienceNickname setObject:randomNickname forKey:lastMessage.from];
-//    } else {
-//        randomNickname = [audienceNickname objectForKey:lastMessage.from];
-//    }
-//
-//    if ([lastMessage.from isEqualToString:_chatroom.owner]) {
-//        NSMutableDictionary *anchorInfo = [anchorInfoDic objectForKey:_chatroom.chatroomId];
-//        if (anchorInfo && [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] && ![[anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] isEqualToString:@""]) {
-//            randomNickname = [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];
-//        }
-//    }
-//    if ([lastMessage.from isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-//        randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
-//    }
-//
-//    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:@""];
-//    if (lastMessage.ext) {
-//        if ([lastMessage.ext objectForKey:@"em_leave"] || [lastMessage.ext objectForKey:@"em_join"]) {
-//            latestMessageTitle = [NSString stringWithFormat:@"%@ %@",randomNickname,latestMessageTitle];
-//            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-//            [attributedStr setAttributes:@{NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.6]} range:NSMakeRange(randomNickname.length + 1, latestMessageTitle.length - randomNickname.length - 1)];
-//        } else {
-//            latestMessageTitle = [NSString stringWithFormat:@"%@: %@",randomNickname,latestMessageTitle];
-//            attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-//            NSRange range = [[attributedStr string] rangeOfString:[NSString stringWithFormat:@"%@: " ,randomNickname] options:NSCaseInsensitiveSearch];
-//            [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(255, 199, 0, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-//        }
-//    } else {
-//        latestMessageTitle = [NSString stringWithFormat:@"%@: %@",randomNickname,latestMessageTitle];
-//        attributedStr = [[NSMutableAttributedString alloc] initWithString:latestMessageTitle];
-//        NSRange range = [[attributedStr string] rangeOfString:[NSString stringWithFormat:@"%@: " ,randomNickname] options:NSCaseInsensitiveSearch];
-//        [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(255, 199, 0, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-//        if (lastMessage.body.type == AgoraChatMessageBodyTypeCustom) {
-//            AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)lastMessage.body;
-//            if ([customBody.event isEqualToString:kCustomMsgChatroomPraise] || [customBody.event isEqualToString:kCustomMsgChatroomGift]) {
-//                [attributedStr addAttribute:NSForegroundColorAttributeName value:RGBACOLOR(104, 255, 149, 1) range:NSMakeRange(range.length + range.location, attributedStr.length - (range.length + range.location))];
-//            }
-//        }
-//    }
-//    return attributedStr;
+    return latestMessageTitle;
+}
+
+
++ (NSMutableParagraphStyle *)contentLabelParaStyle {
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.lineBreakMode = NSLineBreakByCharWrapping;
+    paraStyle.lineSpacing = [ELDChatMessageCell lineSpacing];
+    return paraStyle;
+}
+
++ (CGFloat)lineSpacing{
+    return 4.0f;
+}
+
++ (UIFont *)contentFont {
+    return BFont(14.0);
 }
 
 
@@ -272,12 +220,13 @@ extern NSMutableDictionary *anchorInfoDic;
 - (UILabel *)contentLabel {
     if (_contentLabel == nil) {
         _contentLabel = [[UILabel alloc] init];
-        _contentLabel.font = BFont(18.0f);
+        _contentLabel.font = [ELDChatMessageCell contentFont];
         _contentLabel.textColor = TextLabelWhiteColor;
         _contentLabel.textAlignment = NSTextAlignmentLeft;
-        _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _contentLabel.numberOfLines = 0;
-        _contentLabel.preferredMaxLayoutWidth = KScreenWidth - 28.0 - 10.0 * 2;
+        _contentLabel.preferredMaxLayoutWidth = KScreenWidth -kIconImageViewHeight -kEaseLiveDemoPadding *3;
+        _contentLabel.backgroundColor = UIColor.redColor;
     }
     return _contentLabel;
 }
@@ -287,3 +236,7 @@ extern NSMutableDictionary *anchorInfoDic;
 #undef kIconImageViewHeight
 
 #undef kCellVPadding
+
+#undef kContentLabelMaxWidth
+
+#undef kNameLabelHeight

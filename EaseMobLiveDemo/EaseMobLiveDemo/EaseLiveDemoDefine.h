@@ -81,13 +81,6 @@ typedef enum : NSUInteger {
     ELDMemberActionTypeRemoveBlock,
 } ELDMemberActionType;
 
-//typedef enum : NSUInteger {
-//    ELDMemberVCListTypeAll = 1,
-//    ELDMemberVCListTypeAdmin,
-//    ELDMemberVCListTypeWhite,
-//    ELDMemberVCListTypeMute,
-//    ELDMemberVCListTypeBlock,
-//} ELDMemberVCListType;
 
 #define kMemberActionTypeMakeAdmin @"MemberActionTypeMakeAdmin"
 #define kMemberActionTypeRemoveAdmin @"MemberActionTypeRemoveAdmin"
@@ -102,6 +95,11 @@ typedef enum : NSUInteger {
 #define kGiftNameKey @"kGiftNameKey"
 #define kGiftSingleValueKey @"kGiftSingleValueKey"
 
+//send or receive
+#define kGiftIdKey @"gift_id"
+#define kGiftNumKey @"gift_num"
+
+#define kChatroom_member_join @"chatroom_member_join"
 
 #define kChatViewHeight 350.0
 

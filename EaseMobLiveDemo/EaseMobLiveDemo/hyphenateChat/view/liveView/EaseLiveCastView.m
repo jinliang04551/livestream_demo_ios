@@ -148,7 +148,7 @@ extern NSMutableDictionary *anchorInfoDic;
         _giftValuesLabel = [[UILabel alloc] init];
         _giftValuesLabel.font = [UIFont systemFontOfSize:10.0f];
         _giftValuesLabel.textColor = [UIColor colorWithRed:255/255.0 green:199/255.0 blue:0/255.0 alpha:0.74];
-        _giftValuesLabel.text = [NSString stringWithFormat:@"%d",[EaseDefaultDataHelper.shared.totalGifts intValue]];
+        _giftValuesLabel.text = @"8,420";
         _giftValuesLabel.textAlignment = NSTextAlignmentLeft;
     }
     return _giftValuesLabel;
@@ -206,18 +206,6 @@ extern NSMutableDictionary *anchorInfoDic;
     }
 }
 
-/*
-- (UILabel*)numberLabel
-{
-    if (_numberLabel == nil) {
-        _numberLabel = [[UILabel alloc] init];
-        _numberLabel.frame = CGRectMake(_headImageView.width + 10.f, self.height/2, self.width - (_headImageView.width + 10.f), self.height/2);
-        _numberLabel.font = [UIFont systemFontOfSize:12.f];
-        _numberLabel.textColor = [UIColor whiteColor];
-    }
-    return _numberLabel;
-}*/
-
 #pragma mark - action
 - (void)didSelectHeadImage
 {
@@ -233,9 +221,5 @@ extern NSMutableDictionary *anchorInfoDic;
     _praiseLabel.text = [NSString stringWithFormat:@"赞：%ld",(long)number];
 }
 
-- (void)setNumberOfGift:(NSInteger)number
-{
-    _giftValuesLabel.text = [NSString stringWithFormat:@"礼物：%ld",(long)number];
-}
 
 @end

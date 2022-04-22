@@ -74,8 +74,8 @@ extern NSMutableDictionary *anchorInfoDic;
                     }
                 } else if ([body.event isEqualToString:kCustomMsgChatroomGift]) {
                     //礼物消息
-                    if (self.delegate && [self.delegate respondsToSelector:@selector(userSendGifts:count:)]) {
-                        [self.delegate userSendGifts:message count:[(NSString*)[body.ext objectForKey:@"num"] intValue]];
+                    if (self.delegate && [self.delegate respondsToSelector:@selector(steamerReceiveGiftMessage:)]) {
+                        [self.delegate steamerReceiveGiftMessage:message];
                     }
                 }
             }
@@ -93,8 +93,8 @@ extern NSMutableDictionary *anchorInfoDic;
     } else if ([customBody.event isEqualToString:kCustomMsgChatroomPraise]) {
         msgContent = [NSString stringWithFormat:@"给主播点了%ld个赞",(long)[(NSString*)[customBody.ext objectForKey:@"num"] integerValue]];
     } else if ([customBody.event isEqualToString:kCustomMsgChatroomGift]) {
-        NSString *giftid = [customBody.ext objectForKey:@"id"];
-        NSString *giftNum = [customBody.ext objectForKey:@"num"];
+        NSString *giftid = [customBody.ext objectForKey:kGiftIdKey];
+        NSString *giftNum = [customBody.ext objectForKey:kGiftNumKey];
         
         if (giftid) {
             int index = [[giftid substringFromIndex:5] intValue];
@@ -132,8 +132,8 @@ extern NSMutableDictionary *anchorInfoDic;
         [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
         body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomPraise ext:extDic];
     } else if (customMsgType == customMessageType_gift){
-        [extDic setObject:text forKey:@"id"];
-        [extDic setObject:[NSString stringWithFormat:@"%ld",(long)num] forKey:@"num"];
+        [extDic setObject:text forKey:kGiftIdKey];
+        [extDic setObject:[@(num) stringValue] forKey:kGiftNumKey];
         body = [[AgoraChatCustomMessageBody alloc]initWithEvent:kCustomMsgChatroomGift ext:extDic];
     } else if (customMsgType == customMessageType_barrage) {
         [extDic setObject:text forKey:@"txt"];
@@ -235,19 +235,20 @@ extern NSMutableDictionary *anchorInfoDic;
 }
 
 //有观众送礼物
-- (void)userSendGifts:(AgoraChatMessage*)msg count:(NSInteger)count backView:(UIView*)backView
+- (void)userSendGifts:(AgoraChatMessage*)msg backView:(UIView*)backView
 {
     AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
     JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
     cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
-    NSString *giftid = [msgBody.ext objectForKey:@"id"];
-    int index = [[giftid substringFromIndex:5] intValue];
-      
-    ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[index-1];
+    NSString *giftId = [msgBody.ext objectForKey:kGiftIdKey];
+    int giftIndex = [[giftId substringFromIndex:5] intValue];
+    NSInteger giftNum = [[msgBody.ext objectForKey:kGiftNumKey] integerValue];
+    
+    ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[giftIndex-1];
     cellModel.icon = ImageWithName(model.giftname);
     cellModel.name = model.giftname;
     cellModel.username = [self randomNickName:msg.from];
-    cellModel.count = count;
+    cellModel.count = giftNum;
     
     [self sendGiftAction:cellModel backView:backView];
     
@@ -261,7 +262,6 @@ extern NSMutableDictionary *anchorInfoDic;
     giftModel.userName = cellModel.username;
     giftModel.giftName = cellModel.name;
     giftModel.giftImage = cellModel.icon;
-    //giftModel.giftGifImage = cellModel.icon_gif;
     giftModel.defaultCount = 0;
     giftModel.sendCount = cellModel.count;
     [[JPGiftShowManager sharedManager] showGiftViewWithBackView:backView info:giftModel completeBlock:^(BOOL finished) {

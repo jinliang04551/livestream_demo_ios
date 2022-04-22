@@ -52,7 +52,9 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = ViewControllerBgBlackColor;
-    self.navigationItem.hidesBackButton = YES;
+//    self.navigationItem.hidesBackButton = YES;
+    
+    [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
     [self.navigationItem setTitleView:self.searchBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:ImageWithName(@"back_icon_white") style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     

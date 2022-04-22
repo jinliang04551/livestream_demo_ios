@@ -155,14 +155,6 @@
         confirm = true;
     }
     if (_doneCompletion) {
-//        JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-//        cellModel.id = _giftId;
-//        cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
-//        cellModel.icon = _giftCell.giftImageView.image;
-//        cellModel.name = _giftCell.nameLabel.text;
-//        cellModel.username = AgoraChatClient.sharedClient.currentUsername;
-//        cellModel.count = (NSInteger)_giftNum;
-//        _doneCompletion(confirm,cellModel);
         
         JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
         cellModel.id = self.giftModel.giftId;

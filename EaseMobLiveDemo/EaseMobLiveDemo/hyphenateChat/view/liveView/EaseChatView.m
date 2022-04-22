@@ -438,6 +438,15 @@ BOOL isAllTheSilence;//全体禁言
 {
     for (AgoraChatMessage *message in aMessages) {
         if ([message.conversationId isEqualToString:_chatroomId]) {
+
+            //filter custom gift message
+            if (message.body.type == AgoraChatMessageBodyTypeCustom ) {
+                AgoraChatCustomMessageBody* customBody = (AgoraChatCustomMessageBody*)message.body;
+                if ([customBody.event isEqualToString:kCustomMsgChatroomGift]) {
+                    continue;
+                }
+            }
+                
             if ([self.datasource count] >= 200) {
                 [self.datasource removeObjectsInRange:NSMakeRange(0, 190)];
             }
@@ -513,9 +522,11 @@ BOOL isAllTheSilence;//全体禁言
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-//    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
-//    return [ELDChatMessageCell heightForMessage:message];
-    return 44.0f;
+    AgoraChatMessage *message = [self.datasource objectAtIndex:indexPath.section];
+    if ([message.ext objectForKey:@"em_join"]) {
+        return 44.0;
+    }
+    return [ELDChatMessageCell heightForMessage:message];
 }
 
 #pragma mark - UITableViewDataSource
@@ -935,7 +946,6 @@ BOOL isAllTheSilence;//全体禁言
     [_customMsgHelper sendCustomMessage:giftId num:num to:_chatroomId messageType:AgoraChatTypeChatRoom customMsgType:customMessageType_gift completion:^(AgoraChatMessage * _Nonnull message, AgoraChatError * _Nonnull error) {
         bool ret = false;
         if (!error) {
-            [weakSelf currentViewDataFill:message];
             ret = true;
         } else {
             ret = false;
