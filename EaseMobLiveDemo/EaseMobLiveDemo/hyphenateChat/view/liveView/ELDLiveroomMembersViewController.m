@@ -58,10 +58,14 @@
     switch (self.memberVCType) {
         case 1:
         {
-            [tempArray addObject:self.chatroom.owner];
+            if (self.isAdmin) {
+                [tempArray addObject:self.chatroom.owner];
+            }
+            
             if (self.chatroom.adminList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.adminList];
             }
+            
             if (self.chatroom.memberList.count > 0) {
                 [tempArray addObjectsFromArray:self.chatroom.memberList];
             }

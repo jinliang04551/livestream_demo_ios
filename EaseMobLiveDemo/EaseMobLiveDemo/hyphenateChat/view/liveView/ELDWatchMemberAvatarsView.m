@@ -25,8 +25,8 @@
 
 - (void)placeAndlayoutSubviews {
 
-    [self addSubview:self.firstMemberImageView];
     [self addSubview:self.secondMemberImageView];
+    [self addSubview:self.firstMemberImageView];
 
     [self.firstMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
@@ -34,16 +34,16 @@
         make.size.equalTo(@(kAvatarHeight));
     }];
     
-    [self.firstMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.secondMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
-        make.left.equalTo(self.firstMemberImageView.mas_left).offset(10.0);
+        make.left.equalTo(self.firstMemberImageView.mas_left).offset(kAvatarHeight * 0.5);
         make.size.equalTo(self.firstMemberImageView);
         make.right.equalTo(self).offset(-5.0);
     }];
 }
 
 - (void)updateWatchersAvatarWithUserIds:(NSArray *)userIds {
-    
+     
     self.hidden = [userIds count] > 0 ? NO : YES;
 
     [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:userIds userInfoTypes:@[@(AgoraChatUserInfoTypeAvatarURL)] completion:^(NSDictionary * _Nonnull userInfoDic) {

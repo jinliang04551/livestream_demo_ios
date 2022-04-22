@@ -144,8 +144,6 @@
                                             }else {
 
                                             }
-                                            
-                                            
                                         }];
                                     } else {
                                         [weakSelf.view bringSubviewToFront:weakSelf.liveView];
@@ -182,8 +180,8 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -794,6 +792,13 @@ extern NSMutableDictionary *anchorInfoDic;
 
 
 #pragma mark - AgoraChatroomManagerDelegate
+- (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    NSLog(@"userDidJoinChatroom: %s",__func__);
+    if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
+        [self.headerListView updateHeaderViewWithChatroomId:aChatroom.chatroomId];
+    }
+}
+
 
 - (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {

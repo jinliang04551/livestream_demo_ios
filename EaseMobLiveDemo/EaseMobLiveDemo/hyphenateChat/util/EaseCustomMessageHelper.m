@@ -238,20 +238,24 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)userSendGifts:(AgoraChatMessage*)msg backView:(UIView*)backView
 {
     AgoraChatCustomMessageBody *msgBody = (AgoraChatCustomMessageBody*)msg.body;
-    JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-    cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
     NSString *giftId = [msgBody.ext objectForKey:kGiftIdKey];
     int giftIndex = [[giftId substringFromIndex:5] intValue];
     NSInteger giftNum = [[msgBody.ext objectForKey:kGiftNumKey] integerValue];
-    
     ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[giftIndex-1];
-    cellModel.icon = ImageWithName(model.giftname);
-    cellModel.name = model.giftname;
-    cellModel.username = [self randomNickName:msg.from];
-    cellModel.count = giftNum;
     
-    [self sendGiftAction:cellModel backView:backView];
-    
+    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[msg.from] completion:^(NSDictionary * _Nonnull userInfoDic) {
+        if (userInfoDic.count > 0) {
+            AgoraChatUserInfo *userInfo = userInfoDic[msg.from];
+            JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
+            cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
+            cellModel.icon = ImageWithName(model.giftname);
+            cellModel.name = model.giftname;
+            cellModel.username = userInfo.nickName ?: userInfo.userId;
+            cellModel.count = giftNum;
+            
+            [self sendGiftAction:cellModel backView:backView];
+        }
+    }];
 }
 
 //礼物动画

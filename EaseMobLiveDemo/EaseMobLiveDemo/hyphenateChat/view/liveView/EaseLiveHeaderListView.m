@@ -275,6 +275,29 @@
 }
 
 #pragma mark - public
+- (void)fetchChatroomDetailWithChatroomId:(NSString*)chatroomId
+{
+    __weak typeof(self) weakself = self;
+    [[EaseHttpManager sharedInstance] fetchLiveroomDetail:_room.chatroomId completion:^(EaseLiveRoom *room, BOOL success) {
+        if (success) {
+            if (room.status == offline) {
+                [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
+                }];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _room = room;
+                weakself.occupantsCount = _room.currentUserCount;
+                [weakself.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)weakself.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
+                [weakself.dataArray removeAllObjects];
+                [weakself.dataArray addObjectsFromArray:_room.currentMemberList];
+                [weakself.watchMemberAvatarsView updateWatchersAvatarWithUserIds:weakself.dataArray];
+            });
+        }
+    }];
+    
+    [self fetchliveUserInfoWithUserId:_room.anchor];
+}
+
 
 - (void)updateHeaderViewWithChatroomId:(NSString*)chatroomId
 {
@@ -291,12 +314,11 @@
                 [weakself.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)weakself.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
                 [weakself.dataArray removeAllObjects];
                 [weakself.dataArray addObjectsFromArray:_room.currentMemberList];
-//                [weakself.collectionView reloadData];
                 [weakself.watchMemberAvatarsView updateWatchersAvatarWithUserIds:weakself.dataArray];
             });
         }
     }];
-    
+
     [self fetchliveUserInfoWithUserId:_room.anchor];
 }
 

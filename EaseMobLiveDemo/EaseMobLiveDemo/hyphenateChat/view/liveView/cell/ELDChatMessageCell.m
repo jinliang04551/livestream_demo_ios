@@ -72,7 +72,6 @@ static AgoraChatroom *_chatroom;
         make.top.equalTo(self.nameLabel.mas_bottom).offset(kCellVPadding);
         make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.contentView).offset(-kEaseLiveDemoPadding);
-        make.bottom.equalTo(self.contentView).offset(-kCellVPadding);
     }];
     
 }

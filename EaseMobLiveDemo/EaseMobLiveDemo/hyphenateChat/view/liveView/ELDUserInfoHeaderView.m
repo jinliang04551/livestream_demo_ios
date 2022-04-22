@@ -9,7 +9,6 @@
 #import "ELDUserInfoHeaderView.h"
 #import "ELDGenderView.h"
 
-#define kMeHeaderImageViewHeight 72.0
 
 @interface ELDUserInfoHeaderView ()
 @property (nonatomic, strong) UIImageView *topBgImageView;
@@ -34,24 +33,6 @@
 }
 
 - (void)placeAndlayoutSubviews {
-//    UIView *alphaBgView = UIView.alloc.init;
-//    alphaBgView.alpha = 0.0;
-//    [self addSubview:alphaBgView];
-//
-//    [alphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self);
-//    }];
-
-    
-      UIView *headerBgView = UIView.alloc.init;
-      headerBgView.layer.cornerRadius = 10.0f;
-      [self addSubview:headerBgView];
-
-    CGFloat topPadding = (kMeHeaderImageViewHeight + 2) * 0.5;
-
-    [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
-    }];
     
       [self addSubview:self.avatarBgView];
       [self addSubview:self.nameLabel];
@@ -60,11 +41,10 @@
       [self addSubview:self.muteImageView];
 
      
-
       [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self);
           make.centerX.equalTo(self);
-          make.size.equalTo(@(kMeHeaderImageViewHeight + 2));
+          make.size.equalTo(@(kUserInfoHeaderImageHeight + 2 * 2));
       }];
 
       [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -137,7 +117,7 @@
     if (_avatarImageView == nil) {
         _avatarImageView = [[UIImageView alloc] init];
         _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _avatarImageView.layer.cornerRadius = kMeHeaderImageViewHeight * 0.5;
+        _avatarImageView.layer.cornerRadius = kUserInfoHeaderImageHeight * 0.5;
         _avatarImageView.layer.masksToBounds = YES;
         _avatarImageView.clipsToBounds = YES;
         _avatarImageView.image = kDefultUserImage;
@@ -149,7 +129,7 @@
     if (_avatarBgView == nil) {
         _avatarBgView = [[UIView alloc] init];
         _avatarBgView.backgroundColor = UIColor.whiteColor;
-        _avatarBgView.layer.cornerRadius = (kMeHeaderImageViewHeight + 2)* 0.5;
+        _avatarBgView.layer.cornerRadius = (kUserInfoHeaderImageHeight + 2 * 2)* 0.5;
         
         [_avatarBgView addSubview:self.avatarImageView];
         [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -202,4 +182,3 @@
 
 @end
 
-#undef kMeHeaderImageViewHeight

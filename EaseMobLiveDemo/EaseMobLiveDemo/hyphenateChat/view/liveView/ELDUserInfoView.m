@@ -16,6 +16,8 @@
 #define kUserInfoCellActionType @"kUserInfoCellActionType"
 #define kUserInfoAlertTitle @"kUserInfoAlertTitle"
 
+#define kUserInfoCellHeight 44.0
+#define kHeaderViewHeight 150.0
 
 @interface ELDUserInfoView ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) ELDUserInfoHeaderView *headerView;
@@ -64,7 +66,6 @@
         self.chatroomId = self.chatroom.chatroomId;
         self.memberVCType = memberVCType;
 
-        [self placeAndlayoutSubviews];
         [self fetchUserInfoWithUsername:username];
      
     }
@@ -84,7 +85,6 @@
             self.isMute = NO;
         }
         
-        [self placeAndlayoutSubviews];
         [self fetchUserInfoWithUsername:self.currentUsername];
      
     }
@@ -108,10 +108,38 @@
 - (void)placeAndlayoutSubviews {
     self.backgroundColor = UIColor.clearColor;
 
+    UIView *alphaBgView = UIView.alloc.init;
+    alphaBgView.alpha = 0.0;
+
+    UIView *headerBgView = UIView.alloc.init;
+    headerBgView.backgroundColor = UIColor.whiteColor;
+    headerBgView.layer.cornerRadius = 10.0f;
+    
+    [self addSubview:alphaBgView];
+    [self addSubview:headerBgView];
+    [self addSubview:self.headerView];
     [self addSubview:self.table];
 
+    
+    CGFloat topPadding = (kUserInfoHeaderImageHeight + 2 * 2) * 0.5;
+
+    [alphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+
+    
+    [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.headerView).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
+    }];
+    
+    [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(kHeaderViewHeight));
+        make.left.right.equalTo(self);
+        make.bottom.equalTo(self.table.mas_top);
+    }];
+    
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(kChatViewHeight);
+        make.height.equalTo(@(self.dataArray.count * kUserInfoCellHeight));
         make.left.right.equalTo(self);
         make.bottom.equalTo(self).offset(-[self bottomPadding]);
     }];
@@ -200,6 +228,8 @@
     }
 
     self.dataArray = tempArray;
+    
+    [self placeAndlayoutSubviews];
     [self.table reloadData];
 }
 
@@ -413,7 +443,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 48.0;
+    return kUserInfoCellHeight;
 }
 
 
@@ -467,7 +497,6 @@
         _table.delegate = self;
         _table.backgroundView = nil;
         _table.rowHeight = 44.0;
-        _table.tableHeaderView = [self headerView];
     }
     return _table;
 }
@@ -475,7 +504,7 @@
 
 - (ELDUserInfoHeaderView *)headerView {
     if (_headerView == nil) {
-        _headerView = [[ELDUserInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 150.0)];
+        _headerView = [[ELDUserInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kHeaderViewHeight)];
     }
     return _headerView;
 }
@@ -564,4 +593,5 @@
 #undef kUserInfoCellTitle
 #undef kUserInfoCellActionType
 #undef kUserInfoAlertTitle
-
+#undef kUserInfoCellHeight
+#undef kHeaderViewHeight

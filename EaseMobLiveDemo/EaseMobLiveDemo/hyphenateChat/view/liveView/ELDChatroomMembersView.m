@@ -319,6 +319,9 @@ MISScrollPageControllerDelegate>
         self.navTitleArray = [@[@"All",@"Moderators",@"Allowed",@"Mute",@"Banned"] mutableCopy];
         self.contentVCArray = [@[self.allVC,self.adminListVC,self.allowListVC,self.mutedListVC,self.blockListVC] mutableCopy];
     }
+    
+    self.allVC.isAdmin = [self isAdmin];
+    
 }
 
 

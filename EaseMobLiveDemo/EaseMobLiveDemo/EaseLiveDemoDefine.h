@@ -109,6 +109,8 @@ typedef enum : NSUInteger {
 
 #define kMeHeaderImageViewHeight 90.0
 
+#define kUserInfoHeaderImageHeight 72.0
+
 
 #define kDefultUserImage   ImageWithName(@"avatat_2")
 
