@@ -36,8 +36,8 @@ static AgoraChatroom *_chatroom;
 
 @implementation ELDChatMessageCell
 - (void)prepare {
-    self.backgroundColor = UIColor.blueColor;
     
+    self.backgroundColor = UIColor.clearColor;
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.roleImageView];
@@ -114,17 +114,6 @@ static AgoraChatroom *_chatroom;
 + (CGFloat)heightForMessage:(AgoraChatMessage *)message
 {
     CGFloat height = 0;
-//    if (message) {
-//        CGRect rect = [[ELDChatMessageCell _attributedStringWithMessage:message] boundingRectWithSize:CGSizeMake(kContentLabelMaxWidth, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading context:nil];
-//
-//        height = rect.size.height;
-//        NSLog(@"%s contentlabel height:%@",__func__,@(height));
-//
-//        height += kCellVPadding * 3 + kNameLabelHeight;
-//    }
-    
-    
-    
     CGSize textBlockMinSize = {kContentLabelMaxWidth, CGFLOAT_MAX};
     CGSize retSize;
     NSString *text = [ELDChatMessageCell contentWithMessage:message];
@@ -135,9 +124,6 @@ static AgoraChatroom *_chatroom;
                                            }
                                  context:nil].size;
     height = retSize.height;
-    
-    NSLog(@"%s contentlabel height:%@",__func__,@(height));
-
     height += kCellVPadding * 3 + kNameLabelHeight;
 
     
@@ -225,7 +211,6 @@ static AgoraChatroom *_chatroom;
         _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _contentLabel.numberOfLines = 0;
         _contentLabel.preferredMaxLayoutWidth = KScreenWidth -kIconImageViewHeight -kEaseLiveDemoPadding *3;
-        _contentLabel.backgroundColor = UIColor.redColor;
     }
     return _contentLabel;
 }

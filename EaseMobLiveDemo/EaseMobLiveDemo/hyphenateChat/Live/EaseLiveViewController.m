@@ -39,7 +39,11 @@
 
 #import "EaseLiveCastView.h"
 
+#import "ELDNotificationView.h"
+
 #import "ELDEnterLiveroomAnimationView.h"
+
+#import "ELDTwoBallAnimationView.h"
 
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
@@ -82,9 +86,11 @@
 @property (nonatomic, strong) ELDChatroomMembersView *memberView;
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
-@property (nonatomic, strong) UILabel *hintLabel;
+@property (nonatomic, strong) ELDNotificationView *notificationView;
 
 @property (nonatomic, strong) ELDEnterLiveroomAnimationView *enterAnimationView;
+
+@property (nonatomic, strong) ELDTwoBallAnimationView *twoBallAnimationView;
 
 
 @end
@@ -107,9 +113,8 @@
     [self.view insertSubview:self.backgroudImageView atIndex:0];
     
     [self.view addSubview:self.liveView];
-    [self.liveView addSubview:self.headerListView];
-    [self.liveView addSubview:self.chatview];
-
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     //[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
@@ -130,7 +135,9 @@
     ELD_WS
     [self.chatview joinChatroomWithIsCount:YES
                                 completion:^(BOOL success) {
+
                                     if (success) {
+                                        
                                         [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
 
                                         weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
@@ -501,14 +508,15 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
         [_backgroudImageView sd_setImageWithURL:[NSURL URLWithString:_room.coverPictureUrl] placeholderImage:ImageWithName(@"default_back_image")];
         
-        [_backgroudImageView addSubview:self.enterAnimationView];
-        
-        [self.enterAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(_backgroudImageView);
-            make.centerY.equalTo(_backgroudImageView);
-        }];
-        
-        [self.enterAnimationView startAnimation];
+//        [_backgroudImageView addSubview:self.enterAnimationView];
+//
+//        [self.enterAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.equalTo(_backgroudImageView);
+//            make.centerY.equalTo(_backgroudImageView);
+//            make.height.equalTo(@(50.0));
+//        }];
+//
+//        [self.enterAnimationView startAnimation];
 
     }
     return _backgroudImageView;
@@ -519,6 +527,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if (_liveView == nil) {
         _liveView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
         _liveView.backgroundColor = [UIColor clearColor];
+        
+        [_liveView addSubview:self.headerListView];
+        [_liveView addSubview:self.chatview];
+        [_liveView addSubview:self.notificationView];
+
     }
     return _liveView;
 }
@@ -566,23 +579,28 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _memberView;
 }
 
-- (UILabel *)hintLabel {
-    if (_hintLabel == nil) {
-        _hintLabel = [[UILabel alloc] init];
-        _hintLabel.font = NFont(18.0);
-        _hintLabel.textColor = COLOR_HEX(0xBDBDBD);
-        _hintLabel.text = @"The Live Stream has ended";
-        _hintLabel.textAlignment = NSTextAlignmentLeft;
+- (ELDNotificationView *)notificationView {
+    if (_notificationView == nil) {
+        _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, 30)];
+        _notificationView.hidden = YES;
     }
-    return _hintLabel;
+    return _notificationView;
 }
 
 - (ELDEnterLiveroomAnimationView *)enterAnimationView {
     if (_enterAnimationView == nil) {
-        _enterAnimationView = [[ELDEnterLiveroomAnimationView alloc] init];
+        _enterAnimationView = [[ELDEnterLiveroomAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
         _enterAnimationView.backgroundColor = UIColor.yellowColor;
     }
     return _enterAnimationView;
+}
+
+- (ELDTwoBallAnimationView *)twoBallAnimationView {
+    if (_twoBallAnimationView == nil) {
+        _twoBallAnimationView = [[ELDTwoBallAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
+        [_twoBallAnimationView startAnimation];
+    }
+    return _twoBallAnimationView;
 }
 
 

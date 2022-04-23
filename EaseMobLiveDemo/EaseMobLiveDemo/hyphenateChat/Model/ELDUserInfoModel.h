@@ -12,12 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDUserInfoModel : NSObject
 @property (nonatomic, strong, readonly) NSString *hyphenateId;
-@property (nonatomic, strong) NSString *nickname;
-@property (nonatomic, assign) BOOL  isMuted;
-@property (nonatomic, assign) BOOL  isStreamer;
-@property (nonatomic, assign) BOOL  isAdmin;
+@property (nonatomic, strong) NSString *displayName;
+@property (nonatomic, strong) UIImage *avatarImage;
 
-- (instancetype)initWithHyphenateId:(NSString *)hyphenateId;
+- (instancetype)initWithUserInfo:(AgoraChatUserInfo *)userInfo;
+
 
 @end
 

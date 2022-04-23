@@ -16,6 +16,7 @@
 #import "UIViewController+HUD.h"
 #import "UIView+Bottom.h"
 #import "UIViewController+Bottom.h"
+#import "UIView+GradientLayer.h"
 
 
 #endif /* EaseLiveCategory_h */

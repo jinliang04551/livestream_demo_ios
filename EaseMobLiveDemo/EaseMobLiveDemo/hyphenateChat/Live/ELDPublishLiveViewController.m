@@ -38,6 +38,7 @@
 #import "ELDChatroomMembersView.h"
 
 #import "ELDUserInfoView.h"
+#import "ELDNotificationView.h"
 
 
 #define kDefaultTop 35.f
@@ -89,7 +90,7 @@
 @property (nonatomic, strong) ELDChatroomMembersView *memberView;
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
 
-@property (nonatomic, strong) UILabel *hintLabel;
+@property (nonatomic, strong) ELDNotificationView *notificationView;
 
 
 @end
@@ -125,7 +126,9 @@
     [self setupForDismissKeyboard];
     
     [self.view addSubview:self.headerListView];
+    [self.view addSubview:self.notificationView];
     [self.view addSubview:self.chatview];
+    
     
     [self joinChatroom];
     
@@ -557,15 +560,12 @@
     return _callCenter;
 }
 
-- (UILabel *)hintLabel {
-    if (_hintLabel == nil) {
-        _hintLabel = [[UILabel alloc] init];
-        _hintLabel.font = NFont(18.0);
-        _hintLabel.textColor = COLOR_HEX(0xBDBDBD);
-        _hintLabel.text = @"The Live Stream has ended";
-        _hintLabel.textAlignment = NSTextAlignmentLeft;
+- (ELDNotificationView *)notificationView {
+    if (_notificationView == nil) {
+        _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, 30)];
+        _notificationView.hidden = YES;
     }
-    return _hintLabel;
+    return _notificationView;
 }
 
 - (void)didReceiveMemoryWarning {

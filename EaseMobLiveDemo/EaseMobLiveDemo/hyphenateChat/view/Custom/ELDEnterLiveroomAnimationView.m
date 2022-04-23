@@ -7,7 +7,6 @@
 //
 
 #import "ELDEnterLiveroomAnimationView.h"
-#import "ELDNotificationView.h"
 
 #define kIconMaxSize 20.0
 
@@ -41,7 +40,6 @@
     [self.blueImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.left.equalTo(self).offset(10.0);
-
     }];
     
     [self.redImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -85,6 +83,7 @@
         _blueImageView.animationImages = @[ImageWithName(@"bluepoint_small"),ImageWithName(@"bluepoint_large")];
         _blueImageView.animationDuration = 0.5;
         _blueImageView.animationRepeatCount = 0;
+        _blueImageView.backgroundColor = UIColor.grayColor;
     }
     return _blueImageView;
 }

@@ -372,7 +372,6 @@
 		C08DFC7A27F5C2F500862ADF /* nav_left_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08DFC7827F5C2F500862ADF /* nav_left_arrow_white@2x.png */; };
 		C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC7C27F6DA2A00862ADF /* ELDAboutViewController.m */; };
 		C08DFC8A27F84D6F00862ADF /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C08DFC8927F84D6F00862ADF /* Reachability.m */; };
-		C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */; };
 		C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */; };
 		C08E8F2D27EDC20800DE47C4 /* livelist_placeHolder@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2B27EDC20800DE47C4 /* livelist_placeHolder@3x.png */; };
 		C08E8F3027EDC36900DE47C4 /* hintLive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F2E27EDC36900DE47C4 /* hintLive@2x.png */; };
@@ -387,6 +386,9 @@
 		C08E8F4627EDDB0500DE47C4 /* ELDPublishLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F4527EDDB0500DE47C4 /* ELDPublishLiveViewController.m */; };
 		C08E8F4927EDE1FA00DE47C4 /* live_camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F4727EDE1FA00DE47C4 /* live_camera@2x.png */; };
 		C08E8F4A27EDE1FA00DE47C4 /* live_camera@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08E8F4827EDE1FA00DE47C4 /* live_camera@3x.png */; };
+		C0AC377E28139C9D00924AA3 /* TwoBallRotationProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC377D28139C9C00924AA3 /* TwoBallRotationProgressBar.m */; };
+		C0AC37812813A16C00924AA3 /* ELDTwoBallAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */; };
+		C0AC37842813B89F00924AA3 /* UIView+GradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC37832813B89F00924AA3 /* UIView+GradientLayer.m */; };
 		D23E252C1CE03775007506CB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E24FF1CE0359C007506CB /* libsqlite3.tbd */; };
 		D23E25321CE0380A007506CB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E25311CE0380A007506CB /* MobileCoreServices.framework */; };
 		D2E368221D3C7EFF00B1C90C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2E368241D3C7EFF00B1C90C /* Localizable.strings */; };
@@ -917,8 +919,6 @@
 		C08DFC8727F8270300862ADF /* ELDConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDConfig.h; sourceTree = "<group>"; };
 		C08DFC8827F84D6F00862ADF /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		C08DFC8927F84D6F00862ADF /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDAnimationController.h; sourceTree = "<group>"; };
-		C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDAnimationController.m; sourceTree = "<group>"; };
 		C08E8F2A27EDC20800DE47C4 /* livelist_placeHolder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@2x.png"; sourceTree = "<group>"; };
 		C08E8F2B27EDC20800DE47C4 /* livelist_placeHolder@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "livelist_placeHolder@3x.png"; sourceTree = "<group>"; };
 		C08E8F2E27EDC36900DE47C4 /* hintLive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hintLive@2x.png"; sourceTree = "<group>"; };
@@ -935,6 +935,12 @@
 		C08E8F4527EDDB0500DE47C4 /* ELDPublishLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDPublishLiveViewController.m; sourceTree = "<group>"; };
 		C08E8F4727EDE1FA00DE47C4 /* live_camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_camera@2x.png"; sourceTree = "<group>"; };
 		C08E8F4827EDE1FA00DE47C4 /* live_camera@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_camera@3x.png"; sourceTree = "<group>"; };
+		C0AC377C28139C9C00924AA3 /* TwoBallRotationProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoBallRotationProgressBar.h; sourceTree = "<group>"; };
+		C0AC377D28139C9C00924AA3 /* TwoBallRotationProgressBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoBallRotationProgressBar.m; sourceTree = "<group>"; };
+		C0AC377F2813A16C00924AA3 /* ELDTwoBallAnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDTwoBallAnimationView.h; sourceTree = "<group>"; };
+		C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDTwoBallAnimationView.m; sourceTree = "<group>"; };
+		C0AC37822813B89F00924AA3 /* UIView+GradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+GradientLayer.h"; sourceTree = "<group>"; };
+		C0AC37832813B89F00924AA3 /* UIView+GradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+GradientLayer.m"; sourceTree = "<group>"; };
 		D23E24FF1CE0359C007506CB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D23E252D1CE0379E007506CB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D23E252F1CE037F6007506CB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1016,14 +1022,6 @@
 				3C9E316F260C7B4200CC3E3F /* EaseSignUpViewController.m */,
 				3C9E326E260C7B4300CC3E3F /* EaseTransitionViewController.h */,
 				3C9E3171260C7B4200CC3E3F /* EaseTransitionViewController.m */,
-				C08E8F2627EB397700DE47C4 /* ELDAnimationController.h */,
-				C08E8F2727EB397700DE47C4 /* ELDAnimationController.m */,
-				C08DFC0927F15BDC00862ADF /* ELDLiveListViewController.h */,
-				C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */,
-				C08E8F4427EDDB0500DE47C4 /* ELDPublishLiveViewController.h */,
-				C08E8F4527EDDB0500DE47C4 /* ELDPublishLiveViewController.m */,
-				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
-				C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */,
 				3C9E317E260C7B4200CC3E3F /* Live */,
 				3C9E318B260C7B4200CC3E3F /* Model */,
 				C08E8F2527EB37DA00DE47C4 /* Setting */,
@@ -1051,6 +1049,8 @@
 				C08DFC4E27F565A800862ADF /* UIAlertAction+Custom.m */,
 				3C9E315B260C7B4100CC3E3F /* UIImage+Color.h */,
 				3C9E315F260C7B4100CC3E3F /* UIImage+Color.m */,
+				C0AC37822813B89F00924AA3 /* UIView+GradientLayer.h */,
+				C0AC37832813B89F00924AA3 /* UIView+GradientLayer.m */,
 				3C9E315E260C7B4100CC3E3F /* UIView+Position.h */,
 				3C9E3158260C7B4100CC3E3F /* UIView+Position.m */,
 				C047552D280912F00094EAD3 /* UIView+Bottom.h */,
@@ -1094,10 +1094,16 @@
 		3C9E317E260C7B4200CC3E3F /* Live */ = {
 			isa = PBXGroup;
 			children = (
-				3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */,
-				3C9E317F260C7B4200CC3E3F /* EaseAboutHuanxinViewController.m */,
+				C08DFC0927F15BDC00862ADF /* ELDLiveListViewController.h */,
+				C08DFC0A27F15BDC00862ADF /* ELDLiveListViewController.m */,
+				C08E8F4427EDDB0500DE47C4 /* ELDPublishLiveViewController.h */,
+				C08E8F4527EDDB0500DE47C4 /* ELDPublishLiveViewController.m */,
+				C08DFC4B27F54F4400862ADF /* ELDPreLivingViewController.h */,
+				C08DFC4C27F54F4400862ADF /* ELDPreLivingViewController.m */,
 				3C9E3184260C7B4200CC3E3F /* EaseLiveViewController.h */,
 				3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */,
+				3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */,
+				3C9E317F260C7B4200CC3E3F /* EaseAboutHuanxinViewController.m */,
 				3C9E3183260C7B4200CC3E3F /* EaseSearchDisplayController.h */,
 				3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */,
 				3C9E3186260C7B4200CC3E3F /* EaseSettingsViewController.h */,
@@ -1269,6 +1275,7 @@
 		3C9E31DF260C7B4200CC3E3F /* 3rdparty */ = {
 			isa = PBXGroup;
 			children = (
+				C0AC377B28139C7A00924AA3 /* TwoBollAnimation */,
 				C047553628095C920094EAD3 /* Calendar */,
 				C0602E6A28001EF600D39575 /* MISScrollPage */,
 				C08DFC8827F84D6F00862ADF /* Reachability.h */,
@@ -1632,6 +1639,8 @@
 		C08DFC2127F1CC4300862ADF /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				C0AC377F2813A16C00924AA3 /* ELDTwoBallAnimationView.h */,
+				C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */,
 				C08E8F4127EDD9CA00DE47C4 /* ELDLoadingView.h */,
 				C08E8F4227EDD9CA00DE47C4 /* ELDLoadingView.m */,
 				C08D320727FEF062005AC68E /* ELDGenderView.h */,
@@ -1777,6 +1786,15 @@
 				C08DFC3C27F2FD9A00862ADF /* Live_edit_name@3x.png */,
 			);
 			path = live;
+			sourceTree = "<group>";
+		};
+		C0AC377B28139C7A00924AA3 /* TwoBollAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				C0AC377C28139C9C00924AA3 /* TwoBallRotationProgressBar.h */,
+				C0AC377D28139C9C00924AA3 /* TwoBallRotationProgressBar.m */,
+			);
+			path = TwoBollAnimation;
 			sourceTree = "<group>";
 		};
 		D2F4E0EA1D12C8AB00BB7E1A /* EaseMobLiveDemo */ = {
@@ -2305,6 +2323,7 @@
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
 				3C9E329B260C7B4300CC3E3F /* JPGiftOperation.m in Sources */,
 				C0602F1B2806BBA600D39575 /* ELDCountCaculateView.m in Sources */,
+				C0AC37842813B89F00924AA3 /* UIView+GradientLayer.m in Sources */,
 				3C9E3295260C7B4300CC3E3F /* JPGiftCountLabel.m in Sources */,
 				3C9E32A4260C7B4300CC3E3F /* EaseGiftListView.m in Sources */,
 				3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */,
@@ -2316,9 +2335,9 @@
 				C0602E9F2804135800D39575 /* AgoraChatUserInfo+expireTime.m in Sources */,
 				C08DFC1327F16F4700862ADF /* ELDAppStyle.m in Sources */,
 				3C9E32AF260C7B4300CC3E3F /* EaseGiftFlyView.m in Sources */,
+				C0AC37812813A16C00924AA3 /* ELDTwoBallAnimationView.m in Sources */,
 				ECCBE3152808781100CDFD2E /* ELDUserInfoHeaderView.m in Sources */,
 				3C9E32A0260C7B4300CC3E3F /* EaseChatView.m in Sources */,
-				C08E8F2827EB397700DE47C4 /* ELDAnimationController.m in Sources */,
 				C047555228095CCE0094EAD3 /* NSDate+GFCalendar.m in Sources */,
 				3C9E329C260C7B4300CC3E3F /* EaseKeyBoardView.m in Sources */,
 				3C9E3294260C7B4300CC3E3F /* JPGiftModel.m in Sources */,
@@ -2344,6 +2363,7 @@
 				3C9E32AE260C7B4300CC3E3F /* EaseProfileLiveView.m in Sources */,
 				C047555128095CCE0094EAD3 /* LXCalendarView.m in Sources */,
 				3C9E3291260C7B4300CC3E3F /* EaseLiveGiftView.m in Sources */,
+				C0AC377E28139C9D00924AA3 /* TwoBallRotationProgressBar.m in Sources */,
 				C0602E8028001EF600D39575 /* MISScrollPageController.m in Sources */,
 				3C9E327B260C7B4300CC3E3F /* EaseSignUpViewController.m in Sources */,
 				3C9E3297260C7B4300CC3E3F /* JPGiftShowView.m in Sources */,

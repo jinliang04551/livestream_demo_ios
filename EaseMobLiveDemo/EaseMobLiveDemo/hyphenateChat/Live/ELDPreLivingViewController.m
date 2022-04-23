@@ -36,8 +36,6 @@
 @property (nonatomic, assign) CGFloat loadingAngle;
 
 @property (nonatomic, strong) ELDLivingCountdownView *livingCountDownView;
-@property (nonatomic, strong) AgoraRtcEngineKit *agoraKit;
-@property (nonatomic, strong) UIView *agoraLocalVideoView;
 
 
 @property (nonatomic, strong)AVCaptureSession *session;
@@ -87,29 +85,6 @@
 }
 
 #pragma mark private method
-- (void)_setupAgoreKit
-{
-    self.agoraKit = [AgoraRtcEngineKit sharedEngineWithAppId:AppId delegate:self];
-    [self.agoraKit setChannelProfile:AgoraChannelProfileLiveBroadcasting];
-    [self.agoraKit setClientRole:AgoraClientRoleBroadcaster options:nil];
-    [self.agoraKit enableVideo];
-    [self.agoraKit enableAudio];
-    [self _setupLocalVideo];
-}
-
-- (void)_setupLocalVideo {
-    self.agoraLocalVideoView = [[UIView alloc]init];
-    self.agoraLocalVideoView.frame = self.view.bounds;
-    [self.view insertSubview:self.agoraLocalVideoView atIndex:0];
-    
-    AgoraRtcVideoCanvas *videoCanvas = [[AgoraRtcVideoCanvas alloc] init];
-    videoCanvas.uid = 0;
-    videoCanvas.view = self.agoraLocalVideoView;
-    videoCanvas.renderMode = AgoraVideoRenderModeHidden;
-    // 设置本地视图。
-    [self.agoraKit setupLocalVideo:videoCanvas];
-}
-
 - (void)startAnimation {
     CGAffineTransform endAngle = CGAffineTransformMakeRotation(self.loadingAngle * (M_PI /180.0f));
 

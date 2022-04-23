@@ -15,25 +15,20 @@
 
 @implementation ELDUserInfoModel
 
-- (instancetype)initWithHyphenateId:(NSString *)hyphenateId {
-    self = [super init];
-    if (self) {
-        _hyphenateId = hyphenateId;
-        _nickname = @"";
-    }
-    return self;
-}
-
 - (instancetype)initWithUserInfo:(AgoraChatUserInfo *)userInfo {
     self = [super init];
     if (self) {
         self.userInfo = userInfo;
         self.hyphenateId = self.userInfo.userId;
-        
     }
     return self;
 
-    
 }
+
+
+- (NSString *)displayName {
+    return self.userInfo.nickName ?:self.userInfo.userId;
+}
+
 
 @end

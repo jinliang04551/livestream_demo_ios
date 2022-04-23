@@ -7,14 +7,17 @@
 //
 
 #import "AgoraChatUserInfoManagerHelper.h"
+#import "ELDUserInfoModel.h"
 
 #define kExpireSeconds 60
 
 @interface AgoraChatUserInfoManagerHelper ()
 @property (nonatomic, strong)NSMutableDictionary *userInfoCacheDic;
+@property (nonatomic, strong)NSMutableDictionary *userModelCacheDic;
 
 @end
 
+//[SDWebImageDownloader sharedDownloader]
 
 @implementation AgoraChatUserInfoManagerHelper
 static AgoraChatUserInfoManagerHelper *instance = nil;
@@ -72,6 +75,10 @@ static dispatch_once_t oneToken;
                     if (user) {
                         resultDic[userKey] = user;
                         self.userInfoCacheDic[userKey] = user;
+                        ELDUserInfoModel *userInfoModel = [[ELDUserInfoModel alloc] initWithUserInfo:user];
+                        if (userInfoModel) {
+                            self.userModelCacheDic[userKey] = userInfoModel;
+                        }
                     }
                 }
                 if (resultDic && completion) {
@@ -183,6 +190,15 @@ static dispatch_once_t oneToken;
     }
     return _userInfoCacheDic;
 }
+
+
+- (NSMutableDictionary *)userModelCacheDic {
+    if (_userModelCacheDic == nil) {
+        _userModelCacheDic = NSMutableDictionary.new;
+    }
+    return _userModelCacheDic;
+}
+
 
 @end
 

@@ -9,7 +9,7 @@
 #import "ELDNotificationView.h"
 
 #define kBgViewWidth 30.0
-#define kBgViewHeight 16.0
+#define kBgViewHeight 24.0
 
 @interface ELDNotificationView ()
 @property (nonatomic, strong)UILabel *contentLabel;
@@ -32,7 +32,9 @@
 - (void)placeAndLayoutSubviews {
     [self addSubview:self.bgView];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
+        make.left.equalTo(self).offset(12.0);
+        make.centerY.equalTo(self);
+        make.height.equalTo(@(kBgViewHeight));
     }];
 }
 
@@ -63,8 +65,11 @@
 
 - (UIView *)bgView {
     if (_bgView == nil) {
-        _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = GenderSecretBgColor;
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth - 12 * 2, kBgViewHeight)];
+        _bgView.layer.cornerRadius = kBgViewHeight * 0.5;
+
+        [_bgView addTransitionColorLeftToRight:COLOR_HEX(0x0148FE) endColor:COLOR_HEX(0x02C3EC)];
+        
         
         [_bgView addSubview:self.iconImageView];
         [_bgView addSubview:self.contentLabel];
@@ -72,6 +77,7 @@
         [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_bgView);
             make.left.equalTo(_bgView).offset(3.0);
+            make.size.equalTo(@(10.0));
         }];
         
         [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
