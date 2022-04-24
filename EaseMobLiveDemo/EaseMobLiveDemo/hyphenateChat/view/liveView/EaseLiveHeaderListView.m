@@ -283,10 +283,11 @@
 
 - (void)updateHeaderViewWithChatroom:(AgoraChatroom*)aChatroom
 {
-    self.occupantsCount = aChatroom.memberList.count;
-    [self.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)self.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
     [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:aChatroom.adminList];
     [self.dataArray addObjectsFromArray:aChatroom.memberList];
+    [self.numberBtn setTitle:[NSString stringWithFormat:@"%@ %@",@(self.dataArray.count) ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
+    
     [self.watchMemberAvatarsView updateWatchersAvatarWithUserIds:self.dataArray];
 
     [self fetchliveUserInfoWithUserId:aChatroom.owner];

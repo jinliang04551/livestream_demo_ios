@@ -97,9 +97,14 @@
 
         case 5:
         {
-            if (self.chatroom.blacklist.count > 0) {
-                [tempArray addObject:self.chatroom.blacklist];
-            }
+            [[AgoraChatClient sharedClient].roomManager getChatroomBlacklistFromServerWithId:self.chatroom.chatroomId pageNumber:1 pageSize:50 completion:^(NSArray *aList, AgoraChatError *aError) {
+                if (aError == nil) {
+                    [self fetchUserInfosWithUserIds:aList];
+                }else {
+                    [self showHint:aError.errorDescription];
+                }
+            }];
+
         }
             break;
 
@@ -118,7 +123,12 @@
     
     NSLog(@"tempArray:%@ vcType:%@",tempArray,@(self.memberVCType));
     
-    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:tempArray completion:^(NSDictionary * _Nonnull userInfoDic) {
+    [self fetchUserInfosWithUserIds:tempArray];
+}
+
+- (void)fetchUserInfosWithUserIds:(NSArray *)userIds {
+    
+    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:userIds completion:^(NSDictionary * _Nonnull userInfoDic) {
         NSMutableArray *userInfos = NSMutableArray.new;
         for (NSString *key in userInfoDic.allKeys) {
             AgoraChatUserInfo *uInfo = userInfoDic[key];
@@ -131,7 +141,6 @@
             [self.table reloadData];
         });
     }];
-    
 }
 
 #pragma mark public method
