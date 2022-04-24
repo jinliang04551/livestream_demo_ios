@@ -17,7 +17,7 @@
 #define kUserInfoAlertTitle @"kUserInfoAlertTitle"
 
 #define kUserInfoCellHeight 44.0
-#define kHeaderViewHeight 150.0
+#define kHeaderViewHeight 154.0
 
 @interface ELDUserInfoView ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) ELDUserInfoHeaderView *headerView;
@@ -27,7 +27,6 @@
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 @property (nonatomic, strong) NSString *currentUsername;
 @property (nonatomic, strong) AgoraChatroom *chatroom;
-@property (nonatomic, strong) NSString *chatroomId;
 @property (nonatomic, assign) ELDMemberRoleType beOperationedMemberRoleType;
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
@@ -63,9 +62,8 @@
         
         self.currentUsername = username;
         self.chatroom = chatroom;
-        self.chatroomId = self.chatroom.chatroomId;
         self.memberVCType = memberVCType;
-
+        
         [self fetchUserInfoWithUsername:username];
      
     }
@@ -135,7 +133,7 @@
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(kHeaderViewHeight));
         make.left.right.equalTo(self);
-        make.bottom.equalTo(self.table.mas_top);
+        make.bottom.equalTo(self.table.mas_top).offset(7.0);
     }];
     
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -260,13 +258,13 @@
 - (void)allTheSilence:(BOOL)isAllTheSilence
 {
     if (isAllTheSilence) {
-        [[AgoraChatClient sharedClient].roomManager muteAllMembersFromChatroom:self.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        [[AgoraChatClient sharedClient].roomManager muteAllMembersFromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
                 [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
             }
         }];
     } else {
-        [[AgoraChatClient sharedClient].roomManager unmuteAllMembersFromChatroom:self.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        [[AgoraChatClient sharedClient].roomManager unmuteAllMembersFromChatroom:self.chatroom.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
                 [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
             }
@@ -289,7 +287,7 @@
     if (_chatroom) {
         ELD_WS
         [[AgoraChatClient sharedClient].roomManager removeAdmin:self.currentUsername
-                                            fromChatroom:_chatroomId
+                                            fromChatroom:self.chatroom.chatroomId
                                               completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
             if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
                 [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];
@@ -316,7 +314,7 @@
 {
     ELD_WS
     [[AgoraChatClient sharedClient].roomManager unmuteMembers:@[self.currentUsername]
-                                          fromChatroom:self.chatroomId
+                                          fromChatroom:self.chatroom.chatroomId
                                             completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
         if (self.userInfoViewDelegate && [self.userInfoViewDelegate respondsToSelector:@selector(updateLiveViewWithChatroom:error:)]) {
             [self.userInfoViewDelegate updateLiveViewWithChatroom:aChatroom error:aError];

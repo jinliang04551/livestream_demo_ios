@@ -12,7 +12,7 @@
 
 - (void)didSelectHeaderWithUsername:(NSString*)username;
 
-- (void)didClickAnchorCard:(EaseLiveRoom*)room;
+- (void)didClickAnchorCard:(AgoraChatUserInfo*)userInfo;
 
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList;
 
@@ -29,11 +29,11 @@
 
 - (instancetype)initWithFrame:(CGRect)frame model:(EasePublishModel*)model;
 
-- (instancetype)initWithFrame:(CGRect)frame room:(EaseLiveRoom*)room;
+- (instancetype)initWithFrame:(CGRect)frame chatroom:(AgoraChatroom*)aChatroom;
 
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;
 
-- (void)updateHeaderViewWithChatroomId:(NSString*)chatroomId;
+- (void)updateHeaderViewWithChatroom:(AgoraChatroom*)aChatroom;
 /*
 - (void)joinChatroomWithUsername:(NSString*)username;
 

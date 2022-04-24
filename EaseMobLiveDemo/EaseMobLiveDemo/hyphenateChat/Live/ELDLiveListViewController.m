@@ -122,22 +122,22 @@
     if (self.tabBarBehavior == kTabbarItemTag_Live) {
         if (isHeader) {
             //获取vod点播房间列表
-            if ([_videoType isEqualToString:kLiveBroadCastingTypeLIVE]) {
+            if ([_videoType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
                         [weakSelf getOngoingLiveroom:YES vodList:result.list];
                 }];
             }
-            //获取agora_vod点播房间列表
-            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
-                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
-                        [weakSelf getOngoingLiveroom:YES vodList:result.list];
-                }];
-            }
-            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
-                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
-                    [weakSelf getOngoingLiveroom:YES vodList:result.list];
-                }];
-            }
+//            //获取agora_vod点播房间列表
+//            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
+//                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+//                        [weakSelf getOngoingLiveroom:YES vodList:result.list];
+//                }];
+//            }
+//            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
+//                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+//                    [weakSelf getOngoingLiveroom:YES vodList:result.list];
+//                }];
+//            }
         } else {
             [self getOngoingLiveroom:NO vodList:nil];
         }

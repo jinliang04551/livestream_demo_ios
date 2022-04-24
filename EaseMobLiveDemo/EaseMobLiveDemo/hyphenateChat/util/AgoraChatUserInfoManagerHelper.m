@@ -17,7 +17,6 @@
 
 @end
 
-//[SDWebImageDownloader sharedDownloader]
 
 @implementation AgoraChatUserInfoManagerHelper
 static AgoraChatUserInfoManagerHelper *instance = nil;

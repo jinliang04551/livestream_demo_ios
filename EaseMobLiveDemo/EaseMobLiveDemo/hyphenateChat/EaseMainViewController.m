@@ -300,7 +300,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 - (ELDLiveListViewController *)liveListVC {
     if (_liveListVC == nil) {
-        _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBroadCastingTypeLIVE];
+        _liveListVC = [[ELDLiveListViewController alloc]initWithBehavior:kTabbarItemTag_Live video_type:kLiveBoardCastingTypeAGORA_CDN_LIVE];
         ELD_WS
         _liveListVC.liveRoomSelectedBlock = ^(EaseLiveRoom * _Nonnull room) {
             [weakSelf goLiveRoomWithRoom:room];

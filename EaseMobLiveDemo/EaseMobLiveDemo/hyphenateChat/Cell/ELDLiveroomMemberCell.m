@@ -61,9 +61,8 @@
   
     [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
     
-    self.nameLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
+    self.nameLabel.text = self.userInfo.nickName ?: self.userInfo.userId;
 
-    
     if ([self.userInfo.userId isEqualToString:self.chatroom.owner]) {
         [self.roleImageView setImage:ImageWithName(@"live_streamer")];
     }else if ([self.chatroom.adminList containsObject:self.userInfo.userId]){

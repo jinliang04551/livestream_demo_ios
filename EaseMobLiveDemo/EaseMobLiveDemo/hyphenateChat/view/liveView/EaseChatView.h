@@ -36,6 +36,13 @@
 
 @interface EaseChatView : UIView
 
+@property (nonatomic, weak) id<EaseChatViewDelegate> delegate;
+
+@property (nonatomic,strong) AgoraChatroom *chatroom;
+
+@property (nonatomic,assign) BOOL isMuted;
+
+
 - (instancetype)initWithFrame:(CGRect)frame
                    chatroomId:(NSString*)chatroomId;
 
@@ -48,15 +55,9 @@
                     isPublish:(BOOL)isPublish
               customMsgHelper:(EaseCustomMessageHelper*)customMsgHelper;
 
-@property (nonatomic, weak) id<EaseChatViewDelegate> delegate;
+- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion;
 
-@property (nonatomic,assign) BOOL isMuted;
-
-- (void)joinChatroomWithIsCount:(BOOL)aIsCount
-                     completion:(void (^)(BOOL success))aCompletion;
-
-- (void)leaveChatroomWithIsCount:(BOOL)aIsCount
-                      completion:(void (^)(BOOL success))aCompletion;
+- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion;
 
 - (void)sendGiftAction:(NSString *)giftId num:(NSInteger)num completion:(void (^)(BOOL success))aCompletion;
 

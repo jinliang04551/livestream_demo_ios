@@ -48,7 +48,6 @@
 		3C9E329E260C7B4300CC3E3F /* EaseGiftConfirmView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B0260C7B4200CC3E3F /* EaseGiftConfirmView.m */; };
 		3C9E329F260C7B4300CC3E3F /* EaseFinishLiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B1260C7B4200CC3E3F /* EaseFinishLiveView.m */; };
 		3C9E32A0260C7B4300CC3E3F /* EaseChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B3260C7B4200CC3E3F /* EaseChatView.m */; };
-		3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B6260C7B4200CC3E3F /* EaseAdminView.m */; };
 		3C9E32A2260C7B4300CC3E3F /* EaseEndLiveView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B7260C7B4200CC3E3F /* EaseEndLiveView.m */; };
 		3C9E32A3260C7B4300CC3E3F /* EaseLiveCastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31B8260C7B4200CC3E3F /* EaseLiveCastView.m */; };
 		3C9E32A4260C7B4300CC3E3F /* EaseGiftListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31BC260C7B4200CC3E3F /* EaseGiftListView.m */; };
@@ -494,7 +493,6 @@
 		3C9E31B3260C7B4200CC3E3F /* EaseChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseChatView.m; sourceTree = "<group>"; };
 		3C9E31B4260C7B4200CC3E3F /* EaseAnchorCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseAnchorCardView.h; sourceTree = "<group>"; };
 		3C9E31B5260C7B4200CC3E3F /* EaseEmoticonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseEmoticonView.h; sourceTree = "<group>"; };
-		3C9E31B6260C7B4200CC3E3F /* EaseAdminView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseAdminView.m; sourceTree = "<group>"; };
 		3C9E31B7260C7B4200CC3E3F /* EaseEndLiveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseEndLiveView.m; sourceTree = "<group>"; };
 		3C9E31B8260C7B4200CC3E3F /* EaseLiveCastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveCastView.m; sourceTree = "<group>"; };
 		3C9E31B9260C7B4200CC3E3F /* EaseCustomSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCustomSwitch.h; sourceTree = "<group>"; };
@@ -518,7 +516,6 @@
 		3C9E31CC260C7B4200CC3E3F /* EaseCustomKeyBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseCustomKeyBoardView.h; sourceTree = "<group>"; };
 		3C9E31CD260C7B4200CC3E3F /* EaseEndLiveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseEndLiveView.h; sourceTree = "<group>"; };
 		3C9E31CE260C7B4200CC3E3F /* EaseEmoticonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseEmoticonView.m; sourceTree = "<group>"; };
-		3C9E31CF260C7B4200CC3E3F /* EaseAdminView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseAdminView.h; sourceTree = "<group>"; };
 		3C9E31D0260C7B4200CC3E3F /* EaseAnchorCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseAnchorCardView.m; sourceTree = "<group>"; };
 		3C9E31D1260C7B4200CC3E3F /* EaseChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseChatView.h; sourceTree = "<group>"; };
 		3C9E31D2260C7B4200CC3E3F /* EaseInputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseInputTextView.m; sourceTree = "<group>"; };
@@ -1148,8 +1145,6 @@
 			isa = PBXGroup;
 			children = (
 				3C9E31BD260C7B4200CC3E3F /* cell */,
-				3C9E31CF260C7B4200CC3E3F /* EaseAdminView.h */,
-				3C9E31B6260C7B4200CC3E3F /* EaseAdminView.m */,
 				3C9E31B4260C7B4200CC3E3F /* EaseAnchorCardView.h */,
 				3C9E31D0260C7B4200CC3E3F /* EaseAnchorCardView.m */,
 				3C9E31C8260C7B4200CC3E3F /* EaseAudienceBehaviorView.h */,
@@ -1562,6 +1557,7 @@
 			children = (
 				C047555828095E370094EAD3 /* LxButton.h */,
 				C047555D28095E370094EAD3 /* LxButton.m */,
+				C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */,
 				C047555A28095E370094EAD3 /* UIColor+Expanded.h */,
 				C047555E28095E370094EAD3 /* UIColor+Expanded.m */,
 				C047555628095E370094EAD3 /* UILabel+LXLabel.h */,
@@ -1570,7 +1566,6 @@
 				C047555928095E370094EAD3 /* UIView+FTCornerdious.m */,
 				C047555728095E370094EAD3 /* UIView+LX_Frame.h */,
 				C047555B28095E370094EAD3 /* UIView+LX_Frame.m */,
-				C0475565280960020094EAD3 /* LXCalendarCategoryHeader.h */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2319,7 +2314,6 @@
 				C047554E28095CCE0094EAD3 /* LXCalendarHearder.m in Sources */,
 				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
 				C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */,
-				3C9E32A1260C7B4300CC3E3F /* EaseAdminView.m in Sources */,
 				C08DFC5027F565A800862ADF /* UIAlertAction+Custom.m in Sources */,
 				3C9E329B260C7B4300CC3E3F /* JPGiftOperation.m in Sources */,
 				C0602F1B2806BBA600D39575 /* ELDCountCaculateView.m in Sources */,

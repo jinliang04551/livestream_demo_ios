@@ -54,12 +54,14 @@
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ELDWatchMemberAvatarsView *watchMemberAvatarsView;
+@property (nonatomic, strong) AgoraChatroom *chatroom;
+
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) NSInteger occupantsCount;
 @property (nonatomic, strong) UIButton *numberBtn;
-@property (nonatomic, strong) EaseLiveRoom *room;
 @property (nonatomic, strong) UIButton *closeButton;
+
 
 @end
 
@@ -90,11 +92,11 @@
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame room:(EaseLiveRoom*)room
+- (instancetype)initWithFrame:(CGRect)frame chatroom:(AgoraChatroom*)aChatroom
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _room = room;
+        self.chatroom = aChatroom;
         [self addSubview:self.watchMemberAvatarsView];
         [self addSubview:self.liveCastView];
         [self addSubview:self.numberBtn];
@@ -112,7 +114,7 @@
         }];
 
         //when chatroom owner is living
-        if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:room.anchor]) {
+        if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:self.chatroom.owner]) {
             [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.bottom.equalTo(self.liveCastView);
                 make.height.equalTo(self.liveCastView);
@@ -152,7 +154,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateHeaderViewWithChatroomId:) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(updateHeaderView) userInfo:nil repeats:YES];
     [_timer fire];
 }
 
@@ -211,7 +213,7 @@
 - (EaseLiveCastView*)liveCastView
 {
     if (_liveCastView == nil) {
-        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight) room:_room];
+        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight)];
         _liveCastView.backgroundColor = AlphaBlackColor;
 
     }
@@ -259,10 +261,10 @@
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectMemberListButton:currentMemberList:)]) {
         BOOL isOwner = NO;
-        if (_room && [_room.anchor isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
+        if (self.chatroom && [self.chatroom.owner isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             isOwner = YES;
         }
-        [self.delegate didSelectMemberListButton:isOwner currentMemberList:[_room.currentMemberList mutableCopy]];
+        [self.delegate didSelectMemberListButton:isOwner currentMemberList:[self.chatroom.memberList mutableCopy]];
         _numberBtn.selected = !_numberBtn.selected;
     }
 }
@@ -275,61 +277,30 @@
 }
 
 #pragma mark - public
-- (void)fetchChatroomDetailWithChatroomId:(NSString*)chatroomId
-{
-    __weak typeof(self) weakself = self;
-    [[EaseHttpManager sharedInstance] fetchLiveroomDetail:_room.chatroomId completion:^(EaseLiveRoom *room, BOOL success) {
-        if (success) {
-            if (room.status == offline) {
-                [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
-                }];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _room = room;
-                weakself.occupantsCount = _room.currentUserCount;
-                [weakself.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)weakself.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
-                [weakself.dataArray removeAllObjects];
-                [weakself.dataArray addObjectsFromArray:_room.currentMemberList];
-                [weakself.watchMemberAvatarsView updateWatchersAvatarWithUserIds:weakself.dataArray];
-            });
-        }
-    }];
-    
-    [self fetchliveUserInfoWithUserId:_room.anchor];
+- (void)updateHeaderView {
+    [self updateHeaderViewWithChatroom:self.chatroom];
 }
 
-
-- (void)updateHeaderViewWithChatroomId:(NSString*)chatroomId
+- (void)updateHeaderViewWithChatroom:(AgoraChatroom*)aChatroom
 {
-    __weak typeof(self) weakself = self;
-    [[EaseHttpManager sharedInstance] fetchLiveroomDetail:_room.chatroomId completion:^(EaseLiveRoom *room, BOOL success) {
-        if (success) {
-            if (room.status == offline) {
-                [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
-                }];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _room = room;
-                weakself.occupantsCount = _room.currentUserCount;
-                [weakself.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)weakself.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
-                [weakself.dataArray removeAllObjects];
-                [weakself.dataArray addObjectsFromArray:_room.currentMemberList];
-                [weakself.watchMemberAvatarsView updateWatchersAvatarWithUserIds:weakself.dataArray];
-            });
-        }
-    }];
+    self.occupantsCount = aChatroom.memberList.count;
+    [self.numberBtn setTitle:[NSString stringWithFormat:@"%ld%@",(long)self.occupantsCount ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:aChatroom.memberList];
+    [self.watchMemberAvatarsView updateWatchersAvatarWithUserIds:self.dataArray];
 
-    [self fetchliveUserInfoWithUserId:_room.anchor];
+    [self fetchliveUserInfoWithUserId:aChatroom.owner];
 }
 
 - (void)fetchliveUserInfoWithUserId:(NSString *)userId {
-    
-    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            AgoraChatUserInfo *userInfo = userInfoDic[userId];
-            [self.liveCastView updateUIWithUserInfo:userInfo];
-        });
-    }];
+    if (userId) {
+        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                AgoraChatUserInfo *userInfo = userInfoDic[userId];
+                [self.liveCastView updateUIWithUserInfo:userInfo];
+            });
+        }];
+    }
 }
 
 

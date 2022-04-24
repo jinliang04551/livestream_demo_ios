@@ -16,7 +16,6 @@
 #import "EaseProfileLiveView.h"
 #import "EaseLiveGiftView.h"
 #import "EaseLiveRoom.h"
-#import "EaseAdminView.h"
 #import "EaseAnchorCardView.h"
 #import "EaseLiveGiftView.h"
 #import "EaseGiftConfirmView.h"
@@ -112,9 +111,7 @@
     [super viewDidLoad];
     [self.view insertSubview:self.backgroudImageView atIndex:0];
     
-    [self.view addSubview:self.liveView];
-    
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     //[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
@@ -133,39 +130,47 @@
 
 - (void)joinChatroom {
     ELD_WS
-    [self.chatview joinChatroomWithIsCount:YES
-                                completion:^(BOOL success) {
+    
+    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (aError == nil) {
+            [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                if (aError == nil) {
+                    weakSelf.chatroom = aChatroom;
+                    
+                    [self.view addSubview:self.liveView];
+                    [weakSelf.view bringSubviewToFront:weakSelf.liveView];
+                    [weakSelf updateUI];
 
-                                    if (success) {
-                                        
-                                        [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
+//                    [weakSelf.view layoutSubviews];
+                    
 
-                                        weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
-                                        
-                                        [weakSelf updateSendTextButtonStatus];
-                                        
-                                        [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
-                                                                                     completion:^(EaseLiveRoom *room, BOOL success) {
-                                            if (success) {
-                                                
-                                            }else {
+                }else {
+                    [self showHint:aError.description];
+                }
+            }];
 
-                                            }
-                                        }];
-                                    } else {
-                                        [weakSelf.view bringSubviewToFront:weakSelf.liveView];
-                                        [weakSelf.view layoutSubviews];
-                                    }
-                                }];
+        } else {
+            [self showHint:aError.description];
+        }
+    }];
     
 
 }
 
-- (void)updateSendTextButtonStatus {
-    if ([self.chatroom.muteList containsObject:AgoraChatClient.sharedClient.currentUsername]) {
+- (void)updateUI {
+    [self.headerListView updateHeaderViewWithChatroom:self.chatroom];
+    [self updateChatView];
+}
+
+- (void)updateChatView {
+    self.chatview.chatroom = self.chatroom;
+    
+    if ([self.chatroom.muteList containsObject:AgoraChatClient.sharedClient.currentUsername] ||self.chatroom.isMuteAllMembers) {
         self.chatview.isMuted = YES;
     }
 }
+
+
 
 - (void)viewWillLayoutSubviews
 {
@@ -238,7 +243,7 @@
     __weak typeof(self) weakSelf = self;
     [self fetchAgoraRtcToken:^(NSString *rtcToken,NSUInteger agoraUserId) {
         [weakSelf.agoraKit joinChannelByToken:rtcToken channelId:_room.channel info:nil uid:agoraUserId joinSuccess:^(NSString *channel, NSUInteger uid, NSInteger elapsed) {
-            if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CND_LIVE]) {
+            if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 NSDictionary *paramtars = @{
                     @"protocol":@"rtmp",
                     @"domain":@"ws-rtmp-pull.easemob.com",
@@ -539,7 +544,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (EaseLiveHeaderListView*)headerListView
 {
     if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) room:_room];
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) chatroom:self.chatroom];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
     }
@@ -620,11 +625,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 //主播信息卡片
-- (void)didClickAnchorCard:(EaseLiveRoom *)room
+- (void)didClickAnchorCard:(AgoraChatUserInfo*)userInfo
 {
     [self.view endEditing:YES];
 
-    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:self.chatroom];
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:userInfo.userId chatroom:self.chatroom];
     userInfoView.delegate = self;
     [userInfoView showFromParentView:self.view];
 }
@@ -813,22 +818,13 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
     NSLog(@"userDidJoinChatroom: %s",__func__);
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
-        [self.headerListView updateHeaderViewWithChatroomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithRoomId:self.chatroom.chatroomId];
     }
 }
 
-
-- (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
-{
-    if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
-        if (aMuted) {
-            [self showHint:@"主播已开启全员禁言状态，不可发言！"];
-            self.chatview.isMuted = YES;
-        } else {
-            [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
-        }
-        
-        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+- (void)userDidLeaveChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
+        [self fetchChatroomSpecificationWithRoomId:self.chatroom.chatroomId];
     }
 }
 
@@ -842,6 +838,22 @@ extern NSMutableDictionary *anchorInfoDic;
         [MBProgressHUD showMessag:@"您的账号已离线" toView:nil];
     [self closeButtonAction];
 }
+
+- (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
+{
+    if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
+        if (aMuted) {
+            [self showHint:@"主播已开启全员禁言状态，不可发言！"];
+            self.chatview.isMuted = YES;
+        } else {
+            [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
+            self.chatview.isMuted = NO;
+        }
+        
+        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+    }
+}
+
 
 - (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
                         addedAdmin:(NSString *)aAdmin;
@@ -955,6 +967,7 @@ extern NSMutableDictionary *anchorInfoDic;
             self.chatroom = aChatroom;
             //reset memberView
             self.memberView = nil;
+            [self.headerListView updateHeaderViewWithChatroom:self.chatroom];
         }else {
             [self showHint:aError.description];
         }
@@ -986,8 +999,7 @@ extern NSMutableDictionary *anchorInfoDic;
 {
     __weak typeof(self) weakSelf =  self;
     NSString *chatroomId = [_room.chatroomId copy];
-    [weakSelf.chatview leaveChatroomWithIsCount:YES
-                                     completion:^(BOOL success) {
+    [weakSelf.chatview leaveChatroomWithCompletion:^(BOOL success) {
                                          if (success) {
                                              [[AgoraChatClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
                                          }

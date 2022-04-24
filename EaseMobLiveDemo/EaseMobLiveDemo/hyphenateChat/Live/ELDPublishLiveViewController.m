@@ -15,7 +15,6 @@
 #import "UIImage+Color.h"
 #import "EaseProfileLiveView.h"
 #import "EaseLiveCastView.h"
-#import "EaseAdminView.h"
 #import "EaseLiveRoom.h"
 #import "EaseAnchorCardView.h"
 #import "EaseDefaultDataHelper.h"
@@ -124,12 +123,7 @@
     
     
     [self setupForDismissKeyboard];
-    
-    [self.view addSubview:self.headerListView];
-    [self.view addSubview:self.notificationView];
-    [self.view addSubview:self.chatview];
-    
-    
+        
     [self joinChatroom];
     
     [self _setupAgoreKit];
@@ -144,22 +138,38 @@
 //    }
 }
 
+- (void)placeAndLayoutSubviews {
+    [self.view addSubview:self.headerListView];
+    [self.view addSubview:self.notificationView];
+    [self.view addSubview:self.chatview];
+}
+
 - (void)joinChatroom {
     ELD_WS
-    [self.chatview joinChatroomWithIsCount:YES
-                                completion:^(BOOL success) {
-                                    if (success) {
-                                        [weakSelf.headerListView updateHeaderViewWithChatroomId:[_room.chatroomId copy]];
-                                        weakSelf.chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId error:nil];
-                                        [[EaseHttpManager sharedInstance] getLiveRoomWithRoomId:_room.roomId
-                                                                                     completion:^(EaseLiveRoom *room, BOOL success) {
-                                                                                     }];
-                                    } else {
-//                                        [weakSelf showHint:@"加入聊天室失败"];
-                                    }
-                                }];
-    
+    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (aError == nil) {
+            weakSelf.chatroom = aChatroom;
+            [weakSelf placeAndLayoutSubviews];
+            [weakSelf fetchChatroomSpecificationWithChatroomId:weakSelf.chatroom.chatroomId];
+        } else {
+            [weakSelf showHint:aError.description];
+        }
+    }];
 
+}
+
+- (void)fetchChatroomSpecificationWithChatroomId:(NSString *)aChatroomId {
+    ELD_WS
+    [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:aChatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+        if (aError == nil) {
+            weakSelf.chatroom = aChatroom;
+            // reset memberView
+            weakSelf.memberView = nil;
+            [weakSelf.headerListView updateHeaderViewWithChatroom:self.chatroom];
+        }else {
+            [weakSelf showHint:aError.description];
+        }
+    }];
 }
 
 - (void)dealloc
@@ -206,7 +216,7 @@
                 [weakSelf.agoraKit muteLocalVideoStream:YES];
                 [weakSelf.agoraKit muteLocalAudioStream:YES];
             }
-            if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeLIVE]) {
+            if ([weakSelf.room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 [weakSelf.session stopStreaming];
             }
         } else if (call.callState ==CTCallStateDialing) {
@@ -230,7 +240,7 @@
             [weakSelf.agoraKit muteAllRemoteVideoStreams:YES];
             [weakSelf.agoraKit muteAllRemoteAudioStreams:YES];
             [weakSelf.agoraKit muteAllRemoteVideoStreams:YES];
-            if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeLIVE]) {
+            if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 NSDictionary *paramtars = @{
                     @"domain":@"ws1-rtmp-push.easemob.com",
                     @"pushPoint":@"live",
@@ -385,23 +395,25 @@
 
 - (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
-    __weak typeof(self) weakSelf = self;
+    ELD_WS
     //断网重连后，修改直播间状态为ongoing并重新推流&加入聊天室
     if (aConnectionState == AgoraChatConnectionConnected) {
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:_room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success)
                 _room = room;
-            [weakSelf.chatview joinChatroomWithIsCount:NO
-                                        completion:^(BOOL success) {
-                                            if (success) {
-                                                [weakSelf.headerListView updateHeaderViewWithChatroomId:_room.chatroomId];
-                                            }
-                                        }];
+            [weakSelf.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+                if (aError == nil) {
+                    weakSelf.chatroom = aChatroom;
+                    [weakSelf.headerListView updateHeaderViewWithChatroom:weakSelf.chatroom];
+                }
+                
+            }];
+            
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
                 [weakSelf.agoraKit enableLocalVideo:YES];
                 [weakSelf.agoraKit enableLocalAudio:YES];
             }
-            if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeLIVE]) {
+            if ([weakSelf.room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 [weakSelf.session restartStreamingWithPushURL:_streamURL feedback:^(PLStreamStartStateFeedback feedback) {}];
             }
         }];
@@ -515,7 +527,7 @@
 - (EaseLiveHeaderListView*)headerListView
 {
     if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) room:_room];
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) chatroom:self.chatroom];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
     }
@@ -662,7 +674,7 @@
 
 - (void)updateLiveViewWithChatroom:(AgoraChatroom *)chatroom error:(AgoraChatError *)error {
     if (error == nil) {
-        [self fetchChatroomSpecificationWithRoomId:chatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:chatroom.chatroomId];
     }else {
         [self showHint:error.description];
     }
@@ -671,25 +683,12 @@
 }
 
 
-- (void)fetchChatroomSpecificationWithRoomId:(NSString *)roomId {
-    [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:roomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-        if (aError == nil) {
-            self.chatroom = aChatroom;
-            // reset memberView
-            self.memberView = nil;
-        }else {
-            [self showHint:aError.description];
-        }
-    }];
-}
-
 
 - (void)didClickFinishButton
 {
     ELD_WS
     dispatch_block_t block = ^{
-        [weakSelf.chatview leaveChatroomWithIsCount:NO
-                                         completion:^(BOOL success) {
+        [weakSelf.chatview leaveChatroomWithCompletion:^(BOOL success) {
                                              if (success) {
                                                  [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
                                              } else {
@@ -808,7 +807,6 @@
     [_customMsgHelper praiseAction:_chatview];
     AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)message.body;
     _praiseNum += [(NSString*)[customBody.ext objectForKey:@"num"] integerValue];
-    [self.headerListView.liveCastView setNumberOfPraise:_praiseNum];
     EaseDefaultDataHelper.shared.praiseStatisticstCount = [NSString stringWithFormat:@"%ld",(long)_praiseNum];
     [EaseDefaultDataHelper.shared archive];
 }
@@ -826,12 +824,13 @@
 
 #pragma mark EaseLiveHeaderListViewDelegate
 //主播信息卡片
-- (void)didClickAnchorCard:(EaseLiveRoom *)room
+- (void)didClickAnchorCard:(AgoraChatUserInfo*)userInfo
 {
     [self.view endEditing:YES];
 
-    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:room.anchor chatroom:_chatroom];
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithOwnerId:userInfo.userId chatroom:_chatroom];
     userInfoView.delegate = self;
+    userInfoView.userInfoViewDelegate = self;
     [userInfoView showFromParentView:self.view];
     
 }
@@ -866,9 +865,16 @@
 - (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
     NSLog(@"userDidJoinChatroom:%s",__func__);
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
-        [self.headerListView updateHeaderViewWithChatroomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:self.chatroom.chatroomId];
     }
 }
+
+- (void)userDidLeaveChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
+        [self fetchChatroomSpecificationWithChatroomId:self.chatroom.chatroomId];
+    }
+}
+
 
 extern bool isAllTheSilence;
 - (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
@@ -891,7 +897,7 @@ extern bool isAllTheSilence;
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         
         [self showHint:[NSString stringWithFormat:@"被加入白名单:%@",text]];
     }
@@ -904,7 +910,7 @@ extern bool isAllTheSilence;
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         [self showHint:[NSString stringWithFormat:@"从白名单移除:%@",text]];
     }
 }
@@ -919,7 +925,7 @@ extern bool isAllTheSilence;
             [text appendString:name];
         }
 //        [self showHint:[NSString stringWithFormat:@"禁言成员:%@",text]];
-        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         [self showHint:@"已被禁言"];
     }
 }
@@ -934,7 +940,7 @@ extern bool isAllTheSilence;
         }
 //        [self showHint:[NSString stringWithFormat:@"解除禁言:%@",text]];
         
-        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         [self showHint:[NSString stringWithFormat:@"已解除禁言"]];
     }
 }
@@ -950,7 +956,7 @@ extern bool isAllTheSilence;
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"publish.ok", @"Ok") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if ([aOldOwner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-                if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeLIVE]) {
+                if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                     [weakSelf.session stopStreaming];//结束推流
                     [weakSelf.session destroy];
                 }
@@ -969,7 +975,7 @@ extern bool isAllTheSilence;
                     [weakSelf.navigationController presentViewController:view animated:YES completion:NULL];
                     if (_finishBroadcastCompletion) {
                         _finishBroadcastCompletion(YES);
-                        [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+                        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
                     }
                 }];
             }
@@ -981,17 +987,6 @@ extern bool isAllTheSilence;
     }
 }
 
-- (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom reason:(AgoraChatroomBeKickedReason)aReason
-{
-//    if (aReason == 0)
-//        [MBProgressHUD showMessag:[NSString stringWithFormat:@"被移出直播聊天室 %@", aChatroom.subject] toView:nil];
-//    if (aReason == 1)
-//        [MBProgressHUD showMessag:[NSString stringWithFormat:@"直播聊天室 %@ 已解散", aChatroom.subject] toView:nil];
-//    if (aReason == 2)
-//        [MBProgressHUD showMessag:@"您的账号已离线" toView:nil];
-//    [self didClickFinishButton];
-    
-}
 
 
 

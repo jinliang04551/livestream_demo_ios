@@ -596,7 +596,7 @@
         _liveRoom = [[EaseLiveRoom alloc] init];
         _liveRoom.title =_liveNameTextField.text;
         _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
-        _liveRoom.liveroomType = kLiveBroadCastingTypeLIVE;
+        _liveRoom.liveroomType = kLiveBoardCastingTypeAGORA_CDN_LIVE;
     }
     return _liveRoom;
 }

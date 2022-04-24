@@ -786,49 +786,29 @@ static EaseHttpManager *sharedInstance = nil;
 
 - (void)joinLiveRoomWithRoomId:(NSString*)aRoomId
                     chatroomId:(NSString*)aChatroomId
-                       isCount:(BOOL)aIsCount
-                    completion:(void (^)(BOOL success))aCompletion
+                    completion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion
 {
-    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        AgoraChatError *error = nil;
-        [[AgoraChatClient sharedClient].roomManager joinChatroom:aChatroomId error:&error];
-        BOOL ret = NO;
-        if (!error) {
-            if (aIsCount) {
-                [weakSelf _doPutCountWithRoomId:aRoomId
-                                           type:@"join"
-                                          count:1
-                                     completion:NULL];
-            }
-            ret = YES;
-        }
+        [[AgoraChatClient sharedClient].roomManager joinChatroom:aChatroomId completion:aCompletion];
         
-        if (aCompletion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                aCompletion(ret);
-            });
-        }
     });
 }
 
 - (void)leaveLiveRoomWithRoomId:(NSString*)aRoomId
                      chatroomId:(NSString*)aChatroomId
-                        isCount:(BOOL)aIsCount
                      completion:(void (^)(BOOL success))aCompletion
 {
-    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         AgoraChatError *error = nil;
         [[AgoraChatClient sharedClient].roomManager leaveChatroom:aChatroomId error:&error];
         BOOL ret = NO;
         if (!error) {
-            if (aIsCount) {
-                [weakSelf _doPutCountWithRoomId:aRoomId
-                                           type:@"leave"
-                                          count:1
-                                     completion:NULL];
-            }
+//            if (aIsCount) {
+//                [weakSelf _doPutCountWithRoomId:aRoomId
+//                                           type:@"leave"
+//                                          count:1
+//                                     completion:NULL];
+//            }
             ret = YES;
         }
         

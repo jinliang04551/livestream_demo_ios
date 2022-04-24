@@ -14,11 +14,9 @@
 @interface EaseLiveCastView : UIView
 
 
-- (instancetype)initWithFrame:(CGRect)frame room:(EaseLiveRoom*)room;
+- (instancetype)initWithFrame:(CGRect)frame;
 
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;
-
-- (void)setNumberOfPraise:(NSInteger)number;
 
 - (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo;
 

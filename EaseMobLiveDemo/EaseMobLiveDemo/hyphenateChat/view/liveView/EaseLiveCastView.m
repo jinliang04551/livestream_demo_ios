@@ -14,34 +14,27 @@
 
 
 @interface EaseLiveCastView ()
-{
-    EaseLiveRoom *_room;
-}
-
 @property (nonatomic, strong) UIImageView *headImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *praiseLabel;
 @property (nonatomic, strong) UILabel *giftValuesLabel;
 @property (nonatomic, strong) ELDGenderView *genderView;
 @property (nonatomic, strong) UIImageView *giftIconImageView;
+@property (nonatomic, strong) AgoraChatUserInfo *userInfo;
+
 
 @end
 
-extern NSArray<NSString*> *nickNameArray;
-extern NSMutableDictionary *anchorInfoDic;
 
 @implementation EaseLiveCastView
 
-- (instancetype)initWithFrame:(CGRect)frame room:(EaseLiveRoom*)room
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _room = room;
         self.layer.cornerRadius = frame.size.height / 2;
-        
         [self placeAndlayoutSubviews];
-        [self _setviewData];
         [self addTapGesture];
+        
     }
     return self;
 }
@@ -95,13 +88,16 @@ extern NSMutableDictionary *anchorInfoDic;
     }];
 }
 
+
 - (void)updateUIWithUserInfo:(AgoraChatUserInfo *)userInfo {
-    
-    self.nameLabel.text = userInfo.nickName ?:userInfo.userId;
-    [self.headImageView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] placeholderImage:kDefultUserImage];
-    [self.genderView updateWithGender:userInfo.gender birthday:userInfo.birth];
-    
+    if (userInfo) {
+        self.userInfo = userInfo;
+        self.nameLabel.text = userInfo.nickName ?:userInfo.userId;
+        [self.headImageView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] placeholderImage:kDefultUserImage];
+        [self.genderView updateWithGender:userInfo.gender birthday:userInfo.birth];
+    }
 }
+
 
 #pragma mark getter and setter
 - (UIImageView*)headImageView
@@ -173,53 +169,14 @@ extern NSMutableDictionary *anchorInfoDic;
 }
 
 
-
-- (void)_setviewData
-{
-    extern NSArray<NSString*>*nickNameArray;
-    if (_room) {
-        if ([_room.anchor isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-            if (![EaseDefaultDataHelper.shared.defaultNickname isEqualToString:@""]) {
-                _nameLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
-            } else {
-                int random = (arc4random() % 100);
-                EaseDefaultDataHelper.shared.defaultNickname = nickNameArray[random];
-                [EaseDefaultDataHelper.shared archive];
-                _nameLabel.text = EaseDefaultDataHelper.shared.defaultNickname;
-            }
-        } else {
-            NSMutableDictionary *anchorInfo = [anchorInfoDic objectForKey:_room.roomId];
-            if (anchorInfo && [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] && ![[anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR] isEqualToString:@""]) {
-                _nameLabel.text = [anchorInfo objectForKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];
-            } else {
-                anchorInfo = [[NSMutableDictionary alloc]initWithCapacity:3];
-                [anchorInfo setObject:_room.anchor forKey:kBROADCASTING_CURRENT_ANCHOR];//当前房间主播
-                int random = (arc4random() % 100);
-                NSString *randomNickname = nickNameArray[random];
-                _nameLabel.text = randomNickname;
-                [anchorInfo setObject:_nameLabel.text forKey:kBROADCASTING_CURRENT_ANCHOR_NICKNAME];//当前房间主播昵称
-                random = (arc4random() % 7) + 1;
-                [anchorInfo setObject:[NSString stringWithFormat:@"avatat_%d",random] forKey:kBROADCASTING_CURRENT_ANCHOR_AVATAR];//当前房间主播头像
-                [anchorInfoDic setObject:anchorInfo forKey:_room.roomId];
-            }
-        }
-    }
-}
-
 #pragma mark - action
 - (void)didSelectHeadImage
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didClickAnchorCard:)]) {
-        [self.delegate didClickAnchorCard:_room];
+        [self.delegate didClickAnchorCard:self.userInfo];
     }
 }
 
-#pragma mark - public
-
-- (void)setNumberOfPraise:(NSInteger)number
-{
-    _praiseLabel.text = [NSString stringWithFormat:@"赞：%ld",(long)number];
-}
 
 
 @end

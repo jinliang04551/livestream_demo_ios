@@ -11,7 +11,6 @@
 #import "EaseLiveRoom.h"
 #import "EaseCustomSwitch.h"
 #import "EaseEmoticonView.h"
-#import "Masonry.h"
 #import "ELDChatJoinCell.h"
 
 
@@ -37,7 +36,6 @@ NSMutableDictionary *audienceNickname;//直播间观众昵称库
 {
     NSString *_chatroomId;
     EaseLiveRoom *_room;
-    AgoraChatroom *_chatroom;
     
     long long _curtime;
     CGFloat _previousTextViewContentHeight;
@@ -511,7 +509,7 @@ BOOL isAllTheSilence;//全体禁言
                       newOwner:(NSString *)aNewOwner
                       oldOwner:(NSString *)aOldOwner
 {
-    _chatroom = aChatroom;
+    self.chatroom = aChatroom;
     _room.anchor = aNewOwner;
     if (self.delegate && [self.delegate respondsToSelector:@selector(liveRoomOwnerDidUpdate:newOwner:)]) {
         [self.delegate liveRoomOwnerDidUpdate:aChatroom newOwner:aNewOwner];
@@ -557,7 +555,7 @@ BOOL isAllTheSilence;//全体禁言
         [joinCell updateWithObj:message];
         return joinCell;
     }else {
-        [cell setMesssage:message chatroom:_chatroom];
+        [cell setMesssage:message chatroom:self.chatroom];
     }
     return cell;
 }
@@ -1034,7 +1032,7 @@ BOOL isAllTheSilence;//全体禁言
 
 - (void)giftAction
 {
-    if ([_chatroom.owner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
+    if ([self.chatroom.owner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         //礼物列表
         if (_delegate && [_delegate respondsToSelector:@selector(didSelectGiftButton:)]) {
             [_delegate didSelectGiftButton:YES];
@@ -1071,39 +1069,18 @@ BOOL isAllTheSilence;//全体禁言
     return result;
 }
 
-- (void)joinChatroomWithIsCount:(BOOL)aIsCount
-                     completion:(void (^)(BOOL success))aCompletion
+- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion
 {
-    __weak typeof(self) weakSelf = self;
     [[EaseHttpManager sharedInstance] joinLiveRoomWithRoomId:_room.roomId
                                                   chatroomId:_room.chatroomId
-                                                     isCount:aIsCount
-                                                  completion:^(BOOL success) {
-                                                      BOOL ret = NO;
-                                                      if (success) {
-                                                          AgoraChatError *error = nil;
-                                                          _chatroom = [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_chatroomId error:&error];
-                                                          ret = YES;
-                                                          if (!error) {
-                                                              isAllTheSilence = _chatroom.isMuteAllMembers;
-                                                              BOOL ret = _chatroom.permissionType == AgoraChatroomPermissionTypeAdmin || _chatroom.permissionType == AgoraChatroomPermissionTypeOwner;
-                                                              if (ret) {
-                                                                  //[weakSelf.bottomView addSubview:weakSelf.adminButton];
-                                                                  [weakSelf layoutSubviews];
-                                                              }
-                                                          }
-                                                      }
-                                                      aCompletion(ret);
-                                                  }];
+                                                  completion:aCompletion];
 }
 
-- (void)leaveChatroomWithIsCount:(BOOL)aIsCount
-                      completion:(void (^)(BOOL success))aCompletion
+- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion
 {
     __weak typeof(self) weakSelf = self;
     [[EaseHttpManager sharedInstance] leaveLiveRoomWithRoomId:_room.roomId
                                                    chatroomId:_room.chatroomId
-                                                      isCount:aIsCount
                                                    completion:^(BOOL success) {
                                                        BOOL ret = NO;
                                                        if (success) {
