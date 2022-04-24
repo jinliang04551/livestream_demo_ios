@@ -141,16 +141,14 @@
                     [weakSelf.view bringSubviewToFront:weakSelf.liveView];
                     [weakSelf updateUI];
 
-//                    [weakSelf.view layoutSubviews];
-                    
-
                 }else {
                     [self showHint:aError.description];
                 }
             }];
 
         } else {
-            [self showHint:aError.description];
+            [self showHint:aError.errorDescription];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
     
