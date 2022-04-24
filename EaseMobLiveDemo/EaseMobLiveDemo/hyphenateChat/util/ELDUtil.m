@@ -92,10 +92,10 @@
     NSInteger currentDateMonth = [components2 month];
       
     // 计算年龄
-    NSInteger iAge = currentDateYear - brithDateYear - 1;
-    if ((currentDateMonth > brithDateMonth) || (currentDateMonth == brithDateMonth && currentDateDay >= brithDateDay)) {
-        iAge++;
-    }
+    NSInteger iAge = currentDateYear - brithDateYear;
+//    if ((currentDateMonth > brithDateMonth) || (currentDateMonth == brithDateMonth && currentDateDay >= brithDateDay)) {
+//        iAge++;
+//    }
       
     return iAge;
 }
