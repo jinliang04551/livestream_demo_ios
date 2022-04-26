@@ -71,7 +71,7 @@
         _ageLabel.textAlignment = NSTextAlignmentLeft;
         _ageLabel.shadowColor = [UIColor blackColor];
         _ageLabel.shadowOffset = CGSizeMake(1, 1);
-        _ageLabel.text = @"21";
+        _ageLabel.text = @"0";
     }
     return _ageLabel;
 }
@@ -80,7 +80,7 @@
 - (UIImageView *)genderImageView {
     if (_genderImageView == nil) {
         _genderImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gender_male"]];
-        _genderImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _genderImageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _genderImageView;
 }

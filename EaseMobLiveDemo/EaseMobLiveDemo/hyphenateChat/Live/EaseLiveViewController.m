@@ -318,6 +318,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [self.avPlayer play];
     [self addProgressObserver: [vodStreamUrl absoluteString]];
 }
+
 // 视频循环播放
 - (void)vodPlayDidEnd:(NSDictionary*)dic{
     [self.avLayer removeFromSuperlayer];
