@@ -58,13 +58,7 @@
         
         if (model.isSelected) {
             [self.label setFTCornerdious:self.label.lx_width/2];
-            if (model.isNormal) {
-                self.label.backgroundColor = UIColor.greenColor;
-
-            }else {
-                self.label.backgroundColor = UIColor.redColor;
-
-            }
+            self.label.backgroundColor = UIColor.redColor;
             
             if (model.isHaveAnimation) {
                  [self addAnimaiton];

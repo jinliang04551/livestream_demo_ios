@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LXCalendarDayModel.h"
 
-typedef void (^SelectBlock) (NSInteger year ,NSInteger month ,NSInteger day, NSInteger selectedIndex);
+typedef void (^SelectModelBlock) (LXCalendarDayModel *selectedModel);
+
 @interface LXCalendarView : UIView
 /*
  * 当前月的title颜色
@@ -61,8 +63,11 @@ typedef void (^SelectBlock) (NSInteger year ,NSInteger month ,NSInteger day, NSI
 -(void)dealData;
 
 //选中的回调
-@property(nonatomic,copy)SelectBlock selectBlock;
+@property(nonatomic,copy)SelectModelBlock selectBlock;
 
-- (void)updateCalendarWithIndex:(NSInteger )selectedIndex isNormal:(BOOL)isNormal;
+
+@property(nonatomic,strong)LXCalendarDayModel *selectedModel;
+
+- (void)updateCalendarWithSelectedModel:(LXCalendarDayModel *)selectedModel;
 
 @end

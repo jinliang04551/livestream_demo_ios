@@ -11,4 +11,21 @@
 
 @implementation LXCalendarDayModel
 
+- (BOOL)isSameDayWithOtherModel:(LXCalendarDayModel *)otherModel {
+    if (self.day != otherModel.day) {
+        return NO;
+    }
+    
+    if (self.month != otherModel.month) {
+        return NO;
+    }
+    
+    if (self.day != otherModel.day) {
+        return NO;
+    }
+
+    return YES;
+}
+
+
 @end

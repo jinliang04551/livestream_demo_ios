@@ -12,6 +12,7 @@
 
 @interface LXCalendarOneController ()
 @property(nonatomic,strong)LXCalendarView *calenderView;
+@property(nonatomic,strong)LXCalendarDayModel *selectedModel;
 
 @end
 
@@ -47,21 +48,17 @@
     [self.view addSubview:self.calenderView];
     
     ELD_WS
-    self.calenderView.selectBlock = ^(NSInteger year, NSInteger month, NSInteger day, NSInteger selectedIndex) {
-        NSString *dateString = [NSString stringWithFormat:@"%@-%@-%@",[@(year) stringValue],[weakSelf convert2StringWithInt:month],[weakSelf convert2StringWithInt:day]];
-        NSLog(@"%ld年 - %ld月 - %ld日",year,month,day);
-
+    
+    self.calenderView.selectBlock = ^(LXCalendarDayModel *selectedModel) {
+        weakSelf.selectedModel = selectedModel;
+        
+        NSString *dateString = [NSString stringWithFormat:@"%@-%@-%@",[@(selectedModel.year) stringValue],[weakSelf convert2StringWithInt:selectedModel.month],[weakSelf convert2StringWithInt:selectedModel.day]];
+        NSLog(@"====== dateString:%@",dateString);
+        
         if (weakSelf.selectedBlock) {
             weakSelf.selectedBlock(dateString);
         }
-        
-        if (selectedIndex %2 == 0) {
-            [weakSelf.calenderView updateCalendarWithIndex:selectedIndex isNormal:YES];
-
-        }else {
-            [weakSelf.calenderView updateCalendarWithIndex:selectedIndex isNormal:NO];
-
-        }
+        [weakSelf.calenderView updateCalendarWithSelectedModel:weakSelf.selectedModel];
     };
     
 }

@@ -1531,23 +1531,23 @@
 		C047553828095CCE0094EAD3 /* LXCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				C047553928095CCE0094EAD3 /* NSDate+GFCalendar.h */,
-				C047553A28095CCE0094EAD3 /* LXCalendarWeekView.m */,
-				C047553B28095CCE0094EAD3 /* LXCalendarView.h */,
+				C047554828095CCE0094EAD3 /* LXCalendarDayModel.h */,
+				C047554128095CCE0094EAD3 /* LXCalendarDayModel.m */,
+				C047554628095CCE0094EAD3 /* LXCalendarHearder.h */,
+				C047553E28095CCE0094EAD3 /* LXCalendarHearder.m */,
 				C047553C28095CCE0094EAD3 /* LXCalendarHearder.xib */,
 				C047553D28095CCE0094EAD3 /* LXCalendarMonthModel.h */,
-				C047553E28095CCE0094EAD3 /* LXCalendarHearder.m */,
-				C047553F28095CCE0094EAD3 /* LXCalenderCell.xib */,
-				C047554028095CCE0094EAD3 /* LXCalenderCell.h */,
-				C047554128095CCE0094EAD3 /* LXCalendarDayModel.m */,
-				C047554228095CCE0094EAD3 /* LXCalender.h */,
+				C047554728095CCE0094EAD3 /* LXCalendarMonthModel.m */,
+				C047553B28095CCE0094EAD3 /* LXCalendarView.h */,
 				C047554328095CCE0094EAD3 /* LXCalendarView.m */,
 				C047554428095CCE0094EAD3 /* LXCalendarWeekView.h */,
-				C047554528095CCE0094EAD3 /* NSDate+GFCalendar.m */,
-				C047554628095CCE0094EAD3 /* LXCalendarHearder.h */,
-				C047554728095CCE0094EAD3 /* LXCalendarMonthModel.m */,
-				C047554828095CCE0094EAD3 /* LXCalendarDayModel.h */,
+				C047553A28095CCE0094EAD3 /* LXCalendarWeekView.m */,
+				C047554228095CCE0094EAD3 /* LXCalender.h */,
+				C047554028095CCE0094EAD3 /* LXCalenderCell.h */,
 				C047554928095CCE0094EAD3 /* LXCalenderCell.m */,
+				C047553F28095CCE0094EAD3 /* LXCalenderCell.xib */,
+				C047553928095CCE0094EAD3 /* NSDate+GFCalendar.h */,
+				C047554528095CCE0094EAD3 /* NSDate+GFCalendar.m */,
 			);
 			path = LXCalendar;
 			sourceTree = "<group>";

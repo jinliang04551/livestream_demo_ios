@@ -48,4 +48,5 @@
 +(LXCalendarHearder *)showView{
     return [[NSBundle mainBundle]loadNibNamed:@"LXCalendarHearder" owner:self options:nil].firstObject;
 }
+
 @end

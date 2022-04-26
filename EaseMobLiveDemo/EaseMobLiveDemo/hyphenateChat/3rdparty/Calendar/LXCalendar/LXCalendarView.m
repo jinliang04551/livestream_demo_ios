@@ -27,6 +27,7 @@
 @property(nonatomic,assign)BOOL isNormal;
 
 
+
 @end
 @implementation LXCalendarView
 
@@ -35,19 +36,15 @@
     if (self) {
         
         self.currentMonthDate = [NSDate date];
-
-        
         [self setup];
-        
-        
     }
     return self;
 }
+
 -(void)dealData{
-    
-    
     [self responData];
 }
+
 -(void)setup{
     [self addSubview:self.calendarHeader];
     
@@ -137,10 +134,6 @@
     for (int i = 0; i <42; i++) {
         
         LXCalendarDayModel *model =[[LXCalendarDayModel alloc]init];
-        if (self.selectedIndex == i) {
-            model.isSelected = YES;
-            model.isNormal = self.isNormal;
-        }
         
         //配置外面属性
         [self configDayModel:model];
@@ -223,13 +216,19 @@
         
     }
     
-    cell.model = self.monthdataA[indexPath.row];
+    LXCalendarDayModel *model = self.monthdataA[indexPath.row];
+    if (self.selectedModel) {
+        model.isSelected =  [model isSameDayWithOtherModel:self.selectedModel];
+    }
+    cell.model = model;
 
     cell.backgroundColor =[UIColor whiteColor];
     
     
     return cell;
 }
+
+
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -245,11 +244,13 @@
     }];
     
     if (self.selectBlock) {
-        self.selectBlock(model.year, model.month, model.day,indexPath.row);
+        self.selectBlock(model);
     }
+    
     [collectionView reloadData];
     
 }
+
 -(void)layoutSubviews{
     [super layoutSubviews];
     self.calendarHeader.frame = CGRectMake(0, 0, self.lx_width, 50);
@@ -370,12 +371,11 @@
     _todayTitleColor = todayTitleColor;
 }
 
-- (void)updateCalendarWithIndex:(NSInteger)selectedIndex isNormal:(BOOL)isNormal {
-    self.selectedIndex = selectedIndex;
-    self.isNormal = isNormal;
-    
-    [self responData];
+- (void)updateCalendarWithSelectedModel:(LXCalendarDayModel *)selectedModel {
+    self.selectedModel = selectedModel;
+    [self.collectionView reloadData];
 }
+
 
 
 @end

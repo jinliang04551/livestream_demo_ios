@@ -57,4 +57,7 @@
  * 选中的是否动画效果
  */
 @property(nonatomic,assign)BOOL     isHaveAnimation;
+
+- (BOOL)isSameDayWithOtherModel:(LXCalendarDayModel *)otherModel;
+
 @end
