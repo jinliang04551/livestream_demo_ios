@@ -71,7 +71,6 @@
 @property (nonatomic, strong) UITapGestureRecognizer *singleTapGR;
 
 /** gifimage */
-@property(nonatomic,strong) UIImageView *gifImageView;
 @property(nonatomic,strong) UIImageView *backgroudImageView;
 
 @property (nonatomic, strong) PLPlayer  *player;
@@ -84,6 +83,7 @@
 
 @property (nonatomic, strong) ELDChatroomMembersView *memberView;
 @property (nonatomic, strong) ELDUserInfoView *userInfoView;
+@property (nonatomic, strong) EaseLiveGiftView *giftView;
 
 @property (nonatomic, strong) ELDNotificationView *notificationView;
 
@@ -563,15 +563,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [self closeButtonAction];
 }
 
-- (UIImageView *)gifImageView{
-    
-    if (!_gifImageView) {
-        
-        _gifImageView = [[UIImageView alloc] initWithFrame:CGRectMake(7.5, 0, 360, 225)];
-        _gifImageView.hidden = YES;
-    }
-    return _gifImageView;
-}
 
 - (ELDChatroomMembersView *)memberView {
     if (_memberView == nil) {
@@ -580,6 +571,15 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _memberView.selectedUserDelegate = self;
     }
     return _memberView;
+}
+
+- (EaseLiveGiftView *)giftView {
+    if (_giftView == nil) {
+        _giftView = [[EaseLiveGiftView alloc]init];
+        _giftView.giftDelegate = self;
+        _giftView.delegate = self;
+    }
+    return _giftView;
 }
 
 - (ELDNotificationView *)notificationView {
@@ -716,10 +716,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (void)didSelectGiftButton:(BOOL)isOwner
 {
     if (!isOwner) {
-        EaseLiveGiftView *giftView = [[EaseLiveGiftView alloc]init];
-        giftView.giftDelegate = self;
-        giftView.delegate = self;
-        [giftView showFromParentView:self.view];
+        [self.giftView showFromParentView:self.view];
     }
 }
 
@@ -743,39 +740,20 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 #pragma mark - EaseLiveGiftViewDelegate
-
-- (void)didConfirmGift:(EaseGiftCell *)giftCell giftNum:(long)num
-{
-    EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc]initWithGiftInfo:giftCell giftNum:num titleText:@"是否赠送" giftId:giftCell.giftId];
-    confirmView.delegate = self;
-    [confirmView showFromParentView:self.view];
-    __weak typeof(self) weakself = self;
-    [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
-        if (aConfirm) {
-            //发送礼物消息
-            [weakself.chatview sendGiftAction:giftModel num:giftModel.count completion:^(BOOL success) {
-                if (success) {
-                    //显示礼物UI
-                    giftModel.username = [self randomNickName:giftModel.username];
-                    [_customMsgHelper sendGiftAction:giftModel backView:self.view];
-                }
-            }];
-        }
-    }];
-}
-
 - (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num {
     EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc] initWithGiftModel:giftModel giftNum:num titleText:@"是否赠送"];
     confirmView.delegate = self;
     [confirmView showFromParentView:self.view];
-    __weak typeof(self) weakself = self;
+    
+    ELD_WS
     [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
         if (aConfirm) {
             //发送礼物消息
-            [weakself.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
+            [weakSelf.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
                 if (success) {
                     //显示礼物UI
-                    giftModel.username = [self randomNickName:giftModel.username];
+                    giftModel.username = [weakSelf randomNickName:giftModel.username];
+                    [weakSelf.giftView resetGiftView];
                     [_customMsgHelper sendGiftAction:giftModel backView:self.view];
                 }
             }];

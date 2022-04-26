@@ -12,17 +12,18 @@
 #import "EaseGiftCell.h"
 #import "EaseCustomKeyBoardView.h"
 
-@protocol EaseLiveGiftViewDelegate;
+@class EaseLiveGiftView;
+@protocol EaseLiveGiftViewDelegate <NSObject>
+- (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num;
+- (void)giftNumCustom:(EaseLiveGiftView *)liveGiftView;
+@end
+
 @interface EaseLiveGiftView : EaseBaseSubView<EaseCustomKeyBoardDelegate>
 
 @property (nonatomic, weak) id<EaseLiveGiftViewDelegate> giftDelegate;
 
-@end
-
-@protocol EaseLiveGiftViewDelegate <NSObject>
-
-- (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num;
-
-- (void)giftNumCustom:(EaseLiveGiftView *)liveGiftView;
+- (void)resetGiftView;
 
 @end
+
+

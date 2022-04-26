@@ -20,10 +20,6 @@
 #define kSendButtonHeight 32.0f
 
 @interface EaseLiveGiftView () <UICollectionViewDelegate,UICollectionViewDataSource,EaseGiftCellDelegate>
-{
-    long _giftNum;
-}
-
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIView *bottomView;
 
@@ -32,18 +28,12 @@
 
 
 @property (nonatomic, strong) ELDCountCaculateView *countCaculateView;
-@property (nonatomic, strong) UIView *selectedGiftNumView;
-
-@property (nonatomic, strong) UILabel *selectedGiftDesc;
-@property (nonatomic, strong) UIButton *giftNumBtn;
-
 @property (nonatomic, strong) NSArray *giftArray;
-@property (nonatomic, strong) EaseGiftCell *selectedGiftCell;
+@property (nonatomic, strong) ELDGiftModel *selectedGiftModel;
 
 @property (nonatomic, strong) UIImageView *giftTotalValueImageView;
 @property (nonatomic, strong) UILabel *giftTotalValueLabel;
 
-@property (nonatomic, strong) ELDGiftModel *selectedGiftModel;
 
 @end
 
@@ -54,7 +44,6 @@
     self = [super init];
     if (self) {
         self.giftArray = [EaseLiveGiftHelper sharedInstance].giftArray;
-        _giftNum = 1;
         [self placeAndLayoutSubviews];
     }
     return self;
@@ -112,6 +101,11 @@
     
 }
 
+
+- (void)resetGiftView {
+    [self.countCaculateView resetCaculateView];
+
+}
 
 #pragma mark - getter
 - (UICollectionView*)collectionView
@@ -198,70 +192,7 @@
 
 }
 
-- (UIView *)selectedGiftNumView
-{
-    if (_selectedGiftNumView == nil) {
-        _selectedGiftNumView = [[UIView alloc] initWithFrame:CGRectMake(self.width - 120 - 94, _collectionView.bottom + 10.f, 110.f, 32.f)];
-//        _selectedGiftNumView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
-        _selectedGiftNumView.layer.cornerRadius = 16.0f;
-        _selectedGiftNumView.backgroundColor = UIColor.yellowColor;
 
-        UIButton *subtractBtn = [[UIButton alloc]init];
-        [subtractBtn setTitle:@"-" forState:UIControlStateNormal];
-        [subtractBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        subtractBtn.layer.cornerRadius = 15.f;
-        subtractBtn.backgroundColor = [UIColor blackColor];
-        subtractBtn.titleLabel.font = [UIFont systemFontOfSize:26.f];
-        subtractBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 3, 0);
-        [subtractBtn addTarget:self action:@selector(subtractGiftNumAction) forControlEvents:UIControlEventTouchUpInside];
-        [_selectedGiftNumView addSubview:subtractBtn];
-        [subtractBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.height.equalTo(@30.f);
-            make.left.equalTo(_selectedGiftNumView.mas_left);
-            make.centerY.equalTo(_selectedGiftNumView);
-        }];
-
-        self.giftNumBtn = [[UIButton alloc]init];
-        [_giftNumBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_giftNumBtn setTitle:@"1" forState:UIControlStateNormal];
-        _giftNumBtn.layer.cornerRadius = 15.f;
-        _giftNumBtn.titleLabel.font = [UIFont systemFontOfSize:16.f];
-        [_giftNumBtn addTarget:self action:@selector(giftNumCustom) forControlEvents:UIControlEventTouchUpInside];
-        [_selectedGiftNumView addSubview:self.giftNumBtn];
-        [self.giftNumBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.equalTo(subtractBtn);
-            make.left.equalTo(subtractBtn.mas_right).offset(10.f);
-            make.centerY.equalTo(subtractBtn);
-        }];
-
-        UIButton *addtBtn = [[UIButton alloc]init];
-        [addtBtn setTitle:@"+" forState:UIControlStateNormal];
-        [addtBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        addtBtn.layer.cornerRadius = 15.f;
-        addtBtn.backgroundColor = [UIColor blackColor];
-        addtBtn.titleLabel.font = [UIFont systemFontOfSize:26.f];
-        addtBtn.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 3, 0);
-        [addtBtn addTarget:self action:@selector(addGiftNumAction) forControlEvents:UIControlEventTouchUpInside];
-        [_selectedGiftNumView addSubview:addtBtn];
-        [addtBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.equalTo(subtractBtn);
-            make.right.equalTo(_selectedGiftNumView.mas_right);
-            make.centerY.equalTo(subtractBtn);
-        }];
-    }
-    return _selectedGiftNumView;
-}
-
-
-- (UILabel*)selectedGiftDesc
-{
-    if (_selectedGiftDesc == nil) {
-        _selectedGiftDesc = [[UILabel alloc] initWithFrame:CGRectMake(13.f, _collectionView.bottom, self.width/2, 54.f)];
-        _selectedGiftDesc.font = [UIFont systemFontOfSize:18.f];
-        _selectedGiftDesc.textColor = [UIColor whiteColor];
-    }
-    return _selectedGiftDesc;
-}
 
 - (UIButton*)sendGiftButton
 {
@@ -350,63 +281,27 @@
 
 - (void)giftCellDidSelected:(EaseGiftCell *)aCell
 {
-    
-    self.selectedGiftDesc.text = aCell.nameLabel.text;
     [self.countCaculateView resetCaculateView];
 
-    //
-    self.selectedGiftCell = aCell;
     self.selectedGiftModel = aCell.giftModel;
     [self.collectionView reloadData];
 }
 
 
-#pragma mark - EaseCustomKeyBoardDelegate
-
-//自定义礼物数量
-- (void)customGiftNum:(NSString *)giftNum
-{
-    _giftNum = (long)[giftNum longLongValue];
-    [self.giftNumBtn setTitle:[NSString stringWithFormat:@"%lu",_giftNum] forState:UIControlStateNormal];
-}
 
 #pragma mark - action
 //刷礼物
 - (void)sendGiftAction
 {
     
-    if (self.selectedGiftCell) {
+    if (self.selectedGiftModel) {
         if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(didConfirmGiftModel:giftNum:)]) {
             [self.giftDelegate didConfirmGiftModel:self.selectedGiftModel giftNum:self.countCaculateView.giftCount];
-            self.selectedGiftCell = nil;
-            self.selectedGiftModel = nil;
             
-            _giftNum = 1;
             [self.countCaculateView resetCaculateView];
         }
     }
 
-}
-
-//增加礼物数量
-- (void)addGiftNumAction
-{
-    if (_giftNum >= 999) {
-        return;
-    }
-    _giftNum += 1;
-    [self.giftNumBtn setTitle:[NSString stringWithFormat:@"%lu",_giftNum] forState:UIControlStateNormal];
-}
-
-//减少礼物数量
-- (void)subtractGiftNumAction
-{   
-    if (_giftNum <= 1) {
-        return;
-    } else {
-        _giftNum -= 1;
-        [self.giftNumBtn setTitle:[NSString stringWithFormat:@"%lu",_giftNum] forState:UIControlStateNormal];
-    }
 }
 
 //自定义礼物数量
