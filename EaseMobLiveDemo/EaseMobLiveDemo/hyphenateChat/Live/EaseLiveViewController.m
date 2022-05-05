@@ -40,8 +40,6 @@
 
 #import "ELDNotificationView.h"
 
-#import "ELDEnterLiveroomAnimationView.h"
-
 #import "ELDTwoBallAnimationView.h"
 
 #define kDefaultTop 35.f
@@ -87,8 +85,6 @@
 
 @property (nonatomic, strong) ELDNotificationView *notificationView;
 
-@property (nonatomic, strong) ELDEnterLiveroomAnimationView *enterAnimationView;
-
 @property (nonatomic, strong) ELDTwoBallAnimationView *twoBallAnimationView;
 
 
@@ -130,7 +126,7 @@
 
 - (void)joinChatroom {
     ELD_WS
-    
+        
     [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
         if (aError == nil) {
             [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
@@ -374,13 +370,24 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             _clock = 0;
             [self stopTimer];
         }
+        
+        [self.twoBallAnimationView stopAnimation];
     }
+    
     if (state == AgoraConnectionStateConnecting || state == AgoraConnectionStateReconnecting) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在连接..." toView:self.view];
-        [hud hideAnimated:YES afterDelay:1.5];
         [self.agoraRemoteVideoView removeFromSuperview];
         [self.view insertSubview:self.backgroudImageView atIndex:0];
+        
+        [self.view addSubview:self.twoBallAnimationView];
+        [self.twoBallAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(self.view);
+            make.centerY.equalTo(self.view);
+            make.height.equalTo(@(50.0));
+        }];
+        [self.twoBallAnimationView startAnimation];
+
     }
+    
     if (state == AgoraConnectionStateFailed) {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"连接失败,请退出重进直播间。" toView:self.view];
         [self.agoraRemoteVideoView removeFromSuperview];
@@ -512,16 +519,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
         [_backgroudImageView sd_setImageWithURL:[NSURL URLWithString:_room.coverPictureUrl] placeholderImage:ImageWithName(@"default_back_image")];
         
-//        [_backgroudImageView addSubview:self.enterAnimationView];
-//
-//        [self.enterAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.right.equalTo(_backgroudImageView);
-//            make.centerY.equalTo(_backgroudImageView);
-//            make.height.equalTo(@(50.0));
-//        }];
-//
-//        [self.enterAnimationView startAnimation];
-
     }
     return _backgroudImageView;
 }
@@ -583,6 +580,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _giftView;
 }
 
+
 - (ELDNotificationView *)notificationView {
     if (_notificationView == nil) {
         _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, 30)];
@@ -591,18 +589,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _notificationView;
 }
 
-- (ELDEnterLiveroomAnimationView *)enterAnimationView {
-    if (_enterAnimationView == nil) {
-        _enterAnimationView = [[ELDEnterLiveroomAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
-        _enterAnimationView.backgroundColor = UIColor.yellowColor;
-    }
-    return _enterAnimationView;
-}
 
 - (ELDTwoBallAnimationView *)twoBallAnimationView {
     if (_twoBallAnimationView == nil) {
         _twoBallAnimationView = [[ELDTwoBallAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
-        [_twoBallAnimationView startAnimation];
     }
     return _twoBallAnimationView;
 }

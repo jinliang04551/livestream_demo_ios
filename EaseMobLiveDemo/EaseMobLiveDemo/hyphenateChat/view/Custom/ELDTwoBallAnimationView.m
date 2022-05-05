@@ -19,7 +19,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = UIColor.redColor;
+        self.backgroundColor = UIColor.clearColor;
         [self placeAndLayoutSubviews];
     }
     return self;
@@ -42,17 +42,29 @@
 
 - (void)stopAnimation {
     [self.progressBar stopAnimator];
+    [self removeFromParentView];
 }
+
+- (void)showFromParentView:(UIView *)view
+{
+    view.userInteractionEnabled = NO;
+    [view addSubview:self];
+}
+
+- (void)removeFromParentView
+{
+    [self removeFromSuperview];
+}
+
 
     
 #pragma mark getter and setter
 - (TwoBallRotationProgressBar *)progressBar {
     if (_progressBar == nil) {
         _progressBar = [[TwoBallRotationProgressBar alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30.0)];
-        [_progressBar setOneBallColor:UIColor.blueColor twoBallColor:UIColor.yellowColor];
-        [_progressBar setBallRadius:6];
-        [_progressBar setAnimatorDuration:0.5];
-        _progressBar.backgroundColor = UIColor.grayColor;
+        [_progressBar setOneBallColor:COLOR_HEX(0x01A6FE) twoBallColor:COLOR_HEX(0xF90110)];
+        [_progressBar setBallRadius:10.0];
+        [_progressBar setAnimatorDuration:1.0];
     }
     return _progressBar;
 }

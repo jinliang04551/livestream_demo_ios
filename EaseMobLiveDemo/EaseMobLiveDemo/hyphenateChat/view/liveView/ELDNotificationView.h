@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDNotificationView : UIView
 
+- (void)showHintMessage:(NSString *)message;
+
 @end
 
 NS_ASSUME_NONNULL_END

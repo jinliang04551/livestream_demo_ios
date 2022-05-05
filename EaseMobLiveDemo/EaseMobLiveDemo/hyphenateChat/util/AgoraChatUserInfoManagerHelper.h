@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AgoraChatUserInfoManagerHelper : NSObject
 
 @property (nonatomic, strong, readonly)NSMutableDictionary *userInfoCacheDic;
+@property (nonatomic, strong, readonly)NSMutableDictionary *userModelCacheDic;
+
 
 
 + (void)fetchUserInfoWithUserIds:(NSArray<NSString *> *)userIds

@@ -14,6 +14,7 @@
 @interface AgoraChatUserInfoManagerHelper ()
 @property (nonatomic, strong)NSMutableDictionary *userInfoCacheDic;
 @property (nonatomic, strong)NSMutableDictionary *userModelCacheDic;
+@property (nonatomic, strong)dispatch_queue_t ioQueue;
 
 @end
 
@@ -74,10 +75,12 @@ static dispatch_once_t oneToken;
                     if (user) {
                         resultDic[userKey] = user;
                         self.userInfoCacheDic[userKey] = user;
-                        ELDUserInfoModel *userInfoModel = [[ELDUserInfoModel alloc] initWithUserInfo:user];
-                        if (userInfoModel) {
-                            self.userModelCacheDic[userKey] = userInfoModel;
-                        }
+//                        ELDUserInfoModel *userInfoModel = [[ELDUserInfoModel alloc] initWithUserInfo:user];
+//                        if (userInfoModel) {
+//                            self.userModelCacheDic[userKey] = userInfoModel;
+//                        }
+                        
+                        [self downloadAvatars];
                     }
                 }
                 if (resultDic && completion) {
@@ -182,6 +185,33 @@ static dispatch_once_t oneToken;
     }];
 }
 
+- (void)downloadAvatars {
+    dispatch_async(self.ioQueue, ^{
+        NSMutableDictionary *tempDic = [[NSMutableDictionary alloc] init];
+        for (NSString *userKey in self.userInfoCacheDic.allKeys) {
+            @autoreleasepool {
+                AgoraChatUserInfo *userInfo = self.userInfoCacheDic[userKey];
+                if (userInfo) {
+                        [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                            
+                            if (error == nil) {
+                                ELDUserInfoModel *model = [[ELDUserInfoModel alloc] initWithUserInfo:userInfo];
+                                model.avatarImage = image;
+                                tempDic[userInfo.userId] = model;
+                            }
+                        }];
+                    }
+                }
+            }
+        if (tempDic.count > 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.userModelCacheDic = tempDic;
+            });
+        }
+    });
+}
+
+
 #pragma mark getter and setter
 - (NSMutableDictionary *)userInfoCacheDic {
     if (_userInfoCacheDic == nil) {
@@ -198,6 +228,12 @@ static dispatch_once_t oneToken;
     return _userModelCacheDic;
 }
 
+- (dispatch_queue_t)ioQueue {
+    if (_ioQueue == nil) {
+        _ioQueue = dispatch_queue_create("com.dispatch.downloadAvatar", DISPATCH_QUEUE_SERIAL);
+    }
+    return _ioQueue;
+}
 
 @end
 
