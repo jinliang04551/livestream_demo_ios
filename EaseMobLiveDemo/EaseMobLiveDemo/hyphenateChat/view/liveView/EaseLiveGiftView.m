@@ -59,9 +59,17 @@
     [self.bottomView addSubview:self.giftTotalValueLabel];
     [self.bottomView addSubview:self.sendGiftButton];
 
+    
+    CGFloat bottom = 0;
+    if (@available(iOS 11, *)) {
+        bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
+    }
+    
+    
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kBottomViewHeight, 0, 0, 0));
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kBottomViewHeight + bottom *3, 0, 0, 0));
     }];
+    
     
     [self.giftNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bottomView.mas_top).offset(15.0);
@@ -77,7 +85,7 @@
     }];
     
     [self.sendGiftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0);
+        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0 - bottom);
         make.right.equalTo(self.bottomView).offset(-20.0);
         make.height.equalTo(@(kSendButtonHeight));
     }];
@@ -253,7 +261,9 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake((_collectionView.width - 40)/4, (_collectionView.height - 10)/2);
+//    return CGSizeMake((_collectionView.width - 40)/4, (_collectionView.height - 10)/2);
+    return CGSizeMake(80.0, 110.0);
+
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section

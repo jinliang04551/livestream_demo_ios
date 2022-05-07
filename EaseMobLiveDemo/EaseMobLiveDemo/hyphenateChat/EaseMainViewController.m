@@ -21,18 +21,6 @@
 #import "ELDAboutViewController.h"
 #import "ELDPreLivingViewController.h"
 
-
-#define IS_iPhoneX (\
-{\
-BOOL isPhoneX = NO;\
-if (@available(iOS 11.0, *)) {\
-isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bottom > 0.0;\
-}\
-(isPhoneX);}\
-)
-#define EMVIEWTOPMARGIN (IS_iPhoneX ? 22.f : 0.f)
-#define EMVIEWBOTTOMMARGIN (IS_iPhoneX ? 34.f : 0.f)
-
 #define kBroadCastBtnHeight  70.0
 
 @interface EaseMainViewController () <UITabBarDelegate>
@@ -73,18 +61,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     }
 }
 
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = YES;
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    self.navigationController.navigationBarHidden = NO;
-//}
-
 
 - (void)viewDidLoad
 {
@@ -118,7 +94,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 
 
 - (void)placeAndLayoutSuviews {
-    self.view.backgroundColor = UIColor.blueColor;
         
     [self.view addSubview:self.liveListVC.view];
     [self.view addSubview:self.settingVC.view];
@@ -138,12 +113,12 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     __weak UIView *wkView = self.bottomBar;
     [self.bottomBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.right.equalTo(self.view);
-        make.height.equalTo(@(kCustomTabbarHeight));
+        make.height.equalTo(@(kTabBarHeight));
         if (@available(iOS 11.0, *)) {
             [wkView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
-        } else {
-            make.bottom.equalTo(self.view);
         }
+        make.bottom.equalTo(self.view);
+
     }];
     
     [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {

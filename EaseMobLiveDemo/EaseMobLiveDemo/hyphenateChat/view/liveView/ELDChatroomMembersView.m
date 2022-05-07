@@ -122,7 +122,7 @@ MISScrollPageControllerDelegate>
     
     
     [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kViewTopPadding, 0, 0, bottom));
+        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kViewTopPadding, 0, 0, 0));
     }];
     
     if ([self isAdmin]) {
@@ -355,7 +355,6 @@ MISScrollPageControllerDelegate>
 - (UILabel *)viewerTitleLabel {
     if (_viewerTitleLabel == nil) {
         _viewerTitleLabel = [[UILabel alloc] init];
-//        PingFangSC-Semibold
         _viewerTitleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:16.0f];
         _viewerTitleLabel.textColor = TextLabelBlackColor;
         _viewerTitleLabel.textAlignment = NSTextAlignmentCenter;

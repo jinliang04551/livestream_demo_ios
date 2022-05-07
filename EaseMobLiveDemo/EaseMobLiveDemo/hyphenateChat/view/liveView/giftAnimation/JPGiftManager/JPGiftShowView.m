@@ -92,12 +92,10 @@ static const NSInteger animationTime = 5;
 - (void)showGiftShowViewWithModel:(JPGiftModel *)giftModel completeBlock:(completeShowViewBlock)completeBlock{
     
     self.finishModel = giftModel;
-    //[self.userIconView sd_setImageWithURL:[NSURL URLWithString:giftModel.userIcon] placeholderImage:[UIImage imageNamed:@""]];
-    self.userIconView.image = giftModel.userIcon;
+    [self.userIconView sd_setImageWithURL:[NSURL URLWithString:giftModel.userAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
+//    self.userIconView.image = giftModel.userIcon;
     self.userNameLabel.text = giftModel.userName;
-    //self.giftNameLabel.text = [NSString stringWithFormat:@"送 %@",giftModel.giftName];
     self.giftNameLabel.text = @"送出礼物";
-    //[self.giftImageView sd_setImageWithURL:[NSURL URLWithString:giftModel.giftImage] placeholderImage:[UIImage imageNamed:@""]];
     self.giftImageView.image = giftModel.giftImage;
     self.hidden = NO;
     self.showViewFinishBlock = completeBlock;

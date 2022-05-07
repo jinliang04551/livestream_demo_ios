@@ -65,8 +65,11 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import "EaseLiveCategory.h"
     #import "ELDUtil.h"
     #import <SDWebImage/UIImageView+WebCache.h>
+    #import <SDWebImage/UIButton+WebCache.h>
     #import "ELDConfig.h"
     #import "AgoraChatUserInfoManagerHelper.h"
     #import "ELDGiftModel.h"
+    #import "ELDUserInfoModel.h"
+
 
 #endif

@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly)NSMutableDictionary *userInfoCacheDic;
 @property (nonatomic, strong, readonly)NSMutableDictionary *userModelCacheDic;
 
++ (AgoraChatUserInfoManagerHelper *)sharedHelper;
 
 
 + (void)fetchUserInfoWithUserIds:(NSArray<NSString *> *)userIds
@@ -34,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
                       completion:(void(^)(AgoraChatUserInfo *aUserInfo))completion;
 
 + (void)fetchOwnUserInfoCompletion:(void(^)(AgoraChatUserInfo *ownUserInfo))completion;
+
+
++ (void)fetchUserInfoModelsWithUserId:(NSArray *)userIds completion:(void(^)(NSDictionary *dic))completion;
 
 @end
 

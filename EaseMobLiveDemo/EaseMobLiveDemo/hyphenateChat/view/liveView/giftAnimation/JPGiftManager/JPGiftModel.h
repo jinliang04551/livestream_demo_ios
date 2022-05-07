@@ -11,7 +11,10 @@
 @interface JPGiftModel : NSObject
 
 /** usericon */
-@property(nonatomic,copy)UIImage *userIcon;
+//@property(nonatomic,copy)UIImage *userIcon;
+
+@property(nonatomic,copy)NSString *userAvatarURL;
+
 /** username */
 @property(nonatomic,copy)NSString *userName;
 /** giftname */

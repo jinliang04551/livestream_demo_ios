@@ -288,21 +288,63 @@
     [self.dataArray addObjectsFromArray:aChatroom.memberList];
     [self.numberBtn setTitle:[NSString stringWithFormat:@"%@ %@",@(self.dataArray.count) ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
     
-    [self.watchMemberAvatarsView updateWatchersAvatarWithUserIds:self.dataArray];
 
-    [self fetchliveUserInfoWithUserId:aChatroom.owner];
+//    [self fetchliveUserInfoWithUserId:aChatroom.owner];
+    
+    [self fetchAllUserInfoWithChatroom:aChatroom];
 }
 
-- (void)fetchliveUserInfoWithUserId:(NSString *)userId {
-    if (userId) {
-        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+//- (void)fetchliveUserInfoWithUserId:(NSString *)userId {
+//    if (userId) {
+//        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                AgoraChatUserInfo *userInfo = userInfoDic[userId];
+//                [self.liveCastView updateUIWithUserInfo:userInfo];
+//            });
+//        }];
+//    }
+//}
+
+- (void)fetchAllUserInfoWithChatroom:(AgoraChatroom*)aChatroom {
+        
+    NSMutableArray *tempArray = NSMutableArray.array;
+    if (aChatroom.owner) {
+        [tempArray addObject:aChatroom.owner];
+    }
+    [tempArray addObjectsFromArray:aChatroom.adminList];
+    [tempArray addObjectsFromArray:aChatroom.memberList];
+    
+    if (tempArray.count > 0) {
+        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:tempArray completion:^(NSDictionary * _Nonnull userInfoDic) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                AgoraChatUserInfo *userInfo = userInfoDic[userId];
-                [self.liveCastView updateUIWithUserInfo:userInfo];
+                NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+                for (NSString *userId in userInfoDic.allKeys) {
+                    AgoraChatUserInfo *userInfo = userInfoDic[userId];
+                    if (userInfo) {
+                        if ([userId isEqualToString:aChatroom.owner]) {
+                            [self.liveCastView updateUIWithUserInfo:userInfo];
+                        }else {
+                            //members
+                            if (userInfo.avatarUrl) {
+                                [tempArray addObject:userInfo.avatarUrl];
+                            }else {
+                                [tempArray addObject:kDefaultAvatarURL];
+                            }
+                        }
+                    }
+                }
+                
+                if (tempArray.count > 0) {
+                    [self.watchMemberAvatarsView updateWatchersAvatarWithUrlArray:tempArray];
+                }
+
             });
         }];
     }
+
 }
+
+
 
 
 /*

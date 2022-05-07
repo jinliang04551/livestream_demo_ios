@@ -102,7 +102,6 @@
 
 
 @interface ELDTabBar()
-@property (strong, nonatomic) UIButton *broadCastBtn;
 @property (nonatomic,strong) UIView *bottomBarBgView;
 
 @end
@@ -214,51 +213,52 @@
 - (UIView *)bottomBarBgView {
     if (_bottomBarBgView == nil) {
  
-        _bottomBarBgView = [[UIView alloc] initWithFrame:CGRectMake(0,100,KScreenWidth, 49)];
+        _bottomBarBgView = [[UIView alloc] initWithFrame:CGRectMake(0,100,KScreenWidth, kTabBarHeight)];
         _bottomBarBgView.backgroundColor = UIColor.clearColor;
         
         UIImageView *bgImageView = [[UIImageView alloc] initWithImage:ImageWithName(@"TabbarBg")];
         
-        UIView *alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth,49)];
+        UIView *alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth,kTabBarHeight)];
         alphaView.alpha = 0.0;
         
-        [_bottomBarBgView addSubview:alphaView];
-        [_bottomBarBgView addSubview:bgImageView];
-//        [_bottomBarBgView addSubview:self.broadCastBtn];
+        UIView *bottomView = [[UIView alloc] init];
+        bottomView.backgroundColor = UIColor.blackColor;
+
+        if (@available(iOS 11.0, *)) {
+            [_bottomBarBgView addSubview:alphaView];
+            [_bottomBarBgView addSubview:bgImageView];
+            [_bottomBarBgView addSubview:bottomView];
+
+            [alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(_bottomBarBgView);
+            }];
         
-        [alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_bottomBarBgView);
-        }];
+            [bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(_bottomBarBgView);
+                make.left.right.equalTo(_bottomBarBgView);
+            }];
+            
+            [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(bgImageView.mas_bottom);
+                make.left.right.equalTo(_bottomBarBgView);
+                make.bottom.equalTo(_bottomBarBgView);
+            }];
+            
+        }else {
+            [_bottomBarBgView addSubview:alphaView];
+            [_bottomBarBgView addSubview:bgImageView];
+
+            [alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(_bottomBarBgView);
+            }];
         
-        [bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_bottomBarBgView);
-        }];
-        
-//        [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.width.height.equalTo(@70);
-//            make.centerY.equalTo(_bottomBarBgView.mas_top);
-//            make.centerX.equalTo(_bottomBarBgView);
-//        }];
+            [bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(_bottomBarBgView);
+            }];
+            
+        }
     }
     return _bottomBarBgView;
-}
-
-- (UIButton *)broadCastBtn
-{
-    if (_broadCastBtn == nil) {
-        _broadCastBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_broadCastBtn setImage:[UIImage imageNamed:@"strat_live_stream"] forState:UIControlStateNormal];
-        [_broadCastBtn addTarget:self action:@selector(broadCastBtnAction) forControlEvents:UIControlEventTouchUpInside];
-        _broadCastBtn.layer.cornerRadius = 35;
-
-    }
-    return _broadCastBtn;
-}
-
-
-- (void)broadCastBtnAction
-{
-    NSLog(@"%s",__func__);
 }
 
 

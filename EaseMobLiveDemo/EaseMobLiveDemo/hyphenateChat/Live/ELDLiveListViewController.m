@@ -90,6 +90,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    
     if ([[AgoraChatClient sharedClient] isConnected]) {
         _cursor = @"";
         _noMore = NO;
@@ -237,6 +238,7 @@
     self.collectionView.mj_footer = nil;
     self.collectionView.mj_footer.accessibilityIdentifier = @"refresh_footer";
 }
+
 
 #pragma mark Notification
 - (void)loginStateChangedNotify:(NSNotification *)notify {

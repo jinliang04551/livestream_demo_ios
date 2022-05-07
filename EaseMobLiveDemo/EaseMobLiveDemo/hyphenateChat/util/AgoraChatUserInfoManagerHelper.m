@@ -21,7 +21,7 @@
 
 @implementation AgoraChatUserInfoManagerHelper
 static AgoraChatUserInfoManagerHelper *instance = nil;
-+ (AgoraChatUserInfoManagerHelper *)sharedAgoraChatUserInfoManagerHelper {
++ (AgoraChatUserInfoManagerHelper *)sharedHelper {
 static dispatch_once_t oneToken;
     dispatch_once(&oneToken, ^{
         instance = [[AgoraChatUserInfoManagerHelper alloc]init];
@@ -31,25 +31,29 @@ static dispatch_once_t oneToken;
 
 + (void)fetchUserInfoWithUserIds:(NSArray<NSString *> *)userIds
                       completion:(void (^)(NSDictionary * _Nonnull))completion {
-    [[self sharedAgoraChatUserInfoManagerHelper] fetchUserInfoWithUserIds:userIds completion:completion];
+    [[self sharedHelper] fetchUserInfoWithUserIds:userIds completion:completion];
 }
 
 
 + (void)fetchUserInfoWithUserIds:(NSArray<NSString *> *)userIds userInfoTypes:(NSArray<NSNumber *> *)userInfoTypes completion:(void (^)(NSDictionary * _Nonnull))completion {
-    [[self sharedAgoraChatUserInfoManagerHelper] fetchUserInfoWithUserIds:userIds userInfoTypes:userInfoTypes completion:completion];
+    [[self sharedHelper] fetchUserInfoWithUserIds:userIds userInfoTypes:userInfoTypes completion:completion];
 }
 
 
 + (void)updateUserInfo:(AgoraChatUserInfo *)userInfo completion:(void (^)(AgoraChatUserInfo * _Nonnull))completion {
-    [[self sharedAgoraChatUserInfoManagerHelper] updateUserInfo:userInfo completion:completion];
+    [[self sharedHelper] updateUserInfo:userInfo completion:completion];
 }
 
 + (void)updateUserInfoWithUserId:(NSString *)userId withType:(AgoraChatUserInfoType)type completion:(void (^)(AgoraChatUserInfo * _Nonnull))completion {
-    [[self sharedAgoraChatUserInfoManagerHelper] updateUserInfoWithUserId:userId withType:type completion:completion];
+    [[self sharedHelper] updateUserInfoWithUserId:userId withType:type completion:completion];
 }
 
 + (void)fetchOwnUserInfoCompletion:(void(^)(AgoraChatUserInfo *ownUserInfo))completion {
-    [[self sharedAgoraChatUserInfoManagerHelper] fetchOwnUserInfoCompletion:completion];
+    [[self sharedHelper] fetchOwnUserInfoCompletion:completion];
+}
+
++ (void)fetchUserInfoModelsWithUserId:(NSArray *)userIds completion:(void (^)(NSDictionary * _Nonnull))completion {
+    [[self sharedHelper] fetchUserInfoModelsWithUserId:userIds completion:completion];
 }
 
 #pragma mark instance method
@@ -75,14 +79,11 @@ static dispatch_once_t oneToken;
                     if (user) {
                         resultDic[userKey] = user;
                         self.userInfoCacheDic[userKey] = user;
-//                        ELDUserInfoModel *userInfoModel = [[ELDUserInfoModel alloc] initWithUserInfo:user];
-//                        if (userInfoModel) {
-//                            self.userModelCacheDic[userKey] = userInfoModel;
-//                        }
-                        
-                        [self downloadAvatars];
                     }
                 }
+                
+                [self downloadAvatars];
+
                 if (resultDic && completion) {
                     completion(resultDic);
                 }
@@ -148,6 +149,16 @@ static dispatch_once_t oneToken;
         }
     }];
     
+}
+
+- (void)fetchUserInfoModelsWithUserId:(NSArray *)userIds completion:(void (^)(NSDictionary * _Nonnull))completion {
+    if (userIds.count == 0) {
+        return;
+    }
+    
+    if (self.userInfoCacheDic.count > 0 && completion) {
+        completion(self.userInfoCacheDic);
+    }
 }
 
 #pragma mark private method

@@ -13,7 +13,9 @@
 /** id */
 @property(nonatomic,copy)NSString *id;
 /** usericon */
-@property(nonatomic,copy)UIImage *user_icon;
+//@property(nonatomic,copy)UIImage *user_icon;
+@property(nonatomic,copy)NSString *userAvatarURL;
+
 /** icon */
 @property(nonatomic,copy)UIImage *icon;
 /** icon_gif */

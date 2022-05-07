@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIImageView *firstMemberImageView;
 @property (nonatomic, strong) UIImageView *secondMemberImageView;
 
-- (void)updateWatchersAvatarWithUserIds:(NSArray *)userIds;
+- (void)updateWatchersAvatarWithUrlArray:(NSArray *)urlArray;
 
 @end
 

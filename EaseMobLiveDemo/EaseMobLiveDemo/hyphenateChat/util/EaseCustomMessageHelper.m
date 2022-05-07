@@ -247,7 +247,7 @@ extern NSMutableDictionary *anchorInfoDic;
         if (userInfoDic.count > 0) {
             AgoraChatUserInfo *userInfo = userInfoDic[msg.from];
             JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-            cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
+            cellModel.userAvatarURL = userInfo.avatarUrl;
             cellModel.icon = ImageWithName(model.giftname);
             cellModel.name = model.giftname;
             cellModel.username = userInfo.nickName ?: userInfo.userId;
@@ -262,7 +262,7 @@ extern NSMutableDictionary *anchorInfoDic;
 - (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView
 {
     JPGiftModel *giftModel = [[JPGiftModel alloc]init];
-    giftModel.userIcon = cellModel.user_icon;
+    giftModel.userAvatarURL = cellModel.userAvatarURL;
     giftModel.userName = cellModel.username;
     giftModel.giftName = cellModel.name;
     giftModel.giftImage = cellModel.icon;

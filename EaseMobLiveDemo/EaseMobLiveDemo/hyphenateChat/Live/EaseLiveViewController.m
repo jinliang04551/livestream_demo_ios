@@ -165,7 +165,6 @@
 }
 
 
-
 - (void)viewWillLayoutSubviews
 {
     
@@ -743,7 +742,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [weakSelf.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
                 if (success) {
                     //显示礼物UI
-                    giftModel.username = [weakSelf randomNickName:giftModel.username];
+                    
                     [weakSelf.giftView resetGiftView];
                     [_customMsgHelper sendGiftAction:giftModel backView:self.view];
                 }

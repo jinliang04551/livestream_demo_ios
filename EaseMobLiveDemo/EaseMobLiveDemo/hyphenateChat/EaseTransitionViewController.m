@@ -65,17 +65,27 @@ NSString *defaultPwd = @"000000";//默认密码
      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
          [[AgoraChatClient sharedClient] registerWithUsername:uuidAccount password:defaultPwd completion:^(NSString *aUsername, AgoraChatError *aError) {
              [[AgoraChatClient sharedClient] loginWithUsername:(NSString *)uuidAccount password:defaultPwd completion:^(NSString *aUsername, AgoraChatError *aError) {
-                 //通知 接收所在的线程 是基于 发送通知 所在的线程。由于接收通知在appdelegate主线程里，所以发送通知必须切换到主线程。
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [weakHud hideAnimated:YES];
-                      if (!aError) {
-                          NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-                          [ud setObject:[AgoraChatClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
-                          [ud synchronize];
-                          [[AgoraChatClient sharedClient].options setIsAutoLogin:YES];
-                          [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
-                     }
-                 });
+                 //set avatar url
+                 if (aError == nil) {
+                     [[AgoraChatClient sharedClient].userInfoManager updateOwnUserInfo:kDefaultAvatarURL withType:AgoraChatUserInfoTypeAvatarURL completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+                        
+                         //通知 接收所在的线程 是基于 发送通知 所在的线程。由于接收通知在appdelegate主线程里，所以发送通知必须切换到主线程。
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [weakHud hideAnimated:YES];
+                              if (!aError) {
+                                  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+                                  [ud setObject:[AgoraChatClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
+                                  [ud synchronize];
+                                  [[AgoraChatClient sharedClient].options setIsAutoLogin:YES];
+                                  [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
+                             }
+                         });
+                         
+                     }];
+                 }else {
+                     [self showHint:aError.errorDescription];
+                 }
+                 
              }];
          }];
      });

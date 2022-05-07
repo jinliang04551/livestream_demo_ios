@@ -56,6 +56,12 @@
     [self.view addGestureRecognizer:tap];
     
     [self placeAndLayoutSubviews];
+    
+    [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
+        if (ownUserInfo) {
+            [self.changeAvatarButton sd_setBackgroundImageWithURL:[NSURL URLWithString:ownUserInfo.avatarUrl] forState:UIControlStateNormal];
+        }
+    }];
 }
 
 - (void)endEdit {
@@ -391,7 +397,6 @@
         [_changeAvatarButton addTarget:self action:@selector(changeAvatarAction) forControlEvents:UIControlEventTouchUpInside];
         _changeAvatarButton.layer.cornerRadius = 4.0f;
         [_changeAvatarButton setBackgroundImage:ImageWithName(@"default_back_image") forState:UIControlStateNormal];
-        
     }
     return _changeAvatarButton;
 }

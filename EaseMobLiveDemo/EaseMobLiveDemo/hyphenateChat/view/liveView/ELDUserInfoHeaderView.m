@@ -50,6 +50,7 @@
       [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self.avatarBgView.mas_bottom).offset(15.0f);
           make.centerX.equalTo(self.avatarBgView).offset(-kEaseLiveDemoPadding);
+          make.width.mas_lessThanOrEqualTo(300.0);
           make.height.equalTo(@(kGenderViewHeight));
       }];
 

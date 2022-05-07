@@ -8,6 +8,7 @@
 
 #import "EaseGiftConfirmView.h"
 
+
 @interface EaseGiftConfirmView()
 {
     long _giftNum;
@@ -156,15 +157,31 @@
     }
     if (_doneCompletion) {
         
-        JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-        cellModel.id = self.giftModel.giftId;
-        cellModel.user_icon = [UIImage imageNamed:@"default_anchor_avatar"];
-        cellModel.icon = ImageWithName(self.giftModel.giftname);
-        cellModel.name = self.giftModel.giftname;
-        cellModel.username = AgoraChatClient.sharedClient.currentUsername;
-        cellModel.count = (NSInteger)_giftNum;
-        _doneCompletion(confirm,cellModel);
+//        [AgoraChatUserInfoManagerHelper fetchUserInfoModelsWithUserId:@[AgoraChatClient.sharedClient.currentUsername] completion:^(NSDictionary * _Nonnull dic) {
+//
+//            ELDUserInfoModel *userModel = dic[AgoraChatClient.sharedClient.currentUsername];
+//
+//            JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
+//            cellModel.id = self.giftModel.giftId;
+////            cellModel.user_icon = userModel.avatarImage;
+//            cellModel.username = userModel.displayName;
+//            cellModel.icon = ImageWithName(self.giftModel.giftname);
+//            cellModel.name = self.giftModel.giftname;
+//            cellModel.count = (NSInteger)_giftNum;
+//            _doneCompletion(confirm,cellModel);
+//        }];
         
+        [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
+           
+            JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
+            cellModel.id = self.giftModel.giftId;
+            cellModel.userAvatarURL = ownUserInfo.avatarUrl;
+            cellModel.username = ownUserInfo.nickName ?: ownUserInfo.userId;
+            cellModel.icon = ImageWithName(self.giftModel.giftname);
+            cellModel.name = self.giftModel.giftname;
+            cellModel.count = (NSInteger)_giftNum;
+            _doneCompletion(confirm,cellModel);
+        }];
     }
     [self removeFromParentView];
 }
