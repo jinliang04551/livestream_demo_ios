@@ -24,7 +24,8 @@
     
     self.view.backgroundColor =[UIColor whiteColor];
     
-    self.title = @"";
+    [self setupNavbar];
+    
     self.calenderView =[[LXCalendarView alloc]initWithFrame:CGRectMake(20, 80, KScreenWidth - 40, 0)];
     
     self.calenderView.currentMonthTitleColor =[UIColor hexStringToColor:@"2c2c2c"];
@@ -61,6 +62,11 @@
         [weakSelf.calenderView updateCalendarWithSelectedModel:weakSelf.selectedModel];
     };
     
+}
+
+- (void)setupNavbar {
+    [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
+    self.navigationItem.leftBarButtonItem = [ELDUtil customLeftButtonItem:@"Edit Profile" action:@selector(backAction) actionTarget:self];
 }
 
 - (NSString *)convert2StringWithInt:(NSInteger)intValue {

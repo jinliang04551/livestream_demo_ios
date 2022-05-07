@@ -69,6 +69,10 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor blackColor];
+    
     [self fetchLiveroomStatus];
         
     [self setupLiveNavbar];

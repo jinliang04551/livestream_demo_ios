@@ -24,9 +24,12 @@
     //UITabBarItem
     //hidden navigation bottom line
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    
+    [[UINavigationBar appearance] setTranslucent:NO];
+
     [UINavigationBar.appearance setBarTintColor:UIColor.blackColor];
+    [UINavigationBar.appearance setTintColor:UIColor.blackColor];
 
     
     //UITabBarItem

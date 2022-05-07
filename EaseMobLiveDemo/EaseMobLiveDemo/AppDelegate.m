@@ -66,7 +66,8 @@
         
         EaseMainViewController *main = [[EaseMainViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
-
+//        nav.navigationBar.barStyle = UIBarStyleBlack;
+        
         _mainVC = main;
         self.window.rootViewController = nav;
         

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EaseBaseViewController.h"
 
-@interface LXCalendarOneController : UIViewController
+@interface LXCalendarOneController : EaseBaseViewController
 
 @property (nonatomic, copy)void (^selectedBlock)(NSString *dateString);
 
