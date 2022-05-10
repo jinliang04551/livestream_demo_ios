@@ -11,7 +11,8 @@
 #import "EaseLoginViewController.h"
 #import "EaseMainViewController.h"
 #import "EaseTransitionViewController.h"
-#import <PLMediaStreamingKit/PLMediaStreamingKit.h>
+
+//#import <AgoraStreamingKit/AgoraStreamingKit.h>
 
 #import "ELDAppStyle.h"
 #import "EaseHttpManager.h"
@@ -42,9 +43,7 @@
         
     //初始化环信sdk
     [self initHyphenateChatSDK];
-    //初始化七牛sdk
-    [PLStreamingEnv initEnv];
-                
+                    
     [self.window makeKeyAndVisible];
 
     return YES;
@@ -60,13 +59,9 @@
 {
     BOOL loginSuccess = [notification.object boolValue];
     if (loginSuccess) {//登录成功加载主窗口控制器
-//        EaseMainViewController *main = [[EaseMainViewController alloc] init];
-//        _mainVC = main;
-//        self.window.rootViewController = main;
         
         EaseMainViewController *main = [[EaseMainViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
-//        nav.navigationBar.barStyle = UIBarStyleBlack;
         
         _mainVC = main;
         self.window.rootViewController = nav;

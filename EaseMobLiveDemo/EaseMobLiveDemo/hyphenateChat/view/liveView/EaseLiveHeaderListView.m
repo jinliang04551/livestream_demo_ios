@@ -294,17 +294,6 @@
     [self fetchAllUserInfoWithChatroom:aChatroom];
 }
 
-//- (void)fetchliveUserInfoWithUserId:(NSString *)userId {
-//    if (userId) {
-//        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                AgoraChatUserInfo *userInfo = userInfoDic[userId];
-//                [self.liveCastView updateUIWithUserInfo:userInfo];
-//            });
-//        }];
-//    }
-//}
-
 - (void)fetchAllUserInfoWithChatroom:(AgoraChatroom*)aChatroom {
         
     NSMutableArray *tempArray = NSMutableArray.array;

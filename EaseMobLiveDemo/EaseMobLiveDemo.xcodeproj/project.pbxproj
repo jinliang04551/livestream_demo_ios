@@ -11,7 +11,6 @@
 		3C30742C2546C900003696CA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C30742B2546C900003696CA /* CoreTelephony.framework */; };
 		3C525E2124650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md in Resources */ = {isa = PBXBuildFile; fileRef = 3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */; };
 		3C70A163241B2C4E00A5185F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E252D1CE0379E007506CB /* ImageIO.framework */; };
-		3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3156260C7B4100CC3E3F /* PLPermissionRequestor.m */; };
 		3C9E3270260C7B4300CC3E3F /* UIView+Position.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3158260C7B4100CC3E3F /* UIView+Position.m */; };
 		3C9E3271260C7B4300CC3E3F /* UIViewController+HUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E315A260C7B4100CC3E3F /* UIViewController+HUD.m */; };
 		3C9E3272260C7B4300CC3E3F /* NSDictionary+SafeValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E315D260C7B4100CC3E3F /* NSDictionary+SafeValue.m */; };
@@ -407,8 +406,6 @@
 		3C30742B2546C900003696CA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "直播聊天室集成第三方视频推拉流介绍.md"; sourceTree = "<group>"; };
 		3C72AD69240F9559007BC99F /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
-		3C9E3155260C7B4100CC3E3F /* PLPermissionRequestor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLPermissionRequestor.h; sourceTree = "<group>"; };
-		3C9E3156260C7B4100CC3E3F /* PLPermissionRequestor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PLPermissionRequestor.m; sourceTree = "<group>"; };
 		3C9E3158260C7B4100CC3E3F /* UIView+Position.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Position.m"; sourceTree = "<group>"; };
 		3C9E3159260C7B4100CC3E3F /* NSDictionary+SafeValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SafeValue.h"; sourceTree = "<group>"; };
 		3C9E315A260C7B4100CC3E3F /* UIViewController+HUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HUD.m"; sourceTree = "<group>"; };
@@ -971,7 +968,6 @@
 				3C9E326C260C7B4300CC3E3F /* EaseLoginViewController.m */,
 				3C9E326B260C7B4300CC3E3F /* EaseMainViewController.h */,
 				3C9E3170260C7B4200CC3E3F /* EaseMainViewController.m */,
-				3C9E3154260C7B4100CC3E3F /* EaseMediaStream */,
 				3C9E317D260C7B4200CC3E3F /* EaseSignUpViewController.h */,
 				3C9E316F260C7B4200CC3E3F /* EaseSignUpViewController.m */,
 				3C9E326E260C7B4300CC3E3F /* EaseTransitionViewController.h */,
@@ -983,15 +979,6 @@
 				3C9E3197260C7B4200CC3E3F /* view */,
 			);
 			path = hyphenateChat;
-			sourceTree = "<group>";
-		};
-		3C9E3154260C7B4100CC3E3F /* EaseMediaStream */ = {
-			isa = PBXGroup;
-			children = (
-				3C9E3155260C7B4100CC3E3F /* PLPermissionRequestor.h */,
-				3C9E3156260C7B4100CC3E3F /* PLPermissionRequestor.m */,
-			);
-			path = EaseMediaStream;
 			sourceTree = "<group>";
 		};
 		3C9E3157260C7B4100CC3E3F /* Category */ = {
@@ -2113,14 +2100,13 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-EaseMobLiveDemo/Pods-EaseMobLiveDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${PODS_ROOT}/AgoraMediaPlayer_iOS/AgoraMediaPlayer.framework",
+				"${PODS_ROOT}/AgoraMediaPlayer_iOS/AgoraPlayerFFmpeg.framework",
 				"${PODS_ROOT}/Agora_Chat_iOS/AgoraChat.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-				"${PODS_ROOT}/PLMediaStreamingKit/Pod/Library/PLMediaStreamingKit.framework",
-				"${PODS_ROOT}/PLMediaStreamingKit/Pod/Library/HappyDNS.framework",
-				"${PODS_ROOT}/PLPlayerKit/Pod/Library/PLPlayerKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS_Beta/AgoraDav1dExtension.framework/AgoraDav1dExtension",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS_Beta/AgoraPvcExtension.framework/AgoraPvcExtension",
@@ -2136,14 +2122,13 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraMediaPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraPlayerFFmpeg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraChat.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PLMediaStreamingKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HappyDNS.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PLPlayerKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraDav1dExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraPvcExtension.framework",
@@ -2216,7 +2201,6 @@
 				3C9E3394260C8FE700CC3E3F /* AppDelegate+HyphenateChat.m in Sources */,
 				3C9E32AB260C7B4300CC3E3F /* EaseAnchorCardView.m in Sources */,
 				3C9E3285260C7B4300CC3E3F /* EaseSettingsViewController.m in Sources */,
-				3C9E326F260C7B4300CC3E3F /* PLPermissionRequestor.m in Sources */,
 				C047554E28095CCE0094EAD3 /* LXCalendarHearder.m in Sources */,
 				C0602E9A280046B700D39575 /* ELDBaseTableViewController.m in Sources */,
 				C047554C28095CCE0094EAD3 /* LXCalendarWeekView.m in Sources */,

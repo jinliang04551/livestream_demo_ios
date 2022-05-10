@@ -14,16 +14,12 @@ pod 'SDWebImage', '~> 4.0'
 pod 'Agora_Chat_iOS','1.0.1'
 pod 'SDWebImage/GIF'
 pod 'AFNetworking', '~> 4.0.1'
-pod 'PLMediaStreamingKit', '~> 3.0.0'
-pod 'PLPlayerKit', '~> 3.4.3'
 
-#pod "PLMediaStreamingKit", :podspec => 'https://raw.githubusercontent.com/pili-engineering/PLMediaStreamingKit/master/PLMediaStreamingKit-Universal.podspec'
-#
-#pod "PLPlayerKit", :podspec => 'https://raw.githubusercontent.com/pili-engineering/PLPlayerKit/master/PLPlayerKit-Universal.podspec'
-
-#pod 'AgoraRtcEngine_iOS', '~> 3.6.0.1'
+#pod 'PLPlayerKit', '~> 3.4.3'
+#pod 'PLMediaStreamingKit', '~> 3.0.0'
 
 pod 'AgoraRtcEngine_iOS_Beta', '4.0.0-beta.1'
-
+pod 'AgoraMediaPlayer_iOS'
+#pod 'AgoraStreamingKit_iOS'
 
 end

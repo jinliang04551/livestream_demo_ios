@@ -301,6 +301,7 @@
         _contentView.backgroundColor = ViewControllerBgBlackColor;
         _contentView.backgroundColor = UIColor.clearColor;
         
+        
         [_contentView addSubview:self.closeButton];
         [_contentView addSubview:self.headerBgView];
         [_contentView addSubview:self.flipButton];
@@ -308,13 +309,13 @@
         [_contentView addSubview:self.goLiveButton];
 
         [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentView).offset(kEaseLiveDemoPadding * 2.6);
+            make.top.equalTo(_contentView).offset(kNavBarAndStatusBarHeight);
             make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
             make.size.equalTo(@30.0);
         }];
 
         [self.headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.closeButton).offset(kEaseLiveDemoPadding * 2.6);
+            make.top.equalTo(self.closeButton.mas_bottom).offset(kEaseLiveDemoPadding * 2.6);
             make.left.equalTo(_contentView).offset(kEaseLiveDemoPadding * 1.6);
             make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
         }];

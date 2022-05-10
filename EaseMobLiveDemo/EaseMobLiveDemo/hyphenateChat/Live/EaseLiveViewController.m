@@ -28,7 +28,7 @@
 #import "UIImageView+WebCache.h"
 #import "EaseCustomMessageHelper.h"
 
-#import <PLPlayerKit/PLPlayerKit.h>
+#import <AgoraMediaPlayer/AgoraMediaPlayerKit.h>
 
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
 
@@ -45,7 +45,7 @@
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface EaseLiveViewController () <EaseChatViewDelegate,EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,PLPlayerDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate>
+@interface EaseLiveViewController () <EaseChatViewDelegate,EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraMediaPlayerDelegate>
 {
     NSTimer *_burstTimer;
     EaseLiveRoom *_room;
@@ -71,7 +71,10 @@
 /** gifimage */
 @property(nonatomic,strong) UIImageView *backgroudImageView;
 
-@property (nonatomic, strong) PLPlayer  *player;
+//@property (nonatomic, strong) PLPlayer  *player;
+@property (nonatomic, strong) AgoraMediaPlayer  *player;
+@property (nonatomic, strong) UIView *mediaPlayerView;
+
 
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, strong) AVPlayerLayer *avLayer;
@@ -282,15 +285,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 
-- (PLPlayerOption *)_getPlayerOPtion
-{
-    PLPlayerOption *option = [PLPlayerOption defaultOption];
-    [option setOptionValue:@15 forKey:PLPlayerOptionKeyTimeoutIntervalForMediaPackets];
-    [option setOptionValue:@(3) forKey:PLPlayerOptionKeyVideoPreferFormat];
-    [option setOptionValue:@(kPLLogDebug) forKey:PLPlayerOptionKeyLogLevel];
-    return option;
-}
-
 //点播
 - (void)startPlayVodStream:(NSURL *)vodStreamUrl
 {
@@ -341,15 +335,15 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 //看直播
 - (void)startPLayVideoStream:(NSURL *)streamUrl
 {
-    self.player = [PLPlayer playerLiveWithURL:streamUrl option:[self _getPlayerOPtion]];
-    self.player.delegate = self;
-    [self.view insertSubview:self.player.playerView atIndex:0];
-    [self.player.playerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.player = [[AgoraMediaPlayer alloc] initWithDelegate:self];
+    [self.player setView:self.mediaPlayerView];
+    [self.view insertSubview:self.mediaPlayerView atIndex:0];
+    [self.mediaPlayerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.equalTo(self.view);
     }];
-    self.player.delegateQueue = dispatch_get_main_queue();
+
     if ([_room.liveroomType isEqual:kLiveBroadCastingTypeVOD])
-        self.player.playerView.contentMode = UIViewContentModeScaleAspectFit;
+        self.mediaPlayerView.contentMode = UIViewContentModeScaleAspectFit;
     [self.player play];
 }
 
@@ -449,42 +443,42 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [task resume];
 }
 
-#pragma mark - PLPlayerDelegate
-
-- (void)player:(PLPlayer *)player statusDidChange:(PLPlayerStatus)state
-{
-    NSLog(@"status %ld",(long)state);
-    if (state == PLPlayerStatusPlaying) {
+#pragma mark AgoraMediaPlayerDelegate
+- (void)AgoraMediaPlayer:(AgoraMediaPlayer *_Nonnull)playerKit
+       didChangedToState:(AgoraMediaPlayerState)state
+                   error:(AgoraMediaPlayerError)error {
+    
+    if (state == AgoraMediaPlayerStatePlaying) {
         [self.backgroudImageView removeFromSuperview];
         if (_clock > 0) {
             _clock = 0;
             [self stopTimer];
         }
-    } else if (state == PLPlayerStatusCaching) {
-    } else if (state == PLPlayerStateAutoReconnecting) {
+    } else if (state == AgoraMediaPlayerStateIdle) {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在重新连接..." toView:self.view];
         [hud hideAnimated:YES afterDelay:1.5];
-    } else if (state == PLPlayerStatusError) {
+    } else if (state == AgoraMediaPlayerStateFailed) {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"播放出错,请退出重进直播间。" toView:self.view];
-        [self.player.playerView removeFromSuperview];
+        [self.mediaPlayerView removeFromSuperview];
         [self.view insertSubview:self.backgroudImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:1.5];
     }
 }
 
-- (void)player:(PLPlayer *)player stoppedWithError:(NSError *)error
-{
-    NSString *info = error.userInfo[@"NSLocalizedDescription"];
-    MBProgressHUD *hud = [MBProgressHUD showMessag:info toView:self.view];
-    [self.player.playerView removeFromSuperview];
-    [self.view insertSubview:self.backgroudImageView atIndex:0];
-    [hud hideAnimated:YES afterDelay:2.0];
-    if (_clock >= 5)
-        return;
-    ++_clock;
-    [self startTimer];
+- (void)AgoraMediaPlayer:(AgoraMediaPlayer *_Nonnull)playerKit
+           didOccurEvent:(AgoraMediaPlayerEvent)event {
+    
+    if (event == AgoraMediaPlayerEventSeekError) {
+        [self.mediaPlayerView removeFromSuperview];
+        [self.view insertSubview:self.backgroudImageView atIndex:0];
+        if (_clock >= 5)
+            return;
+        ++_clock;
+        [self startTimer];
+    }
 }
 
+#pragma mark timer
 - (void)startTimer {
     [self stopTimer];
     _timer = [NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:NO];
@@ -498,7 +492,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 - (void)updateCountLabel {
-    
+
 }
 
 #pragma mark - getter and setter
@@ -596,6 +590,13 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _twoBallAnimationView;
 }
 
+
+- (UIView *)mediaPlayerView {
+    if (_mediaPlayerView == nil) {
+        _mediaPlayerView = [[UIView alloc] init];
+    }
+    return _mediaPlayerView;
+}
 
 #pragma mark - EaseLiveHeaderListViewDelegate
 
