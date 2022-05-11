@@ -1,5 +1,5 @@
 use_frameworks!
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 # Import CocoaPods sources
 source 'https://github.com/CocoaPods/Specs.git'
@@ -21,5 +21,8 @@ pod 'AFNetworking', '~> 4.0.1'
 pod 'AgoraRtcEngine_iOS_Beta', '4.0.0-beta.1'
 pod 'AgoraMediaPlayer_iOS'
 #pod 'AgoraStreamingKit_iOS'
+
+# pod 'chat-uikit'
+pod 'chat-uikit', :path => "../../AgoraChat-UIKit-ios"
 
 end

@@ -54,8 +54,13 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #ifdef __OBJC__
 
     #import <AgoraChat/AgoraChat.h>
-    #import "EaseHttpManager.h"
     #import <Masonry/Masonry.h>
+    #import <SDWebImage/UIImageView+WebCache.h>
+    #import <SDWebImage/UIButton+WebCache.h>
+//    #import <chat-uikit/EaseChatKit.h>
+
+
+    #import "EaseHttpManager.h"
     #import "MBProgressHUD+Add.h"
     #import "ELDAppStyle.h"
     #import "EaseLiveDemoDefine.h"
@@ -64,8 +69,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import "EaseLiveRoom.h"
     #import "EaseLiveCategory.h"
     #import "ELDUtil.h"
-    #import <SDWebImage/UIImageView+WebCache.h>
-    #import <SDWebImage/UIButton+WebCache.h>
     #import "ELDConfig.h"
     #import "AgoraChatUserInfoManagerHelper.h"
     #import "ELDGiftModel.h"

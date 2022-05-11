@@ -7,7 +7,7 @@
 //
 
 #import "ELDChatMessageCell.h"
-#import "EaseEmojiHelper.h"
+//#import "EaseEmojiHelper.h"
 #import "EaseDefaultDataHelper.h"
 #import "EaseCustomMessageHelper.h"
 
@@ -150,9 +150,10 @@ static AgoraChatroom *_chatroom;
                 latestMessageTitle = @"[图片]";
             } break;
             case AgoraChatMessageBodyTypeText:{
-                NSString *didReceiveText = [EaseEmojiHelper
-                                            convertEmoji:((AgoraChatTextMessageBody *)messageBody).text];
-                latestMessageTitle = didReceiveText;
+//                NSString *didReceiveText = [EaseEmojiHelper
+//                                            convertEmoji:((AgoraChatTextMessageBody *)messageBody).text];
+//                latestMessageTitle = didReceiveText;
+                latestMessageTitle = ((AgoraChatTextMessageBody *)messageBody).text;
             } break;
             case AgoraChatMessageBodyTypeVoice:{
                 latestMessageTitle = @"[语音]";

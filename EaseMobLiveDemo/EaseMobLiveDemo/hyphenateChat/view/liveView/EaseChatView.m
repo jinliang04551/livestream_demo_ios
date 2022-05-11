@@ -10,7 +10,6 @@
 #import "ELDChatMessageCell.h"
 #import "EaseLiveRoom.h"
 #import "EaseCustomSwitch.h"
-#import "EaseEmoticonView.h"
 #import "ELDChatJoinCell.h"
 
 
@@ -32,7 +31,7 @@
 
 NSMutableDictionary *audienceNickname;//直播间观众昵称库
 
-@interface EaseChatView () <AgoraChatManagerDelegate,AgoraChatroomManagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,EaseEmoticonViewDelegate>
+@interface EaseChatView () <AgoraChatManagerDelegate,AgoraChatroomManagerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 {
     NSString *_chatroomId;
     EaseLiveRoom *_room;
@@ -72,7 +71,7 @@ NSMutableDictionary *audienceNickname;//直播间观众昵称库
 @property (strong, nonatomic) UIButton *sendButton;//发送按钮
 @property (strong, nonatomic) AgoraChatConversation *conversation;
 
-@property (strong, nonatomic) UIView *faceView;
+//@property (strong, nonatomic) UIView *faceView;
 @property (strong, nonatomic) UIView *activityView;
 
 @property (assign, nonatomic) BOOL isPublish;
@@ -400,29 +399,29 @@ BOOL isAllTheSilence;//全体禁言
     return _sendButton;
 }
 
-- (UIButton*)faceButton
-{
-    if (_faceButton == nil) {
-        _faceButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _faceButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - 30 - kDefaulfLeftSpace, 10.f, 30, 30);
-        [_faceButton setImage:[UIImage imageNamed:@"input_bar_1_icon_face"] forState:UIControlStateNormal];
-        [_faceButton setImage:[UIImage imageNamed:@"input_bar_1_icon_keyboard"] forState:UIControlStateSelected];
-        [_faceButton addTarget:self action:@selector(faceAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _faceButton;
-}
+//- (UIButton*)faceButton
+//{
+//    if (_faceButton == nil) {
+//        _faceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _faceButton.frame = CGRectMake(CGRectGetWidth(self.bounds) - 30 - kDefaulfLeftSpace, 10.f, 30, 30);
+//        [_faceButton setImage:[UIImage imageNamed:@"input_bar_1_icon_face"] forState:UIControlStateNormal];
+//        [_faceButton setImage:[UIImage imageNamed:@"input_bar_1_icon_keyboard"] forState:UIControlStateSelected];
+//        [_faceButton addTarget:self action:@selector(faceAction) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _faceButton;
+//}
 
-- (UIView*)faceView
-{
-    if (_faceView == nil) {
-        _faceView = [[EaseEmoticonView alloc] initWithOutlineFrame:CGRectMake(0, CGRectGetMaxY(_bottomSendMsgView.frame), self.frame.size.width, 180)];
-        [(EaseEmoticonView *)_faceView setDelegate:self];
-        _faceView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0];
-        _faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        //[self _setupEmotion];
-    }
-    return _faceView;
-}
+//- (UIView*)faceView
+//{
+//    if (_faceView == nil) {
+//        _faceView = [[EaseEmoticonView alloc] initWithOutlineFrame:CGRectMake(0, CGRectGetMaxY(_bottomSendMsgView.frame), self.frame.size.width, 180)];
+//        [(EaseEmoticonView *)_faceView setDelegate:self];
+//        _faceView.backgroundColor = [UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0];
+//        _faceView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+//        //[self _setupEmotion];
+//    }
+//    return _faceView;
+//}
 
 - (void)setIsMuted:(BOOL)isMuted {
     _isMuted = isMuted;
@@ -610,21 +609,21 @@ BOOL isAllTheSilence;//全体禁言
     return YES;
 }
 
-#pragma mark - EaseEmoticonViewDelegate
-
-- (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
-{
-    if (aModel.type == EMEmotionTypeEmoji) {
-        [self inputViewAppendText:aModel.name];
-    }
-}
-
-- (void)didChatBarEmoticonViewSendAction
-{
-    [self sendFace];
-    [self sendTextAction];
-    [self textViewDidChange:self.textView];
-}
+//#pragma mark - EaseEmoticonViewDelegate
+//
+//- (void)didSelectedEmoticonModel:(EMEmoticonModel *)aModel
+//{
+//    if (aModel.type == EMEmotionTypeEmoji) {
+//        [self inputViewAppendText:aModel.name];
+//    }
+//}
+//
+//- (void)didChatBarEmoticonViewSendAction
+//{
+//    [self sendFace];
+//    [self sendTextAction];
+//    [self textViewDidChange:self.textView];
+//}
 /*
 - (void)selectedFacialView:(NSString *)str isDelete:(BOOL)isDelete
 {
@@ -922,17 +921,17 @@ BOOL isAllTheSilence;//全体禁言
     [self textChangedExt];
 }
 
-- (void)faceAction
-{
-    _faceButton.selected = !_faceButton.selected;
-    
-    if (_faceButton.selected) {
-        [self.textView resignFirstResponder];
-        [self _willShowBottomView:self.faceView];
-    } else {
-        [self.textView becomeFirstResponder];
-    }
-}
+//- (void)faceAction
+//{
+//    _faceButton.selected = !_faceButton.selected;
+//
+//    if (_faceButton.selected) {
+//        [self.textView resignFirstResponder];
+//        [self _willShowBottomView:self.faceView];
+//    } else {
+//        [self.textView becomeFirstResponder];
+//    }
+//}
 
 //发送礼物
 - (void)sendGiftAction:(NSString *)giftId
