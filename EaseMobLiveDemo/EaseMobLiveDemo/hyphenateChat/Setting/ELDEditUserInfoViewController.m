@@ -256,7 +256,7 @@
                 }
                 
                 //save userinfo
-                [AgoraChatUserInfoManagerHelper updateUserInfo:self.userInfo completion:^(AgoraChatUserInfo * _Nonnull aUserInfo) {
+                [EaseUserInfoManagerHelper updateUserInfo:self.userInfo completion:^(AgoraChatUserInfo * _Nonnull aUserInfo) {
                                     
                 }];
                 

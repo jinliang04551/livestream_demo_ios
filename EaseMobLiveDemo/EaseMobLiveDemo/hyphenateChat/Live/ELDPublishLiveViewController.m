@@ -36,11 +36,12 @@
 #import "ELDUserInfoView.h"
 #import "ELDNotificationView.h"
 
+#import "ELDChatView.h"
 
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface ELDPublishLiveViewController () <EaseChatViewDelegate,UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraDirectCdnStreamingEventDelegate>
+@interface ELDPublishLiveViewController () <UITextViewDelegate,AgoraChatroomManagerDelegate,TapBackgroundViewDelegate,EaseLiveHeaderListViewDelegate,EaseProfileLiveViewDelegate,UIAlertViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraDirectCdnStreamingEventDelegate,ELDChatViewDelegate>
 {
     
         
@@ -70,7 +71,11 @@
 @property (strong, nonatomic) UITapGestureRecognizer *singleTapGR;
 
 //聊天室
-@property (strong, nonatomic) EaseChatView *chatview;
+//@property (strong, nonatomic) EaseChatView *chatview;
+@property (strong, nonatomic) ELDChatView *chatview;
+
+
+
 @property(nonatomic,strong) UIImageView *backImageView;
 
 
@@ -181,7 +186,7 @@
     [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
     [[AgoraChatClient sharedClient] removeDelegate:self];
     [_headerListView stopTimer];
-    _chatview.delegate = nil;
+    _chatview.easeChatView.delegate = nil;
     
     EaseDefaultDataHelper.shared.praiseStatisticstCount = @"";
     [EaseDefaultDataHelper.shared.giftStatisticsCount removeAllObjects];
@@ -476,11 +481,6 @@
 //    }];
 //}
 
-//切换前后摄像头
-- (void)didSelectChangeCameraButton
-{
-    [self.agoraKit switchCamera];
-}
 
 #pragma mark getter and setter
 - (UIWindow*)subWindow
@@ -539,10 +539,18 @@
     return _roomNameLabel;
 }
 
-- (EaseChatView*)chatview
-{
+//- (EaseChatView*)chatview
+//{
+//    if (_chatview == nil) {
+//        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) room:_room isPublish:YES customMsgHelper:_customMsgHelper];
+//        _chatview.delegate = self;
+//    }
+//    return _chatview;
+//}
+
+- (ELDChatView *)chatview {
     if (_chatview == nil) {
-        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) room:_room isPublish:YES customMsgHelper:_customMsgHelper];
+        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) room:_room isPublish:YES customMsgHelper:_customMsgHelper];        
         _chatview.delegate = self;
     }
     return _chatview;
@@ -577,27 +585,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)didSelectedExitButton
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"End your Livestream?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-
-    }];
-    [alertController addAction:cancelAction];
-
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        _isFinishBroadcast = YES;
-//        _session.delegate = nil;
-        [self didClickFinishButton];
-    }];
-
-    [alertController addAction:okAction];
-
-    alertController.modalPresentationStyle = 0;
-    [self presentViewController:alertController animated:YES completion:nil];
-
-    
-}
 
 #pragma mark - Action
 
@@ -724,24 +711,61 @@
     }];
 }
 
-
-#pragma mark - EaseChatViewDelegate
-
-//礼物列表
-- (void)didSelectGiftButton:(BOOL)isOwner
+#pragma mark ELDChatViewDelegate
+- (void)easeChatViewDidChangeFrameToHeight:(CGFloat)toHeight
 {
-    if (isOwner) {
-        EaseGiftListView *giftListView = [[EaseGiftListView alloc]init];
-        giftListView.delegate = self;
-        [giftListView showFromParentView:self.view];
+    if ([self.subWindow isKeyWindow]) {
+        return;
+    }
+    
+    if (toHeight == 200) {
+        [self.view removeGestureRecognizer:self.singleTapGR];
+    } else {
+        [self.view addGestureRecognizer:self.singleTapGR];
+    }
+    
+    if (!self.chatview.hidden) {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect rect = self.chatview.frame;
+            rect.origin.y = self.view.frame.size.height - toHeight;
+            self.chatview.frame = rect;
+        }];
     }
 }
 
+//切换前后摄像头
+- (void)didSelectChangeCameraButton
+{
+    [self.agoraKit switchCamera];
+}
+
+
+- (void)didSelectedExitButton
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"End your Livestream?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertController addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        _isFinishBroadcast = YES;
+//        _session.delegate = nil;
+        [self didClickFinishButton];
+    }];
+
+    [alertController addAction:okAction];
+
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+
+}
+
+
+#pragma mark - EaseCustomMessageHelperDelegate
 //有观众送礼物
-- (void)steamerReceiveGiftMessage:(AgoraChatMessage *)msg {
-    
-    [_customMsgHelper userSendGifts:msg backView:self.view];
-    
+- (void)steamerReceiveGiftId:(NSString *)giftId giftNum:(NSInteger)giftNum fromUser:(nonnull NSString *)userId {
+    [self.chatview userSendGiftId:giftId giftNum:giftNum userId:userId backView:self.view];
     /*
      * gift message is local create message ,can not caculate gift count
     */
@@ -771,39 +795,22 @@
 //弹幕
 - (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg
 {
-    [_customMsgHelper barrageAction:msg backView:self.view];
+    [self.chatview barrageAction:msg backView:self.view];
 }
 
-- (void)easeChatViewDidChangeFrameToHeight:(CGFloat)toHeight
-{
-    if ([self.subWindow isKeyWindow]) {
-        return;
-    }
-    
-    if (toHeight == 200) {
-        [self.view removeGestureRecognizer:self.singleTapGR];
-    } else {
-        [self.view addGestureRecognizer:self.singleTapGR];
-    }
-    
-    if (!self.chatview.hidden) {
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect rect = self.chatview.frame;
-            rect.origin.y = self.view.frame.size.height - toHeight;
-            self.chatview.frame = rect;
-        }];
-    }
-}
 
 //收到点赞
 - (void)didReceivePraiseMessage:(AgoraChatMessage *)message
 {
-    [_customMsgHelper praiseAction:_chatview];
+    [self.chatview praiseAction:self.view];
     AgoraChatCustomMessageBody *customBody = (AgoraChatCustomMessageBody*)message.body;
     _praiseNum += [(NSString*)[customBody.ext objectForKey:@"num"] integerValue];
     EaseDefaultDataHelper.shared.praiseStatisticstCount = [NSString stringWithFormat:@"%ld",(long)_praiseNum];
     [EaseDefaultDataHelper.shared archive];
 }
+
+
+
 
 //操作观众对象
 - (void)didSelectUserWithMessage:(AgoraChatMessage *)message
@@ -870,10 +877,8 @@
 }
 
 
-extern bool isAllTheSilence;
 - (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {
-    isAllTheSilence = aMuted;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
             [self showHint:@"全员禁言开启！"];

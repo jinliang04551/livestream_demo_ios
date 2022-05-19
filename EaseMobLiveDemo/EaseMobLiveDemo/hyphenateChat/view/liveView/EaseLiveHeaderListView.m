@@ -287,10 +287,7 @@
     [self.dataArray addObjectsFromArray:aChatroom.adminList];
     [self.dataArray addObjectsFromArray:aChatroom.memberList];
     [self.numberBtn setTitle:[NSString stringWithFormat:@"%@ %@",@(self.dataArray.count) ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
-    
-
-//    [self fetchliveUserInfoWithUserId:aChatroom.owner];
-    
+        
     [self fetchAllUserInfoWithChatroom:aChatroom];
 }
 
@@ -304,7 +301,7 @@
     [tempArray addObjectsFromArray:aChatroom.memberList];
     
     if (tempArray.count > 0) {
-        [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:tempArray completion:^(NSDictionary * _Nonnull userInfoDic) {
+        [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:tempArray completion:^(NSDictionary * _Nonnull userInfoDic) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSMutableArray *tempArray = [[NSMutableArray alloc] init];
                 for (NSString *userId in userInfoDic.allKeys) {

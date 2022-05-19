@@ -128,7 +128,7 @@
 
 - (void)fetchUserInfosWithUserIds:(NSArray *)userIds {
     
-    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:userIds completion:^(NSDictionary * _Nonnull userInfoDic) {
+    [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:userIds completion:^(NSDictionary * _Nonnull userInfoDic) {
         NSMutableArray *userInfos = NSMutableArray.new;
         for (NSString *key in userInfoDic.allKeys) {
             AgoraChatUserInfo *uInfo = userInfoDic[key];

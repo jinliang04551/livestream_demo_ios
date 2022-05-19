@@ -171,7 +171,7 @@
 //            _doneCompletion(confirm,cellModel);
 //        }];
         
-        [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
+        [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
            
             JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
             cellModel.id = self.giftModel.giftId;

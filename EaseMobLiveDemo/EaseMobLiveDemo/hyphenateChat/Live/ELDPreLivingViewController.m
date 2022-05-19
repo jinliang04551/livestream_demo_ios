@@ -57,7 +57,7 @@
     
     [self placeAndLayoutSubviews];
     
-    [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
+    [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
         if (ownUserInfo) {
             [self.changeAvatarButton sd_setBackgroundImageWithURL:[NSURL URLWithString:ownUserInfo.avatarUrl] forState:UIControlStateNormal];
         }

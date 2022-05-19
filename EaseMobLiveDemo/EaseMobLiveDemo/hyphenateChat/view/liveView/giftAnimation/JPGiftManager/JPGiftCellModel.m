@@ -8,6 +8,7 @@
 
 #import "JPGiftCellModel.h"
 
+
 @implementation JPGiftCellModel
 
 @end

@@ -51,13 +51,14 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
 #define kLiveBoardCastingTypeAGORA_CDN_LIVE     @"agora_cdn_live"
 
 
+
 #ifdef __OBJC__
 
     #import <AgoraChat/AgoraChat.h>
     #import <Masonry/Masonry.h>
     #import <SDWebImage/UIImageView+WebCache.h>
     #import <SDWebImage/UIButton+WebCache.h>
-//    #import <chat-uikit/EaseChatKit.h>
+    #import <chat-uikit/EaseChatKit.h>
 
 
     #import "EaseHttpManager.h"
@@ -70,7 +71,6 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import "EaseLiveCategory.h"
     #import "ELDUtil.h"
     #import "ELDConfig.h"
-    #import "AgoraChatUserInfoManagerHelper.h"
     #import "ELDGiftModel.h"
     #import "ELDUserInfoModel.h"
 

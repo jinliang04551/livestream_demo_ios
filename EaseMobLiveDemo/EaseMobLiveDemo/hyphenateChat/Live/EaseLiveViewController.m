@@ -42,10 +42,13 @@
 
 #import "ELDTwoBallAnimationView.h"
 
+#import "ELDChatView.h"
+
+
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
 
-@interface EaseLiveViewController () <EaseChatViewDelegate,EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraMediaPlayerDelegate>
+@interface EaseLiveViewController () <EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraMediaPlayerDelegate,ELDChatViewDelegate>
 {
     NSTimer *_burstTimer;
     EaseLiveRoom *_room;
@@ -59,7 +62,10 @@
 @property (nonatomic, strong) AgoraChatroom *chatroom;
 
 @property (nonatomic, strong) UIButton *sendButton;
-@property (nonatomic, strong) EaseChatView *chatview;
+
+//@property (nonatomic, strong) EaseChatView *chatview;
+@property (nonatomic, strong) ELDChatView *chatview;
+
 @property (nonatomic, strong) EaseLiveHeaderListView *headerListView;
 
 @property (nonatomic, strong) UIWindow *window;
@@ -163,7 +169,7 @@
     self.chatview.chatroom = self.chatroom;
     
     if ([self.chatroom.muteList containsObject:AgoraChatClient.sharedClient.currentUsername] ||self.chatroom.isMuteAllMembers) {
-        self.chatview.isMuted = YES;
+        self.chatview.easeChatView.isMuted = YES;
     }
 }
 
@@ -179,7 +185,7 @@
     [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
     [[AgoraChatClient sharedClient] removeDelegate:self];
     [_headerListView stopTimer];
-    _chatview.delegate = nil;
+    _chatview.easeChatView.delegate = nil;
     _chatview = nil;
     if (self.avPlayer)
         [self.avPlayer removeTimeObserver:_observer];
@@ -540,10 +546,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _headerListView;
 }
 
-- (EaseChatView*)chatview
+- (ELDChatView*)chatview
 {
     if (_chatview == nil) {
-        _chatview = [[EaseChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];
+        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];        
         _chatview.delegate = self;
     }
     return _chatview;
@@ -628,7 +634,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 {
     [self.view endEditing:YES];
     [self.memberView showFromParentView:self.view];
-    
 }
 
 
@@ -683,7 +688,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [self fetchLivingStream];
 }
 
-- (void)easeChatViewDidChangeFrameToHeight:(CGFloat)toHeight
+- (void)chatViewDidChangeFrameToHeight:(CGFloat)toHeight
 {
     if ([self.window isKeyWindow]) {
         return;
@@ -704,6 +709,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     }
 }
 
+#pragma mark - ELDChatViewDelegate
 - (void)didSelectGiftButton:(BOOL)isOwner
 {
     if (!isOwner) {
@@ -712,22 +718,20 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 #pragma mark - EaseCustomMessageHelperDelegate
-
-//有观众送礼物
-- (void)steamerReceiveGiftMessage:(AgoraChatMessage *)msg {
-    [_customMsgHelper userSendGifts:msg backView:self.view];
+- (void)steamerReceiveGiftId:(NSString *)giftId giftNum:(NSInteger)giftNum fromUser:(nonnull NSString *)userId {
+    [self.chatview userSendGiftId:giftId giftNum:giftNum userId:userId backView:self.view];
 }
 
 //弹幕
 - (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg
 {
-    [_customMsgHelper barrageAction:msg backView:self.view];
+    [self.chatview barrageAction:msg backView:self.view];
 }
 
 //点赞
 - (void)didReceivePraiseMessage:(AgoraChatMessage *)message
 {
-    [_customMsgHelper praiseAction:_chatview];
+    [self.chatview praiseAction:_chatview];
 }
 
 #pragma mark - EaseLiveGiftViewDelegate
@@ -740,36 +744,20 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
         if (aConfirm) {
             //发送礼物消息
-            [weakSelf.chatview sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
+            [weakSelf.chatview.easeChatView sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
                 if (success) {
                     //显示礼物UI
                     
                     [weakSelf.giftView resetGiftView];
-                    [_customMsgHelper sendGiftAction:giftModel backView:self.view];
+                    [weakSelf.chatview sendGiftAction:giftModel backView:self.view];
+                }else {
+                    [self showHint:@"送礼物失败"];
                 }
             }];
         }
     }];
 }
 
-extern NSMutableDictionary *audienceNickname;
-extern NSArray<NSString*> *nickNameArray;
-extern NSMutableDictionary *anchorInfoDic;
-- (NSString *)randomNickName:(NSString *)userName
-{
-    int random = (arc4random() % 100);
-    NSString *randomNickname = nickNameArray[random];
-    if (![audienceNickname objectForKey:userName]) {
-        [audienceNickname setObject:randomNickname forKey:userName];
-    } else {
-        randomNickname = [audienceNickname objectForKey:userName];
-    }
-    if ([userName isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
-        randomNickname = EaseDefaultDataHelper.shared.defaultNickname;
-    }
-    
-    return randomNickname;
-}
 
 //自定义礼物数量
 - (void)giftNumCustom:(EaseLiveGiftView *)liveGiftView
@@ -811,10 +799,10 @@ extern NSMutableDictionary *anchorInfoDic;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
             [self showHint:@"主播已开启全员禁言状态，不可发言！"];
-            self.chatview.isMuted = YES;
+            self.chatview.easeChatView.isMuted = YES;
         } else {
             [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
-            self.chatview.isMuted = NO;
+            self.chatview.easeChatView.isMuted = NO;
         }
         
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
@@ -854,7 +842,7 @@ extern NSMutableDictionary *anchorInfoDic;
             [text appendString:name];
         }
         
-        self.chatview.isMuted = YES;
+        self.chatview.easeChatView.isMuted = YES;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         [self showHint:@"已被禁言"];
         
@@ -869,7 +857,7 @@ extern NSMutableDictionary *anchorInfoDic;
         for (NSString *name in aMutes) {
             [text appendString:name];
         }
-        self.chatview.isMuted = NO;
+        self.chatview.easeChatView.isMuted = NO;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         [self showHint:[NSString stringWithFormat:@"已解除禁言"]];
     }
