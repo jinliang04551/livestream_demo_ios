@@ -190,6 +190,7 @@
     }
     
     self.liveRoom.title = self.liveNameTextField.text;
+    
     [self createLiveRoom:self.liveRoom];
 }
 

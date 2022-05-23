@@ -93,8 +93,8 @@
 - (void)fetchUserInfoWithUsername:(NSString *)username {
     [AgoraChatClient.sharedClient.userInfoManager fetchUserInfoById:@[username] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {
         if (aError == nil) {
-            self.userInfo = aUserDatas[username];
             dispatch_async(dispatch_get_main_queue(), ^{
+                self.userInfo = aUserDatas[username];
                 [self.headerView updateUIWithUserInfo:self.userInfo roleType:self.beOperationedMemberRoleType isMute:self.isMute];
                 [self buildCells];
                 

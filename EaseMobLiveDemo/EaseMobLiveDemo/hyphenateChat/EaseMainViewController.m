@@ -209,14 +209,6 @@
     }];
 }
 
-- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
-{
-    if (item.tag == 10001) {
-        
-    }else {
-        
-    }
-}
 
 
 #pragma mark getter and setter

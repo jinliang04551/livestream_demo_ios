@@ -14,13 +14,18 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ELDChatViewDelegate <NSObject>
 @optional
 
-- (void)chatViewDidChangeFrameToHeight:(CGFloat)toHeight;
+- (void)chatViewDidBottomOffset:(CGFloat)offSet;
 
 - (void)didSelectChangeCameraButton;
 
-- (void)didSelectGiftButton:(BOOL)isOwner;//礼物
+- (void)didSelectGiftButton;
 
 - (void)didSelectedExitButton;
+
+- (void)didSelectUserWithMessage:(AgoraChatMessage *)message;
+
+- (void)chatViewDidSendMessage:(AgoraChatMessage *)message
+                         error:(AgoraChatError *)error;
 
 @end
 
@@ -44,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion;
 
 - (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion;
+
+- (void)insertJoinMessageWithChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername;
 
 
 /// 显示gift view

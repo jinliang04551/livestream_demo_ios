@@ -16,7 +16,6 @@
 #import "EaseProfileLiveView.h"
 #import "EaseLiveGiftView.h"
 #import "EaseLiveRoom.h"
-#import "EaseAnchorCardView.h"
 #import "EaseLiveGiftView.h"
 #import "EaseGiftConfirmView.h"
 #import "EaseGiftCell.h"
@@ -46,7 +45,7 @@
 
 
 #define kDefaultTop 35.f
-#define kDefaultLeft 10.f
+
 
 @interface EaseLiveViewController () <EaseLiveHeaderListViewDelegate,TapBackgroundViewDelegate,EaseLiveGiftViewDelegate,AgoraChatroomManagerDelegate,EaseProfileLiveViewDelegate,AgoraChatClientDelegate,EaseCustomMessageHelperDelegate,AgoraRtcEngineDelegate,ELDChatroomMembersViewDelegate,ELDUserInfoViewDelegate,AgoraMediaPlayerDelegate,ELDChatViewDelegate>
 {
@@ -63,7 +62,6 @@
 
 @property (nonatomic, strong) UIButton *sendButton;
 
-//@property (nonatomic, strong) EaseChatView *chatview;
 @property (nonatomic, strong) ELDChatView *chatview;
 
 @property (nonatomic, strong) EaseLiveHeaderListView *headerListView;
@@ -77,7 +75,6 @@
 /** gifimage */
 @property(nonatomic,strong) UIImageView *backgroudImageView;
 
-//@property (nonatomic, strong) PLPlayer  *player;
 @property (nonatomic, strong) AgoraMediaPlayer  *player;
 @property (nonatomic, strong) UIView *mediaPlayerView;
 
@@ -501,109 +498,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
 }
 
-#pragma mark - getter and setter
-
-- (UIWindow*)window
-{
-    if (_window == nil) {
-        _window = [[UIWindow alloc] initWithFrame:CGRectMake(0, KScreenHeight, KScreenWidth, 290.f)];
-    }
-    return _window;
-}
-
-- (UIImageView*)backgroudImageView
-{
-    if (_backgroudImageView == nil) {
-        _backgroudImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
-        _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [_backgroudImageView sd_setImageWithURL:[NSURL URLWithString:_room.coverPictureUrl] placeholderImage:ImageWithName(@"default_back_image")];
-        
-    }
-    return _backgroudImageView;
-}
-
-- (UIView*)liveView
-{
-    if (_liveView == nil) {
-        _liveView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
-        _liveView.backgroundColor = [UIColor clearColor];
-        
-        [_liveView addSubview:self.headerListView];
-        [_liveView addSubview:self.chatview];
-        [_liveView addSubview:self.notificationView];
-
-    }
-    return _liveView;
-}
-
-- (EaseLiveHeaderListView*)headerListView
-{
-    if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) chatroom:self.chatroom];
-        _headerListView.delegate = self;
-        [_headerListView setLiveCastDelegate];
-    }
-    return _headerListView;
-}
-
-- (ELDChatView*)chatview
-{
-    if (_chatview == nil) {
-        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];        
-        _chatview.delegate = self;
-    }
-    return _chatview;
-}
-
-- (void)didSelectedExitButton
-{
-    [self closeButtonAction];
-}
-
-
-- (ELDChatroomMembersView *)memberView {
-    if (_memberView == nil) {
-        _memberView = [[ELDChatroomMembersView alloc] initWithChatroom:self.chatroom];
-        _memberView.delegate = self;
-        _memberView.selectedUserDelegate = self;
-    }
-    return _memberView;
-}
-
-- (EaseLiveGiftView *)giftView {
-    if (_giftView == nil) {
-        _giftView = [[EaseLiveGiftView alloc]init];
-        _giftView.giftDelegate = self;
-        _giftView.delegate = self;
-    }
-    return _giftView;
-}
-
-
-- (ELDNotificationView *)notificationView {
-    if (_notificationView == nil) {
-        _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, 30)];
-        _notificationView.hidden = YES;
-    }
-    return _notificationView;
-}
-
-
-- (ELDTwoBallAnimationView *)twoBallAnimationView {
-    if (_twoBallAnimationView == nil) {
-        _twoBallAnimationView = [[ELDTwoBallAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
-    }
-    return _twoBallAnimationView;
-}
-
-
-- (UIView *)mediaPlayerView {
-    if (_mediaPlayerView == nil) {
-        _mediaPlayerView = [[UIView alloc] init];
-    }
-    return _mediaPlayerView;
-}
-
 #pragma mark - EaseLiveHeaderListViewDelegate
 
 - (void)didSelectHeaderWithUsername:(NSString *)username
@@ -619,7 +513,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [userInfoView showFromParentView:self.view];
 }
 
-//主播信息卡片
+//chatroom owner userInfo
 - (void)didClickAnchorCard:(AgoraChatUserInfo*)userInfo
 {
     [self.view endEditing:YES];
@@ -629,7 +523,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [userInfoView showFromParentView:self.view];
 }
 
-//成员列表
+
 - (void)didSelectMemberListButton:(BOOL)isOwner currentMemberList:(NSMutableArray*)currentMemberList
 {
     [self.view endEditing:YES];
@@ -680,7 +574,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
 
 #pragma mark - EaseChatViewDelegate
-
 - (void)liveRoomOwnerDidUpdate:(AgoraChatroom *)aChatroom newOwner:(NSString *)aNewOwner
 {
     self.chatroom = aChatroom;
@@ -688,34 +581,51 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [self fetchLivingStream];
 }
 
-- (void)chatViewDidChangeFrameToHeight:(CGFloat)toHeight
+
+#pragma mark - ELDChatViewDelegate
+- (void)chatViewDidBottomOffset:(CGFloat)offSet
 {
     if ([self.window isKeyWindow]) {
         return;
     }
     
-    if (toHeight == 200) {
-        [self.view removeGestureRecognizer:self.singleTapGR];
-    } else {
-        [self.view addGestureRecognizer:self.singleTapGR];
-    }
-    
-    if (!self.chatview.hidden) {
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect rect = self.chatview.frame;
-            rect.origin.y = self.view.frame.size.height - toHeight;
-            self.chatview.frame = rect;
+    if (offSet > 0) {
+        [self.chatview mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(_liveView).offset(-offSet);
+        }];
+    }else {
+        [self.chatview mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(_liveView).offset(-kBottomSafeHeight);
         }];
     }
 }
 
-#pragma mark - ELDChatViewDelegate
-- (void)didSelectGiftButton:(BOOL)isOwner
+
+- (void)didSelectGiftButton
 {
-    if (!isOwner) {
-        [self.giftView showFromParentView:self.view];
+    [self.giftView showFromParentView:self.view];
+}
+
+- (void)didSelectUserWithMessage:(AgoraChatMessage *)message {
+
+    if ([self.window isKeyWindow]) {
+        [self closeAction];
+        return;
+    }
+    
+    ELDUserInfoView *userInfoView = [[ELDUserInfoView alloc] initWithUsername:message.from chatroom:_chatroom memberVCType:ELDMemberVCTypeAll];
+    userInfoView.delegate = self;
+    userInfoView.userInfoViewDelegate = self;
+    [userInfoView showFromParentView:self.view];
+
+}
+
+- (void)chatViewDidSendMessage:(AgoraChatMessage *)message error:(AgoraChatError *)error {
+    if (error) {
+        [self showHint:error.errorDescription];
     }
 }
+
 
 #pragma mark - EaseCustomMessageHelperDelegate
 - (void)steamerReceiveGiftId:(NSString *)giftId giftNum:(NSInteger)giftNum fromUser:(nonnull NSString *)userId {
@@ -774,6 +684,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     NSLog(@"userDidJoinChatroom: %s",__func__);
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
         [self fetchChatroomSpecificationWithRoomId:self.chatroom.chatroomId];
+        [self.chatview insertJoinMessageWithChatroom:self.chatroom user:aUsername];
     }
 }
 
@@ -804,7 +715,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
             self.chatview.easeChatView.isMuted = NO;
         }
-        
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
@@ -989,12 +899,12 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     }
 }
 
-#pragma mark - override
-
+#pragma mark - tapGesture
 - (void)setupForDismissKeyboard
 {
-    _singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget:self
+    self.singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(tapAnywhereToDismissKeyboard:)];
+    [self.view addGestureRecognizer:self.singleTapGR];
 }
 
 - (void)tapAnywhereToDismissKeyboard:(UIGestureRecognizer *)gestureRecognizer {
@@ -1002,5 +912,129 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     [self.chatview endEditing:YES];
 }
 
+#pragma mark - getter and setter
+
+- (UIWindow*)window
+{
+    if (_window == nil) {
+        _window = [[UIWindow alloc] initWithFrame:CGRectMake(0, KScreenHeight, KScreenWidth, 290.f)];
+    }
+    return _window;
+}
+
+- (UIImageView*)backgroudImageView
+{
+    if (_backgroudImageView == nil) {
+        _backgroudImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
+        _backgroudImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [_backgroudImageView sd_setImageWithURL:[NSURL URLWithString:_room.coverPictureUrl] placeholderImage:ImageWithName(@"default_back_image")];
+        
+    }
+    return _backgroudImageView;
+}
+
+- (UIView*)liveView
+{
+    if (_liveView == nil) {
+        _liveView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
+        _liveView.backgroundColor = [UIColor clearColor];
+        
+        [_liveView addSubview:self.headerListView];
+        [_liveView addSubview:self.notificationView];
+        [_liveView addSubview:self.chatview];
+
+        [self.headerListView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_liveView).offset(kDefaultTop);
+            make.left.right.equalTo(_liveView);
+            make.height.equalTo(@(kLiveHeaderViewHeight));
+        }];
+        
+        [self.notificationView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.headerListView.mas_bottom).offset(5.0);
+            make.left.right.equalTo(_liveView);
+            make.height.equalTo(@(kLiveNotifacationViewHeight));
+        }];
+
+        [self.chatview mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.equalTo(_liveView);
+            make.height.equalTo(@(kChatViewHeight));
+            make.bottom.equalTo(_liveView).offset(-kBottomSafeHeight);
+        }];
+    }
+    return _liveView;
+}
+
+- (EaseLiveHeaderListView*)headerListView
+{
+    if (_headerListView == nil) {
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) chatroom:self.chatroom];
+        _headerListView.delegate = self;
+        [_headerListView setLiveCastDelegate];
+    }
+    return _headerListView;
+}
+
+- (ELDChatView*)chatview
+{
+    if (_chatview == nil) {
+        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];
+        _chatview.delegate = self;
+    }
+    return _chatview;
+}
+
+- (void)didSelectedExitButton
+{
+    [self closeButtonAction];
+}
+
+
+- (ELDChatroomMembersView *)memberView {
+    if (_memberView == nil) {
+        _memberView = [[ELDChatroomMembersView alloc] initWithChatroom:self.chatroom];
+        _memberView.delegate = self;
+        _memberView.selectedUserDelegate = self;
+    }
+    return _memberView;
+}
+
+- (EaseLiveGiftView *)giftView {
+    if (_giftView == nil) {
+        _giftView = [[EaseLiveGiftView alloc]init];
+        _giftView.giftDelegate = self;
+        _giftView.delegate = self;
+    }
+    return _giftView;
+}
+
+
+- (ELDNotificationView *)notificationView {
+    if (_notificationView == nil) {
+        _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, kLiveNotifacationViewHeight)];
+        _notificationView.hidden = YES;
+    }
+    return _notificationView;
+}
+
+
+- (ELDTwoBallAnimationView *)twoBallAnimationView {
+    if (_twoBallAnimationView == nil) {
+        _twoBallAnimationView = [[ELDTwoBallAnimationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 50.0)];
+    }
+    return _twoBallAnimationView;
+}
+
+
+- (UIView *)mediaPlayerView {
+    if (_mediaPlayerView == nil) {
+        _mediaPlayerView = [[UIView alloc] init];
+    }
+    return _mediaPlayerView;
+}
+
+
 
 @end
+
+#undef kDefaultTop
+

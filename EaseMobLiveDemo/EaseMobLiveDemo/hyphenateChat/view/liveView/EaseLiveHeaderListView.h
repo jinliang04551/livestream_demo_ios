@@ -34,11 +34,7 @@
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;
 
 - (void)updateHeaderViewWithChatroom:(AgoraChatroom*)aChatroom;
-/*
-- (void)joinChatroomWithUsername:(NSString*)username;
 
-- (void)leaveChatroomWithUsername:(NSString*)username;
-*/
 - (void)setLiveCastDelegate;
 
 - (void)stopTimer;

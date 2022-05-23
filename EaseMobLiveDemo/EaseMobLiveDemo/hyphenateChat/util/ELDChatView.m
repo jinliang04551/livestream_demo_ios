@@ -15,11 +15,13 @@
 #import "EaseHeartFlyView.h"
 
 #define kExitButtonHeight 25.0
+#define kEaseChatViewBottomOffset 20.0
 
-@interface ELDChatView ()<AgoraChatroomManagerDelegate,EaseChatViewDelegate>
+
+@interface ELDChatView ()<EaseChatViewDelegate>
 
 
-@property (strong, nonatomic) UIView *bottomView;
+@property (strong, nonatomic) UIView *functionAreaView;
 
 @property (strong, nonatomic) UIButton *changeCameraButton;
 @property (strong, nonatomic) UIButton *chatListShowButton;
@@ -33,6 +35,8 @@
 
 @property (strong, nonatomic) EaseLiveRoom *room;
 
+//custom chatView UI with option
+@property (nonatomic, strong) EaseChatViewCustomOption *customOption;
 
 @end
 
@@ -49,7 +53,9 @@
         self.room = room;
         self.isPublish = isPublish;
         
-        self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroomId:room.chatroomId isPublish:isPublish customMsgHelper:customMsgHelper];
+        self.customOption = [EaseChatViewCustomOption customOption];
+        
+        self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroomId:room.chatroomId customMsgHelper:customMsgHelper customOption:self.customOption];
         self.easeChatView.delegate = self;
         
         [self placeAndLayoutBottomView];
@@ -62,19 +68,17 @@
 
 - (void)placeAndLayoutBottomView {
     [self addSubview:self.easeChatView];
-    [self addSubview:self.bottomView];
+    [self addSubview:self.functionAreaView];
+        
+    [self.functionAreaView addSubview:self.chatListShowButton];
     
-    self.bottomView.backgroundColor = UIColor.redColor;
-    
-    [self.bottomView addSubview:self.chatListShowButton];
-
     [self.easeChatView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
         make.left.right.equalTo(self);
-        make.bottom.equalTo(self).offset(-kBottomSafeHeight-20.0);
+        make.bottom.equalTo(self);
     }];
 
-    [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.functionAreaView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.easeChatView.sendTextButton);
         make.left.lessThanOrEqualTo(self.easeChatView.sendTextButton.mas_right);
         make.right.equalTo(self);
@@ -83,75 +87,83 @@
     
     
     if (self.isPublish) {
-        [self.bottomView addSubview:self.exitButton];
-        [self.bottomView addSubview:self.changeCameraButton];
+        [self.functionAreaView addSubview:self.exitButton];
+        [self.functionAreaView addSubview:self.changeCameraButton];
         
         [self.exitButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bottomView);
-            make.right.equalTo(self.bottomView.mas_right).offset(-15.0);
+            make.centerY.equalTo(self.functionAreaView);
+            make.right.equalTo(self.functionAreaView.mas_right).offset(-15.0);
             make.size.equalTo(@(kExitButtonHeight));
         }];
 
         [self.changeCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bottomView);
+            make.centerY.equalTo(self.functionAreaView);
             make.right.equalTo(self.exitButton.mas_left).offset(-15.0);
             make.size.equalTo(self.exitButton);
         }];
         
         [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bottomView);
+            make.centerY.equalTo(self.functionAreaView);
             make.right.equalTo(self.changeCameraButton.mas_left).offset(-15.0);
 //            make.left.equalTo(self.bottomView).offset(5.0);
             make.size.equalTo(self.exitButton);
         }];
     }else {
-        [self.bottomView addSubview:self.giftButton];
+        [self.functionAreaView addSubview:self.giftButton];
         [self.giftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bottomView);
-            make.right.equalTo(self.bottomView.mas_right).offset(-15.0);
+            make.centerY.equalTo(self.functionAreaView);
+            make.right.equalTo(self.functionAreaView.mas_right).offset(-15.0);
             make.size.equalTo(@(kExitButtonHeight));
         }];
 
         [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.bottomView);
+            make.centerY.equalTo(self.functionAreaView);
             make.right.equalTo(self.giftButton.mas_left).offset(-15.0);
 //            make.left.equalTo(self.bottomView).offset(5.0);
             make.size.equalTo(self.giftButton);
         }];
         
-        self.giftButton.backgroundColor = UIColor.blueColor;
-        self.chatListShowButton.backgroundColor = UIColor.blueColor;
     }
 
 }
 
 
 #pragma mark EaseChatViewDelegate
-- (void)easeChatViewDidChangeFrameToHeight:(CGFloat)toHeight {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatViewDidChangeFrameToHeight:)]) {
-        [self.delegate chatViewDidChangeFrameToHeight:self.height];
-    }
-}
-
-
-- (void)textViewWillShow:(BOOL)isShow {
+- (void)chatViewDidBottomOffset:(CGFloat)offset {
+    
+    BOOL hidden = offset > 0 ? YES : NO;
+    
     if (self.isPublish) {
-        self.chatListShowButton.hidden = isShow;
-        self.changeCameraButton.hidden = isShow;
-        self.exitButton.hidden = isShow;
+        self.chatListShowButton.hidden = hidden;
+        self.changeCameraButton.hidden = hidden;
+        self.exitButton.hidden = hidden;
     }else {
-        self.chatListShowButton.hidden = isShow;
-        self.giftButton.hidden = isShow;
+        self.chatListShowButton.hidden = hidden;
+        self.giftButton.hidden = hidden;
+    }
+        
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatViewDidBottomOffset:)]) {
+        [self.delegate chatViewDidBottomOffset:offset];
     }
 }
 
+- (void)didSelectUserWithMessage:(AgoraChatMessage *)message {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectUserWithMessage:)]) {
+        [self.delegate didSelectUserWithMessage:message];
+    }
 
-#pragma mark - AgoraChatroomManagerDelegate
+}
 
-//有用户加入聊天室
-- (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername
-{
-    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"进入了直播间"];
+
+- (void)chatViewDidSendMessage:(AgoraChatMessage *)message error:(AgoraChatError *)error {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatViewDidSendMessage:error:)]) {
+        [self.delegate chatViewDidSendMessage:message error:error];
+    }
+}
+
+#pragma mark user join chatroom
+- (void)insertJoinMessageWithChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"join the live room"];
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]init];
     [ext setObject:EaseKit_chatroom_join forKey:EaseKit_chatroom_join];
     AgoraChatMessage *joinMsg = [[AgoraChatMessage alloc] initWithConversationID:aChatroom.chatroomId from:aUsername to:aChatroom.chatroomId body:body ext:ext];
@@ -189,33 +201,6 @@
                                                    }];
 }
 
-
-//#pragma mark - UITextViewDelegate
-//- (void)textViewDidBeginEditing:(UITextView *)textView
-//{
-//
-//}
-//
-//- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
-//{
-//    return YES;
-//}
-//
-//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-//{
-////    if (text.length > 0 && [text isEqualToString:@"\n"]) {
-////        if (_isBarrageInfo) {
-////            [self sendBarrageMsg:self.textView.text];
-////        } else {
-////            [self sendText];
-////        }
-////        [self textViewDidChange:self.textView];
-////        return NO;
-////    }
-////    [self textViewDidChange:self.textView];
-////    return YES;
-//    return YES;
-//}
 
 
 //礼物动画
@@ -310,22 +295,20 @@
 
 - (void)giftAction
 {
-    if (_delegate && [_delegate respondsToSelector:@selector(didSelectGiftButton:)]) {
-        [_delegate didSelectGiftButton:NO];
+    if (_delegate && [_delegate respondsToSelector:@selector(didSelectGiftButton)]) {
+        [_delegate didSelectGiftButton];
     }
 }
 
 
 #pragma mark getter and setter
-- (UIView*)bottomView
+- (UIView*)functionAreaView
 {
-    if (_bottomView == nil) {
-//        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.easeChatView.frame), CGRectGetWidth(self.bounds), 40.0)];
-        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 40.0)];
-        
-//        _bottomView.backgroundColor = [UIColor clearColor];
+    if (_functionAreaView == nil) {
+        _functionAreaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 40.0)];
+        _functionAreaView.backgroundColor = [UIColor clearColor];
     }
-    return _bottomView;
+    return _functionAreaView;
 }
 
 
@@ -333,7 +316,6 @@
 {
     if (_changeCameraButton == nil) {
         _changeCameraButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _changeCameraButton.frame = CGRectMake(KScreenWidth - kDefaultSpace*2 - 2*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         _changeCameraButton.frame = CGRectMake(0, 0, KScreenWidth, 100);
         [_changeCameraButton setImage:[UIImage imageNamed:@"flip_camera_ios"] forState:UIControlStateNormal];
         [_changeCameraButton addTarget:self action:@selector(changeCameraAction) forControlEvents:UIControlEventTouchUpInside];
@@ -345,7 +327,6 @@
 - (UIButton *)chatListShowButton {
     if (_chatListShowButton == nil) {
         _chatListShowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _chatListShowButton.frame = CGRectMake(ScreenWidth - kDefaultSpace*2 - 2*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         _chatListShowButton.frame = CGRectMake(0, 0, KScreenWidth, 100);
         [_chatListShowButton setImage:ImageWithName(@"live_chatlist_hidden") forState:UIControlStateNormal];
         [_chatListShowButton addTarget:self action:@selector(chatListShowButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -357,7 +338,6 @@
 {
     if (_exitButton == nil) {
         _exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _exitButton.frame = CGRectMake(ScreenWidth - kDefaultSpace*3 - 3*kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         _exitButton.frame = CGRectMake(0, 0, KScreenWidth, 100);
         [_exitButton setImage:[UIImage imageNamed:@"stop_live"] forState:UIControlStateNormal];
         [_exitButton addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
@@ -371,7 +351,6 @@
 {
     if (_giftButton == nil) {
         _giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        _giftButton.frame = CGRectMake(KScreenWidth - kDefaultSpace - kSendTextButtonWitdh, 0, kSendTextButtonWitdh, kButtonHeight);
         _giftButton.frame = CGRectMake(0, 0, KScreenWidth, 100);
         [_giftButton setImage:[UIImage imageNamed:@"live_gift"] forState:UIControlStateNormal];
         [_giftButton addTarget:self action:@selector(giftAction) forControlEvents:UIControlEventTouchUpInside];
@@ -383,3 +362,4 @@
 @end
 
 #undef kExitButtonHeight
+#undef kEaseChatViewBottomOffset

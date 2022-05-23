@@ -136,7 +136,11 @@ typedef enum : NSUInteger {
 
 #define kChatroom_member_join @"chatroom_member_join"
 
+#define kLiveHeaderViewHeight 50.0f
+
 #define kChatViewHeight 350.0
+
+#define kLiveNotifacationViewHeight 30.0
 
 #define kGenderViewHeight 16.0
 

@@ -141,7 +141,6 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification{
-    //在此时设置解析notification，并展示提示视图
 //    NSLog(@"%@", notification.alertBody);
 }
 

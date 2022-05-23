@@ -12,9 +12,6 @@
 #import "Reachability.h"
 
 
-NSArray<NSString*> *nickNameArray;//本地昵称库
-
-NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
 
 @implementation AppDelegate (HyphenateChat)
 
@@ -44,10 +41,7 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     
     [self _registerRemoteNotification];
     
-    [self _initNickNameArray];
     
-    anchorInfoDic = [[NSMutableDictionary alloc]initWithCapacity:16];//初始化本地直播间主播昵称库
-
     BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;
     if (isAutoLogin) {
         [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
@@ -60,18 +54,6 @@ NSMutableDictionary *anchorInfoDic;//直播间主播本应用显示信息库
     }
     
     [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
-}
-
-
-- (void)_initNickNameArray
-{
-    nickNameArray = @[@"东方漆",@"孟闾裆",@"曹秆",@"游龙纸",@"熊龛",@"元阊",@"闵茂",@"姚宠",@"印虹",@"尚仕",@"蔚光",@"钦亭",@"京俳",@"牧奖",
-                    @"解笋",@"耿丁艮",@"牛菊",@"侯薇",@"习适袁",@"关阡",@"管致",@"聂焚",@"焦岸",@"米而",@"竺莜",@"黎轾",@"邓贰",@"周铎",@"闾丘裳",
-                    @"程毗",@"南郭货",@"雍椿",@"康由",@"蔺晶",@"庞浈",@"辛芥",@"邢萧丹",@"谷梁深",@"宾彩",@"吴莛",@"贺扬",@"慕容岽",@"阎邮",@"萧由",
-                    @"吕梆",@"高钓",@"西门韩赤",@"元真",@"司司",@"司空晰",@"万麦",@"姜戒",@"武抚",@"苍柳",@"季汶",@"周门",@"公孙褫",@"李乙",@"茹宁",
-                    @"楼恕",@"司马穴",@"公孙赦",@"那伊",@"冼觊",@"丰核",@"钟创",@"沙迈",@"单寇",@"屋庐丘",@"李李",@"惠婷",@"池学",@"冯貂",@"东乡期",
-                    @"毋丘出",@"左颀",@"宰绝",@"谷唐",@"萧格",@"谈草",@"商炅",@"米秀",@"习垂",@"黄崔",@"单遇观",@"茹启",@"田瓮",@"蒋蹯苻",@"呼延汶",
-                    @"林犍",@"左丘芍",@"东宅蜇",@"谭七",@"徐仙",@"欧阳使",@"龙偃",@"山鹰",@"况梁",@"江胭",@"展思"];
 }
 
 
