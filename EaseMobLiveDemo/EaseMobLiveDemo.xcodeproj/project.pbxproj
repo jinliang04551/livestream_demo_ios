@@ -945,8 +945,6 @@
 			children = (
 				C08DFC7227F5AFD100862ADF /* ELDUtil.h */,
 				C08DFC7127F5AFD000862ADF /* ELDUtil.m */,
-				C0A17F2E282FC4F800574FBC /* ELDChatView.h */,
-				C0A17F2F282FC4F800574FBC /* ELDChatView.m */,
 				3C9E3167260C7B4100CC3E3F /* EaseDefaultDataHelper.h */,
 				3C9E316B260C7B4100CC3E3F /* EaseDefaultDataHelper.m */,
 				3C9E3168260C7B4100CC3E3F /* EaseHttpManager.h */,
@@ -1016,6 +1014,8 @@
 			isa = PBXGroup;
 			children = (
 				3C9E31BD260C7B4200CC3E3F /* cell */,
+				C0A17F2E282FC4F800574FBC /* ELDChatView.h */,
+				C0A17F2F282FC4F800574FBC /* ELDChatView.m */,
 				3C9E31B2260C7B4200CC3E3F /* EaseBaseSubView.h */,
 				3C9E31C9260C7B4200CC3E3F /* EaseBaseSubView.m */,
 				C0602EA42804301000D39575 /* ELDUserInfoView.h */,

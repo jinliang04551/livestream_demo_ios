@@ -12,10 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDNotificationView : UIView
 
-- (void)showHintMessage:(NSString *)message;
+@property (nonatomic,copy) void (^displayFinishBlock)();
 
 - (void)showHintMessage:(NSString *)message
-            autoDismiss:(BOOL)autoDismiss;
+             completion:(void(^)(BOOL finish))completion;
+
+- (void)showHintMessage:(NSString *)message
+         displayAllTime:(BOOL)displayAllTime
+             completion:(void(^)(BOOL finish))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

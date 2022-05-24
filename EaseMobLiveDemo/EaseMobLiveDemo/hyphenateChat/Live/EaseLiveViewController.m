@@ -167,6 +167,12 @@
     
     if ([self.chatroom.muteList containsObject:AgoraChatClient.sharedClient.currentUsername] ||self.chatroom.isMuteAllMembers) {
         self.chatview.easeChatView.isMuted = YES;
+        
+        if (self.chatroom.isMuteAllMembers) {
+            NSString *message = @"has set Banned on all Chats";
+            [self showNotifactionMessage:message userId:self.chatroom.owner displayAllTime:YES];
+
+        }
     }
 }
 
@@ -711,15 +717,23 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (void)chatroomAllMemberMuteChanged:(AgoraChatroom *)aChatroom isAllMemberMuted:(BOOL)aMuted
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
+        
         if (aMuted) {
-            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has set Banned on all Chats",aChatroom.owner]];
-
             self.chatview.easeChatView.isMuted = YES;
-        } else {
-            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has set unBanned on all Chats",aChatroom.owner]];
 
+            NSString *message = @"has set Banned on all Chats";
+            
+            [self showNotifactionMessage:message userId:aChatroom.owner displayAllTime:YES];
+
+        } else {
+            
             self.chatview.easeChatView.isMuted = NO;
+            
+            NSString *message = @"has set unBanned on all Chats";
+            [self showNotifactionMessage:message userId:aChatroom.owner displayAllTime:NO];
+
         }
+        
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
@@ -732,9 +746,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = YES;
             
-            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ is set as a Moderator.",aAdmin]];
-
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+
+            NSString *message = @"is set as a Moderator.";
+            [self showNotifactionMessage:message userId:aAdmin displayAllTime:NO];
         }
     }
 }
@@ -745,9 +760,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = NO;
-            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ is remove as a Moderator.",aAdmin]];
-
+                          
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+            
+            NSString *message = @"is remove as a Moderator.";
+            [self showNotifactionMessage:message userId:aAdmin displayAllTime:NO];
         }
     }
 }
@@ -764,9 +781,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         
         self.chatview.easeChatView.isMuted = YES;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been banned.",text]];
-
+        
+        NSString *message = @"has been banned.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+      
     }
 }
 
@@ -780,8 +798,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         self.chatview.easeChatView.isMuted = NO;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been unbanned.",text]];
-
+   
+        NSString *message = @"has been unbanned.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
     }
 }
 
@@ -793,7 +812,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [text appendString:name];
         }
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been add to whitelist.",text]];
+        
+        NSString *message = @"has been add to whitelist.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
 
     }
 }
@@ -806,9 +827,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [text appendString:name];
         }
         
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been remove from whitelist.",text]];
-
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+                
+        NSString *message = @"has been remove from whitelist.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+
     }
 }
 
@@ -839,6 +862,31 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         [self presentViewController:alert animated:YES completion:nil];
     }
 }
+
+- (void)showNotifactionMessage:(NSString *)message
+                        userId:(NSString *)userId
+                displayAllTime:(BOOL)displayAllTime {
+    
+    [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+        AgoraChatUserInfo *userInfo = userInfoDic[userId];
+        if (userInfo) {
+            NSString *displayName = userInfo.nickName ?:userInfo.userId;
+
+            NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",displayName,message];
+            self.notificationView.hidden = NO;
+            ELD_WS
+            [self.notificationView showHintMessage:displayMsg
+                                    displayAllTime:displayAllTime
+                                        completion:^(BOOL finish) {
+                if (finish) {
+                    weakSelf.notificationView.hidden = YES;
+                }
+            }];
+        }
+        
+    }];
+}
+
 
 
 - (void)fetchChatroomSpecificationWithRoomId:(NSString *)roomId {
@@ -1027,6 +1075,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if (_notificationView == nil) {
         _notificationView = [[ELDNotificationView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerListView.frame), KScreenWidth, kLiveNotifacationViewHeight)];
         _notificationView.hidden = YES;
+
     }
     return _notificationView;
 }

@@ -38,20 +38,30 @@
     }];
 }
 
-- (void)showHintMessage:(NSString *)message {
-    
-    [self showHintMessage:message autoDismiss:YES];
+
+- (void)showHintMessage:(NSString *)message
+             completion:(void(^)(BOOL finish))completion {
+
+    [self showHintMessage:message displayAllTime:NO completion:completion];
 }
 
 - (void)showHintMessage:(NSString *)message
-            autoDismiss:(BOOL)autoDismiss {
-    
-    self.hidden = NO;
+         displayAllTime:(BOOL)displayAllTime
+             completion:(void(^)(BOOL finish))completion {
+
     self.contentLabel.text = message;
-    
-    if (autoDismiss) {
-        dispatch_after(5.0, dispatch_get_main_queue(), ^{
-            self.hidden = YES;
+
+    if (displayAllTime) {
+        if (completion) {
+            completion(NO);
+        }
+    }else {
+        dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC));
+        dispatch_after(time, dispatch_get_main_queue(), ^{
+            self.contentLabel.text = @"";
+            if (completion) {
+                completion(YES);
+            }
         });
     }
 
@@ -70,7 +80,7 @@
         _contentLabel.textAlignment = NSTextAlignmentLeft;
         _contentLabel.shadowColor = [UIColor blackColor];
         _contentLabel.shadowOffset = CGSizeMake(1, 1);
-        _contentLabel.text = @"Streamer has set Banned on all Chats";
+        _contentLabel.text = @"";
 
     }
     return _contentLabel;

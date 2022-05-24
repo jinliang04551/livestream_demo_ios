@@ -123,13 +123,6 @@
     
 }
 
-- (void)placeAndLayoutSubviews {
-    [self.view addSubview:self.headerListView];
-    [self.view addSubview:self.notificationView];
-    [self.view addSubview:self.chatview];
-    
-    
-}
 
 - (void)joinChatroom {
     ELD_WS
@@ -140,12 +133,27 @@
             [weakSelf.view bringSubviewToFront:weakSelf.liveView];
 
             [weakSelf fetchChatroomSpecificationWithChatroomId:weakSelf.chatroom.chatroomId];
+            
         } else {
             [weakSelf showHint:aError.description];
         }
     }];
 
 }
+
+
+- (void)updateChatView {
+    self.chatview.chatroom = self.chatroom;
+    
+    if (self.chatroom.isMuteAllMembers) {
+        NSString *message = @"Streamer has set Banned on all Chats";
+        [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
+    }else {
+        self.notificationView.hidden = YES;
+    }
+    
+}
+
 
 - (void)fetchChatroomSpecificationWithChatroomId:(NSString *)aChatroomId {
     ELD_WS
@@ -155,6 +163,7 @@
             // reset memberView
             weakSelf.memberView = nil;
             [weakSelf.headerListView updateHeaderViewWithChatroom:self.chatroom];
+            [weakSelf updateChatView];
         }else {
             [weakSelf showHint:aError.description];
         }
@@ -696,12 +705,15 @@
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
-            [self.notificationView showHintMessage:@"Streamer has set Banned on all Chats" autoDismiss:NO];
+            NSString *message = @"Streamer has set Banned on all Chats";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
 
         } else {
-            [self.notificationView showHintMessage:@"Streamer has set unBanned on all Chats"];
+            NSString *message = @"Streamer has set unBanned on all Chats";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
 
         }
+        
     }
 }
 
@@ -715,7 +727,9 @@
         }
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been add to whitelist.",text]];
+        NSString *message = @"has been add to whitelist.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+
     }
 }
 
@@ -727,8 +741,9 @@
             [text appendString:name];
         }
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been remove from whitelist.",text]];
-
+    
+        NSString *message = @"has been remove from whitelist.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
     }
 }
 
@@ -742,7 +757,10 @@
             [text appendString:name];
         }
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been banned.",text]];
+    
+        NSString *message = @"has been banned.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+
     }
 }
 
@@ -756,7 +774,9 @@
         }
         
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been unbanned.",text]];
+        
+        NSString *message = @"has been unbanned.";
+        [self showNotifactionMessage:message userId:text displayAllTime:NO];
     }
 }
 
@@ -801,6 +821,56 @@
     }
 }
 
+- (void)showNotifactionMessage:(NSString *)message
+                        userId:(NSString *)userId
+                displayAllTime:(BOOL)displayAllTime {
+    
+    if ([userId isEqualToString:@""]) {
+        self.notificationView.hidden = NO;
+        ELD_WS
+        [self.notificationView showHintMessage:message
+                                displayAllTime:displayAllTime
+                                    completion:^(BOOL finish) {
+            if (finish) {
+                weakSelf.notificationView.hidden = YES;
+            }
+        }];
+    }else {
+        [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+            AgoraChatUserInfo *userInfo = userInfoDic[userId];
+            if (userInfo) {
+                NSString *displayName = userInfo.nickName ?:userInfo.userId;
+
+                NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",displayName,message];
+                self.notificationView.hidden = NO;
+                ELD_WS
+                [self.notificationView showHintMessage:displayMsg
+                                        displayAllTime:displayAllTime
+                                            completion:^(BOOL finish) {
+                    if (finish) {
+                        weakSelf.notificationView.hidden = YES;
+                    }
+                }];
+            }
+            
+        }];
+        
+    }
+}
+
+
+//- (void)showNotifactionMessage:(NSString *)message displayAllTime:(BOOL)displayAllTime {
+//    self.notificationView.hidden = NO;
+//    ELD_WS
+//    [self.notificationView showHintMessage:message
+//                            displayAllTime:displayAllTime
+//                                completion:^(BOOL finish) {
+//        if (finish) {
+//            weakSelf.notificationView.hidden = YES;
+//        }
+//    }];
+//
+//}
 
 
 

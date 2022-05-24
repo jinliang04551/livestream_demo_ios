@@ -266,7 +266,7 @@
 
 
 #pragma mark operation
-//全体禁言
+//make all member silence 
 - (void)allTheSilence:(BOOL)isAllTheSilence
 {
     if (isAllTheSilence) {
