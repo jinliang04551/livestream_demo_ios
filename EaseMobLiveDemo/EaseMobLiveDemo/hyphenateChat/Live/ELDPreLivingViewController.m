@@ -185,7 +185,7 @@
 
 - (void)goLiveAction {
     if (_liveNameTextField.text.length == 0) {
-        [self showHint:@"填入房间名"];
+        [self showHint:@"Fill in the room name"];
         return;
     }
     
@@ -207,11 +207,11 @@
                     weakSelf.liveRoom = liveRoom;
                     [weakSelf showStartCountDownView];
                 }else  {
-                    [weakSelf showHint:@"开始直播失败"];
+                    [weakSelf showHint:@"Failed to start live"];
                 }
             }];
         }else{
-            [weakSelf showHint:@"开始直播失败"];
+            [weakSelf showHint:@"Failed to start live"];
         }
     }];
     
@@ -276,7 +276,7 @@
                     [self.changeAvatarButton setImage:editImage forState:UIControlStateNormal];
                 });
             }else{
-                [self showHint:@"设置封面图失败"];
+                [self showHint:@"Failed to set cover image"];
             }
         }];
     }
@@ -449,7 +449,6 @@
     if (_liveNameTextField == nil) {
         _liveNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0,0,100,20)];
         _liveNameTextField.delegate = self;
-        _liveNameTextField.placeholder = NSLocalizedString(@"login.textfield.username", @"Username");
         _liveNameTextField.backgroundColor = [UIColor clearColor];
         _liveNameTextField.returnKeyType = UIReturnKeyNext;
         _liveNameTextField.font = NFont(16.0f);

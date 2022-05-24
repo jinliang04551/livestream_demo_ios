@@ -93,13 +93,13 @@ static const NSInteger animationTime = 5;
     
     self.finishModel = giftModel;
     [self.userIconView sd_setImageWithURL:[NSURL URLWithString:giftModel.userAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
-//    self.userIconView.image = giftModel.userIcon;
+
     self.userNameLabel.text = giftModel.userName;
-    self.giftNameLabel.text = @"送出礼物";
+    self.giftNameLabel.text = @"give a gift";
     self.giftImageView.image = giftModel.giftImage;
     self.hidden = NO;
     self.showViewFinishBlock = completeBlock;
-    NSLog(@"当前展示的礼物--%@",giftModel.giftName);
+
     if (self.showViewKeyBlock && self.currentGiftCount == 0) {
         self.showViewKeyBlock(giftModel);
     }
@@ -134,13 +134,12 @@ static const NSInteger animationTime = 5;
     _giftCount = giftCount;
     self.currentGiftCount += giftCount;
     [self startTimer];
-    NSLog(@"累计礼物数 %zd",self.currentGiftCount);
 }
 
 - (void)startTimer {
     [self stopTimer];
     _num = 1;
-    //ios设备最快刷新60hz 60次/秒
+
     if (self.currentGiftCount >= 120) {
         _refreshInterval = (NSInteger)(self.currentGiftCount / 120);
     } else {

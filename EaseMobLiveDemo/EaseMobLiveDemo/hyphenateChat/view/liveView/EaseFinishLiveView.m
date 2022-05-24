@@ -2,7 +2,7 @@
 //  EaseFinishLiveView.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/16.
+//  Created by easemob on 2020/3/16.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -56,7 +56,7 @@
     }];
     
     UIButton *cancelBtn = [[UIButton alloc]init];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
     [cancelBtn setTitleColor:RGBACOLOR(51, 51, 51, 1) forState:UIControlStateNormal];
     [cancelBtn setBackgroundColor:[UIColor whiteColor]];
@@ -74,7 +74,7 @@
     }];
     
     UIButton *confirmBtn = [[UIButton alloc]init];
-    [confirmBtn setTitle:@"结束并退出" forState:UIControlStateNormal];
+    [confirmBtn setTitle:@"end and exit" forState:UIControlStateNormal];
     confirmBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
     [confirmBtn setTitleColor:RGBACOLOR(255, 43, 43, 1) forState:UIControlStateNormal];
     [confirmBtn setBackgroundColor:[UIColor whiteColor]];

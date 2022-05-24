@@ -237,7 +237,7 @@
             make.top.equalTo(_broadcastView.mas_top).offset(10.f);
         }];
         UILabel *broadcastLabel = [[UILabel alloc]init];
-        broadcastLabel.text = @"立即开播";
+        broadcastLabel.text = @"start live";
         broadcastLabel.textColor = [UIColor whiteColor];
         broadcastLabel.font = [UIFont systemFontOfSize:16.f];
         [_broadcastView addSubview:broadcastLabel];
@@ -257,7 +257,7 @@
         _studioOccupancy = [[UIView alloc]initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
         _studioOccupancy.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.34];
         UILabel *broadcastingTag = [[UILabel alloc]init];
-        broadcastingTag.text = @"主播在播不能选择";
+        broadcastingTag.text = @"The anchor is liveing cannot choose";
         broadcastingTag.lineBreakMode = NSLineBreakByTruncatingTail;
         broadcastingTag.numberOfLines = 2;
         broadcastingTag.font = [UIFont systemFontOfSize:12.f];

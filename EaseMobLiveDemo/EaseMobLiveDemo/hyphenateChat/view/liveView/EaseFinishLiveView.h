@@ -2,7 +2,7 @@
 //  EaseFinishLiveView.h
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/16.
+//  Created by easemob on 2020/3/16.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  EaseKeyBoardViewController.h
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/19.
+//  Created by easemob on 2020/2/19.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 

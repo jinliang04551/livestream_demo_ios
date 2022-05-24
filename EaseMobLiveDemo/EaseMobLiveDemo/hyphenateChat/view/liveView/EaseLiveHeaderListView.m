@@ -331,36 +331,6 @@
 }
 
 
-
-
-/*
-- (void)joinChatroomWithUsername:(NSString *)username
-{
-    if ([self.dataArray containsObject:username]) {
-        return;
-    }
-    [self.dataArray insertObject:[username copy] atIndex:0];
-    self.occupantsCount++;
-    [_numberBtn setTitle:[NSString stringWithFormat:@"%ld人",(long)self.occupantsCount] forState:UIControlStateNormal];
-    [self.collectionView reloadData];
-}
-
-- (void)leaveChatroomWithUsername:(NSString *)username
-{
-    for (int index = 0; index < [self.dataArray count]; index ++) {
-        NSString *name = [self.dataArray objectAtIndex:index];
-        if ([name isEqualToString:username]) {
-            [self.dataArray removeObjectAtIndex:index];
-        }
-    }
-    self.occupantsCount--;
-    if (self.occupantsCount < 0) {
-        self.occupantsCount = 0;
-    }
-    [_numberBtn setTitle:[NSString stringWithFormat:@"%ld人",(long)self.occupantsCount] forState:UIControlStateNormal];
-    [self.collectionView reloadData];
-}
-*/
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

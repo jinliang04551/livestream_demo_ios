@@ -2,7 +2,7 @@
 //  EaseGiftConfirmView.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/19.
+//  Created by easemob on 2020/2/19.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -99,7 +99,7 @@
         make.width.equalTo(@46);
     }];
     UILabel *nameLabel = [[UILabel alloc]init];
-    nameLabel.text = [NSString stringWithFormat:@"%ld个 %@",(long)_giftNum,self.giftModel.giftname];
+    nameLabel.text = [NSString stringWithFormat:@"%ld %@",(long)_giftNum,self.giftModel.giftname];
     nameLabel.textColor = [UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0];
     nameLabel.font = [UIFont fontWithName:@"PingFangSC" size: 18];
     nameLabel.textAlignment = NSTextAlignmentLeft;
@@ -112,7 +112,7 @@
     }];
     
     UIButton *cancelBtn = [[UIButton alloc]init];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
     cancelBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
     [cancelBtn setTitleColor:RGBACOLOR(51, 51, 51, 1) forState:UIControlStateNormal];
     [cancelBtn setBackgroundColor:[UIColor whiteColor]];
@@ -130,7 +130,7 @@
     }];
     
     UIButton *confirmBtn = [[UIButton alloc]init];
-    [confirmBtn setTitle:@"立即赠送" forState:UIControlStateNormal];
+    [confirmBtn setTitle:@"Give now" forState:UIControlStateNormal];
     confirmBtn.titleLabel.font = [UIFont systemFontOfSize:16.0];
     [confirmBtn setTitleColor:RGBACOLOR(255, 43, 43, 1) forState:UIControlStateNormal];
     [confirmBtn setBackgroundColor:[UIColor whiteColor]];

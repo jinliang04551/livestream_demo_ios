@@ -27,7 +27,6 @@
 		3C9E3285260C7B4300CC3E3F /* EaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3181260C7B4200CC3E3F /* EaseSettingsViewController.m */; };
 		3C9E3287260C7B4300CC3E3F /* EaseSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */; };
 		3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */; };
-		3C9E3290260C7B4300CC3E3F /* EaseAudienceBehaviorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E3199260C7B4200CC3E3F /* EaseAudienceBehaviorView.m */; };
 		3C9E3291260C7B4300CC3E3F /* EaseLiveGiftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E319A260C7B4200CC3E3F /* EaseLiveGiftView.m */; };
 		3C9E3292260C7B4300CC3E3F /* EaseLiveHeaderListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E319B260C7B4200CC3E3F /* EaseLiveHeaderListView.m */; };
 		3C9E3293260C7B4300CC3E3F /* X.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E31A0260C7B4200CC3E3F /* X.png */; };
@@ -409,7 +408,6 @@
 		3C9E3188260C7B4200CC3E3F /* EaseAboutHuanxinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseAboutHuanxinViewController.h; sourceTree = "<group>"; };
 		3C9E3189260C7B4200CC3E3F /* EaseSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseSearchDisplayController.m; sourceTree = "<group>"; };
 		3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveViewController.m; sourceTree = "<group>"; };
-		3C9E3199260C7B4200CC3E3F /* EaseAudienceBehaviorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseAudienceBehaviorView.m; sourceTree = "<group>"; };
 		3C9E319A260C7B4200CC3E3F /* EaseLiveGiftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveGiftView.m; sourceTree = "<group>"; };
 		3C9E319B260C7B4200CC3E3F /* EaseLiveHeaderListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveHeaderListView.m; sourceTree = "<group>"; };
 		3C9E319E260C7B4200CC3E3F /* JPGiftShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPGiftShowView.h; sourceTree = "<group>"; };
@@ -445,7 +443,6 @@
 		3C9E31C4260C7B4200CC3E3F /* EaseGiftCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseGiftCell.h; sourceTree = "<group>"; };
 		3C9E31C6260C7B4200CC3E3F /* EaseLiveHeaderListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveHeaderListView.h; sourceTree = "<group>"; };
 		3C9E31C7260C7B4200CC3E3F /* EaseLiveGiftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseLiveGiftView.h; sourceTree = "<group>"; };
-		3C9E31C8260C7B4200CC3E3F /* EaseAudienceBehaviorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseAudienceBehaviorView.h; sourceTree = "<group>"; };
 		3C9E31C9260C7B4200CC3E3F /* EaseBaseSubView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseBaseSubView.m; sourceTree = "<group>"; };
 		3C9E31CA260C7B4200CC3E3F /* EaseFinishLiveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseFinishLiveView.h; sourceTree = "<group>"; };
 		3C9E31CB260C7B4200CC3E3F /* EaseGiftConfirmView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EaseGiftConfirmView.h; sourceTree = "<group>"; };
@@ -1019,8 +1016,6 @@
 			isa = PBXGroup;
 			children = (
 				3C9E31BD260C7B4200CC3E3F /* cell */,
-				3C9E31C8260C7B4200CC3E3F /* EaseAudienceBehaviorView.h */,
-				3C9E3199260C7B4200CC3E3F /* EaseAudienceBehaviorView.m */,
 				3C9E31B2260C7B4200CC3E3F /* EaseBaseSubView.h */,
 				3C9E31C9260C7B4200CC3E3F /* EaseBaseSubView.m */,
 				C0602EA42804301000D39575 /* ELDUserInfoView.h */,
@@ -2156,7 +2151,6 @@
 				3C9E32A9260C7B4300CC3E3F /* EaseBaseSubView.m in Sources */,
 				C08DFC5B27F58A4D00862ADF /* ELDCustomCell.m in Sources */,
 				3C9E327E260C7B4300CC3E3F /* EaseBaseViewController.m in Sources */,
-				3C9E3290260C7B4300CC3E3F /* EaseAudienceBehaviorView.m in Sources */,
 				C08DFC7E27F6DA2A00862ADF /* ELDAboutViewController.m in Sources */,
 				C08DFC5F27F58BF400862ADF /* ELDSettingViewController.m in Sources */,
 				C047555028095CCE0094EAD3 /* LXCalendarDayModel.m in Sources */,

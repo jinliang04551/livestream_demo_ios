@@ -385,7 +385,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     }
     
     if (state == AgoraConnectionStateFailed) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"连接失败,请退出重进直播间。" toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"Connection failed, please exit and re-enter the live room." toView:self.view];
         [self.agoraRemoteVideoView removeFromSuperview];
         [self.view insertSubview:self.backgroudImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:2.0];
@@ -458,10 +458,10 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [self stopTimer];
         }
     } else if (state == AgoraMediaPlayerStateIdle) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在重新连接..." toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"reconnecting..." toView:self.view];
         [hud hideAnimated:YES afterDelay:1.5];
     } else if (state == AgoraMediaPlayerStateFailed) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"播放出错,请退出重进直播间。" toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"Error in playback, please exit and re-enter the live room." toView:self.view];
         [self.mediaPlayerView removeFromSuperview];
         [self.view insertSubview:self.backgroudImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:1.5];
@@ -646,22 +646,22 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
 #pragma mark - EaseLiveGiftViewDelegate
 - (void)didConfirmGiftModel:(ELDGiftModel *)giftModel giftNum:(long)num {
-    EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc] initWithGiftModel:giftModel giftNum:num titleText:@"是否赠送"];
+    EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc] initWithGiftModel:giftModel giftNum:num titleText:@"whether to give away"];
     confirmView.delegate = self;
     [confirmView showFromParentView:self.view];
     
     ELD_WS
     [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
         if (aConfirm) {
-            //发送礼物消息
+            //send gift message
             [weakSelf.chatview.easeChatView sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
                 if (success) {
-                    //显示礼物UI
+                    //display gift UI
                     
                     [weakSelf.giftView resetGiftView];
                     [weakSelf.chatview sendGiftAction:giftModel backView:self.view];
                 }else {
-                    [self showHint:@"送礼物失败"];
+                    [self showHint:@"Failed to send gifts"];
                 }
             }];
         }
@@ -697,11 +697,14 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom reason:(AgoraChatroomBeKickedReason)aReason
 {
     if (aReason == 0)
-        [MBProgressHUD showMessag:[NSString stringWithFormat:@"被移出直播聊天室 %@", aChatroom.subject] toView:nil];
+    [self showHint:[NSString stringWithFormat:@"you has be removed from live chatroom %@",aChatroom.subject]];
+    
     if (aReason == 1)
-        [MBProgressHUD showMessag:[NSString stringWithFormat:@"直播聊天室 %@ 已解散", aChatroom.subject] toView:nil];
+    [self showHint:[NSString stringWithFormat:@"the live chatroom %@ has dismissed",aChatroom.subject]];
+
     if (aReason == 2)
-        [MBProgressHUD showMessag:@"您的账号已离线" toView:nil];
+    [self showHint:@"your count has offline"];
+
     [self closeButtonAction];
 }
 
@@ -709,10 +712,12 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
-            [self showHint:@"主播已开启全员禁言状态，不可发言！"];
+            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has set Banned on all Chats",aChatroom.owner]];
+
             self.chatview.easeChatView.isMuted = YES;
         } else {
-            [self showHint:@"主播已解除全员禁言，尽情发言吧！"];
+            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has set unBanned on all Chats",aChatroom.owner]];
+
             self.chatview.easeChatView.isMuted = NO;
         }
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
@@ -726,6 +731,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = YES;
+            
+            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ is set as a Moderator.",aAdmin]];
+
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         }
     }
@@ -737,6 +745,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if ([aAdmin isEqualToString:[AgoraChatClient sharedClient].currentUsername]) {
             _enableAdmin = NO;
+            [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ is remove as a Moderator.",aAdmin]];
+
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         }
     }
@@ -754,8 +764,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         
         self.chatview.easeChatView.isMuted = YES;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-        [self showHint:@"已被禁言"];
-        
+
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been banned.",text]];
+
     }
 }
 
@@ -769,7 +780,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         self.chatview.easeChatView.isMuted = NO;
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
-        [self showHint:[NSString stringWithFormat:@"已解除禁言"]];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been unbanned.",text]];
+
     }
 }
 
@@ -780,8 +792,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-        [self showHint:@"被加入白名单"];
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been add to whitelist.",text]];
+
     }
 }
 
@@ -792,7 +805,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         for (NSString *name in aMembers) {
             [text appendString:name];
         }
-        [self showHint:@"已被从白名单中移除"];
+        
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been remove from whitelist.",text]];
+
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
     }
 }
@@ -803,7 +818,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 {
     __weak typeof(self) weakSelf =  self;
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"聊天室创建者有更新:%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"live chatroom create update  :%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"publish.ok", @"Ok") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if ([aNewOwner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {

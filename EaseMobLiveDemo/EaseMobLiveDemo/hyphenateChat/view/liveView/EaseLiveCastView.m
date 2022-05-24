@@ -129,10 +129,9 @@
 {
     if (_praiseLabel == nil) {
         _praiseLabel = [[UILabel alloc] init];
-        //_praiseLabel.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y + self.height + 5, self.width / 2, self.height / 2);
         _praiseLabel.font = [UIFont systemFontOfSize:12.f];
         _praiseLabel.textColor = [UIColor colorWithRed:255/255.0 green:199/255.0 blue:0/255.0 alpha:1.0];
-        _praiseLabel.text = [NSString stringWithFormat:@"赞:%d",[EaseDefaultDataHelper.shared.praiseStatisticstCount intValue]];
+        _praiseLabel.text = [NSString stringWithFormat:@"like:%d",[EaseDefaultDataHelper.shared.praiseStatisticstCount intValue]];
         _praiseLabel.textAlignment = NSTextAlignmentLeft;
     }
     return _praiseLabel;

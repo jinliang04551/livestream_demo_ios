@@ -17,7 +17,6 @@
 #import "EaseLiveCastView.h"
 #import "EaseLiveRoom.h"
 #import "EaseDefaultDataHelper.h"
-#import "EaseAudienceBehaviorView.h"
 #import "EaseGiftListView.h"
 #import "EaseCustomMessageHelper.h"
 #import "EaseFinishLiveView.h"
@@ -190,18 +189,17 @@
     [self.chatview endEditing:YES];
 }
 
-//检测来电
+//Detect incoming calls
 - (void)monitorCall
 {
     __weak typeof(self) weakSelf = self;
     self.callCenter.callEventHandler = ^(CTCall* call) {
         if (call.callState == CTCallStateDisconnected) {
-            NSLog(@"电话结束或挂断电话");
+            NSLog(@"End or hang up the call");
             [weakSelf connectionStateDidChange:AgoraChatConnectionConnected];
         } else if (call.callState == CTCallStateConnected){
-            NSLog(@"电话接通");
+            NSLog(@"call connected");
         } else if(call.callState == CTCallStateIncoming) {
-            NSLog(@"来电话");
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
                 [weakSelf.agoraKit muteLocalVideoStream:YES];
                 [weakSelf.agoraKit muteLocalAudioStream:YES];
@@ -210,7 +208,7 @@
 //                [weakSelf.session stopStreaming];
             }
         } else if (call.callState ==CTCallStateDialing) {
-            NSLog(@"拨号打电话(在应用内调用打电话功能)");
+
         }
     };
 }
@@ -299,13 +297,13 @@
         [self.view insertSubview:self.agoraLocalVideoView atIndex:0];
     }
     if (state == AgoraConnectionStateConnecting || state == AgoraConnectionStateReconnecting) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在连接..." toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"connecting..." toView:self.view];
         [hud hideAnimated:YES afterDelay:1.5];
         [self.agoraLocalVideoView removeFromSuperview];
         [self.view insertSubview:self.backImageView atIndex:0];
     }
     if (state == AgoraConnectionStateFailed) {
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"连接失败,请重新创建直播间。" toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"Connection failed, please re-create the live room." toView:self.view];
         [self.agoraLocalVideoView removeFromSuperview];
         [self.view insertSubview:self.backImageView atIndex:0];
         [hud hideAnimated:YES afterDelay:2.0];
@@ -501,7 +499,7 @@
                                              if (success) {
                                                  [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
                                              } else {
-                                                 [weakSelf showHint:@"退出聊天室失败"];
+                                                 [weakSelf showHint:@"Failed to exit the chat room"];
                                              }
                                              
                                              [UIApplication sharedApplication].idleTimerDisabled = NO;
@@ -681,7 +679,6 @@
 
 #pragma mark - AgoraChatroomManagerDelegate
 - (void)userDidJoinChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
-    NSLog(@"userDidJoinChatroom:%s",__func__);
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
         [self fetchChatroomSpecificationWithChatroomId:self.chatroom.chatroomId];
         [self.chatview insertJoinMessageWithChatroom:self.chatroom user:aUsername];
@@ -699,9 +696,11 @@
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
-            [self showHint:@"Streamer has set Banned on all Chats"];
+            [self.notificationView showHintMessage:@"Streamer has set Banned on all Chats" autoDismiss:NO];
+
         } else {
-            [self showHint:@"Streamer has set unBanned on all Chats"];
+            [self.notificationView showHintMessage:@"Streamer has set unBanned on all Chats"];
+
         }
     }
 }
@@ -716,7 +715,7 @@
         }
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         
-        [self showHint:[NSString stringWithFormat:@"被加入白名单:%@",text]];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been add to whitelist.",text]];
     }
 }
 
@@ -728,7 +727,8 @@
             [text appendString:name];
         }
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self showHint:[NSString stringWithFormat:@"从白名单移除:%@",text]];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been remove from whitelist.",text]];
+
     }
 }
 
@@ -741,9 +741,8 @@
         for (NSString *name in aMutes) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"禁言成员:%@",text]];
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self showHint:@"已被禁言"];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been banned.",text]];
     }
 }
 
@@ -755,10 +754,9 @@
         for (NSString *name in aMutes) {
             [text appendString:name];
         }
-//        [self showHint:[NSString stringWithFormat:@"解除禁言:%@",text]];
         
         [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
-        [self showHint:[NSString stringWithFormat:@"已解除禁言"]];
+        [self.notificationView showHintMessage:[NSString stringWithFormat:@"%@ has been unbanned.",text]];
     }
 }
 
@@ -769,12 +767,12 @@
     ELD_WS
 
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"聊天室创建者有更新:%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:[NSString stringWithFormat:@"live chatroom create update  :%@",aChatroom.chatroomId] preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"publish.ok", @"Ok") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             if ([aOldOwner isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
                 if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
-//                    [weakSelf.session stopStreaming];//结束推流
+//                    [weakSelf.session stopStreaming];
 //                    [weakSelf.session destroy];
                 }
                 if ([_room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
@@ -782,7 +780,6 @@
                     [AgoraRtcEngineKit destroy];
                 }
                 _isFinishBroadcast = YES;
-                //重置本地保存的直播间id
                 EaseDefaultDataHelper.shared.currentRoomId = @"";
                 [EaseDefaultDataHelper.shared archive];
                 [UIApplication sharedApplication].idleTimerDisabled = NO;

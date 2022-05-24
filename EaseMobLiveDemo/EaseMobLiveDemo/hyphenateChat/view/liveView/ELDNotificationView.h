@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showHintMessage:(NSString *)message;
 
+- (void)showHintMessage:(NSString *)message
+            autoDismiss:(BOOL)autoDismiss;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -2,7 +2,7 @@
 //  EaseTransitionViewController.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/7.
+//  Created by easemob on 2020/3/7.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -52,10 +52,9 @@ NSString *defaultPwd = @"000000";//默认密码
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
     paraStyle.alignment = NSTextAlignmentCenter;
     textDict[NSParagraphStyleAttributeName] = paraStyle;
-    welcomeLabel.attributedText = [[NSAttributedString alloc]initWithString:@"欢迎使用环信直播聊天室" attributes:textDict];
+    welcomeLabel.attributedText = [[NSAttributedString alloc]initWithString:@"Welcome to Huanxin Live Chat Room" attributes:textDict];
 }
 
-//游客自动注册账户
 - (void)autoRegistAccount
 {
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:nil];

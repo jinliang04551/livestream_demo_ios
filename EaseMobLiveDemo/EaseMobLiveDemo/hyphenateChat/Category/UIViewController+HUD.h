@@ -2,7 +2,7 @@
 //  UIViewController+UIViewController_HUD.h
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/4.
+//  Created by easemob on 2020/3/4.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  EaseAboutHuanxinViewController.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/18.
+//  Created by easemob on 2020/3/18.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -30,11 +30,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"关于环信";
+    self.title = @"About Huanxin";
     [self setupNavigationItem];
     [self.view addSubview:self.webView];
     [self.view addSubview:self.progressView];
-    //添加监测网页加载进度的观察者
+
     [_webView addObserver:self
                    forKeyPath:NSStringFromSelector(@selector(estimatedProgress))
                       options:0
@@ -42,23 +42,17 @@
 }
 
 - (void)dealloc{
-    //移除观察者
     [_webView removeObserver:self
                   forKeyPath:NSStringFromSelector(@selector(estimatedProgress))];
 }
 
 - (WKWebView *)webView
 {
-    //创建网页配置对象
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
    
-    // 创建设置对象
     WKPreferences *preference = [[WKPreferences alloc]init];
-    //最小字体大小 当将javaScriptEnabled属性设置为NO时，可以看到明显的效果
     preference.minimumFontSize = 0;
-    //设置是否支持javaScript 默认是支持的
     preference.javaScriptEnabled = YES;
-    // 在iOS上默认为NO，表示是否允许不经过用户交互由javaScript自动打开窗口
     preference.javaScriptCanOpenWindowsAutomatically = YES;
     config.preferences = preference;
     
@@ -72,7 +66,6 @@
 }
 
 - (void)setupNavigationItem{
-    // 刷新按钮
     UIButton * refreshButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [refreshButton setImage:[UIImage imageNamed:@"webRefreshButton"] forState:UIControlStateNormal];
     [refreshButton addTarget:self action:@selector(refreshAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -99,7 +92,6 @@
     [_webView reload];
 }
 
-//kvo 监听进度 必须实现此方法
 -(void)observeValueForKeyPath:(NSString *)keyPath
                      ofObject:(id)object
                        change:(NSDictionary<NSKeyValueChangeKey,id> *)change
@@ -108,7 +100,6 @@
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(estimatedProgress))]
         && object == _webView) {
         
-        NSLog(@"网页加载进度 = %f",_webView.estimatedProgress);
         self.progressView.progress = _webView.estimatedProgress;
         if (_webView.estimatedProgress >= 1.0f) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -119,16 +110,11 @@
 }
 
 #pragma mark - WKNavigationDelegate
-/*
- WKNavigationDelegate主要处理一些跳转、加载处理操作，WKUIDelegate主要处理JS脚本，确认框，警告框等
- */
 
-// 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
     [self.progressView setProgress:0.0f animated:NO];
 }
 
-//提交发生错误时调用
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
     [self.progressView setProgress:0.0f animated:NO];
 }
@@ -136,7 +122,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 @end

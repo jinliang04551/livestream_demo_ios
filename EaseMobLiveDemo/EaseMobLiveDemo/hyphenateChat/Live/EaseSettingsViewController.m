@@ -2,7 +2,7 @@
 //  EaseSettingsViewController.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/11.
+//  Created by easemob on 2020/2/11.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -75,7 +75,7 @@
             make.center.equalTo(_logoView);
         }];
         UILabel *productName = [[UILabel alloc]init];
-        productName.text = @"环信直播聊天室";
+        productName.text = @"Huanxin live chat room";
         productName.textAlignment = NSTextAlignmentCenter;
         productName.textColor = [UIColor blackColor];
         productName.font = [UIFont systemFontOfSize:14.f];
@@ -96,7 +96,7 @@
         _versionView = [[UIView alloc]init];
         _versionView.backgroundColor = [UIColor whiteColor];
         UILabel *version = [[UILabel alloc]initWithFrame:CGRectMake(16, 20, 50, 20)];
-        version.text = @"版本";
+        version.text = @"Version";
         version.textColor = [UIColor blackColor];
         version.font = [UIFont systemFontOfSize:14];
         [_versionView addSubview:version];
@@ -116,7 +116,7 @@
         _regardBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _regardBtn.backgroundColor = [UIColor whiteColor];
         UILabel *regard = [[UILabel alloc]initWithFrame:CGRectMake(16, 20, 80, 20)];
-        regard.text = @"关于环信";
+        regard.text = @"About Huanxin";
         regard.textColor = [UIColor blackColor];
         regard.font = [UIFont systemFontOfSize:14];
         [_regardBtn addSubview:regard];

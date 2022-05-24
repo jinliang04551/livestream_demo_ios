@@ -2,7 +2,7 @@
 //  EaseGiftListView.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/3/6.
+//  Created by easemob on 2020/3/6.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -39,7 +39,7 @@
             make.left.equalTo(avatar.mas_right).offset(5);
         }];
         UILabel *constMsgLabel = [[UILabel alloc]init];
-        constMsgLabel.text = @"送出";
+        constMsgLabel.text = @"send";
         constMsgLabel.font = [UIFont systemFontOfSize:13.f];
         constMsgLabel.backgroundColor = [UIColor clearColor];
         constMsgLabel.textAlignment = NSTextAlignmentCenter;
@@ -129,7 +129,7 @@
         _exceptionalGift.textColor = [UIColor whiteColor];
         _exceptionalGift.backgroundColor = [UIColor clearColor];
         _exceptionalGift.textAlignment = NSTextAlignmentRight;
-        _exceptionalGift.text = [NSString stringWithFormat:@"共%d份  打赏人数%lu人",[EaseDefaultDataHelper.shared.giftNumbers intValue],(unsigned long)[EaseDefaultDataHelper.shared.rewardCount count]];
+        _exceptionalGift.text = [NSString stringWithFormat:@"Total %d copies  rewarded amount %lu",[EaseDefaultDataHelper.shared.giftNumbers intValue],(unsigned long)[EaseDefaultDataHelper.shared.rewardCount count]];
     }
     return _exceptionalGift;
 }
@@ -167,7 +167,7 @@
         _giftListBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _giftListBtn.frame = CGRectMake(0, 0, KScreenWidth/2, kButtonDefaultHeight);
         [_giftListBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_giftListBtn setTitle:@"礼物记录" forState:UIControlStateNormal];
+        [_giftListBtn setTitle:@"gift record" forState:UIControlStateNormal];
         _giftListBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         [_giftListBtn.titleLabel setFont:[UIFont fontWithName:@"Alibaba-PuHuiTi" size:14.f]];
         _giftListBtn.tag = 100;

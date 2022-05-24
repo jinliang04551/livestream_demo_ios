@@ -2,7 +2,7 @@
 //  EaseLiveGiftHelper.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/18.
+//  Created by easemob on 2020/2/18.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 

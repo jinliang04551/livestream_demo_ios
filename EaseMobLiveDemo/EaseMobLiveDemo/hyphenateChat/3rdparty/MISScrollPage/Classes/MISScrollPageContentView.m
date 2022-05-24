@@ -136,7 +136,7 @@ static NSString* UICollectionViewCellIdentifier = @"UICollectionViewCellIdentifi
         }else if([obj isKindOfClass:[UIView class]]){
             [((UIView*)obj) removeFromSuperview];
         }else{
-            NSAssert(NO, @"必须是UIVIewCOntroller或者是UIVIew的子类");
+            NSAssert(NO, @"Must be UIVIewCOntroller or a subclass of UIVIew");
         }
     }];
     [self.childViewControllers removeAllObjects];
@@ -340,7 +340,7 @@ static NSString* UICollectionViewCellIdentifier = @"UICollectionViewCellIdentifi
             ((UIView*)_currentChildViewController).frame = self.bounds;
             [cell.contentView addSubview:((UIView*)_currentChildViewController)];
         }else{
-            NSAssert(NO, @"必须是UIVIewCOntroller或者是UIVIew的子类");
+            NSAssert(NO, @"Must be UIVIewCOntroller or a subclass of UIVIew");
         }
         
         BOOL isFirstLoaded = NO;
@@ -373,7 +373,7 @@ static NSString* UICollectionViewCellIdentifier = @"UICollectionViewCellIdentifi
         
     }else{
         //子控制器或者视图必须遵循MISScrollPageControllerContentSubViewControllerDelegate这个协议
-        NSAssert(NO, @"子控制器或者视图必须遵循MISScrollPageControllerContentSubViewControllerDelegate这个协议");
+        NSAssert(NO, @"Subcontrollers or views must follow the MISScrollPageControllerContentSubViewControllerDelegate protocol");
     }
 }
 

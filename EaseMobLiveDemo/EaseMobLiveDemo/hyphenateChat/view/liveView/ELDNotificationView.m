@@ -40,14 +40,24 @@
 
 - (void)showHintMessage:(NSString *)message {
     
+    [self showHintMessage:message autoDismiss:YES];
+}
+
+- (void)showHintMessage:(NSString *)message
+            autoDismiss:(BOOL)autoDismiss {
+    
     self.hidden = NO;
     self.contentLabel.text = message;
-
-//    dispatch_after(2.0, dispatch_get_main_queue(), ^{
-//        self.hidden = YES;
-//    });
     
+    if (autoDismiss) {
+        dispatch_after(5.0, dispatch_get_main_queue(), ^{
+            self.hidden = YES;
+        });
+    }
+
 }
+
+
 
 
 #pragma mark getter and setter

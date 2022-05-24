@@ -56,13 +56,6 @@
        if (self) {
            _videoType = video_type;
            _tabBarBehavior = tabBarBehavior;
-//           if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE])
-//               self.title = @"极速直播";
-//           if ([_videoType isEqualToString:kLiveBroadCastingTypeLIVE])
-//               self.title = @"传统直播";
-//           if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
-//               self.title = @"互动直播";
-//           }
            
            [[AgoraChatClient sharedClient] removeDelegate:self];
            [[AgoraChatClient sharedClient] addDelegate:self delegateQueue:nil];
@@ -423,7 +416,6 @@
             }
         }];
     } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {
-        //view = [[EaseCreateLiveViewController alloc]initWithLiveroom:room];
         __weak typeof(self) weakSelf = self;
         room.anchor = [AgoraChatClient sharedClient].currentUsername;
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:room completion:^(EaseLiveRoom *room, BOOL success) {
@@ -436,8 +428,8 @@
                     [weakSelf.navigationController popToRootViewControllerAnimated:NO];
                                      }];
             } else {
-                UIAlertController *alertControler = [UIAlertController alertControllerWithTitle:@"提示" message:@"当前房间正在直播！" preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *conform = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                UIAlertController *alertControler = [UIAlertController alertControllerWithTitle:@"hint" message:@"The current room is live！" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *conform = [UIAlertAction actionWithTitle:@"confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     }];
                 [alertControler addAction:conform];
                 [weakSelf presentViewController:alertControler animated:YES completion:nil];

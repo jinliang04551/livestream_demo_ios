@@ -197,7 +197,7 @@ static CGFloat const contentSizeXOff = 20.0;
 - (NSArray *)normalColorRgb {
     if (!_normalColorRgb) {
         NSArray *normalColorRgb = [self getColorRgb:self.style.normalTitleColor];
-        NSAssert(normalColorRgb, @"设置普通状态的文字颜色时 请使用RGB空间的颜色值");
+        NSAssert(normalColorRgb, @"When setting the text color of the normal state, please use the color value of the RGB space");
         _normalColorRgb = normalColorRgb;
         
     }
@@ -207,7 +207,7 @@ static CGFloat const contentSizeXOff = 20.0;
 - (NSArray *)selectedColorRgb {
     if (!_selectedColorRgb) {
         NSArray *selectedColorRgb = [self getColorRgb:self.style.selectedTitleColor];
-        NSAssert(selectedColorRgb, @"设置选中状态的文字颜色时 请使用RGB空间的颜色值");
+        NSAssert(selectedColorRgb, @"When setting the text color of the selected state, please use the color value of the RGB space");
         _selectedColorRgb = selectedColorRgb;
     }
     return  _selectedColorRgb;
@@ -271,7 +271,7 @@ static CGFloat const contentSizeXOff = 20.0;
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated{
 //    MISLog(@"self.titles.count --- %lu", (unsigned long)self.titles.count);
-    NSAssert(selectedIndex >= 0 && selectedIndex < self.titles.count, @"设置的下标不合法!!");
+    NSAssert(selectedIndex >= 0 && selectedIndex < self.titles.count, @"The set selectedIndex is invalid!!");
     
     if (selectedIndex < 0 || selectedIndex >= self.titles.count) {
         return;

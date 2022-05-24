@@ -188,7 +188,6 @@
 
 
 #pragma mark - app delegate notifications
-// 监听系统生命周期回调，以便将需要的事件传给SDK
 // Listen the life cycle of the system so that it will be passed to the SDK
 - (void)_setupAppDelegateNotifications
 {
@@ -215,7 +214,6 @@
 }
 
 #pragma mark - register apns
-// 注册推送
 // regist push
 - (void)_registerRemoteNotification
 {
@@ -230,7 +228,6 @@
     }
     
 #if !TARGET_IPHONE_SIMULATOR
-    //iOS8 注册APNS
     //iOS8 regist APNS
     if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
         [application registerForRemoteNotifications];
@@ -239,8 +236,6 @@
 }
 
 #pragma mark - App Delegate
-
-// 将得到的deviceToken传给SDK
 // Get deviceToken to pass SDK
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -249,7 +244,6 @@
     });
 }
 
-// 注册deviceToken失败，此处失败，与环信SDK无关，一般是您的环境配置或者证书配置有误
 // Regist deviceToken failed,not HyphenateChat SDK Business,generally have something wrong with your environment configuration or certificate configuration
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {

@@ -2,7 +2,7 @@
 //  EaseKeyBoardViewController.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/19.
+//  Created by easemob on 2020/2/19.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -28,7 +28,7 @@
         _textField = [[UITextField alloc] initWithFrame:CGRectMake(50, 168, kScreenWidth - 100, 50)];
         _textField.delegate = self;
         _textField.backgroundColor = [UIColor whiteColor];
-        _textField.placeholder = @"输入赠送数量";
+        _textField.placeholder = @"Enter gift amount";
         _textField.textAlignment = NSTextAlignmentCenter;
         _textField.layer.borderWidth = 1.0f;
         _textField.layer.borderColor = [UIColor yellowColor].CGColor;
@@ -53,7 +53,7 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    NSLog(@"显示键盘");
+
 }
 
 // 因为是自定义view 系统的代理 shouldChangeCharactersInRange 不会调用。
@@ -105,7 +105,6 @@
 }
 
 -(void)finishKeyBoard{
-    NSLog(@"确定按钮");
     [self endEditing:YES];
     //非0&空输入判定
     if (!([self.textField.text isEqualToString:@"0"] || [self.textField.text isEqualToString:@""])) {

@@ -58,7 +58,7 @@
 - (void)loginStateChange:(NSNotification *)notification
 {
     BOOL loginSuccess = [notification.object boolValue];
-    if (loginSuccess) {//登录成功加载主窗口控制器
+    if (loginSuccess) {
         
         EaseMainViewController *main = [[EaseMainViewController alloc] init];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:main];
@@ -67,7 +67,7 @@
         self.window.rootViewController = nav;
         
     }
-    else{//登录失败加载登录页面控制器
+    else{
         _mainVC = nil;
         UINavigationController *navigationController = nil;
         EaseLoginViewController *login = [[EaseLoginViewController alloc] init];
@@ -77,7 +77,7 @@
     [self.window makeKeyAndVisible];
 }
 
-//游客自动注册账户
+
 - (void)autoRegistAccount
 {
     EaseTransitionViewController *transtionController = [[EaseTransitionViewController alloc]init];
@@ -92,21 +92,21 @@
 - (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (aError) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"自动登录失败，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"hint" message:@"Failed to log in automatically, please log in again" delegate:self cancelButtonTitle:@"confirm" otherButtonTitles:nil, nil];
         [alertView show];
     }
 }
 
 - (void)userAccountDidLoginFromOtherDevice
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已在其他地方登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"hint" message:@"Your account is already logged in elsewhere" delegate:self cancelButtonTitle:@"confirm" otherButtonTitles:nil, nil];
     [alertView show];
     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }
 
 - (void)userAccountDidRemoveFromServer
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的账号已被从服务器端移除" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"hint" message:@"Your account has been removed from the server" delegate:self cancelButtonTitle:@"confirm" otherButtonTitles:nil, nil];
     [alertView show];
     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@NO];
 }
@@ -146,10 +146,6 @@
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
-    /**
-     *  这里移动要注意，条件判断成功的是在播放器播放过程中返回的
-     下面的是播放器没有弹出来的所支持的设备方向
-     */
 //    if (self.vc.playerManager)
 //    {
 //        return self.vc.playerManager.supportInterOrtation;

@@ -71,7 +71,7 @@
     if (_giftLabel == nil) {
         _giftLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.headImageView.frame) + 5, CGRectGetMaxY(self.nameLabel.frame), kLabelDefaultWidth, kLabelDefaultHeight)];
         _giftLabel.textColor = RGBACOLOR(30, 167, 252, 1);
-        _giftLabel.text = @"送了一件神秘大礼";
+        _giftLabel.text = @"gave a mysterious gift";
         _giftLabel.font = [UIFont systemFontOfSize:12.0f];
     }
     return _giftLabel;

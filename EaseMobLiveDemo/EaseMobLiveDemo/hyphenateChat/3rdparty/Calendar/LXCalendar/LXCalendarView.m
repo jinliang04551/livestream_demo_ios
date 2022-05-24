@@ -125,7 +125,7 @@
     
      LXCalendarMonthModel *nextMonthModel = [[LXCalendarMonthModel alloc]initWithDate:nextMonthDate];
     
-    self.calendarHeader.dateStr = [NSString stringWithFormat:@"%ld年%ld月",monthModel.year,monthModel.month];
+    self.calendarHeader.dateStr = [NSString stringWithFormat:@"%ld Year %ld Month",monthModel.year,monthModel.month];
     
     NSInteger firstWeekday = monthModel.firstWeekday;
     
@@ -267,7 +267,7 @@
 -(LXCalendarWeekView *)calendarWeekView{
     if (!_calendarWeekView) {
         _calendarWeekView =[[LXCalendarWeekView alloc]initWithFrame:CGRectMake(0, self.calendarHeader.lx_bottom, self.lx_width, 50)];
-        _calendarWeekView.weekTitles = @[@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六"];
+        _calendarWeekView.weekTitles = @[@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday"];
     }
     return _calendarWeekView;
 }

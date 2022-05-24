@@ -2,7 +2,7 @@
 //  EaseKeyBoardView.m
 //  EaseMobLiveDemo
 //
-//  Created by 娜塔莎 on 2020/2/19.
+//  Created by easemob on 2020/2/19.
 //  Copyright © 2020 zmw. All rights reserved.
 //
 
@@ -84,7 +84,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
     dianBtn.backgroundColor = [UIColor whiteColor];
     dianBtn.tag = 11;
     [self addSubview:dianBtn];
-    // 删除按钮
+
     UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     deleteBtn.frame = CGRectMake(kScreenWidth/4*3+space,1, kScreenWidth/4-1,  60);
     deleteBtn.backgroundColor = [UIColor whiteColor];
@@ -95,13 +95,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:alphaValue]
     deleteBtn.tag = 10;
     [self addSubview:deleteBtn];
     
-    // 确定按钮
     UIButton *confirmBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     confirmBtn.frame = CGRectMake(kScreenWidth/4*3+space,61*1, kScreenWidth/4-1, 181);
     confirmBtn.backgroundColor = RRSAppColor;
     [confirmBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     confirmBtn.titleLabel.font = [UIFont systemFontOfSize:20];
-    [confirmBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [confirmBtn setTitle:@"confirm" forState:UIControlStateNormal];
     [confirmBtn addTarget:self action:@selector(keyBoardAciont:) forControlEvents:UIControlEventTouchUpInside];
     confirmBtn.tag = 13;
     [self addSubview:confirmBtn];
