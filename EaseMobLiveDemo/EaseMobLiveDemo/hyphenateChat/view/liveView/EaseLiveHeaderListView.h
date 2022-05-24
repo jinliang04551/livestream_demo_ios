@@ -27,9 +27,9 @@
 
 @property (nonatomic, strong) EaseLiveCastView *liveCastView;
 
-- (instancetype)initWithFrame:(CGRect)frame model:(EasePublishModel*)model;
-
-- (instancetype)initWithFrame:(CGRect)frame chatroom:(AgoraChatroom*)aChatroom;
+- (instancetype)initWithFrame:(CGRect)frame
+                     chatroom:(AgoraChatroom*)aChatroom
+                    isPublish:(BOOL)isPublish;
 
 @property (nonatomic, weak) id<EaseLiveHeaderListViewDelegate> delegate;
 

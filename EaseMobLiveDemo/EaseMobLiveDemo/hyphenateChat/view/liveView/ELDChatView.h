@@ -41,14 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (instancetype)initWithFrame:(CGRect)frame
-                         room:(EaseLiveRoom *)room
+                     chatroom:(AgoraChatroom *)chatroom
                     isPublish:(BOOL)isPublish
               customMsgHelper:(EaseCustomMessageHelper *)customMsgHelper;
 
-
-- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion;
-
-- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion;
 
 - (void)insertJoinMessageWithChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername;
 

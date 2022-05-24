@@ -48,55 +48,30 @@
 
 @interface EaseLiveHeaderListView () <UICollectionViewDelegate,UICollectionViewDataSource>
 {
-    EasePublishModel *_model;
     NSTimer *_timer;
 }
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) ELDWatchMemberAvatarsView *watchMemberAvatarsView;
 @property (nonatomic, strong) AgoraChatroom *chatroom;
-
-
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, assign) NSInteger occupantsCount;
 @property (nonatomic, strong) UIButton *numberBtn;
 @property (nonatomic, strong) UIButton *closeButton;
-
+@property (nonatomic, assign) BOOL isPublish;
 
 @end
 
 @implementation EaseLiveHeaderListView
 
-- (instancetype)initWithFrame:(CGRect)frame model:(EasePublishModel*)model
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        _model = model;
-        [self addSubview:self.collectionView];
-        [self addSubview:self.liveCastView];
-        
-        [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self);
-            make.height.equalTo(@kNumberBtnHeight);
-            make.left.equalTo(self).offset(12.0f);
-        }];
-        
-        [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.bottom.equalTo(self.liveCastView);
-            make.left.equalTo(self.liveCastView.mas_right).offset(kEaseLiveDemoPadding * 4);
-            make.right.equalTo(self).offset(-12.0);
-        }];
-        
-        [self startTimer];
-    }
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame chatroom:(AgoraChatroom*)aChatroom
-{
+- (instancetype)initWithFrame:(CGRect)frame
+                     chatroom:(AgoraChatroom*)aChatroom
+                    isPublish:(BOOL)isPublish {
     self = [super initWithFrame:frame];
     if (self) {
         self.chatroom = aChatroom;
+        self.isPublish = isPublish;
+        
         [self addSubview:self.watchMemberAvatarsView];
         [self addSubview:self.liveCastView];
         [self addSubview:self.numberBtn];
@@ -114,7 +89,7 @@
         }];
 
         //when chatroom owner is living
-        if ([AgoraChatClient.sharedClient.currentUsername isEqualToString:self.chatroom.owner]) {
+        if (self.isPublish) {
             [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.bottom.equalTo(self.liveCastView);
                 make.height.equalTo(self.liveCastView);

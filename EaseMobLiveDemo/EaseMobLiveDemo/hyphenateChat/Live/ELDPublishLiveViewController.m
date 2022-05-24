@@ -35,6 +35,7 @@
 #import "ELDNotificationView.h"
 
 #import "ELDChatView.h"
+#import "ELDChatViewHelper.h"
 
 #define kDefaultTop 35.f
 #define kDefaultLeft 10.f
@@ -126,7 +127,20 @@
 
 - (void)joinChatroom {
     ELD_WS
-    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+//    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+//        if (aError == nil) {
+//            weakSelf.chatroom = aChatroom;
+//            [self.view addSubview:self.liveView];
+//            [weakSelf.view bringSubviewToFront:weakSelf.liveView];
+//
+//            [weakSelf fetchChatroomSpecificationWithChatroomId:weakSelf.chatroom.chatroomId];
+//
+//        } else {
+//            [weakSelf showHint:aError.description];
+//        }
+//    }];
+
+    [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
         if (aError == nil) {
             weakSelf.chatroom = aChatroom;
             [self.view addSubview:self.liveView];
@@ -138,7 +152,6 @@
             [weakSelf showHint:aError.description];
         }
     }];
-
 }
 
 
@@ -207,7 +220,7 @@
             NSLog(@"End or hang up the call");
             [weakSelf connectionStateDidChange:AgoraChatConnectionConnected];
         } else if (call.callState == CTCallStateConnected){
-            NSLog(@"call connected");
+
         } else if(call.callState == CTCallStateIncoming) {
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
                 [weakSelf.agoraKit muteLocalVideoStream:YES];
@@ -270,7 +283,6 @@
     videoCanvas.uid = 0;
     videoCanvas.view = self.agoraLocalVideoView;
     videoCanvas.renderMode = AgoraVideoRenderModeHidden;
-    // 设置本地视图。
     [self.agoraKit setupLocalVideo:videoCanvas];
 }
 
@@ -398,12 +410,14 @@
         [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOngoing:_room completion:^(EaseLiveRoom *room, BOOL success) {
             if (success)
                 _room = room;
-            [weakSelf.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+  
+            [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
                 if (aError == nil) {
                     weakSelf.chatroom = aChatroom;
                     [weakSelf.headerListView updateHeaderViewWithChatroom:weakSelf.chatroom];
+                }else {
+                    [self dismissViewControllerAnimated:YES completion:nil];
                 }
-                
             }];
             
             if ([weakSelf.room.liveroomType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
@@ -503,22 +517,27 @@
 - (void)didClickFinishButton
 {
     ELD_WS
-    dispatch_block_t block = ^{
-        [weakSelf.chatview leaveChatroomWithCompletion:^(BOOL success) {
-                                             if (success) {
-                                                 [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
-                                             } else {
-                                                 [weakSelf showHint:@"Failed to exit the chat room"];
-                                             }
-                                             
-                                             [UIApplication sharedApplication].idleTimerDisabled = NO;
-                                             [weakSelf dismissViewControllerAnimated:YES completion:^{
-                                                 if (_finishBroadcastCompletion) {
-                                                     _finishBroadcastCompletion(YES);
-                                                 }
-                                             }];
-                                         }];
-    };
+dispatch_block_t block = ^{
+    
+    [[ELDChatViewHelper sharedHelper] leaveChatroomId:_room.chatroomId completion:^(BOOL success) {
+        if (success) {
+
+            [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
+        } else {
+            [weakSelf showHint:@"Failed to exit the chat room"];
+        }
+        
+        [UIApplication sharedApplication].idleTimerDisabled = NO;
+        [weakSelf dismissViewControllerAnimated:YES completion:^{
+            if (_finishBroadcastCompletion) {
+                _finishBroadcastCompletion(YES);
+            }
+        }];
+    }];
+    
+};
+    
+    
     [[EaseHttpManager sharedInstance] modifyLiveroomStatusWithOffline:_room completion:^(EaseLiveRoom *room, BOOL success) {
         if (success) {
             _room = room;
@@ -581,7 +600,6 @@
         [self showHint:error.errorDescription];
     }
 }
-
 
 
 //切换前后摄像头
@@ -948,7 +966,7 @@
 - (EaseLiveHeaderListView*)headerListView
 {
     if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) chatroom:self.chatroom];
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, KScreenWidth, 40.f) chatroom:self.chatroom isPublish:YES];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
     }
@@ -958,7 +976,7 @@
 
 - (ELDChatView *)chatview {
     if (_chatview == nil) {
-        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) room:_room isPublish:YES customMsgHelper:_customMsgHelper];
+        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - kChatViewHeight, CGRectGetWidth(self.view.bounds), kChatViewHeight) chatroom:self.chatroom isPublish:YES customMsgHelper:_customMsgHelper];
         _chatview.delegate = self;
     }
     return _chatview;

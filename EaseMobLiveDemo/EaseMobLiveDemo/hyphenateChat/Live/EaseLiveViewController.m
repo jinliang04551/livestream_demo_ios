@@ -42,6 +42,7 @@
 #import "ELDTwoBallAnimationView.h"
 
 #import "ELDChatView.h"
+#import "ELDChatViewHelper.h"
 
 
 #define kDefaultTop 35.f
@@ -133,7 +134,28 @@
 - (void)joinChatroom {
     ELD_WS
         
-    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+//    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+//        if (aError == nil) {
+//            [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
+//                if (aError == nil) {
+//                    weakSelf.chatroom = aChatroom;
+//
+//                    [self.view addSubview:self.liveView];
+//                    [weakSelf.view bringSubviewToFront:weakSelf.liveView];
+//                    [weakSelf updateUI];
+//
+//                }else {
+//                    [self showHint:aError.description];
+//                }
+//            }];
+//
+//        } else {
+//            [self showHint:aError.errorDescription];
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        }
+//    }];
+    
+    [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
         if (aError == nil) {
             [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
                 if (aError == nil) {
@@ -153,8 +175,6 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }];
-    
-
 }
 
 - (void)updateUI {
@@ -925,16 +945,16 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
 - (void)closeButtonAction
 {
-    __weak typeof(self) weakSelf =  self;
-    NSString *chatroomId = [_room.chatroomId copy];
-    [weakSelf.chatview leaveChatroomWithCompletion:^(BOOL success) {
-                                         if (success) {
-                                             [[AgoraChatClient sharedClient].chatManager deleteConversation:chatroomId isDeleteMessages:YES completion:NULL];
-                                         }
-        
-                                         [weakSelf dismissViewControllerAnimated:YES completion:NULL];
-        
-                                     }];
+    ELD_WS
+    [[ELDChatViewHelper sharedHelper] leaveChatroomId:_room.chatroomId completion:^(BOOL success) {
+        if (success) {
+            [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
+        }
+
+        [weakSelf dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    
+    
     [self.agoraKit leaveChannel:nil];
     [_burstTimer invalidate];
     _burstTimer = nil;
@@ -1030,7 +1050,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (EaseLiveHeaderListView*)headerListView
 {
     if (_headerListView == nil) {
-        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) chatroom:self.chatroom];
+        _headerListView = [[EaseLiveHeaderListView alloc] initWithFrame:CGRectMake(0, kDefaultTop, CGRectGetWidth(self.view.frame), 50.0f) chatroom:self.chatroom isPublish:NO];
         _headerListView.delegate = self;
         [_headerListView setLiveCastDelegate];
     }
@@ -1040,17 +1060,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (ELDChatView*)chatview
 {
     if (_chatview == nil) {
-        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) room:_room isPublish:NO customMsgHelper:_customMsgHelper];
+        _chatview = [[ELDChatView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - kChatViewHeight, CGRectGetWidth(self.view.frame), kChatViewHeight) chatroom:self.chatroom isPublish:NO customMsgHelper:_customMsgHelper];
         _chatview.delegate = self;
     }
     return _chatview;
 }
-
-- (void)didSelectedExitButton
-{
-    [self closeButtonAction];
-}
-
 
 - (ELDChatroomMembersView *)memberView {
     if (_memberView == nil) {

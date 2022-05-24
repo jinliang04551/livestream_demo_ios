@@ -33,7 +33,6 @@
 @property (assign, nonatomic) BOOL isPublish;
 @property (assign, nonatomic) BOOL isHiddenChatListView;
 
-@property (strong, nonatomic) EaseLiveRoom *room;
 
 //custom chatView UI with option
 @property (nonatomic, strong) EaseChatViewCustomOption *customOption;
@@ -44,18 +43,17 @@
 @implementation ELDChatView
 #pragma mark life cycle
 - (instancetype)initWithFrame:(CGRect)frame
-                         room:(EaseLiveRoom *)room
+                     chatroom:(AgoraChatroom *)chatroom
                     isPublish:(BOOL)isPublish
               customMsgHelper:(EaseCustomMessageHelper *)customMsgHelper {
     
     self = [super initWithFrame:frame];
     if (self) {
-        self.room = room;
         self.isPublish = isPublish;
-        
+        self.chatroom = chatroom;
         self.customOption = [EaseChatViewCustomOption customOption];
         
-        self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroomId:room.chatroomId customMsgHelper:customMsgHelper customOption:self.customOption];
+        self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroom:self.chatroom customMsgHelper:customMsgHelper customOption:self.customOption];
         self.easeChatView.delegate = self;
         
         [self placeAndLayoutBottomView];
@@ -163,6 +161,10 @@
 
 #pragma mark user join chatroom
 - (void)insertJoinMessageWithChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
+    if (![self.chatroom.chatroomId isEqualToString:aChatroom.chatroomId]) {
+        return;
+    }
+    
     AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"join the live room"];
     NSMutableDictionary *ext = [[NSMutableDictionary alloc]init];
     [ext setObject:EaseKit_chatroom_join forKey:EaseKit_chatroom_join];
@@ -178,28 +180,28 @@
 
 
 #pragma mark chatroom operation
-- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion
-{
-    [[EaseHttpManager sharedInstance] joinLiveRoomWithRoomId:_room.roomId
-                                                  chatroomId:_room.chatroomId
-                                                  completion:aCompletion];
-}
-
-- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion
-{
-    __weak typeof(self) weakSelf = self;
-    [[EaseHttpManager sharedInstance] leaveLiveRoomWithRoomId:_room.roomId
-                                                   chatroomId:_room.chatroomId
-                                                   completion:^(BOOL success) {
-                                                       BOOL ret = NO;
-                                                       if (success) {
-                                                           [weakSelf.easeChatView.datasource removeAllObjects];
-                                                           [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
-                                                           ret = YES;
-                                                       }
-                                                       aCompletion(ret);
-                                                   }];
-}
+//- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion
+//{
+//    [[EaseHttpManager sharedInstance] joinLiveRoomWithRoomId:_room.roomId
+//                  chatroomId:_room.chatroomId
+//                  completion:aCompletion];
+//}
+//
+//- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion
+//{
+//    __weak typeof(self) weakSelf = self;
+//    [[EaseHttpManager sharedInstance] leaveLiveRoomWithRoomId:_room.roomId
+//    chatroomId:_room.chatroomId
+//    completion:^(BOOL success) {
+//       BOOL ret = NO;
+//       if (success) {
+//           [weakSelf.easeChatView.datasource removeAllObjects];
+//           [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
+//           ret = YES;
+//       }
+//       aCompletion(ret);
+//    }];
+//}
 
 
 
