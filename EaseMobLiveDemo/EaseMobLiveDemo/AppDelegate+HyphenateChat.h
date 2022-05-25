@@ -13,4 +13,6 @@
 
 - (void)doLogin;
 
+- (void)showAlertControllerWithTitle:(NSString *)title message:(NSString *)message;
+
 @end

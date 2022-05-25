@@ -42,49 +42,16 @@
     }];
 }
 
-//- (void)updateWatchersAvatarWithUserIds:(NSArray *)userIds {
-//
-//    self.hidden = [userIds count] > 0 ? NO : YES;
-//
-//    [AgoraChatUserInfoManagerHelper fetchUserInfoWithUserIds:userIds userInfoTypes:@[@(AgoraChatUserInfoTypeAvatarURL)] completion:^(NSDictionary * _Nonnull userInfoDic) {
-//        NSMutableArray *tempArray = NSMutableArray.array;
-//        for (NSString *key in userInfoDic.allKeys) {
-//            AgoraChatUserInfo *userInfo = userInfoDic[key];
-//            if (userInfo.avatarUrl.length > 0) {
-//                [tempArray addObject:userInfo.avatarUrl];
-//            }else {
-//                [tempArray addObject:@""];
-//            }
-//        }
-//
-//        if (tempArray.count == 0) {
-//            return;
-//        }
-//
-//        if (tempArray.count == 1) {
-//            self.watchArray = [tempArray mutableCopy];
-//        }else {
-//            self.watchArray = [[tempArray subarrayWithRange:NSMakeRange(0, 2)] mutableCopy];
-//        }
-//
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.firstMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray.firstObject] placeholderImage:ImageWithName(@"avatat_2")];
-//            if (self.watchArray.count == 2) {
-//                [self.secondMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray[1]] placeholderImage:ImageWithName(@"avatat_2")];
-//            }
-//        });
-//    }];
-//
-//}
-
 - (void)updateWatchersAvatarWithUrlArray:(NSArray *)urlArray {
      
     self.hidden = [urlArray count] > 0 ? NO : YES;
-
+    
+    
     if (urlArray.count == 0) {
         return;
     }
     
+    self.secondMemberImageView.hidden = urlArray.count > 1 ? NO : YES;
     if (urlArray.count == 1) {
         self.watchArray = [urlArray mutableCopy];
     }else {

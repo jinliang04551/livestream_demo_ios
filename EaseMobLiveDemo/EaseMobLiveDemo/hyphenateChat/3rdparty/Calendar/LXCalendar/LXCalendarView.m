@@ -26,6 +26,8 @@
 @property(nonatomic,assign)NSInteger selectedIndex;
 @property(nonatomic,assign)BOOL isNormal;
 
+@property(nonatomic,strong) NSMutableDictionary *monthDic;
+
 
 
 @end
@@ -124,8 +126,9 @@
     LXCalendarMonthModel *lastMonthModel = [[LXCalendarMonthModel alloc]initWithDate:previousMonthDate];
     
      LXCalendarMonthModel *nextMonthModel = [[LXCalendarMonthModel alloc]initWithDate:nextMonthDate];
-    
-    self.calendarHeader.dateStr = [NSString stringWithFormat:@"%ld Year %ld Month",monthModel.year,monthModel.month];
+        
+    self.calendarHeader.dateStr = [NSString stringWithFormat:@"%@ %@ ",self.monthDic[@(monthModel.month)],[@(monthModel.year) stringValue]];
+
     
     NSInteger firstWeekday = monthModel.firstWeekday;
     
@@ -171,9 +174,12 @@
          //下月的日期
         if (i >= (firstWeekday + monthModel.totalDays)) {
             
-            model.day = i -firstWeekday - nextMonthModel.totalDays +1;
+            NSInteger dayNumber = i -firstWeekday - nextMonthModel.totalDays +1;
+            
+            model.day = dayNumber;
             model.isNextMonth = YES;
             
+            NSLog(@"%s i:%@ firstWeekday:%@ totalDays:%@ dayNumber:%@ model.day:%@",__func__,@(i),@(firstWeekday),@(monthModel.totalDays),@(dayNumber),@(model.day));
         }
         
         [self.monthdataA addObject:model];
@@ -183,6 +189,7 @@
     [self.collectionView reloadData];
     
 }
+
 -(void)configDayModel:(LXCalendarDayModel *)model{
     
 
@@ -267,7 +274,7 @@
 -(LXCalendarWeekView *)calendarWeekView{
     if (!_calendarWeekView) {
         _calendarWeekView =[[LXCalendarWeekView alloc]initWithFrame:CGRectMake(0, self.calendarHeader.lx_bottom, self.lx_width, 50)];
-        _calendarWeekView.weekTitles = @[@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday"];
+        _calendarWeekView.weekTitles = @[@"Sun",@"Mon",@"Tue",@"Wed",@"Thu",@"Fri",@"Sat"];
     }
     return _calendarWeekView;
 }
@@ -376,6 +383,23 @@
     [self.collectionView reloadData];
 }
 
-
+- (NSMutableDictionary *)monthDic {
+    if (_monthDic == nil) {
+        _monthDic = NSMutableDictionary.new;
+        _monthDic[@(1)] = @"Jan";
+        _monthDic[@(2)] = @"Feb";
+        _monthDic[@(3)] = @"Mar";
+        _monthDic[@(4)] = @"Apr";
+        _monthDic[@(5)] = @"May";
+        _monthDic[@(6)] = @"Jun";
+        _monthDic[@(7)] = @"Jul";
+        _monthDic[@(8)] = @"Aug";
+        _monthDic[@(9)] = @"Sep";
+        _monthDic[@(10)] = @"Oct";
+        _monthDic[@(11)] = @"Nov";
+        _monthDic[@(12)] = @"Dec";
+    }
+    return _monthDic;
+}
 
 @end

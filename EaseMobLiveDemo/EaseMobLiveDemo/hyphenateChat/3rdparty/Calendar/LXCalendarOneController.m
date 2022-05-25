@@ -37,7 +37,7 @@
     self.calenderView.isCanScroll = YES;
     self.calenderView.isShowLastAndNextBtn = YES;
     
-    self.calenderView.isShowLastAndNextDate = YES;
+    self.calenderView.isShowLastAndNextDate = NO;
 
     self.calenderView.todayTitleColor =[UIColor redColor];
     

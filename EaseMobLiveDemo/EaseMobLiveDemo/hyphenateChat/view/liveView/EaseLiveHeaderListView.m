@@ -295,10 +295,7 @@
                     }
                 }
                 
-                if (tempArray.count > 0) {
-                    [self.watchMemberAvatarsView updateWatchersAvatarWithUrlArray:tempArray];
-                }
-
+                [self.watchMemberAvatarsView updateWatchersAvatarWithUrlArray:tempArray];
             });
         }];
     }

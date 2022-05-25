@@ -61,8 +61,8 @@ NSString *defaultPwd = @"000000";//默认密码
     __weak MBProgressHUD *weakHud = hud;
     NSString *uuidAccount = [UIDevice currentDevice].identifierForVendor.UUIDString;//默认账户id
     uuidAccount = [[uuidAccount stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
-    if (uuidAccount.length > 8) {
-        uuidAccount = [uuidAccount substringToIndex:7];
+    if (uuidAccount.length >= 8) {
+        uuidAccount = [uuidAccount substringToIndex:8];
     }
      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
          [[AgoraChatClient sharedClient] registerWithUsername:uuidAccount password:defaultPwd completion:^(NSString *aUsername, AgoraChatError *aError) {

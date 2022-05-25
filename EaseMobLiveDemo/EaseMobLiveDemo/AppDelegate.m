@@ -77,7 +77,6 @@
     [self.window makeKeyAndVisible];
 }
 
-
 - (void)autoRegistAccount
 {
     EaseTransitionViewController *transtionController = [[EaseTransitionViewController alloc]init];
@@ -87,8 +86,8 @@
     self.window.rootViewController = navigationController;
 }
 
-#pragma makr - AgoraChatClientDelegate
 
+#pragma mark - AgoraChatClientDelegate
 - (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (aError) {

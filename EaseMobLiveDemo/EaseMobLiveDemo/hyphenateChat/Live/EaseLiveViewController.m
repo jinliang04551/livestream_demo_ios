@@ -268,7 +268,8 @@
     __weak typeof(self) weakSelf = self;
     [self fetchAgoraRtcToken:^(NSString *rtcToken,NSUInteger agoraUserId) {
         [weakSelf.agoraKit joinChannelByToken:rtcToken channelId:_room.channel info:nil uid:agoraUserId joinSuccess:^(NSString *channel, NSUInteger uid, NSInteger elapsed) {
-            if ([_room.liveroomType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
+            if ([_room.liveroomType
+                 isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
                 NSDictionary *paramtars = @{
                     @"protocol":@"rtmp",
                     @"domain":@"ws-rtmp-pull.easemob.com",

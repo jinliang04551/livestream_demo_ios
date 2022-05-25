@@ -230,7 +230,10 @@
         _aboutCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_aboutCell.iconImageView setImage:ImageWithName(@"about_icon")];
         _aboutCell.nameLabel.text= @"About";
-        _aboutCell.detailLabel.text = @"V1.0";
+        NSString *ver = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        
+        NSString *detailContent = [NSString stringWithFormat:@"V:%@",ver];
+        _aboutCell.detailLabel.text = detailContent;
         ELD_WS
         _aboutCell.tapCellBlock = ^{
             [weakSelf goAboutPage];

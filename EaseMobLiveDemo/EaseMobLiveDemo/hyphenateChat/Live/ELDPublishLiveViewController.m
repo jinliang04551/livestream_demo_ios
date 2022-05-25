@@ -127,19 +127,6 @@
 
 - (void)joinChatroom {
     ELD_WS
-//    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-//        if (aError == nil) {
-//            weakSelf.chatroom = aChatroom;
-//            [self.view addSubview:self.liveView];
-//            [weakSelf.view bringSubviewToFront:weakSelf.liveView];
-//
-//            [weakSelf fetchChatroomSpecificationWithChatroomId:weakSelf.chatroom.chatroomId];
-//
-//        } else {
-//            [weakSelf showHint:aError.description];
-//        }
-//    }];
-
     [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
         if (aError == nil) {
             weakSelf.chatroom = aChatroom;
@@ -551,16 +538,24 @@ dispatch_block_t block = ^{
 //                [AgoraRtcEngineKit destroy];
 //            }
             
-            [EaseHttpManager.sharedInstance deleteLiveRoomWithRoomId:_room.roomId completion:^(BOOL success) {
-                [weakSelf.agoraKit leaveChannel:nil];
-                [AgoraRtcEngineKit destroy];
-                _isFinishBroadcast = YES;
-                //重置本地保存的直播间id
-                EaseDefaultDataHelper.shared.currentRoomId = @"";
-                [EaseDefaultDataHelper.shared archive];
-                block();
-            }];
+//            [EaseHttpManager.sharedInstance deleteLiveRoomWithRoomId:_room.roomId completion:^(BOOL success) {
+//                [weakSelf.agoraKit leaveChannel:nil];
+//                [AgoraRtcEngineKit destroy];
+//                _isFinishBroadcast = YES;
+//                //重置本地保存的直播间id
+//                EaseDefaultDataHelper.shared.currentRoomId = @"";
+//                [EaseDefaultDataHelper.shared archive];
+//                block();
+//            }];
             
+            [weakSelf.agoraKit leaveChannel:nil];
+            [AgoraRtcEngineKit destroy];
+            _isFinishBroadcast = YES;
+            
+            EaseDefaultDataHelper.shared.currentRoomId = @"";
+            [EaseDefaultDataHelper.shared archive];
+            block();
+
         }
         
     }];
@@ -725,12 +720,13 @@ dispatch_block_t block = ^{
         if (aMuted) {
             NSString *message = @"Streamer has set Banned on all Chats";
             [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
-
         } else {
             NSString *message = @"Streamer has set unBanned on all Chats";
             [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
 
         }
+        
+        [self fetchChatroomSpecificationWithChatroomId:aChatroom.chatroomId];
         
     }
 }

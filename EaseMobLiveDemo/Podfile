@@ -19,6 +19,9 @@ target 'EaseMobLiveDemo' do
   #pod 'PLMediaStreamingKit', '~> 3.0.0'
 
   pod 'AgoraRtcEngine_iOS_Beta', '4.0.0-beta.1'
+#  pod 'AgoraRtcEngine_iOS', '3.7.0'
+
+  
   pod 'AgoraMediaPlayer_iOS'
   #pod 'AgoraStreamingKit_iOS'
 
