@@ -52,6 +52,7 @@
 
 
 - (void)startCountDown {
+    [self stopTimer];
     self.maxCountDown = 3;
     [self startTimer];
 }

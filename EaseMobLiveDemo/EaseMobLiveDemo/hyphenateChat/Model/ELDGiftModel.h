@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *giftname;
 @property (nonatomic, assign) NSInteger giftValue;
 @property (nonatomic, assign) BOOL selected;
+//display countdown to previous too frequent send gift
+@property (nonatomic, assign) BOOL displayCountdown;
 
 - (instancetype)initWithGiftname:(NSString *)giftname
                        giftValue:(NSInteger)giftValue

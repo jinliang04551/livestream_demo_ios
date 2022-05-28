@@ -57,9 +57,8 @@ NSString *defaultPwd = @"000000";//默认密码
 
 - (void)autoRegistAccount
 {
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:nil];
-    __weak MBProgressHUD *weakHud = hud;
-    NSString *uuidAccount = [UIDevice currentDevice].identifierForVendor.UUIDString;//默认账户id
+
+    NSString *uuidAccount = [UIDevice currentDevice].identifierForVendor.UUIDString;
     uuidAccount = [[uuidAccount stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
     if (uuidAccount.length >= 8) {
         uuidAccount = [uuidAccount substringToIndex:8];
@@ -69,21 +68,7 @@ NSString *defaultPwd = @"000000";//默认密码
              [[AgoraChatClient sharedClient] loginWithUsername:(NSString *)uuidAccount password:defaultPwd completion:^(NSString *aUsername, AgoraChatError *aError) {
                  //set avatar url
                  if (aError == nil) {
-                     [[AgoraChatClient sharedClient].userInfoManager updateOwnUserInfo:kDefaultAvatarURL withType:AgoraChatUserInfoTypeAvatarURL completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-                        
-                         //通知 接收所在的线程 是基于 发送通知 所在的线程。由于接收通知在appdelegate主线程里，所以发送通知必须切换到主线程。
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             [weakHud hideAnimated:YES];
-                              if (!aError) {
-                                  NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-                                  [ud setObject:[AgoraChatClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
-                                  [ud synchronize];
-                                  [[AgoraChatClient sharedClient].options setIsAutoLogin:YES];
-                                  [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
-                             }
-                         });
-                         
-                     }];
+                     [self setDefaultUseInfo];
                  }else {
                      [self showHint:aError.errorDescription];
                  }
@@ -92,5 +77,27 @@ NSString *defaultPwd = @"000000";//默认密码
          }];
      });
 }
+
+
+- (void)setDefaultUseInfo {
+    AgoraChatUserInfo *userInfo = [[AgoraChatUserInfo alloc] init];
+        userInfo.userId = [AgoraChatClient sharedClient].currentUsername;
+        userInfo.avatarUrl = kDefaultAvatarURL;
+        userInfo.gender = 4;
+        userInfo.birth = @"2004-01-01";
+        
+        [[AgoraChatClient sharedClient].userInfoManager updateOwnUserInfo:userInfo completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                 if (!aError) {
+                     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+                     [ud setObject:[AgoraChatClient sharedClient].currentUsername forKey:kLiveLastLoginUsername];
+                     [ud synchronize];
+                     [[AgoraChatClient sharedClient].options setIsAutoLogin:YES];
+                     [[NSNotificationCenter defaultCenter] postNotificationName:ELDloginStateChange object:@YES];
+                }
+            });
+        }];
+}
+
 
 @end

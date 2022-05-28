@@ -15,9 +15,13 @@
 #import "EaseLiveGiftHelper.h"
 #import "ELDCountCaculateView.h"
 #import "ELDGiftModel.h"
+#import "ELDLivingCountdownView.h"
 
 #define kBottomViewHeight 320.0f
 #define kSendButtonHeight 32.0f
+#define kCollectionCellWidth 80.0
+#define kCollectionCellHeight 110.0
+
 
 @interface EaseLiveGiftView () <UICollectionViewDelegate,UICollectionViewDataSource,EaseGiftCellDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -31,8 +35,11 @@
 @property (nonatomic, strong) NSArray *giftArray;
 @property (nonatomic, strong) ELDGiftModel *selectedGiftModel;
 
+@property (nonatomic, strong) NSString *sendSuccessGiftName;
+
 @property (nonatomic, strong) UIImageView *giftTotalValueImageView;
 @property (nonatomic, strong) UILabel *giftTotalValueLabel;
+@property (nonatomic, strong) ELDLivingCountdownView *countDownView;
 
 
 @end
@@ -110,12 +117,108 @@
 }
 
 
-- (void)resetGiftView {
+- (void)resetWitGiftName:(NSString *)giftName {
     [self.countCaculateView resetCaculateView];
+    [self.collectionView reloadData];
+    self.sendSuccessGiftName = giftName;
+    [self startShowCountDown];
+}
+
+- (void)startShowCountDown {
+    [self addSubview:self.countDownView];
+    [self.countDownView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(@(kCollectionCellWidth));
+        make.height.equalTo(@(kCollectionCellHeight));
+        
+    }];
+    
+    self.countDownView.hidden = NO;
+    [self.countDownView startCountDown];
+}
+
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self.giftArray count];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = indexPath.row;
+    EaseGiftCell *cell = (EaseGiftCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"giftCollectionCell" forIndexPath:indexPath];
+    cell.delegate = self;
+        
+    ELDGiftModel *giftModel = self.giftArray[row];
+    giftModel.selected = [giftModel.giftname isEqualToString:self.selectedGiftModel.giftname];
+    
+    [cell updateWithGiftModel:giftModel];
+
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+//    return CGSizeMake((_collectionView.width - 40)/4, (_collectionView.height - 10)/2);
+    return CGSizeMake(kCollectionCellWidth, kCollectionCellHeight);
+}
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, 5.0, 0, 5.0);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10.0f;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10.0f;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+}
+
+#pragma mark - EaseGiftCellDelegate
+
+- (void)giftCellDidSelected:(EaseGiftCell *)aCell
+{
+    [self.countCaculateView resetCaculateView];
+    self.selectedGiftModel = aCell.giftModel;
+    [self.collectionView reloadData];
+}
+
+
+
+#pragma mark - action
+//刷礼物
+- (void)sendGiftAction {
+    if (self.selectedGiftModel) {
+        if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(didConfirmGiftModel:giftNum:)]) {
+            [self.giftDelegate didConfirmGiftModel:self.selectedGiftModel giftNum:self.countCaculateView.giftCount];
+            
+            [self.countCaculateView resetCaculateView];
+        }
+    }
 
 }
 
-#pragma mark - getter
+//自定义礼物数量
+- (void)giftNumCustom
+{
+    if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(giftNumCustom:)]) {
+        [self.giftDelegate giftNumCustom:self];
+    }
+}
+
+#pragma mark - getter and setter
 - (UICollectionView*)collectionView
 {
     if (_collectionView == nil) {
@@ -234,97 +337,29 @@
     return _giftTotalValueLabel;
 }
 
-
-#pragma mark - UICollectionViewDataSource
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [self.giftArray count];
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger row = indexPath.row;
-    EaseGiftCell *cell = (EaseGiftCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"giftCollectionCell" forIndexPath:indexPath];
-    cell.delegate = self;
+- (ELDLivingCountdownView *)countDownView {
+    if (_countDownView == nil) {
+        _countDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
+        _countDownView.backgroundColor = UIColor.clearColor;
         
-    ELDGiftModel *giftModel = self.giftArray[row];
-    giftModel.selected = [giftModel.giftname isEqualToString:self.selectedGiftModel.giftname];
-    
-    [cell updateWithGiftModel:giftModel];
-
-    cell.giftId = [NSString stringWithFormat:@"gift_%ld",(long)(row+1)];
-    return cell;
-}
-
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-//    return CGSizeMake((_collectionView.width - 40)/4, (_collectionView.height - 10)/2);
-    return CGSizeMake(80.0, 110.0);
-
-}
-
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, 5.0, 0, 5.0);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 10.0f;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 10.0f;
-}
-
-#pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-#pragma mark - EaseGiftCellDelegate
-
-- (void)giftCellDidSelected:(EaseGiftCell *)aCell
-{
-    [self.countCaculateView resetCaculateView];
-
-    self.selectedGiftModel = aCell.giftModel;
-    [self.collectionView reloadData];
-}
-
-
-
-#pragma mark - action
-//刷礼物
-- (void)sendGiftAction
-{
-    
-    if (self.selectedGiftModel) {
-        if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(didConfirmGiftModel:giftNum:)]) {
-            [self.giftDelegate didConfirmGiftModel:self.selectedGiftModel giftNum:self.countCaculateView.giftCount];
-            
-            [self.countCaculateView resetCaculateView];
-        }
+        ELD_WS
+        _countDownView.CountDownFinishBlock = ^{
+            [weakSelf.countDownView removeFromSuperview];
+           
+        };
+        
+        _countDownView.backgroundColor = UIColor.yellowColor;
+        _countDownView.hidden = YES;
     }
-
+    return _countDownView;
 }
 
-//自定义礼物数量
-- (void)giftNumCustom
-{
-    if (self.giftDelegate && [self.giftDelegate respondsToSelector:@selector(giftNumCustom:)]) {
-        [self.giftDelegate giftNumCustom:self];
-    }
-}
+
 
 @end
 
 #undef kBottomViewHeight
 #undef kSendButtonHeight
-
-
+#undef kCollectionCellSize
+#undef kCollectionCellWidth
+#undef kCollectionCellHeight

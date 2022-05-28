@@ -36,10 +36,11 @@ static EaseLiveGiftHelper *giftHelperInstance;
 
 - (NSArray *)giftNameArray {
     if (_giftNameArray == nil) {
-        _giftNameArray = @[@"gift.pinkHeart",@"gift.plasticFlower",@"gift.thePushBox",@"gift.bigAce",@"gift.star",@"gift.lollipop",@"gift.diamond",@"gift.crown"];
+        _giftNameArray = @[@"gift.PinkHeart",@"gift.PlasticFlower",@"gift.ThePushBox",@"gift.BigAce",@"gift.Star",@"gift.Lollipop",@"gift.Diamond",@"gift.Crown"];
     }
     return _giftNameArray;
 }
+
 - (NSArray *)giftValueArray {
     if (_giftValueArray == nil) {
         _giftValueArray = @[@(1),@(5),@(10),@(20),@(50),@(100),@(500),@(1000)];

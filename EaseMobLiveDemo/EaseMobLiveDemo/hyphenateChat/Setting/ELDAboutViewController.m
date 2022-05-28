@@ -81,7 +81,7 @@
 
 
 - (void)goAgoraOffical {
-    NSString *urlString = @"https://www.agora.io/cn";
+    NSString *urlString = @"https://www.agora.io/en";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
     
 }

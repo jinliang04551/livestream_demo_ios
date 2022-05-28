@@ -45,6 +45,12 @@
 }
 
 
+- (void)tapAction {
+
+}
+
+
+#pragma mark getter and setter
 - (UILabel *)prompt {
     if (_prompt == nil) {
         _prompt = UILabel.new;
@@ -71,6 +77,13 @@
 
 - (void)searchAction {
     
+}
+
+- (UITapGestureRecognizer *)tapGestureRecognizer {
+    if (_tapGestureRecognizer == nil) {
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction)];
+    }
+    return _tapGestureRecognizer;
 }
 
 @end

@@ -685,7 +685,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
                 if (success) {
                     //display gift UI
                     
-                    [weakSelf.giftView resetGiftView];
+                    [weakSelf.giftView resetWitGiftName:giftModel.name];
                     [weakSelf.chatview sendGiftAction:giftModel backView:self.view];
                 }else {
                     [self showHint:@"Failed to send gifts"];

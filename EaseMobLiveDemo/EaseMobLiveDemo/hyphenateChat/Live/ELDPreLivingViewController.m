@@ -23,6 +23,7 @@
 @property (nonatomic, strong) UIButton *changeAvatarButton;
 @property (nonatomic, strong) UITextField *liveNameTextField;
 @property (nonatomic, strong) UIButton *editButton;
+@property (nonatomic, strong) UILabel *changeLabel;
 @property (nonatomic, strong) UIButton *flipButton;
 @property (nonatomic, strong) UILabel *flipHintLabel;
 @property (nonatomic, strong) UIButton *goLiveButton;
@@ -428,7 +429,7 @@
     if (_goLiveButton == nil) {
         _goLiveButton = [[UIButton alloc] init];
         [_goLiveButton addTarget:self action:@selector(goLiveAction) forControlEvents:UIControlEventTouchUpInside];
-        _goLiveButton.titleLabel.font = NFont(16.0f);
+        _goLiveButton.titleLabel.font = NFont(17.0f);
         [_goLiveButton setTitle:@"Go LIVE!" forState:UIControlStateNormal];
         [_goLiveButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
 
@@ -551,7 +552,7 @@
 }
 
 - (void)startBgCamera {
-      self.imageDevice = self.backDevice;
+      self.imageDevice = self.frontDevice;
     
       AVCapturePhotoOutput *photoOutput = [[AVCapturePhotoOutput alloc] init];
       if ([self.session canAddOutput:photoOutput]) {

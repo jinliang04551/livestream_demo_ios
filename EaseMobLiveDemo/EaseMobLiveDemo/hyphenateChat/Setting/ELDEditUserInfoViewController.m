@@ -13,6 +13,8 @@
 #import "ELDUserHeaderView.h"
 #import "ELDTitleDetailCell.h"
 #import "LXCalendarOneController.h"
+#import "MISDatePickerSheet.h"
+#import "NSDate+GFCalendar.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -27,8 +29,8 @@
 @property (nonatomic, strong) NSData *fileData;
 @property (nonatomic, strong) NSString *myNickName;
 @property (nonatomic, strong) UIImage *currentImage;
-
-
+@property (nonatomic, strong) UIDatePicker *datePicker;
+@property (nonatomic, strong) NSMutableDictionary *monthDic;
 
 @end
 
@@ -57,6 +59,7 @@
     self.navigationItem.leftBarButtonItem = [ELDUtil customLeftButtonItem:@"Edit Profile" action:@selector(backAction) actionTarget:self];
 }
 
+
 #pragma mark actions
 - (void)modifyAlias {
     
@@ -68,7 +71,7 @@
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
        
     }];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *messageTextField = alertController.textFields.firstObject;
         [self updateMyNickname:messageTextField.text];
 
@@ -158,8 +161,32 @@
 }
 
 - (void)modifyBirth {
-    LXCalendarOneController *vc = [[LXCalendarOneController alloc] init];
-    vc.selectedBlock = ^(NSString *dateString) {
+//    LXCalendarOneController *vc = [[LXCalendarOneController alloc] init];
+//    vc.selectedBlock = ^(NSString *dateString) {
+//        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:dateString withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+//            if (aError == nil) {
+//                self.userInfo = aUserInfo;
+//                if (self.updateUserInfoBlock) {
+//                    self.updateUserInfoBlock(self.userInfo);
+//                }
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [self.table reloadData];
+//                });
+//            }else {
+//                [self showHint:aError.description];
+//            }
+//        }];
+//    };
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    MISDatePickerSheet* sheet = [[MISDatePickerSheet alloc] initWithDatePickerMode:UIDatePickerModeDate];
+    sheet.minDate = [ELDUtil dateFromString:@"1900-01-01"];
+    sheet.maxDate = [ELDUtil dateFromString:@"2099-12-31"];
+
+    [sheet setDateBlock:^(NSDate *date) {
+        NSString *dateString = [NSString stringWithFormat:@"%@-%@-%@",[@([date dateYear]) stringValue],[self  convert2StringWithInt:[date dateMonth]],[self convert2StringWithInt:[date dateDay]]];
+        NSLog(@"dateString:%@",dateString);
+        
         [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:dateString withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             if (aError == nil) {
                 self.userInfo = aUserInfo;
@@ -173,10 +200,33 @@
                 [self showHint:aError.description];
             }
         }];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
+        
+    }];
+    [sheet show];
+
 }
 
+- (NSString *)convert2StringWithInt:(NSInteger)intValue {
+    NSString *result = [@(intValue) stringValue];
+    if (result.length == 1) {
+        result = [NSString stringWithFormat:@"0%@",result];
+    }
+    return result;
+}
+
+- (NSString *)convert2StringFromBirthday:(NSString *)birthday {
+    if (birthday.length == 0) {
+        return @"";
+    }
+    
+    NSArray *tArray = [birthday componentsSeparatedByString:@"-"];
+    NSString *year = tArray[0];
+    NSString *month = self.monthDic[@([tArray[1] integerValue])];
+    NSString *day = tArray[2];
+
+    NSString *result = [NSString stringWithFormat:@"%@ %@, %@",month,day,year];
+    return result;
+}
 
 
 - (void)changeAvatarAction {
@@ -318,7 +368,7 @@
 
     if (indexPath.row == 2) {
         cell.nameLabel.text = @"Brithday";
-        cell.detailLabel.text = self.userInfo.birth;
+        cell.detailLabel.text = [self convert2StringFromBirthday:self.userInfo.birth];
         ELD_WS
         cell.tapCellBlock = ^{
             [weakSelf modifyBirth];
@@ -351,6 +401,7 @@
     }
     return gender;
 }
+
 
 #pragma mark getter and setter
 - (UITableView *)table {
@@ -406,9 +457,27 @@
     }
     
     return _imagePicker;
+    
 }
 
-
+- (NSMutableDictionary *)monthDic {
+    if (_monthDic == nil) {
+        _monthDic = NSMutableDictionary.new;
+        _monthDic[@(1)] = @"Jan";
+        _monthDic[@(2)] = @"Feb";
+        _monthDic[@(3)] = @"Mar";
+        _monthDic[@(4)] = @"Apr";
+        _monthDic[@(5)] = @"May";
+        _monthDic[@(6)] = @"Jun";
+        _monthDic[@(7)] = @"Jul";
+        _monthDic[@(8)] = @"Aug";
+        _monthDic[@(9)] = @"Sep";
+        _monthDic[@(10)] = @"Oct";
+        _monthDic[@(11)] = @"Nov";
+        _monthDic[@(12)] = @"Dec";
+    }
+    return _monthDic;
+}
 
 @end
 #undef kInfoHeaderViewHeight

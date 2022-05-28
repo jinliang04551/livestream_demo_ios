@@ -117,21 +117,10 @@
         if (isHeader) {
             //获取vod点播房间列表
             if ([_videoType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
-                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:10 video_type:_videoType completion:^(AgoraChatCursorResult *result, BOOL success) {
                         [weakSelf getOngoingLiveroom:YES vodList:result.list];
                 }];
             }
-//            //获取agora_vod点播房间列表
-//            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
-//                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
-//                        [weakSelf getOngoingLiveroom:YES vodList:result.list];
-//                }];
-//            }
-//            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
-//                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
-//                    [weakSelf getOngoingLiveroom:YES vodList:result.list];
-//                }];
-//            }
         } else {
             [self getOngoingLiveroom:NO vodList:nil];
         }
@@ -161,6 +150,64 @@
         }];
     }
 }
+
+
+//- (void)loadData:(BOOL)isHeader
+//{
+//    if (_isLoading) {
+//        return;
+//    }
+//    _isLoading = YES;
+//
+//    ELD_WS
+//    if (self.tabBarBehavior == kTabbarItemTag_Live) {
+//        if (isHeader) {
+//            //获取vod点播房间列表
+//            if ([_videoType isEqualToString:kLiveBoardCastingTypeAGORA_CDN_LIVE]) {
+//                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+//                        [weakSelf getOngoingLiveroom:YES vodList:result.list];
+//                }];
+//            }
+////            //获取agora_vod点播房间列表
+////            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_SPEED_LIVE]) {
+////                [[EaseHttpManager sharedInstance] fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+////                        [weakSelf getOngoingLiveroom:YES vodList:result.list];
+////                }];
+////            }
+////            if ([_videoType isEqualToString:kLiveBroadCastingTypeAGORA_INTERACTION_LIVE]) {
+////                [EaseHttpManager.sharedInstance fetchVodRoomWithCursor:0 limit:2 video_type:kLiveBroadCastingTypeAgoraInteractionVOD completion:^(AgoraChatCursorResult *result, BOOL success) {
+////                    [weakSelf getOngoingLiveroom:YES vodList:result.list];
+////                }];
+////            }
+//        } else {
+//            [self getOngoingLiveroom:NO vodList:nil];
+//        }
+//    } else if (self.tabBarBehavior == kTabbarItemTag_Broadcast) {
+//        [[EaseHttpManager sharedInstance] fetchLiveRoomsWithCursor:_cursor limit:8 completion:^(AgoraChatCursorResult *result, BOOL success) {
+//            if (success) {
+//                if (isHeader) {
+//                    [weakSelf.dataArray removeAllObjects];
+//                    [weakSelf.dataArray addObjectsFromArray:result.list];
+//                } else {
+//                    [weakSelf.dataArray addObjectsFromArray:result.list];
+//                }
+//                _cursor = result.cursor;
+//
+//                if ([result.list count] < kDefaultPageSize) {
+//                    _noMore = YES;
+//                }
+//                if (_noMore) {
+//                    weakSelf.collectionView.mj_footer = nil;
+//                } else {
+//                    weakSelf.collectionView.mj_footer = _refreshFooter;
+//                }
+//            }
+//
+//            [weakSelf _collectionViewDidFinishTriggerHeader:isHeader reload:YES];
+//            _isLoading = NO;
+//        }];
+//    }
+//}
 
 - (void)getOngoingLiveroom:(BOOL)isHeader vodList:(NSArray*)vodList
 {

@@ -18,8 +18,10 @@ typedef enum : NSInteger{
 @property (nonatomic, strong) UILabel *prompt;
 @property (nonatomic, strong) UIButton *backButton;
 @property (nonatomic, strong) UIBarButtonItem *searchBarItem;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 - (void)backAction;
 - (void)searchAction;
+- (void)tapAction;
 
 @end

@@ -40,7 +40,7 @@
     [self addSubview:self.nameLabel];
     [self addSubview:self.giftValueImageView];
     [self addSubview:self.priceLabel];
-
+    
     [self.selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 0, 0, 0));
     }];
@@ -63,10 +63,35 @@
     
     [self.priceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
-        make.left.equalTo(self.mas_centerX).offset(-10.0);
-        make.right.equalTo(self).offset(-10.0);
+        make.centerX.equalTo(self).offset(10.0);
     }];
+
+    self.backgroundColor = UIColor.yellowColor;
+}
+
+#pragma mark - public
+- (void)updateWithGiftModel:(ELDGiftModel *)giftModel {
+    self.giftModel = giftModel;
     
+    if (giftModel.giftname.length > 0) {
+        _giftImageView.image = [UIImage imageNamed:giftModel.giftname];
+    }
+    if (giftModel.giftname.length > 0) {
+        _nameLabel.text = [giftModel.giftname stringByReplacingOccurrencesOfString:@"gift." withString:@""];
+    }
+    _priceLabel.text = [@(giftModel.giftValue) stringValue];
+    
+    self.selectedImageView.hidden = !self.giftModel.selected;
+    
+}
+
+
+#pragma mark - Action
+- (void)cellTapAction:(UITapGestureRecognizer *)tap
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(giftCellDidSelected:)]) {
+        [self.delegate giftCellDidSelected:self];
+    }
 }
 
 #pragma mark getter and setter
@@ -124,30 +149,7 @@
     return _selectedImageView;
 }
 
-#pragma mark - public
-- (void)updateWithGiftModel:(ELDGiftModel *)giftModel {
-    self.giftModel = giftModel;
-    
-    if (giftModel.giftname.length > 0) {
-        _giftImageView.image = [UIImage imageNamed:giftModel.giftname];
-    }
-    if (giftModel.giftname.length > 0) {
-        _nameLabel.text = [giftModel.giftname stringByReplacingOccurrencesOfString:@"gift." withString:@""];
-    }
-    _priceLabel.text = [@(giftModel.giftValue) stringValue];
-    
-    self.selectedImageView.hidden = !self.giftModel.selected;
-}
 
-
-#pragma mark - Action
-
-- (void)cellTapAction:(UITapGestureRecognizer *)tap
-{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(giftCellDidSelected:)]) {
-        [self.delegate giftCellDidSelected:self];
-    }
-}
 
 @end
 
