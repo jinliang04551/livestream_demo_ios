@@ -33,7 +33,6 @@ static ELDChatViewHelper *shareHelper = nil;
 - (void)leaveChatroomId:(NSString *)chatroomId
              completion:(void (^)(BOOL success))aCompletion
 {
-    __weak typeof(self) weakSelf = self;
     [[EaseHttpManager sharedInstance] leaveLiveRoomWithRoomId:chatroomId
     chatroomId:chatroomId
     completion:^(BOOL success) {

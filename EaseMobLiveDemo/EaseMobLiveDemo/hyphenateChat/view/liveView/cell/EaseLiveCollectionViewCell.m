@@ -73,8 +73,6 @@
         _liveroomNameLabel.textColor = [UIColor whiteColor];
         _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveroomNameLabel.backgroundColor = [UIColor clearColor];
-        _liveroomNameLabel.shadowColor = [UIColor blackColor];
-        _liveroomNameLabel.shadowOffset = CGSizeMake(1, 1);
         _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveroomNameLabel.text = @"Chats Casually";
     }
@@ -89,8 +87,6 @@
         _liveStreamerNameLabel.textColor = [UIColor whiteColor];
         _liveStreamerNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveStreamerNameLabel.backgroundColor = [UIColor clearColor];
-        _liveStreamerNameLabel.shadowColor = [UIColor blackColor];
-        _liveStreamerNameLabel.shadowOffset = CGSizeMake(1, 1);
         _liveStreamerNameLabel.text = @"Paulo Apollo";
     }
     return _liveStreamerNameLabel;

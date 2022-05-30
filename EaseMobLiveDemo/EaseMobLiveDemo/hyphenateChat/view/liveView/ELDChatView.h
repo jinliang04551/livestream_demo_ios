@@ -74,6 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
 //点赞动画
 - (void)praiseAction:(UIView*)backView;
 
+//reload tableView
+- (void)reloadTableView;
 
 @end
 

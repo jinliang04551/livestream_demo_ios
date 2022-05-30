@@ -55,6 +55,11 @@
         
         self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroom:self.chatroom customMsgHelper:customMsgHelper customOption:self.customOption];
         self.easeChatView.delegate = self;
+        if (self.isPublish) {
+            [self.easeChatView updateSendTextButtonHint:@"Say Hi to your Fans..."];
+        }else {
+            [self.easeChatView updateSendTextButtonHint:@"Say Hi ..."];
+        }
         
         [self placeAndLayoutBottomView];
     
@@ -180,31 +185,6 @@
 
 
 #pragma mark chatroom operation
-//- (void)joinChatroomWithCompletion:(void (^)(AgoraChatroom *aChatroom, AgoraChatError *aError))aCompletion
-//{
-//    [[EaseHttpManager sharedInstance] joinLiveRoomWithRoomId:_room.roomId
-//                  chatroomId:_room.chatroomId
-//                  completion:aCompletion];
-//}
-//
-//- (void)leaveChatroomWithCompletion:(void (^)(BOOL success))aCompletion
-//{
-//    __weak typeof(self) weakSelf = self;
-//    [[EaseHttpManager sharedInstance] leaveLiveRoomWithRoomId:_room.roomId
-//    chatroomId:_room.chatroomId
-//    completion:^(BOOL success) {
-//       BOOL ret = NO;
-//       if (success) {
-//           [weakSelf.easeChatView.datasource removeAllObjects];
-//           [[AgoraChatClient sharedClient].chatManager deleteConversation:_room.chatroomId isDeleteMessages:YES completion:NULL];
-//           ret = YES;
-//       }
-//       aCompletion(ret);
-//    }];
-//}
-
-
-
 //礼物动画
 - (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView
 {
@@ -264,6 +244,9 @@
     [heart animateInView:backView];
 }
 
+- (void)reloadTableView {
+    [self.easeChatView.tableView reloadData];
+}
 
 #pragma mark actions
 - (void)changeCameraAction

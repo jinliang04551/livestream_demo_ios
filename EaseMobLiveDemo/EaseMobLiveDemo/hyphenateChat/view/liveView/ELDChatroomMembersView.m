@@ -316,7 +316,7 @@ MISScrollPageControllerDelegate>
     _chatroom = chatroom;
     
     if ([self isAdmin]) {
-        self.navTitleArray = [@[@"All",@"Moderators",@"Allowed",@"Mute",@"Banned"] mutableCopy];
+        self.navTitleArray = [@[@"All",@"Moderators",@"Allowed",@"Timed Out",@"Banned"] mutableCopy];
         self.contentVCArray = [@[self.allVC,self.adminListVC,self.allowListVC,self.mutedListVC,self.blockListVC] mutableCopy];
     }
     

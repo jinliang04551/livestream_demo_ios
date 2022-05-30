@@ -15,7 +15,7 @@
 #import "EaseLiveGiftHelper.h"
 #import "ELDCountCaculateView.h"
 #import "ELDGiftModel.h"
-#import "ELDLivingCountdownView.h"
+#import "ELDGiftCountDownView.h"
 
 #define kBottomViewHeight 320.0f
 #define kSendButtonHeight 32.0f
@@ -35,12 +35,11 @@
 @property (nonatomic, strong) NSArray *giftArray;
 @property (nonatomic, strong) ELDGiftModel *selectedGiftModel;
 
-@property (nonatomic, strong) NSString *sendSuccessGiftName;
+@property (nonatomic, strong) NSString *sendSuccessGiftId;
 
 @property (nonatomic, strong) UIImageView *giftTotalValueImageView;
 @property (nonatomic, strong) UILabel *giftTotalValueLabel;
-@property (nonatomic, strong) ELDLivingCountdownView *countDownView;
-
+@property (nonatomic, strong) ELDGiftCountDownView *countDownView;
 
 @end
 
@@ -117,19 +116,34 @@
 }
 
 
-- (void)resetWitGiftName:(NSString *)giftName {
+- (void)resetWitGiftId:(NSString *)giftId {
     [self.countCaculateView resetCaculateView];
     [self.collectionView reloadData];
-    self.sendSuccessGiftName = giftName;
+    self.sendSuccessGiftId = giftId;
     [self startShowCountDown];
 }
 
 - (void)startShowCountDown {
+
+    NSInteger giftIndex = [[self.sendSuccessGiftId substringFromIndex:self.sendSuccessGiftId.length -1] integerValue];
+    
+    CGFloat center_y = kCollectionCellHeight * 0.5;
+    if (giftIndex >= 5) {
+        center_y += kCollectionCellHeight + 10.0;
+    }
+    
+    if (giftIndex >= 5) {
+        giftIndex -= 4;
+    }
+    CGFloat center_x = kCollectionCellWidth * (giftIndex - 1) + kCollectionCellWidth * 0.5 + giftIndex * 10.0;
+
+    
     [self addSubview:self.countDownView];
     [self.countDownView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(kCollectionCellWidth));
         make.height.equalTo(@(kCollectionCellHeight));
-        
+        make.centerX.equalTo(self.collectionView.mas_left).offset(center_x);
+        make.centerY.equalTo(self.collectionView.mas_top).offset(center_y);
     }];
     
     self.countDownView.hidden = NO;
@@ -167,7 +181,7 @@
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(0, 5.0, 0, 5.0);
+    return UIEdgeInsetsMake(0, 10.0, 0, 10.0);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -239,6 +253,7 @@
         _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
         _collectionView.pagingEnabled = YES;
         _collectionView.userInteractionEnabled = YES;
+        _collectionView.backgroundColor = UIColor.redColor;
     }
     return _collectionView;
 }
@@ -337,18 +352,13 @@
     return _giftTotalValueLabel;
 }
 
-- (ELDLivingCountdownView *)countDownView {
+- (ELDGiftCountDownView *)countDownView {
     if (_countDownView == nil) {
-        _countDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
-        _countDownView.backgroundColor = UIColor.clearColor;
-        
+        _countDownView = [[ELDGiftCountDownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0)];
         ELD_WS
-        _countDownView.CountDownFinishBlock = ^{
+        _countDownView.countDownFinishBlock = ^{
             [weakSelf.countDownView removeFromSuperview];
-           
         };
-        
-        _countDownView.backgroundColor = UIColor.yellowColor;
         _countDownView.hidden = YES;
     }
     return _countDownView;

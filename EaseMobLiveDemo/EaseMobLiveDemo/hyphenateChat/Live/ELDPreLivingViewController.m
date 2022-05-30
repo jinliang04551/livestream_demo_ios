@@ -13,17 +13,25 @@
 #import <AgoraRtcKit/AgoraRtcEngineKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#define kMaxTitleLength 50
 
-@interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate>
+@interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UITextViewDelegate>
 
 
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIView *headerBgView;
+
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UIButton *changeAvatarButton;
-@property (nonatomic, strong) UITextField *liveNameTextField;
-@property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) UILabel *changeLabel;
+
+@property (nonatomic, strong) UITextView *liveNameTextView;
+
+@property (nonatomic, strong) UILabel *countLabel;
+@property (nonatomic, strong) UIButton *editButton;
+
+
 @property (nonatomic, strong) UIButton *flipButton;
 @property (nonatomic, strong) UILabel *flipHintLabel;
 @property (nonatomic, strong) UIButton *goLiveButton;
@@ -60,13 +68,14 @@
     
     [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
         if (ownUserInfo) {
-            [self.changeAvatarButton sd_setBackgroundImageWithURL:[NSURL URLWithString:ownUserInfo.avatarUrl] forState:UIControlStateNormal];
+            [self.changeAvatarButton sd_setImageWithURL:[NSURL URLWithString:ownUserInfo.avatarUrl] forState:UIControlStateNormal];
+
         }
     }];
 }
 
 - (void)endEdit {
-    [self.liveNameTextField resignFirstResponder];
+    [self.liveNameTextView resignFirstResponder];
     [self.view endEditing:YES];
 }
 
@@ -74,7 +83,6 @@
 
     [self startBgCamera];
     
-
     UIView *cameraView = [[UIView alloc] init];
     [cameraView.layer addSublayer:self.previewLayer];
     
@@ -172,7 +180,7 @@
 
 
 - (void)editAction {
-    [self.liveNameTextField becomeFirstResponder];
+    [self.liveNameTextView becomeFirstResponder];
 }
 
 - (void)flipAction {
@@ -185,12 +193,12 @@
 }
 
 - (void)goLiveAction {
-    if (_liveNameTextField.text.length == 0) {
+    if (self.liveNameTextView.text.length == 0) {
         [self showHint:@"Fill in the room name"];
         return;
     }
     
-    self.liveRoom.title = self.liveNameTextField.text;
+    self.liveRoom.title = self.liveNameTextView.text;
     
     [self createLiveRoom:self.liveRoom];
 }
@@ -290,19 +298,27 @@
 }
 
 
-#pragma mark - TexfiledDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [_liveNameTextField resignFirstResponder];
-    return true;
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView {
+    UITextRange *selectedRange = [textView markedTextRange];
+    UITextPosition *pos = [textView positionFromPosition:selectedRange.start offset:0];
+    if (selectedRange && pos) {
+        return;
+    }
+    NSInteger realLength = textView.text.length;
+    if (realLength > kMaxTitleLength) {
+        textView.text = [textView.text substringToIndex:kMaxTitleLength];
+    }
+
+    self.countLabel.text = [NSString stringWithFormat:@"%lu/%d",(unsigned long)textView.text.length,kMaxTitleLength];
 }
+
 
 #pragma mark gette and setter
 - (UIView *)contentView {
     if (_contentView == nil) {
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
-        _contentView.backgroundColor = ViewControllerBgBlackColor;
         _contentView.backgroundColor = UIColor.clearColor;
-        
         
         [_contentView addSubview:self.closeButton];
         [_contentView addSubview:self.headerBgView];
@@ -311,17 +327,17 @@
         [_contentView addSubview:self.goLiveButton];
 
         [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_contentView).offset(kNavBarAndStatusBarHeight);
+            make.top.equalTo(_contentView).offset(40.0);
             make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
             make.size.equalTo(@30.0);
         }];
-
+        
         [self.headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.closeButton.mas_bottom).offset(kEaseLiveDemoPadding * 2.6);
             make.left.equalTo(_contentView).offset(kEaseLiveDemoPadding * 1.6);
             make.right.equalTo(_contentView).offset(-kEaseLiveDemoPadding * 1.6);
         }];
-            
+        
         
         [self.flipButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(_contentView);
@@ -346,40 +362,63 @@
 
 - (UIView *)headerBgView {
     if (_headerBgView == nil) {
-
         _headerBgView = [[UIView alloc] init];
-        _headerBgView.backgroundColor = UIColor.blackColor;
-        _headerBgView.alpha = 0.5;
-        _headerBgView.layer.cornerRadius = 8.0;
-        
-        [_headerBgView addSubview:self.changeAvatarButton];
-        [_headerBgView addSubview:self.editButton];
-        [_headerBgView addSubview:self.liveNameTextField];
+        [_headerBgView addSubview:self.headerView];
+        [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_headerBgView);
+        }];
+    }
+    return _headerBgView;
+}
 
+
+- (UIView *)headerView {
+    if (_headerView == nil) {
+
+        _headerView = [[UIView alloc] init];
+        _headerView.backgroundColor = UIColor.blackColor;
+        _headerView.alpha = 0.7;
+        _headerView.layer.cornerRadius = 8.0;
         
+        [_headerView addSubview:self.changeAvatarButton];
+        [_headerView addSubview:self.liveNameTextView];
+        [_headerView addSubview:self.changeLabel];
+        [_headerView addSubview:self.countLabel];
+        [_headerView addSubview:self.editButton];
+
         [self.changeAvatarButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_headerBgView).offset(8.0);
-            make.left.equalTo(_headerBgView).offset(8.0);
-            make.bottom.equalTo(_headerBgView).offset(-8.0);
+            make.top.equalTo(_headerView).offset(8.0);
+            make.left.equalTo(_headerView).offset(8.0);
+            make.bottom.equalTo(_headerView).offset(-8.0);
             make.size.equalTo(@84.0);
         }];
         
-        [self.liveNameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.changeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.changeAvatarButton);
+            make.bottom.equalTo(self.changeAvatarButton).offset(-5.0);
+        }];
+        
+        [self.liveNameTextView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.changeAvatarButton);
             make.left.equalTo(self.changeAvatarButton.mas_right).offset(12.0);
-            make.right.equalTo(_headerBgView).offset(-12.0f);
+            make.right.equalTo(_headerView).offset(-12.0f);
             make.bottom.equalTo(self.editButton.mas_top);
         }];
 
-
+        [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.editButton);
+            make.left.equalTo(self.liveNameTextView);
+            make.width.equalTo(@(50.0));
+        }];
+            
         [self.editButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(_headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
-            make.right.equalTo(_headerBgView).offset(-kEaseLiveDemoPadding * 1.6);
+            make.bottom.equalTo(_headerView).offset(-kEaseLiveDemoPadding * 1.6);
+            make.right.equalTo(_headerView).offset(-kEaseLiveDemoPadding * 1.6);
             make.size.equalTo(@16.0);
         }];
     
     }
-    return _headerBgView;
+    return _headerView;
 }
 
 - (UIButton *)closeButton
@@ -399,13 +438,35 @@
         _changeAvatarButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_changeAvatarButton addTarget:self action:@selector(changeAvatarAction) forControlEvents:UIControlEventTouchUpInside];
         _changeAvatarButton.layer.cornerRadius = 4.0f;
-        [_changeAvatarButton setBackgroundImage:ImageWithName(@"default_back_image") forState:UIControlStateNormal];
+        [_changeAvatarButton setImage:ImageWithName(@"default_back_image") forState:UIControlStateNormal];
     }
     return _changeAvatarButton;
 }
 
-- (UIButton *)editButton
-{
+- (UILabel *)changeLabel {
+    if (_changeLabel == nil) {
+        _changeLabel = [[UILabel alloc] init];
+        _changeLabel.font = NFont(12.0f);
+        _changeLabel.textColor = [UIColor whiteColor];
+        _changeLabel.textAlignment = NSTextAlignmentCenter;
+        _changeLabel.text = @"change";
+    }
+    return _changeLabel;
+}
+
+- (UILabel *)countLabel {
+    if (_countLabel == nil) {
+        _countLabel = [[UILabel alloc] init];
+        _countLabel.font = NFont(14.0f);
+        _countLabel.textColor = [UIColor lightGrayColor];
+        _countLabel.textAlignment = NSTextAlignmentLeft;
+        _countLabel.text = [NSString stringWithFormat:@"%lu/%d",(unsigned long)self.liveNameTextView.text.length,kMaxTitleLength];
+    }
+    return _countLabel;
+}
+
+
+- (UIButton *)editButton {
     if (_editButton == nil) {
         _editButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_editButton setImage:[UIImage imageNamed:@"Live_edit_name"] forState:UIControlStateNormal];
@@ -446,19 +507,38 @@
     return _goLiveButton;
 }
 
-- (UITextField *)liveNameTextField {
-    if (_liveNameTextField == nil) {
-        _liveNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0,0,100,20)];
-        _liveNameTextField.delegate = self;
-        _liveNameTextField.backgroundColor = [UIColor clearColor];
-        _liveNameTextField.returnKeyType = UIReturnKeyNext;
-        _liveNameTextField.font = NFont(16.0f);
-        _liveNameTextField.textColor = TextLabelWhiteColor;
-        _liveNameTextField.tintColor = TextLabelWhiteColor;
-        _liveNameTextField.text = @"welcome to my channel!";
+//- (UITextField *)liveNameTextField {
+//    if (_liveNameTextField == nil) {
+//        _liveNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0,0,100,20)];
+//        _liveNameTextField.delegate = self;
+//        _liveNameTextField.backgroundColor = [UIColor clearColor];
+//        _liveNameTextField.returnKeyType = UIReturnKeyNext;
+//        _liveNameTextField.font = NFont(16.0f);
+//        _liveNameTextField.textColor = TextLabelWhiteColor;
+//        _liveNameTextField.tintColor = TextLabelWhiteColor;
+//        _liveNameTextField.text = @"welcome to my channel!";
+//        _liveNameTextField.backgroundColor = UIColor.redColor;
+//    }
+//    return _liveNameTextField;
+//}
+
+- (UITextView*)liveNameTextView
+{
+    if (_liveNameTextView == nil) {
+        _liveNameTextView = [[UITextView alloc] init];
+        _liveNameTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        _liveNameTextView.scrollEnabled = YES;
+        _liveNameTextView.returnKeyType = UIReturnKeySend;
+        _liveNameTextView.enablesReturnKeyAutomatically = YES;
+        _liveNameTextView.delegate = self;
+        _liveNameTextView.text = @"welcome to my channel!";
+        _liveNameTextView.font = NFont(16.0);
+        _liveNameTextView.textColor = TextLabelWhiteColor;
+        _liveNameTextView.backgroundColor = UIColor.clearColor;
     }
-    return _liveNameTextField;
+    return _liveNameTextView;
 }
+
 
 - (UILabel *)flipHintLabel {
     if (_flipHintLabel == nil) {
@@ -466,7 +546,7 @@
         _flipHintLabel.textColor = COLOR_HEX(0xFFFFFF);
         _flipHintLabel.font = NFont(10.0);
         _flipHintLabel.textAlignment = NSTextAlignmentCenter;
-        _flipHintLabel.text = @"flip";
+        _flipHintLabel.text = @"Flip";
     }
     return _flipHintLabel;
 }
@@ -601,7 +681,7 @@
 - (EaseLiveRoom *)liveRoom {
     if (_liveRoom == nil) {
         _liveRoom = [[EaseLiveRoom alloc] init];
-        _liveRoom.title =_liveNameTextField.text;
+        _liveRoom.title = self.liveNameTextView.text;
         _liveRoom.anchor = [AgoraChatClient sharedClient].currentUsername;
         _liveRoom.liveroomType = kLiveBoardCastingTypeAGORA_CDN_LIVE;
     }
@@ -610,4 +690,5 @@
 
 @end
 
+#undef kMaxTitleLength
 

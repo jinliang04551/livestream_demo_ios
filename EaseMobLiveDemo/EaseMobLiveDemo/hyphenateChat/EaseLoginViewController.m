@@ -234,4 +234,20 @@
     return YES;
 }
 
+- (void)textFieldDidChange:(UITextField *)textField{
+    
+    UITextRange *selectedRange = [textField markedTextRange];
+    // 获取高亮部分,
+    UITextPosition *pos = [textField positionFromPosition:selectedRange.start offset:0];
+    if (selectedRange && pos) {//如果存在高亮部分, 就暂时不统计字数
+        return;
+    }
+    NSInteger realLength = textField.text.length;
+    if (realLength > 15) {
+        textField.text = [textField.text substringToIndex:15];
+    }
+
+}
+
+
 @end

@@ -94,6 +94,7 @@
 
 @property (nonatomic, strong) ELDTwoBallAnimationView *twoBallAnimationView;
 
+@property (nonatomic, strong) UILabel *liveHintLabel;
 
 @end
 
@@ -131,30 +132,21 @@
     [self _setupAgoreKit];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [UIApplication  sharedApplication].idleTimerDisabled =YES;    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [UIApplication  sharedApplication].idleTimerDisabled =NO;
+}
+
 - (void)joinChatroom {
     ELD_WS
-        
-//    [self.chatview joinChatroomWithCompletion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-//        if (aError == nil) {
-//            [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
-//                if (aError == nil) {
-//                    weakSelf.chatroom = aChatroom;
-//
-//                    [self.view addSubview:self.liveView];
-//                    [weakSelf.view bringSubviewToFront:weakSelf.liveView];
-//                    [weakSelf updateUI];
-//
-//                }else {
-//                    [self showHint:aError.description];
-//                }
-//            }];
-//
-//        } else {
-//            [self showHint:aError.errorDescription];
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//        }
-//    }];
-    
     [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
         if (aError == nil) {
             [[AgoraChatClient sharedClient].roomManager getChatroomSpecificationFromServerWithId:_room.chatroomId completion:^(AgoraChatroom *aChatroom, AgoraChatError *aError) {
@@ -192,6 +184,8 @@
             NSString *message = @"has set Banned on all Chats";
             [self showNotifactionMessage:message userId:self.chatroom.owner displayAllTime:YES];
 
+        }else {
+            [self.chatview.easeChatView updateSendTextButtonHint:@"You have been banned."];
         }
     }
 }
@@ -685,7 +679,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
                 if (success) {
                     //display gift UI
                     
-                    [weakSelf.giftView resetWitGiftName:giftModel.name];
+                    [weakSelf.giftView resetWitGiftId:giftModel.id];
                     [weakSelf.chatview sendGiftAction:giftModel backView:self.view];
                 }else {
                     [self showHint:@"Failed to send gifts"];
@@ -718,19 +712,22 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (void)userDidLeaveChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername {
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
         [self fetchChatroomSpecificationWithRoomId:self.chatroom.chatroomId];
+        if ([self.chatroom.owner isEqualToString:aUsername]) {
+            self.liveHintLabel.hidden = NO;
+        }
     }
 }
 
 - (void)didDismissFromChatroom:(AgoraChatroom *)aChatroom reason:(AgoraChatroomBeKickedReason)aReason
 {
     if (aReason == 0)
-    [self showHint:[NSString stringWithFormat:@"you has be removed from live chatroom %@",aChatroom.subject]];
+    [self showHint:[NSString stringWithFormat:@"You has be removed from live chatroom %@",aChatroom.subject]];
     
     if (aReason == 1)
-    [self showHint:[NSString stringWithFormat:@"the live chatroom %@ has dismissed",aChatroom.subject]];
+    [self showHint:[NSString stringWithFormat:@"The live chatroom %@ has dismissed",aChatroom.subject]];
 
     if (aReason == 2)
-    [self showHint:@"your count has offline"];
+    [self showHint:@"Your count has offline"];
 
     [self closeButtonAction];
 }
@@ -801,6 +798,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         
         self.chatview.easeChatView.isMuted = YES;
+        [self.chatview.easeChatView updateSendTextButtonHint:@"You have been banned."];
+        [self.chatview reloadTableView];
+        
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         
         NSString *message = @"has been banned.";
@@ -818,6 +818,9 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [text appendString:name];
         }
         self.chatview.easeChatView.isMuted = NO;
+        [self.chatview.easeChatView updateSendTextButtonHint:@"Say Hi ..."];
+        [self.chatview reloadTableView];
+
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
    
         NSString *message = @"has been unbanned.";
@@ -893,7 +896,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         if (userInfo) {
             NSString *displayName = userInfo.nickName ?:userInfo.userId;
 
-            NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",displayName,message];
+            NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",[displayName uppercaseString],message];
             self.notificationView.hidden = NO;
             ELD_WS
             [self.notificationView showHintMessage:displayMsg
@@ -1026,7 +1029,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         [_liveView addSubview:self.headerListView];
         [_liveView addSubview:self.notificationView];
         [_liveView addSubview:self.chatview];
-
+        [_liveView addSubview:self.liveHintLabel];
+        
         [self.headerListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_liveView).offset(kDefaultTop);
             make.left.right.equalTo(_liveView);
@@ -1043,6 +1047,12 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             make.left.right.equalTo(_liveView);
             make.height.equalTo(@(kChatViewHeight));
             make.bottom.equalTo(_liveView).offset(-kBottomSafeHeight);
+        }];
+        
+        [self.liveHintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_liveView).offset(50.0);
+            make.right.equalTo(_liveView).offset(-50.0);
+            make.bottom.equalTo(self.chatview.mas_top).offset(-20.0);
         }];
     }
     return _liveView;
@@ -1111,7 +1121,18 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     return _mediaPlayerView;
 }
 
-
+- (UILabel *)liveHintLabel {
+    if (_liveHintLabel == nil) {
+        _liveHintLabel = UILabel.new;
+        _liveHintLabel.textColor = COLOR_HEX(0xBDBDBD);
+        _liveHintLabel.font = NFont(18.0);
+        _liveHintLabel.textAlignment = NSTextAlignmentCenter;
+        _liveHintLabel.text = @"The Live Stream has ended";
+        _liveHintLabel.numberOfLines = 0;
+        _liveHintLabel.hidden= YES;
+    }
+    return _liveHintLabel;
+}
 
 @end
 

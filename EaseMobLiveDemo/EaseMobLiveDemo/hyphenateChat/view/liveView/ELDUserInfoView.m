@@ -574,9 +574,9 @@
         
         _actionTypeDic[kMemberActionTypeRemoveAdmin] = @{kUserInfoCellTitle:@"Remove as Moderator",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveAdmin),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Remove %@ as Moderator?",self.displayName]};
         
-        _actionTypeDic[kMemberActionTypeMakeMute] = @{kUserInfoCellTitle:@"Mute",kUserInfoCellActionType:@(ELDMemberActionTypeMakeMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Mute %@?",self.displayName]};
+        _actionTypeDic[kMemberActionTypeMakeMute] = @{kUserInfoCellTitle:@"Timeout",kUserInfoCellActionType:@(ELDMemberActionTypeMakeMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Timeout %@?",self.displayName]};
         
-        _actionTypeDic[kMemberActionTypeRemoveMute] = @{kUserInfoCellTitle:@"Unmute",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Unmute %@?",self.displayName]};
+        _actionTypeDic[kMemberActionTypeRemoveMute] = @{kUserInfoCellTitle:@"Remove Timeout",kUserInfoCellActionType:@(ELDMemberActionTypeRemoveMute),kUserInfoAlertTitle:[NSString stringWithFormat:@"Remove Timeout %@?",self.displayName]};
         
         _actionTypeDic[kMemberActionTypeMakeWhite] = @{kUserInfoCellTitle:@"Move to Allowed List",kUserInfoCellActionType:@(ELDMemberActionTypeMakeWhite),kUserInfoAlertTitle:[NSString stringWithFormat:@"Want to Move %@ From the Allowed List?",self.displayName]};
         

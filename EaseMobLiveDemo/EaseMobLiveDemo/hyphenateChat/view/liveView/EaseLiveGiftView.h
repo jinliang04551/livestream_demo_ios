@@ -22,7 +22,7 @@
 
 @property (nonatomic, weak) id<EaseLiveGiftViewDelegate> giftDelegate;
 
-- (void)resetWitGiftName:(NSString *)giftName;
+- (void)resetWitGiftId:(NSString *)giftId;
 
 @end
 
