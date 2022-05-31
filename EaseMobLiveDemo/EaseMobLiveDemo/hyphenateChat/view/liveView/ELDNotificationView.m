@@ -50,12 +50,16 @@
              completion:(void(^)(BOOL finish))completion {
 
     self.contentLabel.text = message;
-
+    
     if (displayAllTime) {
+        [_bgView addTransitionColorLeftToRight:COLOR_HEX(0xF88013) endColor:COLOR_HEX(0xED2AB2)];
+
         if (completion) {
             completion(NO);
         }
     }else {
+        [_bgView addTransitionColorLeftToRight:COLOR_HEX(0x0148FE) endColor:COLOR_HEX(0x02C3EC)];
+
         dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC));
         dispatch_after(time, dispatch_get_main_queue(), ^{
             self.contentLabel.text = @"";

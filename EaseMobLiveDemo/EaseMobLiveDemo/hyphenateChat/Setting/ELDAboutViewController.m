@@ -52,23 +52,21 @@
         cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
     }
     if (indexPath.row == 0) {
-        
+        cell.nameLabel.attributedText = [self titleAttribute:@"SDK Version"];
+        NSString *detailContent = [NSString stringWithFormat:@"V:%@",[[AgoraChatClient sharedClient] version]];
+        cell.detailLabel.attributedText = [self detailAttribute:detailContent];
+    } else if (indexPath.row == 1) {
         cell.nameLabel.attributedText = [self titleAttribute:@"UI Library Version"];
         NSString *ver = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         
         NSString *detailContent = [NSString stringWithFormat:@"V:%@",ver];
         cell.detailLabel.attributedText = [self detailAttribute:detailContent];
         
-    } else if (indexPath.row == 1) {
-        
-        cell.nameLabel.attributedText = [self titleAttribute:@"SDK Version"];
-        NSString *detailContent = [NSString stringWithFormat:@"V:%@",[[AgoraChatClient sharedClient] version]];
-        cell.detailLabel.attributedText = [self detailAttribute:detailContent];
     }else if (indexPath.row == 2) {
         
         cell.nameLabel.attributedText = [self titleAttribute:@"More"];
         
-        NSAttributedString *attributeString = [ELDUtil attributeContent:@"Agora.io" color:TextLabelBlueColor font:Font(@"PingFang SC",16.0)];
+        NSAttributedString *attributeString = [ELDUtil attributeContent:@"Agora.io" color:COLOR_HEX(0x2F80ED) font:Font(@"PingFang SC",16.0)];
         cell.detailLabel.attributedText = attributeString;
         ELD_WS
         cell.tapCellBlock = ^{
@@ -91,7 +89,7 @@
 }
 
 - (NSAttributedString *)detailAttribute:(NSString *)detail {
-    return [ELDUtil attributeContent:detail color:TextLabelGrayColor font:Font(@"PingFang SC",16.0)];
+    return [ELDUtil attributeContent:detail color:[UIColor colorWithWhite:255/255 alpha:0.74] font:Font(@"PingFang SC",16.0)];
 }
 
 - (UITableView *)table {

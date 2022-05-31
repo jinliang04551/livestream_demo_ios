@@ -60,7 +60,7 @@
 - (void)updateWithObj:(id)obj {
     self.userInfo = (AgoraChatUserInfo *)obj;
   
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:kDefultUserImage];
     
     self.nameLabel.text = self.userInfo.nickName ?: self.userInfo.userId;
 

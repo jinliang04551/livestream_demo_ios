@@ -130,7 +130,7 @@
     [secretAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [cancelAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
@@ -161,25 +161,7 @@
     }];
 }
 
-- (void)modifyBirth {
-//    LXCalendarOneController *vc = [[LXCalendarOneController alloc] init];
-//    vc.selectedBlock = ^(NSString *dateString) {
-//        [[AgoraChatClient.sharedClient userInfoManager] updateOwnUserInfo:dateString withType:AgoraChatUserInfoTypeBirth completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-//            if (aError == nil) {
-//                self.userInfo = aUserInfo;
-//                if (self.updateUserInfoBlock) {
-//                    self.updateUserInfoBlock(self.userInfo);
-//                }
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self.table reloadData];
-//                });
-//            }else {
-//                [self showHint:aError.description];
-//            }
-//        }];
-//    };
-//    [self.navigationController pushViewController:vc animated:YES];
-    
+- (void)modifyBirth {    
     MISDatePickerSheet* sheet = [[MISDatePickerSheet alloc] initWithDatePickerMode:UIDatePickerModeDate];
     sheet.minDate = [ELDUtil dateFromString:@"1900-01-01"];
     sheet.maxDate = [ELDUtil dateFromString:@"2099-12-31"];
@@ -244,7 +226,7 @@
     }];
     [albumAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [cancelAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
@@ -438,7 +420,7 @@
     if (_userHeaderView == nil) {
         _userHeaderView = [[ELDUserHeaderView alloc] initWithFrame:CGRectZero isEditable:YES];
         _userHeaderView.nameLabel.text = @"Click to Change Avatar";
-        [_userHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
+        [_userHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:kDefultUserImage];
 
         ELD_WS
         _userHeaderView.tapHeaderViewBlock = ^{

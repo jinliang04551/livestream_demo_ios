@@ -221,8 +221,8 @@
                                                         selectedImage:ImageWithName(@"Channels_focus")];
 
         ELD_TabItem* item2 = [[ELD_TabItem alloc] initWithTitle:@""
-                                                                image:ImageWithName(@"avatat_2")
-                                                        selectedImage:ImageWithName(@"avatat_2")];
+                                                                image:kDefultUserImage
+                                                        selectedImage:kDefultUserImage];
         _bottomBar.tabItems = @[item1, item2];
 
         ELD_WS

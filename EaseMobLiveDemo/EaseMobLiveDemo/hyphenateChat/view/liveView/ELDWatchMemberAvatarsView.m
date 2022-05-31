@@ -59,9 +59,9 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.firstMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray.firstObject] placeholderImage:ImageWithName(@"avatat_2")];
+        [self.firstMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray.firstObject] placeholderImage:kDefultUserImage];
         if (self.watchArray.count == 2) {
-            [self.secondMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray[1]] placeholderImage:ImageWithName(@"avatat_2")];
+            [self.secondMemberImageView sd_setImageWithURL:[NSURL URLWithString:self.watchArray[1]] placeholderImage:kDefultUserImage];
         }
     });
 

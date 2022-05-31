@@ -204,7 +204,7 @@ MISScrollPageControllerDelegate>
         style.scrollLineColor = COLOR_HEXA(0x000000, 0.5);
 
         style.scaleTitle = YES;
-        style.titleBigScale = 1.05;
+        style.titleBigScale = 1.20;
         style.titleFont = NFont(13);
         style.autoAdjustTitlesWidth = YES;
         style.showSegmentViewShadow = YES;

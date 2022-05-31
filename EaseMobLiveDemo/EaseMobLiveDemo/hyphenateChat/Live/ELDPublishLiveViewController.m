@@ -732,10 +732,10 @@ dispatch_block_t block = ^{
 {
     if ([aChatroom.chatroomId isEqualToString:_room.chatroomId]) {
         if (aMuted) {
-            NSString *message = @"Streamer has set Banned on all Chats";
+            NSString *message = @"You have been timeout the Channel";
             [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
         } else {
-            NSString *message = @"Streamer has set unBanned on all Chats";
+            NSString *message = @"You have been remove timeout the Channel";
             [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
 
         }

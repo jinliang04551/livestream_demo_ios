@@ -84,7 +84,7 @@
     self.isMute = isMute;
     
     
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"avatat_2")];
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:kDefultUserImage];
     self.nameLabel.text = self.userInfo.nickName ?:self.userInfo.userId;
     [self.genderView updateWithGender:self.userInfo.gender birthday:self.userInfo.birth];
     

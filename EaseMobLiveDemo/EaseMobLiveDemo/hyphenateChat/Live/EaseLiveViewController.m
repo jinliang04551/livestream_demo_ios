@@ -738,18 +738,18 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         
         if (aMuted) {
             self.chatview.easeChatView.isMuted = YES;
+            [self.chatview.easeChatView updateSendTextButtonHint:@"All banned"];
 
-            NSString *message = @"has set Banned on all Chats";
-            
-            [self showNotifactionMessage:message userId:aChatroom.owner displayAllTime:YES];
+            NSString *message = @"The steamer has time out the Channel";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
 
         } else {
             
             self.chatview.easeChatView.isMuted = NO;
-            
-            NSString *message = @"has set unBanned on all Chats";
-            [self showNotifactionMessage:message userId:aChatroom.owner displayAllTime:NO];
+            [self.chatview.easeChatView updateSendTextButtonHint:@"Say Hi ..."];
 
+            NSString *message = @"The steamer has remove time out the Channel";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
         }
         
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
@@ -798,13 +798,13 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         
         self.chatview.easeChatView.isMuted = YES;
-        [self.chatview.easeChatView updateSendTextButtonHint:@"You have been banned."];
+        [self.chatview.easeChatView updateSendTextButtonHint:@"You have been timed out."];
         [self.chatview reloadTableView];
         
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         
-        NSString *message = @"has been banned.";
-        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+        NSString *message = @"You have been timed out.";
+        [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
       
     }
 }
@@ -823,7 +823,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
    
-        NSString *message = @"has been unbanned.";
+        NSString *message = @"have been remove timed out.";
         [self showNotifactionMessage:message userId:text displayAllTime:NO];
     }
 }
@@ -887,30 +887,43 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     }
 }
 
+
 - (void)showNotifactionMessage:(NSString *)message
                         userId:(NSString *)userId
                 displayAllTime:(BOOL)displayAllTime {
     
-    [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
-        AgoraChatUserInfo *userInfo = userInfoDic[userId];
-        if (userInfo) {
-            NSString *displayName = userInfo.nickName ?:userInfo.userId;
+    if ([userId isEqualToString:@""]) {
+        self.notificationView.hidden = NO;
+        ELD_WS
+        [self.notificationView showHintMessage:message
+                                displayAllTime:displayAllTime
+                                    completion:^(BOOL finish) {
+            if (finish) {
+                weakSelf.notificationView.hidden = YES;
+            }
+        }];
+    }else {
+        [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
+            AgoraChatUserInfo *userInfo = userInfoDic[userId];
+            if (userInfo) {
+                NSString *displayName = userInfo.nickName ?:userInfo.userId;
 
-            NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",[displayName uppercaseString],message];
-            self.notificationView.hidden = NO;
-            ELD_WS
-            [self.notificationView showHintMessage:displayMsg
-                                    displayAllTime:displayAllTime
-                                        completion:^(BOOL finish) {
-                if (finish) {
-                    weakSelf.notificationView.hidden = YES;
-                }
-            }];
-        }
+                NSString *displayMsg = [NSString stringWithFormat:@"%@ %@",displayName,message];
+                self.notificationView.hidden = NO;
+                ELD_WS
+                [self.notificationView showHintMessage:displayMsg
+                                        displayAllTime:displayAllTime
+                                            completion:^(BOOL finish) {
+                    if (finish) {
+                        weakSelf.notificationView.hidden = YES;
+                    }
+                }];
+            }
+            
+        }];
         
-    }];
+    }
 }
-
 
 
 - (void)fetchChatroomSpecificationWithRoomId:(NSString *)roomId {

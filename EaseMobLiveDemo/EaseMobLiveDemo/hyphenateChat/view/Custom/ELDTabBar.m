@@ -11,10 +11,11 @@
 #define kAvatarImageViewHeight 26.0f
 
 @interface ELD_TabItem()
-@property (nonatomic, strong) UILabel* titleLabel;
-@property (nonatomic, strong) UIImageView* iconImageView;
-@property (nonatomic, strong) UIImage* image;
-@property (nonatomic, strong) UIImage* selectedImage;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) UIView   *iconCoverView;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *selectedImage;
 @end
 @implementation ELD_TabItem
 
@@ -41,11 +42,16 @@
         
         [self addSubview:_titleLabel];
         [self addSubview:_iconImageView];
+        [self addSubview:self.iconCoverView];
         
         [self.iconImageView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self).offset(7.0f);
             make.centerX.equalTo(self);
             make.size.equalTo(@(kAvatarImageViewHeight));
+        }];
+        
+        [self.iconCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.iconImageView);
         }];
         
         [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -60,18 +66,8 @@
 }
 
 - (void)tapSelf {
-    self.selected = !self.selected;
-}
-
-- (void)setSelected:(BOOL)selected {
-    if (_selected != selected) {
-        _selected = selected;
-        if (self.selectedBlock)
-            self.selectedBlock(self.tag);
-    }
-    
-    _iconImageView.image = selected ? _selectedImage : _image;
-    _titleLabel.textColor = selected ? COLOR_HEX(0x3BD5F1) : COLOR_HEX(0xC9CFCF);
+    if (self.selectedBlock)
+        self.selectedBlock(self.tag);
 }
 
 - (void)updateTabbarItemWithImage:(UIImage *)image
@@ -85,7 +81,7 @@
 
 - (void)updateTabbarItemWithUrlString:(NSString *)urlString {
     ELD_WS
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:ImageWithName(@"avatat_2") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:kDefultUserImage completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (error == nil) {
             weakSelf.image = image;
             weakSelf.selectedImage = image;
@@ -96,6 +92,34 @@
         self.iconImageView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
         self.iconImageView.clipsToBounds = YES;
     });
+}
+
+#pragma mark getter and setter
+- (UIView *)iconCoverView {
+    if (_iconCoverView == nil) {
+        _iconCoverView = [[UIView alloc] init];
+        _iconCoverView.backgroundColor = ViewControllerBgBlackColor;
+        _iconCoverView.alpha = 0.5;
+        _iconCoverView.layer.cornerRadius = kAvatarImageViewHeight * 0.5;
+        _iconCoverView.layer.masksToBounds = YES;
+        _iconCoverView.clipsToBounds = YES;
+        _iconCoverView.hidden = YES;
+    }
+    return _iconCoverView;
+}
+
+- (void)setSelected:(BOOL)selected {
+    if (_selected != selected) {
+        _selected = selected;
+    }
+    
+    _iconImageView.image = selected ? _selectedImage : _image;
+    _titleLabel.textColor = selected ? COLOR_HEX(0x3BD5F1) : COLOR_HEX(0xC9CFCF);
+
+    if (self.tag == 1001) {
+        self.iconCoverView.hidden = _selected ? YES : NO;
+    }
+
 }
 
 @end
@@ -187,9 +211,10 @@
                 weakSelf.selectedIndex = index;
             };
             item.tag = tag++;
+            item.selected = NO;
             [self addSubview:item];
         }
-        
+                
         UIView* lastView = nil;
         for (ELD_TabItem* item in tabItems) {
             [item mas_makeConstraints:^(MASConstraintMaker *make) {
