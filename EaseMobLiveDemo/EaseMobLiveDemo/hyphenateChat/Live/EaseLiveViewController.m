@@ -738,7 +738,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         
         if (aMuted) {
             self.chatview.easeChatView.isMuted = YES;
-            [self.chatview.easeChatView updateSendTextButtonHint:@"All banned"];
+            [self.chatview.easeChatView updateSendTextButtonHint:@"All timed out"];
 
             NSString *message = @"The steamer has time out the Channel";
             [self showNotifactionMessage:message userId:@"" displayAllTime:YES];

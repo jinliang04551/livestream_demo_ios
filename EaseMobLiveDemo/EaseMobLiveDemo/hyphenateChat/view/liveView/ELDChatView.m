@@ -15,19 +15,26 @@
 #import "EaseHeartFlyView.h"
 
 #define kExitButtonHeight 25.0
-#define kEaseChatViewBottomOffset 20.0
+#define kExitBgViewHeight 32.0
+
+#define kBottomButtonPadding 20.0
 
 
 @interface ELDChatView ()<EaseChatViewDelegate>
 
 
-@property (strong, nonatomic) UIView *functionAreaView;
+@property (nonatomic, strong) UIView *functionAreaView;
 
-@property (strong, nonatomic) UIButton *changeCameraButton;
-@property (strong, nonatomic) UIButton *chatListShowButton;
+@property (nonatomic, strong) UIButton *changeCameraButton;
+@property (nonatomic, strong) UIView *changeCameraBgView;
 
-@property (strong, nonatomic) UIButton *exitButton;
-@property (strong, nonatomic) UIButton *giftButton;
+@property (nonatomic, strong) UIButton *chatListShowButton;
+@property (nonatomic, strong) UIView *chatListShowBgView;
+
+@property (nonatomic, strong) UIButton *exitButton;
+@property (nonatomic, strong) UIView *exitBgView;
+
+@property (nonatomic, strong) UIButton *giftButton;
 
 
 @property (assign, nonatomic) BOOL isPublish;
@@ -52,6 +59,9 @@
         self.isPublish = isPublish;
         self.chatroom = chatroom;
         self.customOption = [EaseChatViewCustomOption customOption];
+        if (!self.isPublish) {
+            self.customOption.sendTextButtonRightMargin = 140.0;
+        }
         
         self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroom:self.chatroom customMsgHelper:customMsgHelper customOption:self.customOption];
         self.easeChatView.delegate = self;
@@ -73,14 +83,17 @@
     [self addSubview:self.easeChatView];
     [self addSubview:self.functionAreaView];
         
+    [self.functionAreaView addSubview:self.chatListShowBgView];
     [self.functionAreaView addSubview:self.chatListShowButton];
-    
+
     [self.easeChatView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
-        make.left.right.equalTo(self);
+        make.left.equalTo(self);
+        make.right.equalTo(self);
         make.bottom.equalTo(self);
     }];
 
+    
     [self.functionAreaView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.easeChatView.sendTextButton);
         make.left.lessThanOrEqualTo(self.easeChatView.sendTextButton.mas_right);
@@ -90,42 +103,73 @@
     
     
     if (self.isPublish) {
+        [self.functionAreaView addSubview:self.exitBgView];
         [self.functionAreaView addSubview:self.exitButton];
+
+        [self.functionAreaView addSubview:self.changeCameraBgView];
         [self.functionAreaView addSubview:self.changeCameraButton];
+
+    
+        [self.exitBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.exitButton);
+            make.size.equalTo(@(kExitBgViewHeight));
+        }];
         
         [self.exitButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.functionAreaView);
-            make.right.equalTo(self.functionAreaView.mas_right).offset(-15.0);
+            make.right.equalTo(self.functionAreaView.mas_right).offset(-20.0);
             make.size.equalTo(@(kExitButtonHeight));
         }];
 
+        [self.changeCameraBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.changeCameraButton);
+            make.size.equalTo(@(kExitBgViewHeight));
+        }];
+        
         [self.changeCameraButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.functionAreaView);
-            make.right.equalTo(self.exitButton.mas_left).offset(-15.0);
+            make.right.equalTo(self.exitButton.mas_left).offset(-kBottomButtonPadding);
             make.size.equalTo(self.exitButton);
         }];
         
+        [self.chatListShowBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.chatListShowButton);
+            make.size.equalTo(@(kExitBgViewHeight));
+        }];
+
         [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.functionAreaView);
-            make.right.equalTo(self.changeCameraButton.mas_left).offset(-15.0);
-//            make.left.equalTo(self.bottomView).offset(5.0);
+            make.right.equalTo(self.changeCameraButton.mas_left).offset(-kBottomButtonPadding);
             make.size.equalTo(self.exitButton);
         }];
     }else {
         [self.functionAreaView addSubview:self.giftButton];
+        
+//        [self.easeChatView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self);
+//            make.left.equalTo(self);
+//            make.right.equalTo(self).offset(-116.0);
+//            make.bottom.equalTo(self);
+//        }];
+                
         [self.giftButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.functionAreaView);
-            make.right.equalTo(self.functionAreaView.mas_right).offset(-15.0);
-            make.size.equalTo(@(kExitButtonHeight));
+            make.right.equalTo(self.functionAreaView.mas_right).offset(-20.0);
+            make.size.equalTo(@(kExitBgViewHeight));
         }];
 
+        [self.chatListShowBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.chatListShowButton);
+            make.size.equalTo(@(kExitBgViewHeight));
+        }];
+        
         [self.chatListShowButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.functionAreaView);
-            make.right.equalTo(self.giftButton.mas_left).offset(-15.0);
-//            make.left.equalTo(self.bottomView).offset(5.0);
+            make.right.equalTo(self.giftButton.mas_left).offset(-kBottomButtonPadding);
             make.size.equalTo(self.giftButton);
         }];
         
+      
     }
 
 }
@@ -138,10 +182,14 @@
     
     if (self.isPublish) {
         self.chatListShowButton.hidden = hidden;
+        self.chatListShowBgView.hidden = hidden;
         self.changeCameraButton.hidden = hidden;
+        self.changeCameraBgView.hidden = hidden;
         self.exitButton.hidden = hidden;
+        self.exitBgView.hidden = hidden;
     }else {
         self.chatListShowButton.hidden = hidden;
+        self.chatListShowBgView.hidden = hidden;
         self.giftButton.hidden = hidden;
     }
         
@@ -309,6 +357,15 @@
     return _changeCameraButton;
 }
 
+- (UIView *)changeCameraBgView {
+    if (_changeCameraBgView == nil) {
+        _changeCameraBgView = [[UIView alloc] init];
+        _changeCameraBgView.backgroundColor = ELDBlackAlphaColor;
+        _changeCameraBgView.layer.cornerRadius = kExitBgViewHeight * 0.5;
+    }
+    return _changeCameraBgView;
+}
+
 - (UIButton *)chatListShowButton {
     if (_chatListShowButton == nil) {
         _chatListShowButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -318,6 +375,16 @@
     }
     return _chatListShowButton;
 }
+
+- (UIView *)chatListShowBgView {
+    if (_chatListShowBgView == nil) {
+        _chatListShowBgView = [[UIView alloc] init];
+        _chatListShowBgView.backgroundColor = ELDBlackAlphaColor;
+        _chatListShowBgView.layer.cornerRadius = kExitBgViewHeight * 0.5;
+    }
+    return _chatListShowBgView;
+}
+
 
 - (UIButton*)exitButton
 {
@@ -329,6 +396,15 @@
         
     }
     return _exitButton;
+}
+
+- (UIView *)exitBgView {
+    if (_exitBgView == nil) {
+        _exitBgView = [[UIView alloc] init];
+        _exitBgView.backgroundColor = ELDBlackAlphaColor;
+        _exitBgView.layer.cornerRadius = kExitBgViewHeight * 0.5;
+    }
+    return _exitBgView;
 }
 
 
@@ -347,4 +423,5 @@
 @end
 
 #undef kExitButtonHeight
-#undef kEaseChatViewBottomOffset
+#undef kExitBgViewHeight
+#undef kBottomButtonPadding

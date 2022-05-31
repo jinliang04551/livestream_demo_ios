@@ -41,5 +41,6 @@
 #define GenderOtherBgColor     COLOR_HEX(0x8D01E5)
 #define GenderSecretBgColor    COLOR_HEX(0x0085FF)
 
+#define  ELDBlackAlphaColor [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4]
 
 #endif /* EaseLiveColorDefine_h */
