@@ -356,7 +356,6 @@
 		C08ED1BA2844AB7E009614B6 /* avatat_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08ED1462844AB7E009614B6 /* avatat_5@2x.png */; };
 		C08ED1BD2845B887009614B6 /* live_button_alpha_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08ED1BB2845B887009614B6 /* live_button_alpha_bg@2x.png */; };
 		C08ED1BE2845B887009614B6 /* live_button_alpha_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08ED1BC2845B887009614B6 /* live_button_alpha_bg@3x.png */; };
-		C08ED1C12845C19E009614B6 /* ELDButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08ED1C02845C19E009614B6 /* ELDButtonView.m */; };
 		C0A17F30282FC4F800574FBC /* ELDChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A17F2F282FC4F800574FBC /* ELDChatView.m */; };
 		C0AC377E28139C9D00924AA3 /* TwoBallRotationProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC377D28139C9C00924AA3 /* TwoBallRotationProgressBar.m */; };
 		C0AC37812813A16C00924AA3 /* ELDTwoBallAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */; };
@@ -848,8 +847,6 @@
 		C08ED1462844AB7E009614B6 /* avatat_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatat_5@2x.png"; sourceTree = "<group>"; };
 		C08ED1BB2845B887009614B6 /* live_button_alpha_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_button_alpha_bg@2x.png"; sourceTree = "<group>"; };
 		C08ED1BC2845B887009614B6 /* live_button_alpha_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_button_alpha_bg@3x.png"; sourceTree = "<group>"; };
-		C08ED1BF2845C19E009614B6 /* ELDButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDButtonView.h; sourceTree = "<group>"; };
-		C08ED1C02845C19E009614B6 /* ELDButtonView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDButtonView.m; sourceTree = "<group>"; };
 		C0A17F2E282FC4F800574FBC /* ELDChatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDChatView.h; sourceTree = "<group>"; };
 		C0A17F2F282FC4F800574FBC /* ELDChatView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDChatView.m; sourceTree = "<group>"; };
 		C0AC377C28139C9C00924AA3 /* TwoBallRotationProgressBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoBallRotationProgressBar.h; sourceTree = "<group>"; };
@@ -1036,8 +1033,6 @@
 				3C9E31BD260C7B4200CC3E3F /* cell */,
 				C0A17F2E282FC4F800574FBC /* ELDChatView.h */,
 				C0A17F2F282FC4F800574FBC /* ELDChatView.m */,
-				C08ED1BF2845C19E009614B6 /* ELDButtonView.h */,
-				C08ED1C02845C19E009614B6 /* ELDButtonView.m */,
 				C01D4CE5283D1660004BB2D7 /* ELDChatViewHelper.h */,
 				C01D4CE6283D1660004BB2D7 /* ELDChatViewHelper.m */,
 				3C9E31B2260C7B4200CC3E3F /* EaseBaseSubView.h */,
@@ -2241,7 +2236,6 @@
 				C0602E8528001EF600D39575 /* MISScrollPageSegmentTitleView.m in Sources */,
 				C047556028095E370094EAD3 /* UIView+FTCornerdious.m in Sources */,
 				C0602E99280046B700D39575 /* ELDContainerTableViewController.m in Sources */,
-				C08ED1C12845C19E009614B6 /* ELDButtonView.m in Sources */,
 				3C9E327A260C7B4300CC3E3F /* EaseLiveGiftHelper.m in Sources */,
 				3C9E327D260C7B4300CC3E3F /* EaseTransitionViewController.m in Sources */,
 			);

@@ -85,7 +85,7 @@
     self.prompt.text = @"Stream Channels";
     [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.prompt];
-    self.navigationItem.rightBarButtonItem = [ELDUtil customBarButtonItemImage:@"search" action:@selector(searchAction) actionTarget:self];
+    self.navigationItem.rightBarButtonItem = [ELDUtil customBarButtonItemImage:@"searchBar_icon" action:@selector(searchAction) actionTarget:self];
 }
 
 

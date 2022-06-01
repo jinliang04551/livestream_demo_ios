@@ -14,7 +14,7 @@
 #import "EaseBarrageFlyView.h"
 #import "EaseHeartFlyView.h"
 
-#define kExitButtonHeight 25.0
+#define kExitButtonHeight 22.0
 #define kExitBgViewHeight 32.0
 
 #define kBottomButtonPadding 20.0
@@ -61,6 +61,8 @@
         self.customOption = [EaseChatViewCustomOption customOption];
         if (!self.isPublish) {
             self.customOption.sendTextButtonRightMargin = 140.0;
+        }else {
+            self.customOption.sendTextButtonRightMargin = 0;
         }
         
         self.easeChatView = [[EaseChatView alloc] initWithFrame:frame chatroom:self.chatroom customMsgHelper:customMsgHelper customOption:self.customOption];

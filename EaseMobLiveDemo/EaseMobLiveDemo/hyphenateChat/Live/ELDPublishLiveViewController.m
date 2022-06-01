@@ -159,7 +159,7 @@
     self.chatview.chatroom = self.chatroom;
     
     if (self.chatroom.isMuteAllMembers) {
-        NSString *message = @"Streamer has set Banned on all Chats";
+        NSString *message = @"You have been timeout the Channel";
         [self showNotifactionMessage:message userId:@"" displayAllTime:YES];
     }else {
         self.notificationView.hidden = YES;

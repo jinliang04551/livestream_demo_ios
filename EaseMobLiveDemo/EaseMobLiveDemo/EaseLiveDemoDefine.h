@@ -138,7 +138,7 @@ typedef enum : NSUInteger {
 
 #define kLiveHeaderViewHeight 50.0f
 
-#define kChatViewHeight 350.0
+#define kChatViewHeight 320.0
 
 #define kLiveNotifacationViewHeight 30.0
 

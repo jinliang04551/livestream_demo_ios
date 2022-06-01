@@ -52,7 +52,6 @@
 
 
 - (void)startCountDown {
-    [self stopTimer];
     self.maxCountDown = 3;
     [self startTimer];
 }
@@ -78,7 +77,7 @@
 
 - (void)startTimer {
     [self stopTimer];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:YES];
+    [self.timer fire];
 }
 
 - (void)stopTimer {
@@ -88,4 +87,12 @@
     }
 }
     
+- (NSTimer *)timer {
+    if (_timer == nil) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateCountLabel) userInfo:nil repeats:YES];
+        
+    }
+    return _timer;
+}
+
 @end

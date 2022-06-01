@@ -94,6 +94,7 @@
 
 @property (nonatomic, strong) ELDTwoBallAnimationView *twoBallAnimationView;
 
+@property (nonatomic, strong) UIView  *blurBgView;
 @property (nonatomic, strong) UILabel *liveHintLabel;
 
 @end
@@ -181,9 +182,9 @@
         self.chatview.easeChatView.isMuted = YES;
         
         if (self.chatroom.isMuteAllMembers) {
-            NSString *message = @"has set Banned on all Chats";
+            NSString *message = @"The steamer has time out the Channel";
             [self showNotifactionMessage:message userId:self.chatroom.owner displayAllTime:YES];
-
+            [self.chatview.easeChatView updateSendTextButtonHint:@"All timed out"];
         }else {
             [self.chatview.easeChatView updateSendTextButtonHint:@"You have been banned."];
         }
@@ -1145,6 +1146,28 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _liveHintLabel.hidden= YES;
     }
     return _liveHintLabel;
+}
+
+- (UIView *)blurBgView {
+    if (_blurBgView == nil) {
+        _blurBgView = [[UIView alloc] init];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+
+        UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        [_blurBgView addSubview:visualView];
+        [visualView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_blurBgView);
+        }];
+        
+        [_blurBgView addSubview:self.liveHintLabel];
+        [self.liveHintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_blurBgView).offset(50.0);
+            make.right.equalTo(_blurBgView).offset(-50.0);
+            make.centerY.equalTo(_blurBgView).offset(-10.0);
+        }];
+        
+    }
+    return _blurBgView;
 }
 
 @end

@@ -263,6 +263,16 @@
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kBottomViewHeight, self.width, kBottomViewHeight)];
         _bottomView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
         _bottomView.userInteractionEnabled = YES;
+        
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+
+        UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        [_bottomView addSubview:visualView];
+        [visualView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_bottomView);
+        }];
+
     }
     return _bottomView;
 }

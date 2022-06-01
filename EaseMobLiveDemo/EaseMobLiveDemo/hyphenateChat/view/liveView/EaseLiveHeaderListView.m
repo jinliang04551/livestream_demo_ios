@@ -212,7 +212,7 @@
         _numberBtn.layer.cornerRadius = kNumberBtnHeight *0.5;
         [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
         [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];
-        [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 0)];
+        [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10.0, 0, 0)];
         [_numberBtn addTarget:self action:@selector(memberListAction) forControlEvents:UIControlEventTouchUpInside];
         
     }
