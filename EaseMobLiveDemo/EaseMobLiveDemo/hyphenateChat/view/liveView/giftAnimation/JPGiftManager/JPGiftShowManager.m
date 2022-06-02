@@ -30,6 +30,7 @@
 //距离底部的间距
 #define Bottom_Margin(margin) ((margin)+HOME_INDICATOR_HEIGHT)
 
+#define kGiftShowViewOriginY  (KScreenHeight -360.0 -HOME_INDICATOR_HEIGHT)
 
 static const NSInteger giftMaxNum = 99;
 
@@ -91,7 +92,9 @@ static const NSInteger giftMaxNum = 99;
         
         __weak typeof(self) weakSelf = self;
         CGFloat showViewW = 10+showGiftView_UserIcon_LT+showGiftView_UserIcon_WH+showGiftView_UserName_L+showGiftView_UserName_W+showGiftView_GiftIcon_W+showGiftView_XNum_L+showGiftView_XNum_W;
-        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H-10-15;
+//        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H-10-15;
+        CGFloat showViewY = kGiftShowViewOriginY;
+        
         _giftShowView1 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(-showViewW, showViewY, showViewW, showGiftView_GiftIcon_H)];
         [_giftShowView1 setShowViewKeyBlock:^(JPGiftModel *giftModel) {
             [weakSelf.curentGiftKeys addObject:giftModel.giftKey];
@@ -111,7 +114,9 @@ static const NSInteger giftMaxNum = 99;
         
         __weak typeof(self) weakSelf = self;
         CGFloat showViewW = 10+showGiftView_UserIcon_LT+showGiftView_UserIcon_WH+showGiftView_UserName_L+showGiftView_UserName_W+showGiftView_GiftIcon_W+showGiftView_XNum_L+showGiftView_XNum_W;
-        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H*2-2*10-15;
+//        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H*2-2*10-15;
+        CGFloat showViewY = kGiftShowViewOriginY - showGiftView_GiftIcon_H - 10.0;
+
         _giftShowView2 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(-showViewW, showViewY, showViewW, showGiftView_GiftIcon_H)];
         [_giftShowView2 setShowViewKeyBlock:^(JPGiftModel *giftModel) {
             [weakSelf.curentGiftKeys addObject:giftModel.giftKey];

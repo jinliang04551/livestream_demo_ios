@@ -35,24 +35,24 @@
 
 - (void)placeAndLayoutSubviews {
     
-    [self addSubview:self.selectedImageView];
-    [self addSubview:self.giftImageView];
-    [self addSubview:self.nameLabel];
-    [self addSubview:self.giftValueImageView];
-    [self addSubview:self.priceLabel];
+    [self.contentView addSubview:self.selectedImageView];
+    [self.contentView addSubview:self.giftImageView];
+    [self.contentView addSubview:self.nameLabel];
+    [self.contentView addSubview:self.giftValueImageView];
+    [self.contentView addSubview:self.priceLabel];
     
     [self.selectedImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 0, -5.0, 0));
+        make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(-5.0, 0, -5.0, 0));
     }];
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(10.0);
-        make.centerX.equalTo(self);
+        make.top.equalTo(self.contentView).offset(10.0);
+        make.centerX.equalTo(self.contentView);
     }];
 
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.giftImageView.mas_bottom).offset(5.0);
-        make.centerX.equalTo(self);
+        make.centerX.equalTo(self.contentView);
     }];
 
     

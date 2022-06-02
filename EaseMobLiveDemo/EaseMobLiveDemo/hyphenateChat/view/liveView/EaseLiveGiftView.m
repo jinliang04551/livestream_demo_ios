@@ -6,11 +6,7 @@
 //  Copyright © 2016年 zmw. All rights reserved.
 //
 
-#define kDEfaultGiftSelectedColor RGBACOLOR(19,84,254,0.2)
-#define kDEfaultGiftBorderSelectedColor RGBACOLOR(91,148,255,1)
-
 #import "EaseLiveGiftView.h"
-
 #import "EaseGiftCell.h"
 #import "EaseLiveGiftHelper.h"
 #import "ELDCountCaculateView.h"
@@ -19,16 +15,25 @@
 
 #define kBottomViewHeight 320.0f
 #define kSendButtonHeight 32.0f
-#define kCollectionCellWidth 80.0
-#define kCollectionCellHeight 110.0
+#define kCollectionPadding 10.0f
 
+#define kCollectionCellWidth  (KScreenWidth - kCollectionPadding * 5) * 0.25
+#define kCollectionCellHeight  110.0f
 
-@interface EaseLiveGiftView () <UICollectionViewDelegate,UICollectionViewDataSource,EaseGiftCellDelegate>
+#define kCollectionViewHeight (kCollectionCellHeight * 2 + kCollectionPadding)
+
+//#define kCollectionViewHeight 110.0
+
+static NSString* giftCollectionCellIndentify = @"giftCollectionCell";
+
+@interface EaseLiveGiftView () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,EaseGiftCellDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) UICollectionViewLayout *collectionViewLayout;
 
+
+@property (nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) UIView *bottomBgView;
 @property (nonatomic, strong) UIButton *sendGiftButton;
-@property (nonatomic, strong) UILabel *giftNameLabel;
 
 
 @property (nonatomic, strong) ELDCountCaculateView *countCaculateView;
@@ -56,42 +61,38 @@
 }
 
 - (void)placeAndLayoutSubviews {
-    
+
+    [self addSubview:self.bottomBgView];
     [self addSubview:self.bottomView];
-    [self.bottomView addSubview:self.giftNameLabel];
     [self.bottomView addSubview:self.collectionView];
     [self.bottomView addSubview:self.countCaculateView];
     [self.bottomView addSubview:self.giftTotalValueImageView];
     [self.bottomView addSubview:self.giftTotalValueLabel];
     [self.bottomView addSubview:self.sendGiftButton];
-
-    
+        
     CGFloat bottom = 0;
     if (@available(iOS 11, *)) {
         bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
     }
     
+    [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_bottomView).insets(UIEdgeInsetsMake(50, 0, 0, 0));
+    }];
     
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self).insets(UIEdgeInsetsMake(kBottomViewHeight + bottom *3, 0, 0, 0));
+        make.top.equalTo(self.collectionView.mas_top).offset(-10.0);
+        make.left.right.equalTo(self);
+        make.bottom.equalTo(self);
     }];
     
-    
-    [self.giftNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bottomView.mas_top).offset(15.0);
-        make.height.equalTo(@(20));
-        make.centerX.equalTo(self.bottomView);
-        make.bottom.equalTo(self.collectionView.mas_top).offset(-20.0);
-    }];
-
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.sendGiftButton.mas_top).offset(-20.0);
         make.left.right.equalTo(self.bottomView);
-        make.height.equalTo(@(_collectionView.height));
+        make.height.equalTo(@(kCollectionViewHeight));
+        make.bottom.equalTo(self.sendGiftButton.mas_top).offset(-10.0);
     }];
     
     [self.sendGiftButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0 - bottom);
+        make.bottom.equalTo(self.bottomView.mas_bottom).offset(-10.0 -bottom);
         make.right.equalTo(self.bottomView).offset(-20.0);
         make.height.equalTo(@(kSendButtonHeight));
     }];
@@ -129,13 +130,13 @@
     
     CGFloat center_y = kCollectionCellHeight * 0.5;
     if (giftIndex >= 5) {
-        center_y += kCollectionCellHeight + 10.0;
+        center_y += kCollectionCellHeight + kCollectionPadding;
     }
     
     if (giftIndex >= 5) {
         giftIndex -= 4;
     }
-    CGFloat center_x = kCollectionCellWidth * (giftIndex - 1) + kCollectionCellWidth * 0.5 + giftIndex * 10.0;
+    CGFloat center_x = kCollectionCellWidth * (giftIndex - 1) + kCollectionCellWidth * 0.5 + giftIndex * kCollectionPadding;
 
     
     [self addSubview:self.countDownView];
@@ -161,9 +162,9 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    EaseGiftCell *cell = (EaseGiftCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"giftCollectionCell" forIndexPath:indexPath];
+    EaseGiftCell *cell = (EaseGiftCell*)[collectionView dequeueReusableCellWithReuseIdentifier:giftCollectionCellIndentify forIndexPath:indexPath];
     cell.delegate = self;
-        
+            
     ELDGiftModel *giftModel = self.giftArray[row];
     giftModel.selected = [giftModel.giftname isEqualToString:self.selectedGiftModel.giftname];
     
@@ -175,33 +176,31 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return CGSizeMake((_collectionView.width - 40)/4, (_collectionView.height - 10)/2);
     return CGSizeMake(kCollectionCellWidth, kCollectionCellHeight);
+
 }
 
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(0, 10.0, 0, 10.0);
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 10.0f;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 10.0f;
-}
-
+//-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+//{
+//    return UIEdgeInsetsMake(0, kCollectionPadding, 0, kCollectionPadding);
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+//{
+//    return kCollectionPadding;
+//}
+//
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+//{
+//    return kCollectionPadding;
+//}
+//
 #pragma mark - UICollectionViewDelegate
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
 }
 
 #pragma mark - EaseGiftCellDelegate
-
 - (void)giftCellDidSelected:(EaseGiftCell *)aCell
 {
     [self.countCaculateView resetCaculateView];
@@ -236,59 +235,70 @@
 - (UICollectionView*)collectionView
 {
     if (_collectionView == nil) {
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, _bottomView.height - 54.f) collectionViewLayout:flowLayout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.collectionViewLayout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
-        [_collectionView registerClass:[EaseGiftCell class] forCellWithReuseIdentifier:@"giftCollectionCell"];
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
-        
+        [_collectionView registerClass:[EaseGiftCell class] forCellWithReuseIdentifier:giftCollectionCellIndentify];
+                
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
         _collectionView.showsVerticalScrollIndicator = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.alwaysBounceVertical = YES;
-        _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
-        _collectionView.pagingEnabled = YES;
+        _collectionView.pagingEnabled = NO;
         _collectionView.userInteractionEnabled = YES;
+        _collectionView.contentSize = CGSizeMake(KScreenWidth, kCollectionViewHeight);
+
     }
     return _collectionView;
 }
 
-- (UIView*)bottomView
-{
+- (UICollectionViewFlowLayout *)collectionViewLayout {
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.itemSize = CGSizeMake(kCollectionCellWidth, kCollectionCellHeight);
+    flowLayout.minimumLineSpacing = kCollectionPadding;
+    flowLayout.minimumInteritemSpacing = kCollectionPadding;
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, kCollectionPadding, 0, kCollectionPadding);
+    
+    return flowLayout;
+}
+
+- (UIView*)bottomView {
     if (_bottomView == nil) {
-        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kBottomViewHeight, self.width, kBottomViewHeight)];
-        _bottomView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        _bottomView = [[UIView alloc] init];
+        _bottomView.layer.cornerRadius = 12.0f;
+        _bottomView.clipsToBounds = YES;
         _bottomView.userInteractionEnabled = YES;
         
-        
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-
         UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        visualView.layer.cornerRadius = 12.0f;
+
         [_bottomView addSubview:visualView];
         [visualView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_bottomView);
+            make.edges.equalTo(_bottomView).insets(UIEdgeInsetsMake(0, 0, -20, 0));
         }];
-
     }
     return _bottomView;
 }
 
+- (UIView *)bottomBgView {
+    if (_bottomBgView == nil) {
+        _bottomBgView = [[UIView alloc] init];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        visualView.layer.cornerRadius = 12.0f;
 
-- (UILabel *)giftNameLabel {
-    if (_giftNameLabel == nil) {
-        _giftNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(40.f, 10.f, 40.f, 20.f)];
-        _giftNameLabel.text = @"Gifts";
-        _giftNameLabel.font = BFont(16.0f);
-        _giftNameLabel.textColor = [UIColor whiteColor];
-        _giftNameLabel.backgroundColor = [UIColor clearColor];
-        _giftNameLabel.textAlignment = NSTextAlignmentCenter;
+        [_bottomBgView addSubview:visualView];
+        [visualView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_bottomBgView);
+        }];
     }
-    return _giftNameLabel;
+    return _bottomBgView;
 }
+
 
 - (ELDCountCaculateView *)countCaculateView {
     if (_countCaculateView == nil) {
@@ -324,9 +334,7 @@
         self.giftTotalValueLabel.attributedText = mutableAttString;
     
     }
-
 }
-
 
 
 - (UIButton*)sendGiftButton
@@ -379,6 +387,7 @@
 
 #undef kBottomViewHeight
 #undef kSendButtonHeight
-#undef kCollectionCellSize
+#undef kCollectionPadding
 #undef kCollectionCellWidth
 #undef kCollectionCellHeight
+#undef kCollectionViewHeight

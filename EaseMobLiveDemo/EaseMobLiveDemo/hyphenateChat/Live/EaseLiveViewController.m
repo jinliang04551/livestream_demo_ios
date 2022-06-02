@@ -390,6 +390,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         
         [self.twoBallAnimationView stopAnimation];
+        self.blurBgView.hidden = YES;
     }
     
     if (state == AgoraConnectionStateConnecting || state == AgoraConnectionStateReconnecting) {
@@ -415,6 +416,11 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             return;
         ++_clock;
         [self startTimer];
+    }
+    
+    if (state == AgoraConnectionStateDisconnected) {
+        self.liveHintLabel.text = @"The Live Streamer is away and will be back soon...";
+        self.blurBgView.hidden = YES;
     }
 }
 
@@ -714,7 +720,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
     if ([aChatroom.chatroomId isEqualToString:self.chatroom.chatroomId]) {
         [self fetchChatroomSpecificationWithRoomId:self.chatroom.chatroomId];
         if ([self.chatroom.owner isEqualToString:aUsername]) {
-            self.liveHintLabel.hidden = NO;
+            self.blurBgView.hidden = NO;
+        
         }
     }
 }
@@ -1014,7 +1021,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 }
 
 #pragma mark - getter and setter
-
 - (UIWindow*)window
 {
     if (_window == nil) {
@@ -1040,11 +1046,15 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _liveView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))];
         _liveView.backgroundColor = [UIColor clearColor];
         
+        [_liveView addSubview:self.blurBgView];
         [_liveView addSubview:self.headerListView];
         [_liveView addSubview:self.notificationView];
         [_liveView addSubview:self.chatview];
-        [_liveView addSubview:self.liveHintLabel];
         
+        [self.blurBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_liveView);
+        }];
+
         [self.headerListView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_liveView).offset(kDefaultTop);
             make.left.right.equalTo(_liveView);
@@ -1063,11 +1073,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             make.bottom.equalTo(_liveView).offset(-kBottomSafeHeight);
         }];
         
-        [self.liveHintLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_liveView).offset(50.0);
-            make.right.equalTo(_liveView).offset(-50.0);
-            make.bottom.equalTo(self.chatview.mas_top).offset(-20.0);
-        }];
     }
     return _liveView;
 }
@@ -1143,7 +1148,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _liveHintLabel.textAlignment = NSTextAlignmentCenter;
         _liveHintLabel.text = @"The Live Stream has ended";
         _liveHintLabel.numberOfLines = 0;
-        _liveHintLabel.hidden= YES;
     }
     return _liveHintLabel;
 }
@@ -1151,6 +1155,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 - (UIView *)blurBgView {
     if (_blurBgView == nil) {
         _blurBgView = [[UIView alloc] init];
+        _blurBgView.hidden = YES;
+        
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 
         UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];

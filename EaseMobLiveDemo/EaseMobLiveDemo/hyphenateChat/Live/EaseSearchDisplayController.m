@@ -282,7 +282,6 @@
               searchField.textColor = UIColor.whiteColor;
           }
         
-        _searchBar.backgroundColor = UIColor.yellowColor;
     }
     return _searchBar;
 }

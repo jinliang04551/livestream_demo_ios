@@ -42,9 +42,10 @@
 
 
 - (void)updateCountLabel {
+    self.maxCountDown--;
+
     NSLog(@"%s self.maxCountDown:%@",__func__,@(self.maxCountDown));
     self.countLabel.text = [@(self.maxCountDown) stringValue];
-    self.maxCountDown--;
     if (self.maxCountDown <= 0) {
         [self stopCountDown];
     }
@@ -52,7 +53,7 @@
 
 
 - (void)startCountDown {
-    self.maxCountDown = 3;
+    self.maxCountDown = 4;
     [self startTimer];
 }
 

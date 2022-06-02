@@ -12,7 +12,8 @@
 #import "ELDWatchMemberAvatarsView.h"
 
 #define kNumberBtnHeight 36.0f
-
+#define kCloseButtonHeight 14.0f
+#define kCloseBgViewHeight 32.0f
 #define kCollectionIdentifier @"collectionCell"
 
 @interface EaseLiveHeaderCell : UICollectionViewCell
@@ -58,6 +59,9 @@
 @property (nonatomic, assign) NSInteger occupantsCount;
 @property (nonatomic, strong) UIButton *numberBtn;
 @property (nonatomic, strong) UIButton *closeButton;
+@property (nonatomic, strong) UIView *closeBgView;
+
+
 @property (nonatomic, assign) BOOL isPublish;
 
 @end
@@ -71,55 +75,62 @@
     if (self) {
         self.chatroom = aChatroom;
         self.isPublish = isPublish;
-        
-        [self addSubview:self.watchMemberAvatarsView];
-        [self addSubview:self.liveCastView];
-        [self addSubview:self.numberBtn];
-        
-        
-        [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self);
-            make.height.equalTo(@kNumberBtnHeight);
-            make.left.equalTo(self).offset(12.0f);
-        }];
-        
-        [self.watchMemberAvatarsView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.bottom.equalTo(self.liveCastView);
-            make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
-        }];
-
-        //when chatroom owner is living
-        if (self.isPublish) {
-            [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.bottom.equalTo(self.liveCastView);
-                make.height.equalTo(self.liveCastView);
-                make.width.greaterThanOrEqualTo(@70.0);
-                make.right.equalTo(self).offset(-12.0);
-            }];
-        }else {
-            
-            [self addSubview:self.closeButton];
-            
-            [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.bottom.equalTo(self.liveCastView);
-                make.size.equalTo(@kNumberBtnHeight);
-                make.right.equalTo(self).offset(-12.0);
-            }];
-            
-            [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.bottom.equalTo(self.liveCastView);
-                make.height.equalTo(self.liveCastView);
-                make.width.greaterThanOrEqualTo(@70.0);
-                make.right.equalTo(self.closeButton.mas_left).offset(-10.0);
-//                make.right.equalTo(self).offset(-10.0);
-
-            }];
-        }
-
-        
+        [self placeAndLayoutSubviews];
         [self startTimer];
     }
     return self;
+}
+
+- (void)placeAndLayoutSubviews {
+    [self addSubview:self.watchMemberAvatarsView];
+    [self addSubview:self.liveCastView];
+    [self addSubview:self.numberBtn];
+    
+    
+    [self.liveCastView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self);
+        make.height.equalTo(@(kNumberBtnHeight));
+        make.left.equalTo(self).offset(12.0f);
+    }];
+    
+    [self.watchMemberAvatarsView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.bottom.equalTo(self.liveCastView);
+        make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
+    }];
+
+    //when chatroom owner is living
+    if (self.isPublish) {
+        [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.height.equalTo(self.liveCastView);
+            make.width.greaterThanOrEqualTo(@70.0);
+            make.right.equalTo(self).offset(-12.0);
+        }];
+    }else {
+        [self addSubview:self.closeBgView];
+        [self addSubview:self.closeButton];
+        
+        [self.closeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.closeButton);
+            make.size.equalTo(@(kCloseBgViewHeight));
+        }];
+        
+        [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.size.equalTo(@(kNumberBtnHeight));
+            make.right.equalTo(self).offset(-12.0);
+        }];
+        
+        [self.numberBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.bottom.equalTo(self.liveCastView);
+            make.height.equalTo(self.liveCastView);
+            make.width.greaterThanOrEqualTo(@70.0);
+            make.right.equalTo(self.closeButton.mas_left).offset(-10.0);
+//                make.right.equalTo(self).offset(-10.0);
+
+        }];
+    }
+
 }
 
 - (void)dealloc
@@ -140,98 +151,7 @@
     }
 }
 
-#pragma mark - getter
-
-- (NSMutableArray*)dataArray
-{
-    if (_dataArray == nil) {
-        _dataArray = [NSMutableArray array];
-    }
-    return _dataArray;
-}
-
-- (UICollectionView*)collectionView
-{
-    if (_collectionView == nil) {
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        CGFloat width = 135;
-        if (KScreenWidth > 320) {
-            width = 170;
-        }
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(width, 0, self.width - width - 65, CGRectGetHeight(self.frame)) collectionViewLayout:flowLayout];
-        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [_collectionView registerClass:[EaseLiveHeaderCell class] forCellWithReuseIdentifier:kCollectionIdentifier];
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
-        
-        _collectionView.backgroundColor = [UIColor clearColor];
-        _collectionView.delegate = self;
-        _collectionView.dataSource = self;
-        _collectionView.showsVerticalScrollIndicator = NO;
-        _collectionView.showsHorizontalScrollIndicator = NO;
-        _collectionView.alwaysBounceHorizontal = YES;
-        _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
-        _collectionView.pagingEnabled = NO;
-        _collectionView.userInteractionEnabled = YES;
-    }
-    return _collectionView;
-}
-
-- (ELDWatchMemberAvatarsView *)watchMemberAvatarsView {
-    if (_watchMemberAvatarsView == nil) {
-        _watchMemberAvatarsView = [[ELDWatchMemberAvatarsView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-    }
-    return _watchMemberAvatarsView;
-}
-
-- (EaseLiveCastView*)liveCastView
-{
-    if (_liveCastView == nil) {
-        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight)];
-        _liveCastView.backgroundColor = AlphaBlackColor;
-
-    }
-    return _liveCastView;
-}
-
-
-- (void)setLiveCastDelegate
-{
-    self.liveCastView.delegate = self.delegate;
-}
-
-- (UIButton*)numberBtn
-{
-    if (_numberBtn == nil) {
-        _numberBtn = [[UIButton alloc] init];
-        _numberBtn.frame = CGRectMake(self.frame.size.width - 60.f, 5.f, 50.f, 30.f);
-        _numberBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
-        _numberBtn.titleLabel.textColor = [UIColor whiteColor];
-        _numberBtn.backgroundColor = AlphaBlackColor;
-        _numberBtn.layer.cornerRadius = kNumberBtnHeight *0.5;
-        [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
-        [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];
-        [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10.0, 0, 0)];
-        [_numberBtn addTarget:self action:@selector(memberListAction) forControlEvents:UIControlEventTouchUpInside];
-        
-    }
-    return _numberBtn;
-}
-
-
-- (UIButton *)closeButton
-{
-    if (_closeButton == nil) {
-        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_closeButton setImage:[UIImage imageNamed:@"live_close"] forState:UIControlStateNormal];
-        [_closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _closeButton;
-}
-
 #pragma Action
-
 - (void)memberListAction
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectMemberListButton:currentMemberList:)]) {
@@ -388,8 +308,108 @@
     return YES;
 }
 
+#pragma mark - getter and setter
+- (NSMutableArray*)dataArray
+{
+    if (_dataArray == nil) {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+- (UICollectionView*)collectionView
+{
+    if (_collectionView == nil) {
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        CGFloat width = 135;
+        if (KScreenWidth > 320) {
+            width = 170;
+        }
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(width, 0, self.width - width - 65, CGRectGetHeight(self.frame)) collectionViewLayout:flowLayout];
+        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [_collectionView registerClass:[EaseLiveHeaderCell class] forCellWithReuseIdentifier:kCollectionIdentifier];
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+        
+        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.alwaysBounceHorizontal = YES;
+        _collectionView.contentSize = CGSizeMake(CGRectGetWidth(self.frame), 0);
+        _collectionView.pagingEnabled = NO;
+        _collectionView.userInteractionEnabled = YES;
+    }
+    return _collectionView;
+}
+
+- (ELDWatchMemberAvatarsView *)watchMemberAvatarsView {
+    if (_watchMemberAvatarsView == nil) {
+        _watchMemberAvatarsView = [[ELDWatchMemberAvatarsView alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+    }
+    return _watchMemberAvatarsView;
+}
+
+- (EaseLiveCastView*)liveCastView
+{
+    if (_liveCastView == nil) {
+        _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight)];
+        _liveCastView.backgroundColor = AlphaBlackColor;
+
+    }
+    return _liveCastView;
+}
+
+
+- (void)setLiveCastDelegate
+{
+    self.liveCastView.delegate = self.delegate;
+}
+
+- (UIButton*)numberBtn
+{
+    if (_numberBtn == nil) {
+        _numberBtn = [[UIButton alloc] init];
+        _numberBtn.frame = CGRectMake(self.frame.size.width - 60.f, 5.f, 50.f, 30.f);
+        _numberBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
+        _numberBtn.titleLabel.textColor = [UIColor whiteColor];
+        _numberBtn.backgroundColor = AlphaBlackColor;
+        _numberBtn.layer.cornerRadius = kNumberBtnHeight *0.5;
+        [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
+        [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];
+        [_numberBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10.0, 0, 0)];
+        [_numberBtn addTarget:self action:@selector(memberListAction) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    return _numberBtn;
+}
+
+
+- (UIButton *)closeButton
+{
+    if (_closeButton == nil) {
+        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_closeButton setImage:[UIImage imageNamed:@"live_close"] forState:UIControlStateNormal];
+        [_closeButton addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeButton;
+}
+
+- (UIView *)closeBgView {
+    if (_closeBgView == nil) {
+        _closeBgView = [[UIView alloc] init];
+        _closeBgView.backgroundColor = ELDBlackAlphaColor;
+        _closeBgView.layer.cornerRadius = kCloseBgViewHeight * 0.5;
+    }
+    return _closeBgView;
+}
+
+
 @end
 
 #undef kNumberBtnHeight
-
+#undef kCloseButtonHeight
+#undef kCloseBgViewHeight
 

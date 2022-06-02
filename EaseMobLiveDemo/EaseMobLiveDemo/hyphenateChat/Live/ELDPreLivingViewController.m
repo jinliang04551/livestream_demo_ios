@@ -14,6 +14,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 #define kMaxTitleLength 50
+#define kCloseBgViewHeight 32.0f
 
 @interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UITextViewDelegate>
 
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) UIView *headerBgView;
 
 @property (nonatomic, strong) UIButton *closeButton;
+@property (nonatomic, strong) UIView *closeBgView;
+
 @property (nonatomic, strong) UIButton *changeAvatarButton;
 @property (nonatomic, strong) UILabel *changeLabel;
 
@@ -220,6 +223,7 @@
                 }
             }];
         }else{
+            [self updateLoginStateWithStart:NO];
             [weakSelf showHint:@"Failed to start live"];
         }
     }];
@@ -320,11 +324,17 @@
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
         _contentView.backgroundColor = UIColor.clearColor;
         
+        [_contentView addSubview:self.closeBgView];
         [_contentView addSubview:self.closeButton];
         [_contentView addSubview:self.headerBgView];
         [_contentView addSubview:self.flipButton];
         [_contentView addSubview:self.flipHintLabel];
         [_contentView addSubview:self.goLiveButton];
+
+        [self.closeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.closeButton);
+            make.size.equalTo(@(kCloseBgViewHeight));
+        }];
 
         [self.closeButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_contentView).offset(40.0);
@@ -432,6 +442,16 @@
     return _closeButton;
 }
 
+- (UIView *)closeBgView {
+    if (_closeBgView == nil) {
+        _closeBgView = [[UIView alloc] init];
+        _closeBgView.backgroundColor = ELDBlackAlphaColor;
+        _closeBgView.layer.cornerRadius = kCloseBgViewHeight * 0.5;
+    }
+    return _closeBgView;
+}
+
+
 - (UIButton *)changeAvatarButton
 {
     if (_changeAvatarButton == nil) {
@@ -497,7 +517,6 @@
         [_goLiveButton setBackgroundImage:ImageWithName(@"go_live_btn_bg") forState:UIControlStateNormal];
         
         [_goLiveButton addSubview:self.loadingImageView];
-        
         [self.loadingImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.equalTo(_goLiveButton);
         }];
@@ -507,20 +526,6 @@
     return _goLiveButton;
 }
 
-//- (UITextField *)liveNameTextField {
-//    if (_liveNameTextField == nil) {
-//        _liveNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(0,0,100,20)];
-//        _liveNameTextField.delegate = self;
-//        _liveNameTextField.backgroundColor = [UIColor clearColor];
-//        _liveNameTextField.returnKeyType = UIReturnKeyNext;
-//        _liveNameTextField.font = NFont(16.0f);
-//        _liveNameTextField.textColor = TextLabelWhiteColor;
-//        _liveNameTextField.tintColor = TextLabelWhiteColor;
-//        _liveNameTextField.text = @"welcome to my channel!";
-//        _liveNameTextField.backgroundColor = UIColor.redColor;
-//    }
-//    return _liveNameTextField;
-//}
 
 - (UITextView*)liveNameTextView
 {
@@ -691,4 +696,4 @@
 @end
 
 #undef kMaxTitleLength
-
+#undef kCloseBgViewHeight
