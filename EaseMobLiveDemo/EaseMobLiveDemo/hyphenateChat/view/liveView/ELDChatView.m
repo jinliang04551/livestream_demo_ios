@@ -235,21 +235,30 @@
 
 
 #pragma mark chatroom operation
-//礼物动画
-- (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView
-{
-    JPGiftModel *giftModel = [[JPGiftModel alloc]init];
-    giftModel.userAvatarURL = cellModel.userAvatarURL;
-    giftModel.userName = cellModel.username;
-    giftModel.giftName = cellModel.name;
-    giftModel.giftImage = cellModel.icon;
-    giftModel.defaultCount = 0;
-    giftModel.sendCount = cellModel.count;
-    [[JPGiftShowManager sharedManager] showGiftViewWithBackView:backView info:giftModel completeBlock:^(BOOL finished) {
-               //结束
-        } completeShowGifImageBlock:^(JPGiftModel *giftModel) {
+- (void)showGiftModel:(ELDGiftModel*)aGiftModel
+              giftNum:(NSInteger)giftNum
+             backView:(UIView*)backView {
+    
+    [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
+               
+        JPGiftModel *giftModel = [[JPGiftModel alloc]init];
+        giftModel.userAvatarURL = ownUserInfo.avatarUrl;
+        giftModel.userName = ownUserInfo.nickName ?: ownUserInfo.userId;
+        giftModel.giftName = aGiftModel.giftname;
+        giftModel.giftImage = ImageWithName(aGiftModel.giftname);;
+        giftModel.defaultCount = 0;
+        giftModel.sendCount = giftNum;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[JPGiftShowManager sharedManager] showGiftViewWithBackView:backView info:giftModel completeBlock:^(BOOL finished) {
+                       //结束
+                } completeShowGifImageBlock:^(JPGiftModel *giftModel) {
+            }];
+
+        });
     }];
 }
+
 
 //有观众送礼物
 - (void)userSendGiftId:(NSString *)giftId
@@ -260,19 +269,7 @@
     int giftIndex = [[giftId substringFromIndex:5] intValue];
     ELDGiftModel *model = EaseLiveGiftHelper.sharedInstance.giftArray[giftIndex-1];
     
-    [EaseUserInfoManagerHelper fetchUserInfoWithUserIds:@[userId] completion:^(NSDictionary * _Nonnull userInfoDic) {
-        if (userInfoDic.count > 0) {
-            AgoraChatUserInfo *userInfo = userInfoDic[userId];
-            JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-            cellModel.userAvatarURL = userInfo.avatarUrl;
-            cellModel.icon = ImageWithName(model.giftname);
-            cellModel.name = model.giftname;
-            cellModel.username = userInfo.nickName ?: userInfo.userId;
-            cellModel.count = giftNum;
-            
-            [self sendGiftAction:cellModel backView:backView];
-        }
-    }];
+    [self showGiftModel:model giftNum:giftNum backView:backView];
 }
 
 

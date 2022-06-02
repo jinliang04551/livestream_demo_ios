@@ -49,10 +49,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)insertJoinMessageWithChatroom:(AgoraChatroom *)aChatroom user:(NSString *)aUsername;
 
 
-/// 显示gift view
-/// @param cellModel giftcell 模型
-/// @param backView   显示的view
-- (void)sendGiftAction:(JPGiftCellModel*)cellModel backView:(UIView*)backView;
+- (void)showGiftModel:(ELDGiftModel*)aGiftModel
+              giftNum:(NSInteger)giftNum
+             backView:(UIView*)backView;
 
 //有观众送礼物
 - (void)userSendGiftId:(NSString *)giftId
