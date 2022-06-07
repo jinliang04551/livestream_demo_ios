@@ -300,8 +300,7 @@
 
 
 
-#pragma mark - getter
-
+#pragma mark - getter and setter
 - (UICollectionView*)collectionView
 {
     if (_collectionView == nil) {

@@ -32,15 +32,16 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Need to allow camera access to Start the Live stream.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>Need to allow microphone access to Start the Live stream.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Need to allow photo library access to Start the Live stream.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>iconfont.ttf</string>
 		<string>Zapfino.ttf</string>
+		<string>Roboto-Black.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -16,6 +16,8 @@
 
 #import "ELDAppStyle.h"
 #import "EaseHttpManager.h"
+#import "ELDPreLivingViewController.h"
+
 
 @interface AppDelegate ()
 
@@ -45,10 +47,10 @@
     [self initHyphenateChatSDK];
                     
     [self.window makeKeyAndVisible];
-
-    
+        
     return YES;
 }
+
 
 - (void)loadMainView {
     EaseMainViewController *main = [[EaseMainViewController alloc] init];
@@ -129,6 +131,12 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    UIViewController *currentVC = [ELDUtil topViewController];
+    NSLog(@"%s currentVC.class:%@",__func__,NSStringFromClass([currentVC class]));
+    if ([currentVC isKindOfClass:[ELDPreLivingViewController class]]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ELDPreViewActiveFromBackgroudNotification object:nil];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

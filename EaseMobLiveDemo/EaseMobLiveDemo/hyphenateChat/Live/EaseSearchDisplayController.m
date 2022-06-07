@@ -54,9 +54,10 @@
     self.view.backgroundColor = ViewControllerBgBlackColor;
 //    self.navigationItem.hidesBackButton = YES;
     
-    [self.navigationController.navigationBar setBarTintColor:ViewControllerBgBlackColor];
+    [self.navigationController.navigationBar setBarTintColor:ViewControllerBgWhiteColor];
     [self.navigationItem setTitleView:self.searchBar];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:ImageWithName(@"back_icon_white") style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
+        
+    self.navigationItem.leftBarButtonItem = [ELDUtil customBarButtonItemImage:@"back_icon_white" action:@selector(backAction) actionTarget:self];
     
     [self.searchBar becomeFirstResponder];
     
@@ -238,6 +239,7 @@
             self.prompt.hidden = YES;
 
         }else {
+            [self.collectionView reloadData];
             self.prompt.hidden = NO;
             self.prompt.text = [NSString stringWithFormat:@"No Result for %@",searchText];
 

@@ -19,6 +19,7 @@
 @interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UITextViewDelegate>
 
 
+@property (nonatomic, strong) UIView *cameraView;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIView *headerBgView;
@@ -60,6 +61,19 @@
 @end
 
 @implementation ELDPreLivingViewController
+#pragma mark life cycle
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(activeFromBackgroudNotification:) name:ELDPreViewActiveFromBackgroudNotification object:nil];
+
+    }
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -68,14 +82,67 @@
     [self.view addGestureRecognizer:tap];
     
     [self placeAndLayoutSubviews];
-    
+        
     [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
         if (ownUserInfo) {
             [self.changeAvatarButton sd_setImageWithURL:[NSURL URLWithString:ownUserInfo.avatarUrl] forState:UIControlStateNormal];
-
         }
     }];
+    
+    [self updateAccessCamera];
 }
+
+#pragma mark public method
+- (void)updateAccessCamera {
+    if ([self isCameraAvailable]) {
+        [self checkAuthorizationToAccessCamera];
+    }else {
+        [self startBgCamera];
+    }
+}
+
+
+- (BOOL)isCameraAvailable {
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (void)checkAuthorizationToAccessCamera {
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo
+     completionHandler:^(BOOL granted) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+             if (granted) {
+                 [self startBgCamera];
+             } else {
+                 self.cameraView.hidden = YES;
+                 [self showAlertWithTitle:@"Allow Camera access in device settings" messsage:@"Need to allow camera access to Start the Live stream."];
+             }
+         });
+     }];
+}
+
+
+- (void)showAlertWithTitle:(NSString *)title
+                  messsage:(NSString *)messsage  {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertController addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Open setting" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:^(BOOL success) {
+        
+        }];
+
+    }];
+
+    [alertController addAction:okAction];
+
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 
 - (void)endEdit {
     [self.liveNameTextView resignFirstResponder];
@@ -83,16 +150,11 @@
 }
 
 - (void)placeAndLayoutSubviews {
-
-    [self startBgCamera];
-    
-    UIView *cameraView = [[UIView alloc] init];
-    [cameraView.layer addSublayer:self.previewLayer];
-    
-    [self.view addSubview:cameraView];
+        
+    [self.view addSubview:self.cameraView];
     [self.view addSubview:self.contentView];
 
-    [cameraView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.cameraView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     
@@ -128,6 +190,11 @@
     });
 }
 
+
+#pragma mark NSNotification
+- (void)activeFromBackgroudNotification:(NSNotification *)notify {
+    [self updateAccessCamera];
+}
 
 #pragma mark action
 - (void)closeAction {
@@ -319,6 +386,14 @@
 
 
 #pragma mark gette and setter
+- (UIView *)cameraView {
+    if (_cameraView == nil) {
+        _cameraView = [[UIView alloc] init];
+        [_cameraView.layer addSublayer:self.previewLayer];
+    }
+    return _cameraView;
+}
+
 - (UIView *)contentView {
     if (_contentView == nil) {
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];

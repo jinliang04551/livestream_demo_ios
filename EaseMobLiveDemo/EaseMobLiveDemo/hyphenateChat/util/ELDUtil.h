@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSInteger)ageFromBirthString:(NSString *)birthString;
 
++ (UIViewController * )topViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C1238AA2408C97300C4135B /* Zapfino.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C1238A92408C97300C4135B /* Zapfino.ttf */; };
 		3C30742C2546C900003696CA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C30742B2546C900003696CA /* CoreTelephony.framework */; };
 		3C525E2124650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md in Resources */ = {isa = PBXBuildFile; fileRef = 3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */; };
 		3C70A163241B2C4E00A5185F /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E252D1CE0379E007506CB /* ImageIO.framework */; };
@@ -151,6 +150,7 @@
 		C0714B89280EB62900DE18D1 /* go_live_btn_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714B72280EB62900DE18D1 /* go_live_btn_bg@3x.png */; };
 		C0714BC9280ED20F00DE18D1 /* live_gift_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714BB3280ED20F00DE18D1 /* live_gift_disable@3x.png */; };
 		C0714BCA280ED20F00DE18D1 /* live_gift_disable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714BB4280ED20F00DE18D1 /* live_gift_disable@2x.png */; };
+		C0771B53284CB8C600456870 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0771B52284CB8C600456870 /* Roboto-Black.ttf */; };
 		C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CC27FE900D005AC68E /* loading@2x.png */; };
 		C08D31CF27FE900D005AC68E /* loading@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C08D31CD27FE900D005AC68E /* loading@3x.png */; };
 		C08D31D227FE92C0005AC68E /* ELDLivingCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08D31D127FE92C0005AC68E /* ELDLivingCountdownView.m */; };
@@ -360,6 +360,7 @@
 		C0AC377E28139C9D00924AA3 /* TwoBallRotationProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC377D28139C9C00924AA3 /* TwoBallRotationProgressBar.m */; };
 		C0AC37812813A16C00924AA3 /* ELDTwoBallAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */; };
 		C0AC37842813B89F00924AA3 /* UIView+GradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C0AC37832813B89F00924AA3 /* UIView+GradientLayer.m */; };
+		C0F6256C284CB80A0080570E /* Zapfino.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0F6256B284CB80A0080570E /* Zapfino.ttf */; };
 		D23E252C1CE03775007506CB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E24FF1CE0359C007506CB /* libsqlite3.tbd */; };
 		D23E25321CE0380A007506CB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D23E25311CE0380A007506CB /* MobileCoreServices.framework */; };
 		D2E368221D3C7EFF00B1C90C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D2E368241D3C7EFF00B1C90C /* Localizable.strings */; };
@@ -381,7 +382,6 @@
 
 /* Begin PBXFileReference section */
 		20D67EC431D029B57AA58FFF /* libPods-EaseMobLiveDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EaseMobLiveDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3C1238A92408C97300C4135B /* Zapfino.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zapfino.ttf; sourceTree = "<group>"; };
 		3C30742B2546C900003696CA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "直播聊天室集成第三方视频推拉流介绍.md"; sourceTree = "<group>"; };
 		3C72AD69240F9559007BC99F /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
@@ -616,6 +616,7 @@
 		C0714B72280EB62900DE18D1 /* go_live_btn_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_live_btn_bg@3x.png"; sourceTree = "<group>"; };
 		C0714BB3280ED20F00DE18D1 /* live_gift_disable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_gift_disable@3x.png"; sourceTree = "<group>"; };
 		C0714BB4280ED20F00DE18D1 /* live_gift_disable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_gift_disable@2x.png"; sourceTree = "<group>"; };
+		C0771B52284CB8C600456870 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		C08D31CC27FE900D005AC68E /* loading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@2x.png"; sourceTree = "<group>"; };
 		C08D31CD27FE900D005AC68E /* loading@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading@3x.png"; sourceTree = "<group>"; };
 		C08D31D027FE92C0005AC68E /* ELDLivingCountdownView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDLivingCountdownView.h; sourceTree = "<group>"; };
@@ -855,6 +856,7 @@
 		C0AC37802813A16C00924AA3 /* ELDTwoBallAnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDTwoBallAnimationView.m; sourceTree = "<group>"; };
 		C0AC37822813B89F00924AA3 /* UIView+GradientLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+GradientLayer.h"; sourceTree = "<group>"; };
 		C0AC37832813B89F00924AA3 /* UIView+GradientLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+GradientLayer.m"; sourceTree = "<group>"; };
+		C0F6256B284CB80A0080570E /* Zapfino.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zapfino.ttf; sourceTree = "<group>"; };
 		D23E24FF1CE0359C007506CB /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D23E252D1CE0379E007506CB /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D23E252F1CE037F6007506CB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1182,6 +1184,8 @@
 		3C9E31EB260C7B4200CC3E3F /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				C0F6256B284CB80A0080570E /* Zapfino.ttf */,
+				C0771B52284CB8C600456870 /* Roboto-Black.ttf */,
 				3C9E31EC260C7B4200CC3E3F /* image */,
 				3C9E3263260C7B4300CC3E3F /* iconfront */,
 			);
@@ -1702,7 +1706,6 @@
 			isa = PBXGroup;
 			children = (
 				3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */,
-				3C1238A92408C97300C4135B /* Zapfino.ttf */,
 				E96F3D891C17FE410099718A /* Default-568h@2x.png */,
 				D2F4E0EA1D12C8AB00BB7E1A /* EaseMobLiveDemo */,
 				E93E8F451CC9D16B0076EC23 /* Frameworks */,
@@ -1833,7 +1836,6 @@
 				C08ED1742844AB7E009614B6 /* default_back_image@3x.png in Resources */,
 				C08D31EF27FEDDDD005AC68E /* member_mute_icon@3x.png in Resources */,
 				C08DFC3627F2EFA300862ADF /* live_close@2x.png in Resources */,
-				3C1238AA2408C97300C4135B /* Zapfino.ttf in Resources */,
 				C0602E8E280029F200D39575 /* member_bg_top@3x.png in Resources */,
 				C04755172807CBB60094EAD3 /* gift.BigAce@3x.png in Resources */,
 				C08ED1AA2844AB7E009614B6 /* close@3x.png in Resources */,
@@ -1898,6 +1900,7 @@
 				C04755132807CBB60094EAD3 /* gift.ThePushBox@2x.png in Resources */,
 				C08ED1632844AB7E009614B6 /* kick@3x.png in Resources */,
 				C08ED1952844AB7E009614B6 /* open@3x.png in Resources */,
+				C0F6256C284CB80A0080570E /* Zapfino.ttf in Resources */,
 				C047551D2807CBB60094EAD3 /* sendGift@3x.png in Resources */,
 				C08ED19D2844AB7E009614B6 /* admin@3x.png in Resources */,
 				C08ED1942844AB7E009614B6 /* avatat_3@3x.png in Resources */,
@@ -1927,6 +1930,7 @@
 				C08DFC3D27F2FD9A00862ADF /* Live_edit_name@2x.png in Resources */,
 				C08D31F127FEDDDD005AC68E /* live_chatlist_normal@3x.png in Resources */,
 				C08DFC1E27F1B08A00862ADF /* Live_watch@2x.png in Resources */,
+				C0771B53284CB8C600456870 /* Roboto-Black.ttf in Resources */,
 				C04755212807CBB60094EAD3 /* gift.PlasticFlower@3x.png in Resources */,
 				3C9E332F260C7B4400CC3E3F /* demo.html in Resources */,
 				C08D31EA27FEDDDD005AC68E /* flip_camera_ios@2x.png in Resources */,

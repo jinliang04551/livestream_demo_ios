@@ -690,27 +690,6 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             [self showHint:@"Failed to send gifts"];
         }
     }];
-    
-//    EaseGiftConfirmView *confirmView = [[EaseGiftConfirmView alloc] initWithGiftModel:giftModel giftNum:num titleText:@"whether to give away"];
-//    confirmView.delegate = self;
-//    [confirmView showFromParentView:self.view];
-//
-//    ELD_WS
-//    [confirmView setDoneCompletion:^(BOOL aConfirm,JPGiftCellModel *giftModel) {
-//        if (aConfirm) {
-//            //send gift message
-//            [weakSelf.chatview.easeChatView sendGiftAction:giftModel.id num:giftModel.count completion:^(BOOL success) {
-//                if (success) {
-//                    //display gift UI
-//
-//                    [weakSelf.giftView resetWitGiftId:giftModel.id];
-//                    [weakSelf.chatview sendGiftAction:giftModel backView:self.view];
-//                }else {
-//                    [self showHint:@"Failed to send gifts"];
-//                }
-//            }];
-//        }
-//    }];
 }
 
 

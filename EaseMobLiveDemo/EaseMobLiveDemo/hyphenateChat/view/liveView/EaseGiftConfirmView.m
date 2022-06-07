@@ -157,20 +157,6 @@
     }
     if (_doneCompletion) {
         
-//        [AgoraChatUserInfoManagerHelper fetchUserInfoModelsWithUserId:@[AgoraChatClient.sharedClient.currentUsername] completion:^(NSDictionary * _Nonnull dic) {
-//
-//            ELDUserInfoModel *userModel = dic[AgoraChatClient.sharedClient.currentUsername];
-//
-//            JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];
-//            cellModel.id = self.giftModel.giftId;
-////            cellModel.user_icon = userModel.avatarImage;
-//            cellModel.username = userModel.displayName;
-//            cellModel.icon = ImageWithName(self.giftModel.giftname);
-//            cellModel.name = self.giftModel.giftname;
-//            cellModel.count = (NSInteger)_giftNum;
-//            _doneCompletion(confirm,cellModel);
-//        }];
-        
         [EaseUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
            
             JPGiftCellModel *cellModel = [[JPGiftCellModel alloc]init];

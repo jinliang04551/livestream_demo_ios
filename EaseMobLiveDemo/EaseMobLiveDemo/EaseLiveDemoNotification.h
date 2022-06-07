@@ -23,4 +23,7 @@
 #define  ELDFetchUserInfoNotification  @"ELDFetchUserInfoNotification"
 
 
+#define  ELDPreViewActiveFromBackgroudNotification  @"ELDPreViewActiveFromBackgroudNotification"
+
+
 #endif /* EaseLiveDemoNotification_h */
