@@ -80,11 +80,16 @@ NSString *defaultPwd = @"000000";//默认密码
 
 
 - (void)setDefaultUseInfo {
-    AgoraChatUserInfo *userInfo = [[AgoraChatUserInfo alloc] init];
+        
+    [self uploadUserAvatarcompletion:^(NSString *url, BOOL success) {
+        AgoraChatUserInfo *userInfo = [[AgoraChatUserInfo alloc] init];
         userInfo.userId = [AgoraChatClient sharedClient].currentUsername;
-        userInfo.avatarUrl = kDefaultAvatarURL;
         userInfo.gender = 4;
         userInfo.birth = @"2004-01-01";
+
+        if (success) {
+            userInfo.avatarUrl = url;
+        }
         
         [[AgoraChatClient sharedClient].userInfoManager updateOwnUserInfo:userInfo completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -97,7 +102,16 @@ NSString *defaultPwd = @"000000";//默认密码
                 }
             });
         }];
+    }];
 }
+
+- (void)uploadUserAvatarcompletion:(void (^)(NSString *url, BOOL success))aCompletion {
+    UIImage *avatarImage = kDefultUserImage;
+    NSData *avatarData = UIImageJPEGRepresentation(avatarImage, 1.0);;
+     
+    [EaseHttpManager.sharedInstance uploadFileWithData:avatarData completion:aCompletion];
+}
+
 
 
 @end

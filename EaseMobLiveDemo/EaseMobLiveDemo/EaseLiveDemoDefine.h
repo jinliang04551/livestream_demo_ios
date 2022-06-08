@@ -151,7 +151,7 @@ typedef enum : NSUInteger {
 #define kUserInfoHeaderImageHeight 72.0
 
 
-#define kDefultUserImage   ImageWithName(@"avatat_2")
+#define kDefultUserImage   ImageWithName(@"default_avatar")
 
 //#define kDefaultAvatarURL  @"https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/IMDemo/avatar/Image1.png"
 

@@ -59,6 +59,7 @@ isPhoneX = [[UIApplication sharedApplication] delegate].window.safeAreaInsets.bo
     #import <SDWebImage/UIImageView+WebCache.h>
     #import <SDWebImage/UIButton+WebCache.h>
     #import <chat-uikit/EaseChatKit.h>
+    #import <AgoraRtcKit/AgoraRtcEngineKit.h>
 
 
     #import "EaseHttpManager.h"

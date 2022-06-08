@@ -10,7 +10,6 @@
 #import <CoreServices/CoreServices.h>
 #import "ELDLivingCountdownView.h"
 #import "ELDPublishLiveViewController.h"
-#import <AgoraRtcKit/AgoraRtcEngineKit.h>
 #import <AVFoundation/AVFoundation.h>
 
 #define kMaxTitleLength 50

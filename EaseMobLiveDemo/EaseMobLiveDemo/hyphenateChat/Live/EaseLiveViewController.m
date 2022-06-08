@@ -29,8 +29,6 @@
 
 #import <AgoraMediaPlayer/AgoraMediaPlayerKit.h>
 
-#import <AgoraRtcKit/AgoraRtcEngineKit.h>
-
 #import "ELDChatroomMembersView.h"
 
 #import "ELDUserInfoView.h"

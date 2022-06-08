@@ -23,8 +23,6 @@
 #import "EaseCustomMessageHelper.h"
 #import "EaseLiveViewController.h"
 
-#import <AgoraRtcKit/AgoraRtcEngineKit.h>
-
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
 
