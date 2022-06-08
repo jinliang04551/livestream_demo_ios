@@ -55,7 +55,7 @@
     if (_prompt == nil) {
         _prompt = UILabel.new;
         _prompt.textColor = COLOR_HEX(0xFFFFFF);
-        _prompt.font = NFont(20.0);
+        _prompt.font = Font(@"Roboto", 20.0);        
         _prompt.textAlignment = NSTextAlignmentLeft;
         _prompt.text = @"Stream Channels";
     }

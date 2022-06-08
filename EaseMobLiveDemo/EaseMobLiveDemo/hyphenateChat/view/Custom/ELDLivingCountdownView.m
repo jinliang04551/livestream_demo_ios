@@ -68,7 +68,7 @@
 - (UILabel *)countLabel {
     if (_countLabel == nil) {
         _countLabel = [[UILabel alloc] init];
-        _countLabel.font = NFont(72.0);
+        _countLabel.font = Font(@"Roboto", 72.0);
         _countLabel.textColor = TextLabelWhiteColor;
         _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.lineBreakMode = NSLineBreakByTruncatingTail;

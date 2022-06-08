@@ -95,7 +95,7 @@ static const NSInteger animationTime = 5;
     [self.userIconView sd_setImageWithURL:[NSURL URLWithString:giftModel.userAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
 
     self.userNameLabel.text = giftModel.userName;
-    self.giftNameLabel.text = @"give a gift";
+    self.giftNameLabel.text = [NSString stringWithFormat:@"Sent %@",giftModel.giftName];
     self.giftImageView.image = giftModel.giftImage;
     self.hidden = NO;
     self.showViewFinishBlock = completeBlock;

@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLivingCountdownView : UIView
+@property (nonatomic, strong, readonly)UILabel *countLabel;
 @property (nonatomic, copy)void (^CountDownFinishBlock)();
 - (void)startCountDown;
 

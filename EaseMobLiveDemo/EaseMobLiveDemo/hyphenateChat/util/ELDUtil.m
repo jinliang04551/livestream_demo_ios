@@ -56,6 +56,9 @@
     [backButton setImage:[UIImage imageNamed:@"nav_left_arrow_white"] forState:UIControlStateNormal];
     [backButton addTarget:actionTarget action:action forControlEvents:UIControlEventTouchUpInside];
 
+//    Font(@"Roboto", 20.0)
+
+    backButton.titleLabel.font = Font(@"Roboto", 20.0);
     [backButton setTitle:title forState:UIControlStateNormal];
     [backButton setTitleColor:TextLabelWhiteColor forState:UIControlStateNormal];
     UIBarButtonItem *customNavItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
