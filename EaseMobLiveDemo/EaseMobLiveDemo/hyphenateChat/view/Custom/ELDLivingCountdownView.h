@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ELDLivingCountdownView : UIView
-@property (nonatomic, strong, readonly)UILabel *countLabel;
+@property (nonatomic, assign) BOOL hasUnit;
 @property (nonatomic, copy)void (^CountDownFinishBlock)();
 - (void)startCountDown;
 

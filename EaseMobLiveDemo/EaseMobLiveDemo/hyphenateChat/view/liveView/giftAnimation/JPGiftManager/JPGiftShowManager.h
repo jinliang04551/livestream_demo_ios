@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
 @class JPGiftModel;
 typedef void(^completeBlock)(BOOL finished);
 typedef void(^completeShowGifImageBlock)(JPGiftModel *giftModel);

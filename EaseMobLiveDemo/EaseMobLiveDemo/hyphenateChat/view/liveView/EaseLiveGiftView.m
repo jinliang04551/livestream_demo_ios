@@ -287,6 +287,8 @@ static NSString* giftCollectionCellIndentify = @"giftCollectionCell";
 - (UIView *)bottomBgView {
     if (_bottomBgView == nil) {
         _bottomBgView = [[UIView alloc] init];
+        _bottomView.alpha = 0.8;
+        
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
         visualView.layer.cornerRadius = 12.0f;

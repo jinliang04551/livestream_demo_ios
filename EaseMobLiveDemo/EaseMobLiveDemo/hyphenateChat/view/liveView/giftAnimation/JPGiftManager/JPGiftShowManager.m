@@ -32,6 +32,8 @@
 
 #define kGiftShowViewOriginY  (KScreenHeight -360.0 -HOME_INDICATOR_HEIGHT)
 
+#define kGiftViewHeight 36.0
+
 static const NSInteger giftMaxNum = 99;
 
 @interface JPGiftShowManager()
@@ -87,15 +89,10 @@ static const NSInteger giftMaxNum = 99;
 - (JPGiftShowView *)giftShowView1{
     
     if (!_giftShowView1) {
-        CGFloat itemW = SCREEN_WIDTH/4.0;
-        CGFloat itemH = itemW*105/93.8;
-        
         __weak typeof(self) weakSelf = self;
-        CGFloat showViewW = 10+showGiftView_UserIcon_LT+showGiftView_UserIcon_WH+showGiftView_UserName_L+showGiftView_UserName_W+showGiftView_GiftIcon_W+showGiftView_XNum_L+showGiftView_XNum_W;
-//        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H-10-15;
         CGFloat showViewY = kGiftShowViewOriginY;
         
-        _giftShowView1 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(-showViewW, showViewY, showViewW, showGiftView_GiftIcon_H)];
+        _giftShowView1 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(0, showViewY, KScreenWidth, kGiftViewHeight)];
         [_giftShowView1 setShowViewKeyBlock:^(JPGiftModel *giftModel) {
             [weakSelf.curentGiftKeys addObject:giftModel.giftKey];
             if (weakSelf.completeShowGifImageBlock) {
@@ -109,15 +106,12 @@ static const NSInteger giftMaxNum = 99;
 - (JPGiftShowView *)giftShowView2 {
     
     if (!_giftShowView2) {
-        CGFloat itemW = SCREEN_WIDTH/4.0;
-        CGFloat itemH = itemW*105/93.8;
         
         __weak typeof(self) weakSelf = self;
-        CGFloat showViewW = 10+showGiftView_UserIcon_LT+showGiftView_UserIcon_WH+showGiftView_UserName_L+showGiftView_UserName_W+showGiftView_GiftIcon_W+showGiftView_XNum_L+showGiftView_XNum_W;
-//        CGFloat showViewY = SCREEN_HEIGHT-Bottom_Margin(44)-2*itemH-showGiftView_GiftIcon_H*2-2*10-15;
-        CGFloat showViewY = kGiftShowViewOriginY - showGiftView_GiftIcon_H - 10.0;
+        CGFloat showViewY = kGiftShowViewOriginY - kGiftViewHeight - 10.0;
 
-        _giftShowView2 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(-showViewW, showViewY, showViewW, showGiftView_GiftIcon_H)];
+        _giftShowView2 = [[JPGiftShowView alloc] initWithFrame:CGRectMake(0, showViewY, KScreenWidth, kGiftViewHeight)];
+        
         [_giftShowView2 setShowViewKeyBlock:^(JPGiftModel *giftModel) {
             [weakSelf.curentGiftKeys addObject:giftModel.giftKey];
             if (weakSelf.completeShowGifImageBlock) {
@@ -244,3 +238,5 @@ static const NSInteger giftMaxNum = 99;
 }
 
 @end
+
+#undef kGiftViewHeight

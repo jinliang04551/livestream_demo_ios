@@ -10,6 +10,9 @@
 #import "JPGiftModel.h"
 #import "UIImageView+WebCache.h"
 
+#define kBgViewHeight 36.0
+#define kUserAvatarHeight 32.0
+
 static const NSInteger animationTime = 5;
 
 @interface JPGiftShowView()
@@ -18,76 +21,95 @@ static const NSInteger animationTime = 5;
     NSTimer *_timer;
     NSInteger _refreshInterval;//刷新间隔
 }
-@property(nonatomic,strong) UIImageView *xImgView;
+
+/** 背景 */
+@property(nonatomic,strong) UIView *contentView;
+
+@property(nonatomic,strong) UIView *contentBgView;
+
+/** icon */
+@property(nonatomic,strong) UIImageView *userIconView;
+/** name */
+@property(nonatomic,strong) UILabel *userNameLabel;
+/** giftName */
+@property(nonatomic,strong) UILabel *giftNameLabel;
+/** giftImage */
+@property(nonatomic,strong) UIImageView *giftImageView;
+/** count */
+@property(nonatomic,strong) JPGiftCountLabel *countLabel;
+/** 礼物数 */
+@property(nonatomic,assign) NSInteger giftCount;
+/** 当前礼物总数 */
+@property(nonatomic,assign) NSInteger currentGiftCount;
+/** model */
+@property(nonatomic,strong) JPGiftModel *finishModel;
+
+
 @end
 
 @implementation JPGiftShowView
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        
-    }
-    return self;
-}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //245
-        self.backgroundColor = [UIColor blackColor];
         self.hidden = YES;
-        [self p_SetUI];
+        [self placeAndLayoutSubviews];
     }
     return self;
 }
 
 #pragma mark -设置UI
-- (void)p_SetUI {
-    self.layer.cornerRadius = self.frame.size.height / 2;
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, showGiftView_GiftIcon_H)];
-    self.bgView.backgroundColor = [UIColor blackColor];
-    self.bgView.layer.cornerRadius = showGiftView_GiftIcon_H*0.5;
-    [self.bgView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self addSubview:self.bgView];
+- (void)placeAndLayoutSubviews {
     
-    self.userIconView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bgView.frame)+showGiftView_UserIcon_LT, showGiftView_UserIcon_LT, showGiftView_UserIcon_WH, showGiftView_UserIcon_WH)];
-    self.userIconView.layer.cornerRadius = showGiftView_UserIcon_WH*0.5;
-    self.userIconView.layer.masksToBounds = YES;
-    [self addSubview:self.userIconView];
+    [self addSubview:self.contentBgView];
+    [self addSubview:self.contentView];
+    [self.contentView addSubview:self.userIconView];
+    [self.contentView addSubview:self.userNameLabel];
+    [self.contentView addSubview:self.giftNameLabel];
+    [self.contentView addSubview:self.giftImageView];
+    [self.contentView addSubview:self.countLabel];
+
+    [self.contentBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.contentView);
+    }];
     
-    self.userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.userIconView.frame)+showGiftView_UserName_L, (showGiftView_GiftIcon_H-2*showGiftView_UserName_H-5)*0.5, showGiftView_UserName_W, showGiftView_UserName_H)];
-    self.userNameLabel.text = @"system";
-    self.userNameLabel.textColor = [UIColor whiteColor];
-    self.userNameLabel.font = [UIFont systemFontOfSize:11];
-    [self addSubview:self.userNameLabel];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(12);
+        make.centerY.equalTo(self);
+    }];
     
-    self.giftNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.userNameLabel.frame),CGRectGetMaxY(self.userNameLabel.frame)+5, showGiftView_UserName_W*2, showGiftView_UserName_H)];
-    self.giftNameLabel.text = @"gift";
-    self.giftNameLabel.textColor = [UIColor colorWithRed:255/255.0 green:214/255.0 blue:84/255.0 alpha:1];
-    self.giftNameLabel.font = [UIFont systemFontOfSize:12];
-    [self addSubview:self.giftNameLabel];
-    
-    self.giftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.userNameLabel.frame), 0, showGiftView_GiftIcon_W, showGiftView_GiftIcon_H)];
-    [self addSubview:self.giftImageView];
-    
-    self.xImgView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.giftImageView.frame)+showGiftView_XNum_L, self.frame.size.height - 18, 13, 11)];
-    _xImgView.image = [UIImage imageNamed:@"X"];
-    self.xImgView.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.xImgView];
-    
-    self.countLabel = [[JPGiftCountLabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.giftImageView.frame)+showGiftView_XNum_L+13, (showGiftView_GiftIcon_H-showGiftView_XNum_H)*0.5, showGiftView_XNum_W, self.frame.size.height)];
-    self.countLabel.textColor = [UIColor whiteColor];
-    self.countLabel.backgroundColor = [UIColor clearColor];
-    self.countLabel.layer.cornerRadius = self.frame.size.height / 2;
-    self.countLabel.font = [UIFont fontWithName:@"Zapfino" size:20.f];
-    self.countLabel.textAlignment = NSTextAlignmentCenter;
-    [self.countLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    self.countLabel.text = @"";
-    [self addSubview:self.countLabel];
+    [self.userIconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).offset(2.0);
+        make.size.equalTo(@(kUserAvatarHeight));
+        make.left.equalTo(self.contentView).offset(2.0);
+        make.bottom.equalTo(self.contentView).offset(-2.0);
+    }];
+
+    [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).offset(3.0);
+        make.left.equalTo(self.userIconView.mas_right).offset(8.0);
+    }];
+
+    [self.giftNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.contentView).offset(-3.0);
+        make.left.equalTo(self.userNameLabel);
+    }];
+
+    [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.userIconView);
+        make.size.equalTo(@(kBgViewHeight));
+        make.left.equalTo(self.giftNameLabel.mas_right).offset(4.0);
+    }];
+
+    [self.countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.userIconView);
+        make.left.equalTo(self.giftImageView.mas_right).offset(12.0);
+        make.right.equalTo(self.contentView).offset(-12.0);
+    }];
+
 }
+
 
 - (void)showGiftShowViewWithModel:(JPGiftModel *)giftModel completeBlock:(completeShowViewBlock)completeBlock{
     
@@ -95,8 +117,12 @@ static const NSInteger animationTime = 5;
     [self.userIconView sd_setImageWithURL:[NSURL URLWithString:giftModel.userAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
 
     self.userNameLabel.text = giftModel.userName;
-    self.giftNameLabel.text = [NSString stringWithFormat:@"Sent %@",giftModel.giftName];
+    NSString *giftName = [giftModel.giftName substringFromIndex:5];
+    self.giftNameLabel.text = [NSString stringWithFormat:@"Sent %@",giftName];
     self.giftImageView.image = giftModel.giftImage;
+    self.countLabel.text = [NSString stringWithFormat:@"x%@",[@(giftModel.sendCount) stringValue]];
+    [self updateGiftImageView];
+    
     self.hidden = NO;
     self.showViewFinishBlock = completeBlock;
 
@@ -110,7 +136,29 @@ static const NSInteger animationTime = 5;
         self.currentGiftCount = 0;
         [self setGiftCount:giftModel.defaultCount];
         
-    }];}
+    }];
+}
+
+
+- (void)updateGiftImageView {
+    CGFloat userNameWidth = [self.userNameLabel.text sizeWithAttributes:@{
+        NSFontAttributeName:self.userNameLabel.font}].width;
+    
+    CGFloat giftNameWidth = [self.giftNameLabel.text sizeWithAttributes:@{
+        NSFontAttributeName:self.giftNameLabel.font}].width;
+    
+    if (userNameWidth > giftNameWidth) {
+        [self.giftImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.giftNameLabel.mas_right).offset(4.0);
+        }];
+    }else {
+        [self.giftImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.userNameLabel.mas_right).offset(4.0);
+        }];
+
+    }
+    
+}
 
 - (void)hiddenGiftShowView {
     
@@ -158,11 +206,11 @@ static const NSInteger animationTime = 5;
 }
 
 - (void)setupBtnText{
-    self.countLabel.text = [NSString stringWithFormat:@"%ld",(long)_num];
+    self.countLabel.text = [NSString stringWithFormat:@"x%ld",(long)_num];
     if(_num >= self.currentGiftCount){
         [self stopTimer];
         if (self.currentGiftCount > 1) {
-            [self p_SetAnimation:self.countLabel];
+            [self setAnimation:self.countLabel];
             [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenGiftShowView) object:nil];//可以取消成功。
             [self performSelector:@selector(hiddenGiftShowView) withObject:nil afterDelay:animationTime];
             
@@ -176,7 +224,7 @@ static const NSInteger animationTime = 5;
     }
 }
 
-- (void)p_SetAnimation:(UIView *)view {
+- (void)setAnimation:(UIView *)view {
     
     CABasicAnimation*pulse = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     pulse.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -189,5 +237,88 @@ static const NSInteger animationTime = 5;
     [[view layer] addAnimation:pulse forKey:nil];
 }
 
+#pragma mark getter and setter
+- (UIView *)contentBgView {
+    if (_contentBgView == nil) {
+        _contentBgView = [[UIView alloc] init];
+        _contentBgView.alpha = 0.6;
+        _contentBgView.layer.cornerRadius = kBgViewHeight*0.5;
+        _contentBgView.clipsToBounds = YES;
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
+
+        [_contentBgView addSubview:visualView];
+        [visualView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_contentBgView);
+        }];
+    }
+    return _contentBgView;
+}
+
+- (UIView *)contentView {
+    if (_contentView == nil) {
+        _contentView = [[UIView alloc] init];
+        _contentView.layer.cornerRadius = kBgViewHeight*0.5;
+        _contentView.clipsToBounds = YES;
+    }
+    return _contentView;
+}
+
+
+- (UIImageView *)userIconView {
+    if (_userIconView == nil) {
+        _userIconView = [[UIImageView alloc] init];
+        _userIconView.contentMode = UIViewContentModeScaleAspectFit;
+        _userIconView.layer.cornerRadius = kUserAvatarHeight * 0.5;
+        _userIconView.clipsToBounds = YES;
+        _userIconView.layer.masksToBounds = YES;
+    }
+    return _userIconView;
+}
+
+- (UILabel *)userNameLabel {
+    if (_userNameLabel == nil) {
+        _userNameLabel = [[UILabel alloc] init];
+        _userNameLabel.textColor = [UIColor whiteColor];
+        _userNameLabel.font = Font(@"Roboto", 12.0);
+    }
+    return _userNameLabel;
+}
+
+
+- (UILabel *)giftNameLabel {
+    if (_giftNameLabel == nil) {
+        _giftNameLabel = [[UILabel alloc] init];
+        _giftNameLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.74];
+        _giftNameLabel.font = Font(@"Roboto", 10.0);
+    }
+    return _giftNameLabel;
+}
+
+- (UIImageView *)giftImageView {
+    if (_giftImageView == nil) {
+        _giftImageView = [[UIImageView alloc] init];
+        _giftImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _giftImageView.clipsToBounds = YES;
+        _giftImageView.layer.masksToBounds = YES;
+    }
+    return _giftImageView;
+}
+
+
+- (JPGiftCountLabel *)countLabel {
+    if (_countLabel == nil) {
+        _countLabel = [[JPGiftCountLabel alloc] init];
+        _countLabel.textColor = [UIColor whiteColor];
+        _countLabel.font = Font(@"Roboto", 24.0);
+        _countLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    return _countLabel;
+}
+
 
 @end
+
+#undef kBgViewHeight
+#undef kUserAvatarHeight

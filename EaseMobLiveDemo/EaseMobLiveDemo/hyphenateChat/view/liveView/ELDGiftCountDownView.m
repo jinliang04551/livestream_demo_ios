@@ -49,7 +49,7 @@
 - (ELDLivingCountdownView *)countDownView {
     if (_countDownView == nil) {
         _countDownView = [[ELDLivingCountdownView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 100)];
-        _countDownView.countLabel.font = Font(@"Roboto", 20.0);
+        _countDownView.hasUnit = YES;
         
         ELD_WS
         _countDownView.CountDownFinishBlock = ^{

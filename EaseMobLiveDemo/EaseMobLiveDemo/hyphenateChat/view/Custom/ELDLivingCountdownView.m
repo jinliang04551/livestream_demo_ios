@@ -43,9 +43,22 @@
 
 - (void)updateCountLabel {
     self.maxCountDown--;
+    
+    if (self.hasUnit) {
+        NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
+        
+        NSAttributedString *secondString = [ELDUtil attributeContent:[@(self.maxCountDown) stringValue] color:TextLabelWhiteColor font:Font(@"Roboto", 28.0)];
+        
+        NSAttributedString *unitAttString = [ELDUtil attributeContent:@"s" color:TextLabelWhiteColor font:Font(@"Roboto", 24.0)];
+        
+        [mutableAttString appendAttributedString:secondString];
+        [mutableAttString appendAttributedString:unitAttString];
 
-    NSLog(@"%s self.maxCountDown:%@",__func__,@(self.maxCountDown));
-    self.countLabel.text = [@(self.maxCountDown) stringValue];
+        self.countLabel.attributedText = mutableAttString;
+    }else {
+        self.countLabel.attributedText = [ELDUtil attributeContent:[@(self.maxCountDown) stringValue] color:TextLabelWhiteColor font:Font(@"Roboto", 72.0)];
+    }
+    
     if (self.maxCountDown <= 0) {
         [self stopCountDown];
     }

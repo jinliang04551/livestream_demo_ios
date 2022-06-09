@@ -43,6 +43,8 @@
 @property (nonatomic, strong) SRRefreshView *slimeView;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionViewFlowLayout *collectionViewLayout;
+
 @property (nonatomic) kTabbarItemBehavior tabBarBehavior; //tabbar行为：看直播/开播
 
 
@@ -299,74 +301,6 @@
 }
 
 
-
-#pragma mark - getter and setter
-- (UICollectionView*)collectionView
-{
-    if (_collectionView == nil) {
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight) collectionViewLayout:flowLayout];
-        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [_collectionView registerClass:[EaseLiveCollectionViewCell class] forCellWithReuseIdentifier:kCollectionIdentifier];
-        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
-        
-        _collectionView.backgroundColor = [UIColor clearColor];
-        _collectionView.delegate = self;
-        _collectionView.dataSource = self;
-        _collectionView.showsVerticalScrollIndicator = NO;
-        _collectionView.showsHorizontalScrollIndicator = NO;
-        _collectionView.alwaysBounceVertical = YES;
-        _collectionView.pagingEnabled = NO;
-        _collectionView.userInteractionEnabled = YES;
-    }
-    return _collectionView;
-}
-
-- (NSMutableArray*)dataArray
-{
-    if (_dataArray == nil) {
-        _dataArray = [[NSMutableArray alloc] init];
-    }
-    return _dataArray;
-}
-
-- (SRRefreshView *)slimeView
-{
-    if (_slimeView == nil) {
-        _slimeView = [[SRRefreshView alloc] init];
-        _slimeView.delegate = self;
-        _slimeView.upInset = 0;
-        _slimeView.slimeMissWhenGoingBack = YES;
-        _slimeView.slime.bodyColor = [UIColor grayColor];
-        _slimeView.slime.skinColor = [UIColor grayColor];
-        _slimeView.slime.lineWith = 1;
-        _slimeView.slime.shadowBlur = 4;
-        _slimeView.slime.shadowColor = [UIColor grayColor];
-    }
-    
-    return _slimeView;
-}
-
-- (ELDNoDataPlaceHolderView *)noDataPromptView {
-    if (_noDataPromptView == nil) {
-        _noDataPromptView = ELDNoDataPlaceHolderView.new;
-        [_noDataPromptView.noDataImageView setImage:ImageWithName(@"livelist_placeHolder")];
-        _noDataPromptView.prompt.text = @"No Streamer Live now";
-        _noDataPromptView.hidden = YES;
-    }
-    return _noDataPromptView;
-}
-
-- (ELDHintGoLiveView *)hintGoLiveView {
-    if (_hintGoLiveView == nil) {
-        _hintGoLiveView = ELDHintGoLiveView.new;
-        _hintGoLiveView.hidden = YES;
-    }
-    return _hintGoLiveView;
-}
-
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -413,30 +347,8 @@
     return reusableview;
 }
 
-#pragma mark --UICollectionViewDelegateFlowLayout
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake((CGRectGetWidth(self.view.frame) - 30.f) / 2, (CGRectGetWidth(self.view.frame) - 30.f) / 2);
-}
-
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(10, 10, 10, 10);
-}
-/*
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 5.f;
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return 5.f;
-}*/
 
 #pragma mark - UICollectionViewDelegate
-
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     EaseLiveRoom *room = [self.dataArray objectAtIndex:indexPath.row];
@@ -497,7 +409,6 @@
 }
 
 #pragma mark - AgoraChatClientDelegate
-
 - (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (!aError) {
@@ -526,6 +437,83 @@
     });
 }
 
+#pragma mark - getter and setter
+- (UICollectionView*)collectionView
+{
+    if (_collectionView == nil) {
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight) collectionViewLayout:self.collectionViewLayout];
+        _collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [_collectionView registerClass:[EaseLiveCollectionViewCell class] forCellWithReuseIdentifier:kCollectionIdentifier];
+        [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"];
+        
+        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.delegate = self;
+        _collectionView.dataSource = self;
+        _collectionView.showsVerticalScrollIndicator = NO;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.alwaysBounceVertical = YES;
+        _collectionView.pagingEnabled = NO;
+        _collectionView.userInteractionEnabled = YES;
+    }
+    return _collectionView;
+}
+
+- (UICollectionViewFlowLayout *)collectionViewLayout {
+    UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    CGFloat itemWidth = (KScreenWidth - 16.0 *2 - 4.0) * 0.5;
+    CGFloat itemHeight = itemWidth;
+    flowLayout.itemSize = CGSizeMake(itemWidth, itemHeight);
+    flowLayout.minimumLineSpacing = 4.0;
+    flowLayout.minimumInteritemSpacing = 4.0;
+    flowLayout.sectionInset = UIEdgeInsetsMake(0, 16.0, 0, 16.0);
+    
+    return flowLayout;
+}
+
+- (NSMutableArray*)dataArray
+{
+    if (_dataArray == nil) {
+        _dataArray = [[NSMutableArray alloc] init];
+    }
+    return _dataArray;
+}
+
+- (SRRefreshView *)slimeView
+{
+    if (_slimeView == nil) {
+        _slimeView = [[SRRefreshView alloc] init];
+        _slimeView.delegate = self;
+        _slimeView.upInset = 0;
+        _slimeView.slimeMissWhenGoingBack = YES;
+        _slimeView.slime.bodyColor = [UIColor grayColor];
+        _slimeView.slime.skinColor = [UIColor grayColor];
+        _slimeView.slime.lineWith = 1;
+        _slimeView.slime.shadowBlur = 4;
+        _slimeView.slime.shadowColor = [UIColor grayColor];
+    }
+    
+    return _slimeView;
+}
+
+- (ELDNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = ELDNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:ImageWithName(@"livelist_placeHolder")];
+        _noDataPromptView.prompt.text = @"No Streamer Live now";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
+}
+
+- (ELDHintGoLiveView *)hintGoLiveView {
+    if (_hintGoLiveView == nil) {
+        _hintGoLiveView = ELDHintGoLiveView.new;
+        _hintGoLiveView.hidden = YES;
+    }
+    return _hintGoLiveView;
+}
 @end
 
 
