@@ -381,7 +381,6 @@
 		E96627781BE75E4900FA5B03 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96627771BE75E4900FA5B03 /* VideoToolbox.framework */; };
 		E966277A1BE75E5000FA5B03 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96627791BE75E5000FA5B03 /* AVFoundation.framework */; };
 		E966277C1BE75E5D00FA5B03 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E966277B1BE75E5D00FA5B03 /* CoreMedia.framework */; };
-		E96F3D8A1C17FE410099718A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E96F3D891C17FE410099718A /* Default-568h@2x.png */; };
 		E9ED2EE11C0C551900BA59A6 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ED2EE01C0C551900BA59A6 /* libz.tbd */; };
 		ECCBE3152808781100CDFD2E /* ELDUserInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = ECCBE3142808781100CDFD2E /* ELDUserInfoHeaderView.m */; };
 /* End PBXBuildFile section */
@@ -891,7 +890,6 @@
 		E96627771BE75E4900FA5B03 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		E96627791BE75E5000FA5B03 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E966277B1BE75E5D00FA5B03 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		E96F3D891C17FE410099718A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		E9ED2EDE1C0C551100BA59A6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E9ED2EE01C0C551900BA59A6 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		ECCBE3132808781100CDFD2E /* ELDUserInfoHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDUserInfoHeaderView.h; sourceTree = "<group>"; };
@@ -1732,7 +1730,6 @@
 			isa = PBXGroup;
 			children = (
 				3C525E2024650C7200D16DD5 /* 直播聊天室集成第三方视频推拉流介绍.md */,
-				E96F3D891C17FE410099718A /* Default-568h@2x.png */,
 				D2F4E0EA1D12C8AB00BB7E1A /* EaseMobLiveDemo */,
 				E93E8F451CC9D16B0076EC23 /* Frameworks */,
 				E94670D01BD78B9B00374D7A /* Products */,
@@ -2030,7 +2027,6 @@
 				C08ED18B2844AB7E009614B6 /* icon-setting-unSelected@2x.png in Resources */,
 				C08DFC0F27F16A9500862ADF /* TabbarBg@3x.png in Resources */,
 				C08ED1602844AB7E009614B6 /* barrage@3x.png in Resources */,
-				E96F3D8A1C17FE410099718A /* Default-568h@2x.png in Resources */,
 				C005E18628110A7E0004583B /* bluepoint_small@2x.png in Resources */,
 				C08ED1BD2845B887009614B6 /* live_button_alpha_bg@2x.png in Resources */,
 				C08ED17F2844AB7E009614B6 /* avatat_6@3x.png in Resources */,

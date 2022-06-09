@@ -21,7 +21,9 @@
 - (void)prepare {
     
     self.nameLabel.textColor = COLOR_HEX(0x0D0D0D);
-    self.nameLabel.font = NFont(14.0f);
+    self.nameLabel.font = Font(@"Roboto", 14.0);
+    self.iconImageView.layer.cornerRadius = kContactAvatarHeight * 0.5;
+    
     self.contentView.backgroundColor = UIColor.whiteColor;
     
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
@@ -36,18 +38,20 @@
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(12.0f);
-        make.size.mas_equalTo(kAvatarHeight);
+        make.size.mas_equalTo(kContactAvatarHeight);
     }];
     
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
         make.left.equalTo(self.iconImageView.mas_right).offset(kEaseLiveDemoPadding);
-        make.width.lessThanOrEqualTo(@100);
+        make.width.lessThanOrEqualTo(@120.0);
     }];
     
     [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
         make.left.equalTo(self.nameLabel.mas_right).offset(10.0);
+        make.width.equalTo(@(60.0));
+        make.height.equalTo(@(16.0));
     }];
     
     [self.muteImageView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -153,7 +153,6 @@ typedef enum : NSUInteger {
 
 #define kDefultUserImage   ImageWithName(@"default_avatar")
 
-//#define kDefaultAvatarURL  @"https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/IMDemo/avatar/Image1.png"
 
 #define kDefaultAvatarURL  @"https://download-sdk.oss-cn-beijing.aliyuncs.com/downloads/AgoraChatDemo_Resource/defaultAvatat%403x.png"
 

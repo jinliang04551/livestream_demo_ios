@@ -70,7 +70,6 @@
 - (UILabel *)nameLabel {
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
-//        PingFangSC-Semibold
         _nameLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:16.0f];
         _nameLabel.textColor = TextLabelWhiteColor;
         _nameLabel.textAlignment = NSTextAlignmentLeft;
