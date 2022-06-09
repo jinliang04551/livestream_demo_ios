@@ -73,6 +73,8 @@
 {
     [super viewDidLoad];
     
+    NSLog(@"%s screenSize:%@",__func__,NSStringFromCGSize(CGSizeMake(KScreenWidth, KScreenHeight)));
+    
     self.view.backgroundColor = ViewControllerBgBlackColor;
         
     [self setupCollectionView];

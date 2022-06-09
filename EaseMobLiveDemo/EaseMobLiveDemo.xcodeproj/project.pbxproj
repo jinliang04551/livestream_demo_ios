@@ -146,6 +146,12 @@
 		C0602EAC28056A1C00D39575 /* ELDTitleSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602EAB28056A1C00D39575 /* ELDTitleSwitchCell.m */; };
 		C0602F1B2806BBA600D39575 /* ELDCountCaculateView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602F1A2806BBA600D39575 /* ELDCountCaculateView.m */; };
 		C0602F222806E8B200D39575 /* ELDGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C0602F212806E8B200D39575 /* ELDGiftModel.m */; };
+		C06C23492851E254009B1514 /* live_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C23432851E254009B1514 /* live_logo@2x.png */; };
+		C06C234B2851E254009B1514 /* agora_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C23452851E254009B1514 /* agora_logo@3x.png */; };
+		C06C234C2851E254009B1514 /* agora_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C23462851E254009B1514 /* agora_logo@2x.png */; };
+		C06C234D2851E254009B1514 /* live_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C23472851E254009B1514 /* live_logo@3x.png */; };
+		C06C23502851E565009B1514 /* Splash_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C234E2851E565009B1514 /* Splash_bg@2x.png */; };
+		C06C23512851E565009B1514 /* Splash_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C06C234F2851E565009B1514 /* Splash_bg@3x.png */; };
 		C0714B88280EB62900DE18D1 /* go_live_btn_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714B71280EB62900DE18D1 /* go_live_btn_bg@2x.png */; };
 		C0714B89280EB62900DE18D1 /* go_live_btn_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714B72280EB62900DE18D1 /* go_live_btn_bg@3x.png */; };
 		C0714BC9280ED20F00DE18D1 /* live_gift_disable@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0714BB3280ED20F00DE18D1 /* live_gift_disable@3x.png */; };
@@ -612,6 +618,12 @@
 		C0602F1A2806BBA600D39575 /* ELDCountCaculateView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDCountCaculateView.m; sourceTree = "<group>"; };
 		C0602F202806E8B200D39575 /* ELDGiftModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDGiftModel.h; sourceTree = "<group>"; };
 		C0602F212806E8B200D39575 /* ELDGiftModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDGiftModel.m; sourceTree = "<group>"; };
+		C06C23432851E254009B1514 /* live_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_logo@2x.png"; sourceTree = "<group>"; };
+		C06C23452851E254009B1514 /* agora_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "agora_logo@3x.png"; sourceTree = "<group>"; };
+		C06C23462851E254009B1514 /* agora_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "agora_logo@2x.png"; sourceTree = "<group>"; };
+		C06C23472851E254009B1514 /* live_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_logo@3x.png"; sourceTree = "<group>"; };
+		C06C234E2851E565009B1514 /* Splash_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Splash_bg@2x.png"; sourceTree = "<group>"; };
+		C06C234F2851E565009B1514 /* Splash_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Splash_bg@3x.png"; sourceTree = "<group>"; };
 		C0714B71280EB62900DE18D1 /* go_live_btn_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_live_btn_bg@2x.png"; sourceTree = "<group>"; };
 		C0714B72280EB62900DE18D1 /* go_live_btn_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_live_btn_bg@3x.png"; sourceTree = "<group>"; };
 		C0714BB3280ED20F00DE18D1 /* live_gift_disable@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live_gift_disable@3x.png"; sourceTree = "<group>"; };
@@ -1195,6 +1207,7 @@
 		3C9E31EC260C7B4200CC3E3F /* image */ = {
 			isa = PBXGroup;
 			children = (
+				C06C233D2851CEA3009B1514 /* flash */,
 				C08ED0D22844AB7E009614B6 /* Global */,
 				C08DFC4627F54E9000862ADF /* Setting */,
 				C08DFC3127F2E96900862ADF /* searchBar_icon@2x.png */,
@@ -1352,6 +1365,19 @@
 				C0602E7E28001EF600D39575 /* MISScrollPageSegmentView.h */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		C06C233D2851CEA3009B1514 /* flash */ = {
+			isa = PBXGroup;
+			children = (
+				C06C23462851E254009B1514 /* agora_logo@2x.png */,
+				C06C23452851E254009B1514 /* agora_logo@3x.png */,
+				C06C23432851E254009B1514 /* live_logo@2x.png */,
+				C06C23472851E254009B1514 /* live_logo@3x.png */,
+				C06C234E2851E565009B1514 /* Splash_bg@2x.png */,
+				C06C234F2851E565009B1514 /* Splash_bg@3x.png */,
+			);
+			path = flash;
 			sourceTree = "<group>";
 		};
 		C08DFC2127F1CC4300862ADF /* Custom */ = {
@@ -1831,9 +1857,11 @@
 				C08D320127FEE846005AC68E /* gender_male@2x.png in Resources */,
 				C08ED1A32844AB7E009614B6 /* avatat_5@3x.png in Resources */,
 				C005E18728110A7E0004583B /* bluepoint_large@2x.png in Resources */,
+				C06C23492851E254009B1514 /* live_logo@2x.png in Resources */,
 				C08DFC1027F16A9500862ADF /* TabbarBg@2x.png in Resources */,
 				C08ED1A82844AB7E009614B6 /* avatat_7@2x.png in Resources */,
 				C08ED1742844AB7E009614B6 /* default_back_image@3x.png in Resources */,
+				C06C234B2851E254009B1514 /* agora_logo@3x.png in Resources */,
 				C08D31EF27FEDDDD005AC68E /* member_mute_icon@3x.png in Resources */,
 				C08DFC3627F2EFA300862ADF /* live_close@2x.png in Resources */,
 				C0602E8E280029F200D39575 /* member_bg_top@3x.png in Resources */,
@@ -1843,6 +1871,7 @@
 				C08E8F3B27EDD46100DE47C4 /* Channel_normal@2x.png in Resources */,
 				C08ED1972844AB7E009614B6 /* gift.rose@3x.png in Resources */,
 				C08DFC4127F3039F00862ADF /* camera_flip@2x.png in Resources */,
+				C06C23502851E565009B1514 /* Splash_bg@2x.png in Resources */,
 				C005E17828100F390004583B /* live_notify@3x.png in Resources */,
 				C08ED1822844AB7E009614B6 /* gift.rings@3x.png in Resources */,
 				C08ED14F2844AB7E009614B6 /* gift.cake@3x.png in Resources */,
@@ -1923,6 +1952,7 @@
 				C08D31CE27FE900D005AC68E /* loading@2x.png in Resources */,
 				C08ED19A2844AB7E009614B6 /* icon-setting-selected@3x.png in Resources */,
 				C08ED17C2844AB7E009614B6 /* live@3x.png in Resources */,
+				C06C234C2851E254009B1514 /* agora_logo@2x.png in Resources */,
 				C08D31E827FEDDDD005AC68E /* live_unread_msg_bg@3x.png in Resources */,
 				C047554F28095CCE0094EAD3 /* LXCalenderCell.xib in Resources */,
 				C08D31E527FEDDDD005AC68E /* live_chatlist_normal@2x.png in Resources */,
@@ -1980,6 +2010,7 @@
 				C08E8F2C27EDC20800DE47C4 /* livelist_placeHolder@2x.png in Resources */,
 				C08ED1AC2844AB7E009614B6 /* ic_praise@2x.png in Resources */,
 				C08D320C27FF0FCA005AC68E /* liveroom_people_icon@3x.png in Resources */,
+				C06C23512851E565009B1514 /* Splash_bg@3x.png in Resources */,
 				D2F4E23F1D12C8AB00BB7E1A /* LaunchScreen.xib in Resources */,
 				C04755192807CBB60094EAD3 /* gift.PinkHeart@3x.png in Resources */,
 				C08E8F3C27EDD46100DE47C4 /* Channel_normal@3x.png in Resources */,
@@ -2003,6 +2034,7 @@
 				C005E18628110A7E0004583B /* bluepoint_small@2x.png in Resources */,
 				C08ED1BD2845B887009614B6 /* live_button_alpha_bg@2x.png in Resources */,
 				C08ED17F2844AB7E009614B6 /* avatat_6@3x.png in Resources */,
+				C06C234D2851E254009B1514 /* live_logo@3x.png in Resources */,
 				C08DFC6F27F5AB2800862ADF /* gray_right_arrow@3x.png in Resources */,
 				C04755252807CBB60094EAD3 /* gift.Crown@3x.png in Resources */,
 				C08ED1642844AB7E009614B6 /* back_icon_white@3x.png in Resources */,

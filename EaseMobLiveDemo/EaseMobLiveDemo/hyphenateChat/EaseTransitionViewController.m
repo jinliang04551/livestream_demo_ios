@@ -11,6 +11,10 @@
 NSString *defaultPwd = @"000000";//默认密码
 
 @interface EaseTransitionViewController ()
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIImageView *bgImageView;
+@property (nonatomic, strong) UIImageView *logoImageView;
+@property (nonatomic, strong) UIImageView *nameImageView;
 
 @end
 
@@ -18,42 +22,26 @@ NSString *defaultPwd = @"000000";//默认密码
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self _setupSubviews];
+    [self placeAndLayoutSubviews];
+    self.view.backgroundColor = UIColor.clearColor;
     [self autoRegistAccount];
 }
 
-- (void)_setupSubviews
+- (void)placeAndLayoutSubviews
 {
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBarHidden = YES;
     
-    CGFloat position = [UIScreen mainScreen].bounds.size.height / 2;
-    UIImageView *LogoView = [[UIImageView alloc]init];
-    [self.view addSubview:LogoView];
-    [LogoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@80);
-        make.bottom.equalTo(self.view.mas_centerY).offset(-(position - 80)/2);
+    [self.view addSubview:self.contentView];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
+        make.width.equalTo(@(KScreenWidth));
+        make.height.equalTo(@(KScreenHeight));
     }];
-    LogoView.image = [UIImage imageNamed:@"Logo"];
-    
-    UILabel *welcomeLabel = [[UILabel alloc]init];
-    [self.view addSubview:welcomeLabel];
-    [welcomeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).offset(-120);
-        make.left.equalTo(self.view).offset(40);
-        make.right.equalTo(self.view).offset(-40);
-    }];
-    welcomeLabel.textAlignment = NSTextAlignmentCenter;
-    NSMutableDictionary *textDict = [NSMutableDictionary dictionary];
-    textDict[NSForegroundColorAttributeName] = RGBACOLOR(86, 86, 86, 1);
-    textDict[NSFontAttributeName] = [UIFont fontWithName:@"Alibaba-PuHuiTi" size:16.f];
-    textDict[NSKernAttributeName] = @(3.56);
-    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
-    paraStyle.alignment = NSTextAlignmentCenter;
-    textDict[NSParagraphStyleAttributeName] = paraStyle;
-    welcomeLabel.attributedText = [[NSAttributedString alloc]initWithString:@"Welcome to Huanxin Live Chat Room" attributes:textDict];
+
 }
+
 
 - (void)autoRegistAccount
 {
@@ -112,6 +100,66 @@ NSString *defaultPwd = @"000000";//默认密码
     [EaseHttpManager.sharedInstance uploadFileWithData:avatarData completion:aCompletion];
 }
 
+#pragma mark getter and setter
+- (UIView *)contentView {
+    if (_contentView == nil) {
+        _contentView = [[UIView alloc] init];
+        
+        [_contentView addSubview:self.bgImageView];
+        [_contentView addSubview:self.logoImageView];
+        [_contentView addSubview:self.nameImageView];
+        
+        [self.bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+        
+        [self.logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView.mas_centerY);
+            make.size.equalTo(@(120.0));
+        }];
+
+        [self.nameImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(-64.0);
+            make.width.equalTo(@(100.0));
+            make.height.equalTo(@(34.0));
+        }];
+
+    }
+    
+    return _contentView;
+}
+
+
+- (UIImageView *)bgImageView {
+    if (_bgImageView == nil) {
+        _bgImageView = [[UIImageView alloc] init];
+        _bgImageView.contentMode = UIViewContentModeCenter;
+        [_bgImageView setImage:ImageWithName(@"Splash_bg")];
+    }
+    return _bgImageView;
+}
+
+- (UIImageView *)logoImageView {
+    if (_logoImageView == nil) {
+        _logoImageView = [[UIImageView alloc] init];
+        _logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_logoImageView setImage:ImageWithName(@"live_logo")];
+
+    }
+    return _logoImageView;
+}
+
+- (UIImageView *)nameImageView {
+    if (_nameImageView == nil) {
+        _nameImageView = [[UIImageView alloc] init];
+        _nameImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_nameImageView setImage:ImageWithName(@"agora_logo")];
+
+    }
+    return _nameImageView;
+}
 
 
 @end

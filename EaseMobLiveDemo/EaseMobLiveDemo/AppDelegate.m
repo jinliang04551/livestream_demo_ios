@@ -43,6 +43,7 @@
                                                  name:ELDautoRegistAccount
                                                object:nil];
         
+    
     //初始化环信sdk
     [self initHyphenateChatSDK];
                     
