@@ -47,9 +47,9 @@
     if (self.hasUnit) {
         NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc] init];
         
-        NSAttributedString *secondString = [ELDUtil attributeContent:[@(self.maxCountDown) stringValue] color:TextLabelWhiteColor font:Font(@"Roboto", 28.0)];
+        NSAttributedString *secondString = [ELDUtil attributeContent:[@(self.maxCountDown) stringValue] color:TextLabelWhiteColor font:Font(@"Roboto-BoldCondensedItalic", 28.0)];
         
-        NSAttributedString *unitAttString = [ELDUtil attributeContent:@"s" color:TextLabelWhiteColor font:Font(@"Roboto", 24.0)];
+        NSAttributedString *unitAttString = [ELDUtil attributeContent:@"s" color:TextLabelWhiteColor font:Font(@"Roboto-BoldCondensedItalic", 24.0)];
         
         [mutableAttString appendAttributedString:secondString];
         [mutableAttString appendAttributedString:unitAttString];

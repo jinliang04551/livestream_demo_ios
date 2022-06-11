@@ -19,9 +19,9 @@
 
 #define kInfoHeaderViewHeight 200.0
 #define kHeaderInSection  30.0
+#define kNickNameMaxLength 24
 
-
-@interface ELDEditUserInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface ELDEditUserInfoViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) ELDUserHeaderView *userHeaderView;
 @property (nonatomic, strong) UITableView *table;
@@ -66,13 +66,16 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Change Nick Name" message:@"" preferredStyle:UIAlertControllerStyleAlert];
 
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-
+//        textField.delegate = self;
+        [textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }];
+    
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
        
     }];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField *messageTextField = alertController.textFields.firstObject;
+        
         [self updateMyNickname:messageTextField.text];
 
     }];
@@ -81,6 +84,8 @@
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
+
 
 - (void)updateMyNickname:(NSString *)newName
 {
@@ -268,6 +273,21 @@
         
         completion(success);
     }];
+}
+
+#pragma mark UITextFieldDelegate
+- (void)textFieldDidChange:(UITextField *)textField {
+    
+    UITextRange *selectedRange = [textField markedTextRange];
+    UITextPosition *pos = [textField positionFromPosition:selectedRange.start offset:0];
+    if (selectedRange && pos) {
+        return;
+    }
+    NSInteger realLength = textField.text.length;
+    if (realLength > kNickNameMaxLength) {
+        textField.text = [textField.text substringToIndex:kNickNameMaxLength];
+    }
+
 }
 
 
@@ -465,7 +485,7 @@
 @end
 #undef kInfoHeaderViewHeight
 #undef kHeaderInSection
-
+#undef kNickNameMaxLength
 
 
 

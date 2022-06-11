@@ -42,6 +42,7 @@
 		<string>iconfont.ttf</string>
 		<string>Zapfino.ttf</string>
 		<string>Roboto-Black.ttf</string>
+		<string>Roboto-BoldCondensedItalic.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

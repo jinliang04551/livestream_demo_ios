@@ -311,11 +311,12 @@ static const NSInteger animationTime = 5;
     if (_countLabel == nil) {
         _countLabel = [[JPGiftCountLabel alloc] init];
         _countLabel.textColor = [UIColor whiteColor];
-        _countLabel.font = Font(@"Roboto", 24.0);
+        _countLabel.font = Font(@"Roboto-BoldCondensedItalic", 24.0);
         _countLabel.textAlignment = NSTextAlignmentLeft;
     }
     return _countLabel;
 }
+
 
 
 @end

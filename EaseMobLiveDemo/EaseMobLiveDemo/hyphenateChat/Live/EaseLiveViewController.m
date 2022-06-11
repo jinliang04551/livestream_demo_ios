@@ -1151,7 +1151,7 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         _blurBgView = [[UIView alloc] init];
         _blurBgView.hidden = YES;
         
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleRegular];
 
         UIVisualEffectView *visualView = [[UIVisualEffectView alloc]initWithEffect:blurEffect];
         [_blurBgView addSubview:visualView];

@@ -15,7 +15,7 @@
 #define kMaxTitleLength 50
 #define kCloseBgViewHeight 32.0f
 
-@interface ELDPreLivingViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UITextViewDelegate>
+@interface ELDPreLivingViewController ()<UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UITextViewDelegate>
 
 
 @property (nonatomic, strong) UIView *cameraView;
@@ -215,7 +215,7 @@
     }];
     [albumAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style: UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [cancelAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
@@ -383,6 +383,12 @@
     self.countLabel.text = [NSString stringWithFormat:@"%lu/%d",(unsigned long)textView.text.length,kMaxTitleLength];
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if([[[UITextInputMode currentInputMode] primaryLanguage] isEqualToString:@"emoji"]){
+        return NO;
+    }
+    return  YES;
+}
 
 #pragma mark gette and setter
 - (UIView *)cameraView {
@@ -584,7 +590,7 @@
     if (_goLiveButton == nil) {
         _goLiveButton = [[UIButton alloc] init];
         [_goLiveButton addTarget:self action:@selector(goLiveAction) forControlEvents:UIControlEventTouchUpInside];
-        _goLiveButton.titleLabel.font = NFont(17.0f);
+        _goLiveButton.titleLabel.font = Font(@"Roboto", 17.0f);
         [_goLiveButton setTitle:@"Go LIVE!" forState:UIControlStateNormal];
         [_goLiveButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
 
