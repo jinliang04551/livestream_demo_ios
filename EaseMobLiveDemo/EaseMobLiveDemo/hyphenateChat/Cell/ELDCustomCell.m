@@ -79,12 +79,6 @@
     return _nameLabel;
 }
 
-- (UIView *)accessoryView {
-    UIImageView *accImageView = [[UIImageView alloc] init];
-    [accImageView setImage:ImageWithName(@"gray_right_arrow")];
-    return accImageView;
-}
-
 - (UIView *)bottomLine {
     if (!_bottomLine) {
         _bottomLine = UIView.new;

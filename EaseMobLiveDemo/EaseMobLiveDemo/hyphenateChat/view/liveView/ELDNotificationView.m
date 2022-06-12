@@ -79,13 +79,10 @@
 {
     if (_contentLabel == nil) {
         _contentLabel = [[UILabel alloc] init];
-        _contentLabel.font = [UIFont systemFontOfSize:12.0];
+        _contentLabel.font = Font(@"Roboto-Bold", 12.0);
         _contentLabel.textColor = [UIColor whiteColor];
         _contentLabel.textAlignment = NSTextAlignmentLeft;
-        _contentLabel.shadowColor = [UIColor blackColor];
-        _contentLabel.shadowOffset = CGSizeMake(1, 1);
         _contentLabel.text = @"";
-
     }
     return _contentLabel;
 }

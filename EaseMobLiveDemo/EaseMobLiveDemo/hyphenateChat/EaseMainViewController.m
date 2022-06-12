@@ -9,7 +9,6 @@
 #import "UIImage+Color.h"
 #import "EaseSearchDisplayController.h"
 #import "Masonry.h"
-#import "EaseSettingsViewController.h"
 #import "EaseDefaultDataHelper.h"
 #import "ELDLiveListViewController.h"
 #import "ELDSettingViewController.h"

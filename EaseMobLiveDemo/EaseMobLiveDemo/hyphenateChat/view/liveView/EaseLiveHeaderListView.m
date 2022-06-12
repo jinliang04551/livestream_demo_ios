@@ -95,7 +95,8 @@
     
     [self.watchMemberAvatarsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.bottom.equalTo(self.liveCastView);
-        make.right.equalTo(self.numberBtn.mas_left).offset(-8.0);
+        make.height.equalTo(@(38.0));
+        make.right.equalTo(self.numberBtn.mas_left).offset(-6.0);
     }];
 
     //when chatroom owner is living
@@ -182,7 +183,6 @@
     [self.dataArray addObjectsFromArray:aChatroom.adminList];
     [self.dataArray addObjectsFromArray:aChatroom.memberList];
     [self.numberBtn setTitle:[NSString stringWithFormat:@"%@ %@",@(self.dataArray.count) ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
-        
     [self fetchAllUserInfoWithChatroom:aChatroom];
 }
 
@@ -356,8 +356,9 @@
 {
     if (_liveCastView == nil) {
         _liveCastView = [[EaseLiveCastView alloc] initWithFrame:CGRectMake(10, 0, self.width, kNumberBtnHeight)];
-        _liveCastView.backgroundColor = AlphaBlackColor;
-
+        _liveCastView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+//        _liveCastView.layer.cornerRadius = 12.0f;
+//        [_liveCastView blurWithEffectStyle:UIBlurEffectStyleDark];
     }
     return _liveCastView;
 }
@@ -375,7 +376,8 @@
         _numberBtn.frame = CGRectMake(self.frame.size.width - 60.f, 5.f, 50.f, 30.f);
         _numberBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
         _numberBtn.titleLabel.textColor = [UIColor whiteColor];
-        _numberBtn.backgroundColor = AlphaBlackColor;
+        _numberBtn.backgroundColor =  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+;
         _numberBtn.layer.cornerRadius = kNumberBtnHeight *0.5;
         [_numberBtn setImage:ImageWithName(@"liveroom_people_icon") forState:UIControlStateNormal];
         [_numberBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 5.0, 0, 5.0)];

@@ -7,7 +7,7 @@
 //
 
 #import "ELDSettingViewController.h"
-#import "ELDInfoDetailCell.h"
+#import "ELDSettingAvatarTitleValueAccessCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ELDUserHeaderView.h"
 
@@ -21,7 +21,7 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) ELDUserHeaderView *userHeaderView;
 @property (nonatomic, strong) UITableView *table;
-@property (nonatomic, strong) ELDInfoDetailCell *aboutCell;
+@property (nonatomic, strong) ELDSettingAvatarTitleValueAccessCell *aboutCell;
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
 
 
@@ -196,8 +196,8 @@
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = ViewControllerBgBlackColor;
         _table.tableHeaderView = [self headerView];
-        [_table registerClass:[ELDInfoDetailCell class] forCellReuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
-        _table.rowHeight = [ELDInfoDetailCell height];
+        [_table registerClass:[ELDSettingAvatarTitleValueAccessCell class] forCellReuseIdentifier:[ELDSettingAvatarTitleValueAccessCell reuseIdentifier]];
+        _table.rowHeight = [ELDSettingAvatarTitleValueAccessCell height];
     }
     return _table;
 }
@@ -224,10 +224,9 @@
 }
 
 
-- (ELDInfoDetailCell *)aboutCell {
+- (ELDSettingAvatarTitleValueAccessCell *)aboutCell {
     if (_aboutCell == nil) {
-        _aboutCell = [[ELDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
-        _aboutCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        _aboutCell = [[ELDSettingAvatarTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDSettingAvatarTitleValueAccessCell reuseIdentifier]];
         [_aboutCell.iconImageView setImage:ImageWithName(@"about_icon")];
         _aboutCell.nameLabel.text= @"About";
         NSString *ver = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];

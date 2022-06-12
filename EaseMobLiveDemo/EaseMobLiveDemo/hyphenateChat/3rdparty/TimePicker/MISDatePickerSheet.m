@@ -95,7 +95,7 @@
         [_datePicker setDate:[NSDate date] animated:YES];
         [_datePicker setMaximumDate:[NSDate date]];
         
-        NSDate* minDate = [ELDUtil dateFromString:@"1970-01-01"];
+        NSDate* minDate = [ELDUtil dateFromString:@"1900-01-01"];
         NSDate* maxDate = [ELDUtil dateFromString:@"2099-12-31"];
 
         _datePicker.minimumDate = minDate;

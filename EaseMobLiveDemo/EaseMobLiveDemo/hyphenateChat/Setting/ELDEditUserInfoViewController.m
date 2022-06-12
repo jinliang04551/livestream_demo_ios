@@ -7,14 +7,13 @@
 //
 
 #import "ELDEditUserInfoViewController.h"
-#import "ELDInfoDetailCell.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ELDEditUserInfoViewController.h"
 #import "ELDUserHeaderView.h"
-#import "ELDTitleDetailCell.h"
 #import "LXCalendarOneController.h"
 #import "MISDatePickerSheet.h"
 #import "NSDate+GFCalendar.h"
+#import "ELDSettingTitleValueAccessCell.h"
 
 
 #define kInfoHeaderViewHeight 200.0
@@ -169,7 +168,12 @@
 - (void)modifyBirth {    
     MISDatePickerSheet* sheet = [[MISDatePickerSheet alloc] initWithDatePickerMode:UIDatePickerModeDate];
     sheet.minDate = [ELDUtil dateFromString:@"1900-01-01"];
-    sheet.maxDate = [ELDUtil dateFromString:@"2099-12-31"];
+    NSDate *todayDate = [NSDate date];
+    
+    NSDateFormatter  *dateformatter= [[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateString = [dateformatter stringFromDate:todayDate];
+    sheet.maxDate = [ELDUtil dateFromString:dateString];
 
     [sheet setDateBlock:^(NSDate *date) {
         NSString *dateString = [NSString stringWithFormat:@"%@-%@-%@",[@([date dateYear]) stringValue],[self  convert2StringWithInt:[date dateMonth]],[self convert2StringWithInt:[date dateDay]]];
@@ -342,10 +346,9 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
+    ELDSettingTitleValueAccessCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDSettingTitleValueAccessCell reuseIdentifier]];
     if (cell == nil) {
-        cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell = [[ELDSettingTitleValueAccessCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDSettingTitleValueAccessCell reuseIdentifier]];
     }
 
     if (indexPath.row == 0) {
@@ -416,8 +419,8 @@
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = ViewControllerBgBlackColor;
         _table.tableHeaderView = [self headerView];
-        [_table registerClass:[ELDInfoDetailCell class] forCellReuseIdentifier:[ELDInfoDetailCell reuseIdentifier]];
-        _table.rowHeight = [ELDInfoDetailCell height];
+        [_table registerClass:[ELDSettingTitleValueAccessCell class] forCellReuseIdentifier:[ELDSettingTitleValueAccessCell reuseIdentifier]];
+        _table.rowHeight = [ELDSettingTitleValueAccessCell height];
     }
     return _table;
 }

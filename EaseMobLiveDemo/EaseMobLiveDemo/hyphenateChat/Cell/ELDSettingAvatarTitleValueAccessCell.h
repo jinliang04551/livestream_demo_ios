@@ -10,8 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ELDInfoDetailCell : ELDCustomCell
+@interface ELDSettingAvatarTitleValueAccessCell : ELDCustomCell
 @property (nonatomic, strong) UILabel *detailLabel;
+
 
 @end
 

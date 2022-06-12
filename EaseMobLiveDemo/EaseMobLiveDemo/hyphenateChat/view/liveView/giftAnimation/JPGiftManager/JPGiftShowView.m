@@ -242,6 +242,7 @@ static const NSInteger animationTime = 5;
     if (_contentBgView == nil) {
         _contentBgView = [[UIView alloc] init];
         _contentBgView.alpha = 0.6;
+        _contentBgView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
         _contentBgView.layer.cornerRadius = kBgViewHeight*0.5;
         _contentBgView.clipsToBounds = YES;
         

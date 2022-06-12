@@ -28,7 +28,7 @@
 @property (nonatomic, strong) UIView *liveHeader;
 @property (nonatomic, strong) UILabel *roomTitleLabel;
 @property (nonatomic, strong) UILabel *liveroomNameLabel;
-@property (nonatomic, strong) UILabel *watchNumberLabel;
+@property (nonatomic, strong) UILabel *watchCountLabel;
 @property (nonatomic, strong) UILabel *liveStreamerNameLabel;
 
 @property (nonatomic, strong) UIView *studioOccupancy;//直播间正直播
@@ -92,18 +92,16 @@
     return _liveStreamerNameLabel;
 }
 
-- (UILabel*)watchNumberLabel
+- (UILabel*)watchCountLabel
 {
-    if (_watchNumberLabel == nil) {
-        _watchNumberLabel = [[UILabel alloc] init];
-        _watchNumberLabel.font = [UIFont systemFontOfSize:12.f];
-        _watchNumberLabel.textColor = [UIColor whiteColor];
-        _watchNumberLabel.textAlignment = NSTextAlignmentLeft;
-        _watchNumberLabel.shadowColor = [UIColor blackColor];
-        _watchNumberLabel.shadowOffset = CGSizeMake(1, 1);
-        _watchNumberLabel.text = @"32K";
+    if (_watchCountLabel == nil) {
+        _watchCountLabel = [[UILabel alloc] init];
+        _watchCountLabel.font = [UIFont systemFontOfSize:12.f];
+        _watchCountLabel.textColor = [UIColor whiteColor];
+        _watchCountLabel.textAlignment = NSTextAlignmentLeft;
+        _watchCountLabel.text = @"32K";
     }
-    return _watchNumberLabel;
+    return _watchCountLabel;
 }
 
 - (UIView*)liveFooter
@@ -149,7 +147,7 @@
         _liveHeader.clipsToBounds = YES;
         [_liveHeader addSubview:self.liveWatcherCountBgImageView];
         [_liveHeader addSubview:self.headImageView];
-        [_liveHeader addSubview:self.watchNumberLabel];
+        [_liveHeader addSubview:self.watchCountLabel];
 
         [self.liveWatcherCountBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_liveHeader);
@@ -161,7 +159,7 @@
             make.left.equalTo(_liveHeader.mas_left).offset(5.f);
         }];
         
-        [self.watchNumberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.watchCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.headImageView);
             make.left.equalTo(self.headImageView.mas_right).offset(5.f);
             make.right.equalTo(_liveHeader).offset(-5.0f);
@@ -171,8 +169,7 @@
     return _liveHeader;
 }
 
-- (UIImageView*)headImageView
-{
+- (UIImageView*)headImageView {
     if (_headImageView == nil) {
         _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Live_watch"]];
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -331,7 +328,7 @@
     } else {
         _liveImageView.image = [UIImage imageNamed:@"default_back_image"];
     }
-    self.watchNumberLabel.text  = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
+    self.watchCountLabel.text  = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
     
     //判断房间状态
     if (liveBehavior == kTabbarItemTag_Live) {

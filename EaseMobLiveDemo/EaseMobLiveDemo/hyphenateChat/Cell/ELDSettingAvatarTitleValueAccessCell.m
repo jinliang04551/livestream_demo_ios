@@ -6,9 +6,14 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ELDInfoDetailCell.h"
+#import "ELDSettingAvatarTitleValueAccessCell.h"
 
-@implementation ELDInfoDetailCell
+@interface ELDSettingAvatarTitleValueAccessCell ()
+@property (nonatomic, strong) UIImageView* accessoryImageView;
+@end
+
+
+@implementation ELDSettingAvatarTitleValueAccessCell
 
 - (void)prepare {
     self.contentView.backgroundColor = ViewControllerBgBlackColor;
@@ -17,6 +22,7 @@
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
+    [self.contentView addSubview:self.accessoryImageView];
     [self.contentView addSubview:self.bottomLine];
 }
 
@@ -36,9 +42,17 @@
     
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
-        make.right.equalTo(self.contentView).offset(-kEaseLiveDemoPadding * 1.6);
+        make.right.equalTo(self.accessoryImageView.mas_left).offset(-13.0);
     }];
- 
+     
+    [self.accessoryImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.width.equalTo(@(8.0));
+        make.height.equalTo(@(12.0));
+        make.right.equalTo(self.contentView).offset(-12.0);
+    }];
+
+    
     [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self);
         make.height.equalTo(@ELD_ONE_PX);
@@ -59,4 +73,12 @@
     return _detailLabel;
 }
 
+- (UIImageView *)accessoryImageView {
+    if (_accessoryImageView == nil) {
+        _accessoryImageView = [[UIImageView alloc] init];
+        [_accessoryImageView setImage:ImageWithName(@"gray_right_arrow")];
+        _accessoryImageView.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _accessoryImageView;
+}
 @end

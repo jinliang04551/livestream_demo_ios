@@ -8,7 +8,9 @@
  */
 
 #import "ELDAboutViewController.h"
-#import "ELDTitleDetailCell.h"
+#import "ELDSettingTitleValueCell.h"
+
+
 #import <UIKit/UIKit.h>
 
 @interface ELDAboutViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -47,9 +49,9 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
+    ELDSettingTitleValueCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDSettingTitleValueCell reuseIdentifier]];
     if (!cell) {
-        cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
+        cell = [[ELDSettingTitleValueCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDSettingTitleValueCell reuseIdentifier]];
     }
     if (indexPath.row == 0) {
         cell.nameLabel.attributedText = [self titleAttribute:@"SDK Version"];
@@ -100,8 +102,8 @@
         _table.separatorStyle  = UITableViewCellSeparatorStyleNone;
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = ViewControllerBgBlackColor;
-        [_table registerClass:[ELDTitleDetailCell class] forCellReuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
-        _table.rowHeight = [ELDTitleDetailCell height];
+        [_table registerClass:[ELDSettingTitleValueCell class] forCellReuseIdentifier:[ELDSettingTitleValueCell reuseIdentifier]];
+        _table.rowHeight = [ELDSettingTitleValueCell height];
     }
     return _table;
 }

@@ -8,8 +8,11 @@
 
 #import "ELDWatchMemberAvatarsView.h"
 
+#define kAvatarAlphaBgViewSize 38.0
+
 @interface ELDWatchMemberAvatarsView ()
 @property (nonatomic, strong) NSMutableArray *watchArray;
+@property (nonatomic, strong) UIView *firstAvatarAlphaBgView;
 
 @end
 
@@ -24,28 +27,27 @@
 }
 
 - (void)placeAndlayoutSubviews {
-
+    
     [self addSubview:self.secondMemberImageView];
-    [self addSubview:self.firstMemberImageView];
+    [self addSubview:self.firstAvatarAlphaBgView];
 
-    [self.firstMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.firstAvatarAlphaBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
         make.left.equalTo(self).offset(5.0);
-        make.size.equalTo(@(kAvatarHeight));
+        make.size.equalTo(@(kAvatarAlphaBgViewSize));
     }];
     
     [self.secondMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self);
-        make.left.equalTo(self.firstMemberImageView.mas_left).offset(kAvatarHeight * 0.5);
-        make.size.equalTo(self.firstMemberImageView);
+        make.left.equalTo(self.firstAvatarAlphaBgView.mas_right).offset(-10.0);
+        make.size.equalTo(@(kAvatarHeight));
         make.right.equalTo(self).offset(-5.0);
     }];
 }
 
 - (void)updateWatchersAvatarWithUrlArray:(NSArray *)urlArray {
-     
-    self.hidden = [urlArray count] > 0 ? NO : YES;
     
+    self.hidden = [urlArray count] > 0 ? NO : YES;
     
     if (urlArray.count == 0) {
         return;
@@ -98,5 +100,35 @@
     return _watchArray;
 }
 
+- (UIView *)firstAvatarAlphaBgView {
+    if (_firstAvatarAlphaBgView == nil) {
+        _firstAvatarAlphaBgView = [[UIView alloc] init];
+        _firstAvatarAlphaBgView.layer.cornerRadius = kAvatarAlphaBgViewSize * 0.5;
+    
+        UIImageView *alphaView = [[UIImageView alloc] init];
+        [alphaView setImage:ImageWithName(@"avatar_alpha_bg")];
+        
+//        UIView *alphaView = [[UIView alloc] init];
+//        alphaView.backgroundColor = UIColor.blackColor;
+//        alphaView.alpha = 0.5;
+        
+        [_firstAvatarAlphaBgView addSubview:alphaView];
+        [alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(_firstAvatarAlphaBgView).insets(UIEdgeInsetsMake(3.0, 3.0, 3.0, 3.0));
+            
+        }];
+        
+        [_firstAvatarAlphaBgView addSubview:self.firstMemberImageView];
+        [self.firstMemberImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_firstAvatarAlphaBgView);
+            make.centerX.equalTo(_firstAvatarAlphaBgView);
+            make.size.equalTo(@(kAvatarHeight));
+        }];
+        
+    }
+    return _firstAvatarAlphaBgView;
+}
 
 @end
+
+#undef kAvatarAlphaBgViewSize

@@ -99,7 +99,9 @@
 //    if ((currentDateMonth > brithDateMonth) || (currentDateMonth == brithDateMonth && currentDateDay >= brithDateDay)) {
 //        iAge++;
 //    }
-      
+    if (iAge < 0) {
+        iAge = 0;
+    }
     return iAge;
 }
 
