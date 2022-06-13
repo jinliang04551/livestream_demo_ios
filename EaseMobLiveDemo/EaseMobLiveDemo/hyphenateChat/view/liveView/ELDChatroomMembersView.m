@@ -199,14 +199,14 @@ MISScrollPageControllerDelegate>
         style.showCover = YES;
         style.coverBackgroundColor = COLOR_HEX(0xD8D8D8);
         style.gradualChangeTitleColor = YES;
-        style.normalTitleColor = COLOR_HEX(0x000000);
+        style.normalTitleColor = COLOR_HEX(0x999999);
         style.selectedTitleColor = COLOR_HEX(0x000000);
         style.scrollLineColor = COLOR_HEXA(0x000000, 0.5);
 
         style.scaleTitle = YES;
         style.autoAdjustTitlesWidth = YES;
         style.titleBigScale = 1.05;
-        style.titleFont = Font(@"Roboto", 14.0);
+        style.titleFont = Font(@"PingFang SC",14.0);
         style.showSegmentViewShadow = YES;
         _pageController = [MISScrollPageController scrollPageControllerWithStyle:style dataSource:self delegate:self];
     }

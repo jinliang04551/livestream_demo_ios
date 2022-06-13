@@ -149,11 +149,11 @@ static const NSInteger animationTime = 5;
     
     if (userNameWidth > giftNameWidth) {
         [self.giftImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.giftNameLabel.mas_right).offset(4.0);
+            make.left.equalTo(self.userNameLabel.mas_right).offset(4.0);
         }];
     }else {
         [self.giftImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.userNameLabel.mas_right).offset(4.0);
+            make.left.equalTo(self.giftNameLabel.mas_right).offset(4.0);
         }];
 
     }
@@ -206,6 +206,8 @@ static const NSInteger animationTime = 5;
 }
 
 - (void)setupBtnText{
+    NSLog(@"%s _num:%@",__func__,@(_num));
+    
     self.countLabel.text = [NSString stringWithFormat:@"x%ld",(long)_num];
     if(_num >= self.currentGiftCount){
         [self stopTimer];

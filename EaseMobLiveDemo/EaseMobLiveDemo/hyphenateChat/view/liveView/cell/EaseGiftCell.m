@@ -46,7 +46,7 @@
     }];
     
     [self.giftImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(10.0);
+        make.top.equalTo(self.contentView).offset(7.0);
         make.centerX.equalTo(self.contentView);
     }];
 

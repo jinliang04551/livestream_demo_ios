@@ -12,7 +12,7 @@
 #import "ELDUserHeaderView.h"
 
 
-#define kInfoHeaderViewHeight 200.0
+#define kInfoHeaderViewHeight 170.0
 #define kHeaderInSection  30.0
 
 
@@ -210,7 +210,6 @@
         [self.userHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_headerView);
         }];
-        _headerView.backgroundColor = UIColor.yellowColor;
     }
     return _headerView;
 }

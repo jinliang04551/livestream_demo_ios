@@ -180,21 +180,6 @@ static NSString* giftCollectionCellIndentify = @"giftCollectionCell";
 
 }
 
-//-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-//{
-//    return UIEdgeInsetsMake(0, kCollectionPadding, 0, kCollectionPadding);
-//}
-//
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
-//{
-//    return kCollectionPadding;
-//}
-//
-//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-//{
-//    return kCollectionPadding;
-//}
-//
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -203,8 +188,9 @@ static NSString* giftCollectionCellIndentify = @"giftCollectionCell";
 #pragma mark - EaseGiftCellDelegate
 - (void)giftCellDidSelected:(EaseGiftCell *)aCell
 {
-    [self.countCaculateView resetCaculateView];
     self.selectedGiftModel = aCell.giftModel;
+    [self.countCaculateView resetCaculateView];
+    [self updateGiftTotalValueWithCount:1];
     [self.collectionView reloadData];
 }
 
