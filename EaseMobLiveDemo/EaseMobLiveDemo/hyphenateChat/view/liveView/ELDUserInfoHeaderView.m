@@ -12,6 +12,7 @@
 
 @interface ELDUserInfoHeaderView ()
 @property (nonatomic, strong) UIImageView *topBgImageView;
+@property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *avatarBgView;
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -33,14 +34,21 @@
 }
 
 - (void)placeAndlayoutSubviews {
+      self.backgroundColor = UIColor.clearColor;
     
+      [self addSubview:self.bgView];
       [self addSubview:self.avatarBgView];
       [self addSubview:self.nameLabel];
       [self addSubview:self.genderView];
       [self addSubview:self.roleImageView];
       [self addSubview:self.muteImageView];
 
-     
+        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.avatarBgView.mas_centerY);
+            make.left.right.equalTo(self);
+            make.bottom.equalTo(self).offset(20.0);
+        }];
+    
       [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self);
           make.centerX.equalTo(self);
@@ -57,8 +65,8 @@
       [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.centerY.equalTo(self.nameLabel);
           make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
-          make.width.equalTo(@(30));
-          make.height.equalTo(@(16));
+          make.width.equalTo(@(kGenderViewWidth));
+          make.height.equalTo(@(kGenderViewHeight));
       }];
 
       [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -100,6 +108,7 @@
   
     self.muteImageView.hidden = !self.isMute;
 }
+
 
 
 #pragma mark getter and setter
@@ -180,6 +189,16 @@
     }
     return _roleImageView;
 }
+
+- (UIView *)bgView {
+    if (_bgView == nil) {
+        _bgView = [[UIView alloc] init];
+        _bgView.backgroundColor = [UIColor whiteColor];
+        _bgView.layer.cornerRadius = 12.0f;
+    }
+    return _bgView;
+}
+
 
 @end
 

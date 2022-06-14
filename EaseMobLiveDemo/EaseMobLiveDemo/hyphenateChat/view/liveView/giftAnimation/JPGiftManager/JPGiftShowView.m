@@ -75,7 +75,7 @@ static const NSInteger animationTime = 5;
     }];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(12);
+        make.left.equalTo(self).offset(12.0);
         make.centerY.equalTo(self);
     }];
     
@@ -89,6 +89,9 @@ static const NSInteger animationTime = 5;
     [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(3.0);
         make.left.equalTo(self.userIconView.mas_right).offset(8.0);
+        
+        CGFloat maxWidth = KScreenWidth - 12.0 * 2 -kUserAvatarHeight -kBgViewHeight - 2.0 - 8.0 - 4.0 - 12.0 - 36.0;
+        make.width.lessThanOrEqualTo(@(maxWidth));
     }];
 
     [self.giftNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {

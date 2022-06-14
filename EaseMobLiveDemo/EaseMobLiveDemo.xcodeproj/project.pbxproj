@@ -27,7 +27,6 @@
 		3C9E3288260C7B4300CC3E3F /* EaseLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E318A260C7B4200CC3E3F /* EaseLiveViewController.m */; };
 		3C9E3291260C7B4300CC3E3F /* EaseLiveGiftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E319A260C7B4200CC3E3F /* EaseLiveGiftView.m */; };
 		3C9E3292260C7B4300CC3E3F /* EaseLiveHeaderListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E319B260C7B4200CC3E3F /* EaseLiveHeaderListView.m */; };
-		3C9E3293260C7B4300CC3E3F /* X.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E31A0260C7B4200CC3E3F /* X.png */; };
 		3C9E3294260C7B4300CC3E3F /* JPGiftModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31A2260C7B4200CC3E3F /* JPGiftModel.m */; };
 		3C9E3295260C7B4300CC3E3F /* JPGiftCountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31A3260C7B4200CC3E3F /* JPGiftCountLabel.m */; };
 		3C9E3296260C7B4300CC3E3F /* JPGiftShowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E31A5260C7B4200CC3E3F /* JPGiftShowManager.m */; };
@@ -445,7 +444,6 @@
 		3C9E319B260C7B4200CC3E3F /* EaseLiveHeaderListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EaseLiveHeaderListView.m; sourceTree = "<group>"; };
 		3C9E319E260C7B4200CC3E3F /* JPGiftShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPGiftShowView.h; sourceTree = "<group>"; };
 		3C9E319F260C7B4200CC3E3F /* JPGiftShowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPGiftShowManager.h; sourceTree = "<group>"; };
-		3C9E31A0260C7B4200CC3E3F /* X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = X.png; sourceTree = "<group>"; };
 		3C9E31A1260C7B4200CC3E3F /* JPGiftCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPGiftCellModel.h; sourceTree = "<group>"; };
 		3C9E31A2260C7B4200CC3E3F /* JPGiftModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPGiftModel.m; sourceTree = "<group>"; };
 		3C9E31A3260C7B4200CC3E3F /* JPGiftCountLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPGiftCountLabel.m; sourceTree = "<group>"; };
@@ -1159,7 +1157,6 @@
 				3C9E31A5260C7B4200CC3E3F /* JPGiftShowManager.m */,
 				3C9E319E260C7B4200CC3E3F /* JPGiftShowView.h */,
 				3C9E31A6260C7B4200CC3E3F /* JPGiftShowView.m */,
-				3C9E31A0260C7B4200CC3E3F /* X.png */,
 				3C9E31AB260C7B4200CC3E3F /* X@2x.png */,
 				3C9E31AA260C7B4200CC3E3F /* X@3x.png */,
 			);
@@ -1911,7 +1908,6 @@
 				C08DFC3727F2EFA300862ADF /* live_close@3x.png in Resources */,
 				C08E8F3127EDC36900DE47C4 /* hintLive@3x.png in Resources */,
 				C08E8F3927EDD46100DE47C4 /* Channels_focus@2x.png in Resources */,
-				3C9E3293260C7B4300CC3E3F /* X.png in Resources */,
 				C08ED1B32844AB7E009614B6 /* close@2x.png in Resources */,
 				C08ED17B2844AB7E009614B6 /* avatat_4@2x.png in Resources */,
 				C06F9E732854585B006506EE /* Roboto-Regular.ttf in Resources */,

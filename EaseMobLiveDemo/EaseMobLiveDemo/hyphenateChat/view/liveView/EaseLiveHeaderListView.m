@@ -91,6 +91,7 @@
         make.centerY.equalTo(self);
         make.height.equalTo(@(kNumberBtnHeight));
         make.left.equalTo(self).offset(12.0f);
+        make.right.lessThanOrEqualTo(self.watchMemberAvatarsView.mas_left).offset(-3.0);
     }];
     
     [self.watchMemberAvatarsView mas_makeConstraints:^(MASConstraintMaker *make) {

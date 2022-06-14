@@ -144,6 +144,24 @@
     [UIApplication  sharedApplication].idleTimerDisabled =NO;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
+    [[AgoraChatClient sharedClient] removeDelegate:self];
+    [_headerListView stopTimer];
+    _chatview.easeChatView.delegate = nil;
+    _chatview = nil;
+    if (self.avPlayer)
+        [self.avPlayer removeTimeObserver:_observer];
+    [self stopTimer];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+
 - (void)joinChatroom {
     ELD_WS
     [[ELDChatViewHelper sharedHelper] joinChatroomWithChatroomId:_room.chatroomId completion:^(AgoraChatroom * _Nonnull aChatroom, AgoraChatError * _Nonnull aError) {
@@ -190,35 +208,10 @@
 }
 
 
-- (void)viewWillLayoutSubviews
-{
-    
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[AgoraChatClient sharedClient].roomManager removeDelegate:self];
-    [[AgoraChatClient sharedClient] removeDelegate:self];
-    [_headerListView stopTimer];
-    _chatview.easeChatView.delegate = nil;
-    _chatview = nil;
-    if (self.avPlayer)
-        [self.avPlayer removeTimeObserver:_observer];
-    [self stopTimer];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.chatview endEditing:YES];
 }
-
-
 
 #pragma mark - fetchlivingstream
 

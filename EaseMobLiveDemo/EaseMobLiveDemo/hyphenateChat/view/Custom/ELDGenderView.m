@@ -66,11 +66,9 @@
 {
     if (_ageLabel == nil) {
         _ageLabel = [[UILabel alloc] init];
-        _ageLabel.font = [UIFont systemFontOfSize:10.0f];
+        _ageLabel.font = NFont(10.0f);
         _ageLabel.textColor = [UIColor whiteColor];
         _ageLabel.textAlignment = NSTextAlignmentLeft;
-        _ageLabel.shadowColor = [UIColor blackColor];
-        _ageLabel.shadowOffset = CGSizeMake(1, 1);
         _ageLabel.text = @"0";
     }
     return _ageLabel;
@@ -95,12 +93,13 @@
         
         [self.genderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_bgView);
-            make.left.equalTo(_bgView).offset(3.0);
+            make.left.equalTo(_bgView).offset(2.0);
+            make.right.equalTo(self.ageLabel.mas_left);
         }];
         
         [self.ageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_bgView);
-            make.left.equalTo(self.genderImageView.mas_right).offset(3.0);
+            make.left.equalTo(_bgView.mas_centerX);
             make.right.equalTo(_bgView).offset(-2.0);
         }];
     }

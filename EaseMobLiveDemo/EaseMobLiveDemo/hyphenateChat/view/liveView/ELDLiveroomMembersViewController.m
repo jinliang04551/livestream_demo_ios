@@ -194,7 +194,7 @@
     ELDLiveroomMemberCell *cell = (ELDLiveroomMemberCell *)[tableView dequeueReusableCellWithIdentifier:[ELDLiveroomMemberCell reuseIdentifier]];
     if (cell == nil) {
         cell = [[ELDLiveroomMemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ELDLiveroomMemberCell reuseIdentifier]];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
     cell.chatroom = self.chatroom;
@@ -264,8 +264,6 @@
     
     
 }
-
-#pragma mark gette and setter
 
 
 @end

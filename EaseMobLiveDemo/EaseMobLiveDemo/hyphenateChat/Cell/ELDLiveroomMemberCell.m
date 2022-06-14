@@ -11,6 +11,8 @@
 @property (nonatomic, strong) UIImageView *muteImageView;
 @property (nonatomic, strong) UIImageView *roleImageView;
 @property (nonatomic, strong) AgoraChatUserInfo *userInfo;
+@property (nonatomic, assign) BOOL hasRoleIcon;
+@property (nonatomic, assign) BOOL hasMuteIcon;
 
 @end
 
@@ -25,12 +27,10 @@
     self.iconImageView.layer.cornerRadius = kContactAvatarHeight * 0.5;
     
     self.contentView.backgroundColor = UIColor.whiteColor;
-    
+
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.roleImageView];
-    [self.contentView addSubview:self.muteImageView];
 }
 
 
@@ -40,51 +40,104 @@
         make.left.equalTo(self.contentView).offset(12.0f);
         make.size.mas_equalTo(kContactAvatarHeight);
     }];
-    
-    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.iconImageView);
-        make.left.equalTo(self.iconImageView.mas_right).offset(kEaseLiveDemoPadding);
-        make.width.lessThanOrEqualTo(@120.0);
-    }];
-    
-    [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.iconImageView);
-        make.left.equalTo(self.nameLabel.mas_right).offset(10.0);
-        make.width.equalTo(@(60.0));
-        make.height.equalTo(@(16.0));
-    }];
-    
-    [self.muteImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.iconImageView);
-        make.left.equalTo(self.roleImageView.mas_right).offset(10.0);
-    }];
 }
 
 
 - (void)updateWithObj:(id)obj {
     self.userInfo = (AgoraChatUserInfo *)obj;
   
+    [self.roleImageView removeFromSuperview];
+    [self.muteImageView removeFromSuperview];
+    
     [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:kDefultUserImage];
     
     self.nameLabel.text = self.userInfo.nickName ?: self.userInfo.userId;
 
     if ([self.userInfo.userId isEqualToString:self.chatroom.owner]) {
         [self.roleImageView setImage:ImageWithName(@"live_streamer")];
+        self.hasRoleIcon = YES;
     }else if ([self.chatroom.adminList containsObject:self.userInfo.userId]){
         [self.roleImageView setImage:ImageWithName(@"live_moderator")];
+        self.hasRoleIcon = YES;
     }else {
         [self.roleImageView setImage:ImageWithName(@"")];
+        self.hasRoleIcon = NO;
     }
     
     
     if ([self.chatroom.muteList containsObject:self.userInfo.userId]) {
-        self.muteImageView.hidden = NO;
+        self.hasMuteIcon = YES;
     }else {
-        self.muteImageView.hidden = YES;
+        self.hasMuteIcon = NO;
+    }
+    
+    if (self.hasRoleIcon && self.hasMuteIcon) {
+        [self.contentView addSubview:self.roleImageView];
+        [self.contentView addSubview:self.muteImageView];
+                
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.left.equalTo(self.iconImageView.mas_right).offset(16.0);
+            make.right.equalTo(self.roleImageView.mas_left).offset(-8.0);
+        }];
+        
+        [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.width.equalTo(@(60.0));
+            make.height.equalTo(@(16.0));
+            make.right.equalTo(self.muteImageView.mas_left).offset(-8.0);
+        }];
+        
+        
+        [self.muteImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.size.equalTo(@(20.0));
+            make.right.lessThanOrEqualTo(self.contentView).offset(-12.0);
+        }];
+        
+    }else if(self.hasRoleIcon) {
+        [self.contentView addSubview:self.roleImageView];
+        
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.left.equalTo(self.iconImageView.mas_right).offset(16.0);
+            make.right.equalTo(self.roleImageView.mas_left).offset(-8.0);
+        }];
+
+        [self.roleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.width.equalTo(@(60.0));
+            make.height.equalTo(@(16.0));
+            make.right.lessThanOrEqualTo(self.contentView).offset(-12.0);
+        }];
+        
+    }else if (self.hasMuteIcon) {
+        [self.contentView addSubview:self.muteImageView];
+        [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.left.equalTo(self.iconImageView.mas_right).offset(16.0);
+            make.right.equalTo(self.muteImageView.mas_left).offset(-8.0);
+        }];
+        
+        [self.muteImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.size.equalTo(@(20.0));
+            make.right.equalTo(self.contentView).offset(-12.0);
+        }];
+        
+    }else {
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(self.iconImageView);
+            make.left.equalTo(self.iconImageView.mas_right).offset(16.0);
+            make.right.equalTo(self).offset(-12.0);
+        }];
     }
     
 }
 
++ (CGFloat)height {
+    return 54.0;
+}
 
 #pragma mark getter and setter
 - (UIImageView *)muteImageView {

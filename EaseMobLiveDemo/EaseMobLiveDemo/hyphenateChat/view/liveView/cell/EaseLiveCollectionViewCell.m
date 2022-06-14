@@ -20,12 +20,13 @@
     BOOL isBroadcasting; //房间是否正直播
 }
 
-@property (nonatomic, strong) UIImageView *headImageView;
-@property (nonatomic, strong) UIImageView *liveWatcherCountBgImageView;
+@property (nonatomic, strong) UIImageView *iconImageView;
+//@property (nonatomic, strong) UIImageView *liveWatcherCountBgImageView;
+@property (nonatomic, strong) UIView *liveWatcherCountBgView;
 @property (nonatomic, strong) UIImageView *liveImageView;
 @property (nonatomic, strong) UIView *broadcastView;
-@property (nonatomic, strong) UIView *liveFooter;
-@property (nonatomic, strong) UIView *liveHeader;
+@property (nonatomic, strong) UIView *liveFooterView;
+@property (nonatomic, strong) UIView *liveHeaderView;
 @property (nonatomic, strong) UILabel *roomTitleLabel;
 @property (nonatomic, strong) UILabel *liveroomNameLabel;
 @property (nonatomic, strong) UILabel *watchCountLabel;
@@ -50,6 +51,81 @@
     return self;
 }
 
+#pragma mark public method
+- (void)setLiveRoom:(EaseLiveRoom*)room liveBehavior:(kTabbarItemBehavior)liveBehavior
+{
+    self.liveStreamerNameLabel.text = room.anchor;
+    self.liveroomNameLabel.text = room.title;
+    
+    if (room.coverPictureUrl.length > 0) {
+        
+        UIImage *image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:room.coverPictureUrl];
+        if (!image) {
+            __weak typeof(self) weakSelf = self;
+        [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:room.coverPictureUrl]
+              options:SDWebImageDownloaderUseNSURLCache
+             progress:NULL
+            completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+                UIImage *backimage = nil;
+                NSString *key = nil;
+                if (image) {
+                    backimage = image;
+                    key = room.coverPictureUrl;
+                } else {
+                    backimage = [UIImage imageNamed:@"default_back_image"];
+                    key = @"default_back_image";
+                }
+                [[SDImageCache sharedImageCache] storeImage:backimage forKey:key toDisk:NO completion:^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        weakSelf.liveImageView.image = backimage;
+                    });
+                }];
+            }];
+        } else {
+            _liveImageView.image = image;
+        }
+    } else {
+        _liveImageView.image = [UIImage imageNamed:@"default_back_image"];
+    }
+    
+    self.watchCountLabel.text  = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
+
+    CGFloat countLabelWidth = [self.watchCountLabel.text sizeWithAttributes:@{
+        NSFontAttributeName:self.watchCountLabel.font}].width;
+
+    CGFloat percent = countLabelWidth/self.frame.size.width;
+    NSLog(@"%s self.frame.size.width:%@ percent:%@",__func__,@(self.frame.size.width),@(percent));
+    
+    CGRect frame = self.liveWatcherCountBgView.frame;
+    frame.size.width = countLabelWidth + 5.0 + 6.0 + 8.0 + 4.0;
+    self.liveWatcherCountBgView.frame = frame;
+    
+    [self.liveWatcherCountBgView addTransitionColor:[UIColor colorWithRed:255.0/255.0 green:0 blue:0 alpha:1] endColor:[UIColor colorWithRed:128.0/255.0 green:0 blue:255.0/255.0 alpha:1] startPoint:CGPointMake(0, 0) endPoint:CGPointMake(1, 1)];
+    
+    //判断房间状态
+    if (liveBehavior == kTabbarItemTag_Live) {
+        self.studioOccupancy.hidden = YES;
+        self.broadcastView.hidden = YES;
+    } else if (liveBehavior == kTabbarItemTag_Broadcast) {
+        self.liveHeaderView.hidden = YES;
+        if (room.status == ongoing) {
+            self.studioOccupancy.hidden = NO;
+            self.broadcastView.hidden = YES;
+            self.liveFooterView.hidden = NO;
+            self.userInteractionEnabled = YES;
+        } else if (room.status == offline) {
+            self.studioOccupancy.hidden = YES;
+            self.broadcastView.hidden = NO;
+            self.liveFooterView.hidden = YES;
+            self.userInteractionEnabled = YES;
+        }
+    }
+}
+
+
+
+
+#pragma mark getter and setter
 - (UILabel*)roomTitleLabel
 {
     if (_roomTitleLabel == nil) {
@@ -69,11 +145,10 @@
 {
     if (_liveroomNameLabel == nil) {
         _liveroomNameLabel = [[UILabel alloc] init];
-        _liveroomNameLabel.font = [UIFont systemFontOfSize:14.0f];
+        _liveroomNameLabel.font = NFont(14.0f);
         _liveroomNameLabel.textColor = [UIColor whiteColor];
         _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveroomNameLabel.backgroundColor = [UIColor clearColor];
-        _liveroomNameLabel.textAlignment = NSTextAlignmentLeft;
         _liveroomNameLabel.text = @"Chats Casually";
     }
     return _liveroomNameLabel;
@@ -83,10 +158,9 @@
 {
     if (_liveStreamerNameLabel == nil) {
         _liveStreamerNameLabel = [[UILabel alloc] init];
-        _liveStreamerNameLabel.font = [UIFont systemFontOfSize:10.f];
+        _liveStreamerNameLabel.font = NFont(10.f);
         _liveStreamerNameLabel.textColor = [UIColor whiteColor];
         _liveStreamerNameLabel.textAlignment = NSTextAlignmentLeft;
-        _liveStreamerNameLabel.backgroundColor = [UIColor clearColor];
         _liveStreamerNameLabel.text = @"Paulo Apollo";
     }
     return _liveStreamerNameLabel;
@@ -96,7 +170,7 @@
 {
     if (_watchCountLabel == nil) {
         _watchCountLabel = [[UILabel alloc] init];
-        _watchCountLabel.font = [UIFont systemFontOfSize:12.f];
+        _watchCountLabel.font = NFont(12.f);
         _watchCountLabel.textColor = [UIColor whiteColor];
         _watchCountLabel.textAlignment = NSTextAlignmentLeft;
         _watchCountLabel.text = @"32K";
@@ -104,19 +178,22 @@
     return _watchCountLabel;
 }
 
-- (UIView*)liveFooter
+- (UIView*)liveFooterView
 {
-    if (_liveFooter == nil) {
-        _liveFooter = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.frame) - kLabelDefaultHeight, CGRectGetWidth(self.frame), kLabelDefaultHeight)];
-        _liveFooter.backgroundColor = [UIColor clearColor];
+    if (_liveFooterView == nil) {
+        _liveFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width  , 60.0)];
+        _liveFooterView.backgroundColor = [UIColor clearColor];
+
+        [_liveFooterView addTransitionColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] endColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.35] startPoint:CGPointMake(0, 0) endPoint:CGPointMake(0, 1)];
+
         
-        [_liveFooter addSubview:self.liveroomNameLabel];
-        [_liveFooter addSubview:self.liveStreamerImageView];
-        [_liveFooter addSubview:self.liveStreamerNameLabel];
+        [_liveFooterView addSubview:self.liveroomNameLabel];
+        [_liveFooterView addSubview:self.liveStreamerImageView];
+        [_liveFooterView addSubview:self.liveStreamerNameLabel];
 
         [self.liveStreamerImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.liveFooter).offset(-kEaseLiveDemoPadding);
-            make.left.equalTo(_liveFooter).offset(kEaseLiveDemoPadding);
+            make.bottom.equalTo(self.liveFooterView).offset(-kEaseLiveDemoPadding);
+            make.left.equalTo(_liveFooterView).offset(kEaseLiveDemoPadding);
         }];
 
         [self.liveStreamerNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -129,63 +206,74 @@
         [self.liveroomNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.liveStreamerImageView.mas_top).offset(-2.0);
             make.left.equalTo(self.liveStreamerImageView);
-            make.right.equalTo(_liveFooter).offset(-kEaseLiveDemoPadding);
-//            make.height.equalTo(@12);
+            make.right.equalTo(_liveFooterView).offset(-kEaseLiveDemoPadding);
         }];
         
     }
-    return _liveFooter;
+    return _liveFooterView;
 }
 
 
-- (UIView*)liveHeader
+- (UIView*)liveHeaderView
 {
-    if (_liveHeader == nil) {
-        _liveHeader = [[UIView alloc] initWithFrame:CGRectMake(8.f, 8.f, 75.f, 14.0f)];
-        _liveHeader.backgroundColor = [UIColor clearColor];
-        _liveHeader.layer.cornerRadius = 7.0f;
-        _liveHeader.clipsToBounds = YES;
-        [_liveHeader addSubview:self.liveWatcherCountBgImageView];
-        [_liveHeader addSubview:self.headImageView];
-        [_liveHeader addSubview:self.watchCountLabel];
-
-        [self.liveWatcherCountBgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_liveHeader);
+    if (_liveHeaderView == nil) {
+        _liveHeaderView = [[UIView alloc] init];
+        _liveHeaderView.backgroundColor = [UIColor clearColor];
+        [_liveHeaderView addSubview:self.liveWatcherCountBgView];
+    
+        [self.liveWatcherCountBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_liveHeaderView).offset(7.0);
+            make.left.equalTo(_liveHeaderView).offset(7.0);
+            make.height.equalTo(@(14.0));
         }];
+        
+       
+    }
+    return _liveHeaderView;
+}
 
-        [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(_liveHeader);
-            make.width.height.equalTo(@6.0);
-            make.left.equalTo(_liveHeader.mas_left).offset(5.f);
+- (UIImageView*)iconImageView {
+    if (_iconImageView == nil) {
+        _iconImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Live_watch"]];
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _iconImageView.layer.masksToBounds = YES;
+    }
+    return _iconImageView;
+}
+
+
+//- (UIImageView *)liveWatcherCountBgImageView {
+//    if (_liveWatcherCountBgImageView == nil) {
+//        _liveWatcherCountBgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LiveStreamer_watch_bg"]];
+//        _liveWatcherCountBgImageView.contentMode = UIViewContentModeScaleAspectFill;
+//        _liveWatcherCountBgImageView.layer.masksToBounds = YES;
+//    }
+//    return _liveWatcherCountBgImageView;
+//}
+
+- (UIView *)liveWatcherCountBgView {
+    if (_liveWatcherCountBgView == nil) {
+        _liveWatcherCountBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, 14.0)];
+        _liveWatcherCountBgView.layer.cornerRadius = 14.0 * 0.5;
+        _liveWatcherCountBgView.clipsToBounds = YES;
+        
+        [_liveWatcherCountBgView addSubview:self.iconImageView];
+        [_liveWatcherCountBgView addSubview:self.watchCountLabel];
+
+        [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_liveWatcherCountBgView);
+            make.size.equalTo(@6.0);
+            make.left.equalTo(_liveWatcherCountBgView).offset(5.f);
         }];
         
         [self.watchCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.headImageView);
-            make.left.equalTo(self.headImageView.mas_right).offset(5.f);
-            make.right.equalTo(_liveHeader).offset(-5.0f);
+            make.centerY.equalTo(_liveWatcherCountBgView);
+            make.left.equalTo(self.iconImageView.mas_right).offset(4.f);
+            make.right.equalTo(_liveWatcherCountBgView).offset(-8.0);
         }];
         
     }
-    return _liveHeader;
-}
-
-- (UIImageView*)headImageView {
-    if (_headImageView == nil) {
-        _headImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Live_watch"]];
-        _headImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _headImageView.layer.masksToBounds = YES;
-    }
-    return _headImageView;
-}
-
-
-- (UIImageView *)liveWatcherCountBgImageView {
-    if (_liveWatcherCountBgImageView == nil) {
-        _liveWatcherCountBgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LiveStreamer_watch_bg"]];
-        _liveWatcherCountBgImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _liveWatcherCountBgImageView.layer.masksToBounds = YES;
-    }
-    return _liveWatcherCountBgImageView;
+    return _liveWatcherCountBgView;
 }
 
 - (UIImageView*)liveImageView {
@@ -197,16 +285,22 @@
         _liveImageView.layer.masksToBounds = YES;
         _liveImageView.backgroundColor = RGBACOLOR(200, 200, 200, 1);
         
-        [_liveImageView addSubview:self.liveHeader];
-        [_liveImageView addSubview:self.liveFooter];
-        [_liveImageView addSubview:self.studioOccupancy];//正在直播
-        [_liveImageView addSubview:self.broadcastView];//开播
+        [_liveImageView addSubview:self.liveHeaderView];
+        [_liveImageView addSubview:self.liveFooterView];
         
-        [self.liveHeader mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_liveImageView).offset(8.0f);
-            make.left.equalTo(_liveImageView).offset(8.0f);
+
+        [self.liveHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_liveImageView);
+            make.left.right.equalTo(_liveImageView);
+            make.height.equalTo(@(30.0));
         }];
         
+        [self.liveFooterView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(_liveImageView);
+            make.left.equalTo(_liveImageView);
+            make.right.equalTo(_liveImageView);
+            make.height.equalTo(@(56.0));
+        }];
         
     }
     return _liveImageView;
@@ -291,64 +385,5 @@
     }
     return _liveStreamerImageView;
 }
-
-- (void)setLiveRoom:(EaseLiveRoom*)room liveBehavior:(kTabbarItemBehavior)liveBehavior
-{
-    self.liveStreamerNameLabel.text = room.anchor;
-    
-    self.liveroomNameLabel.text = room.title;
-    
-    if (room.coverPictureUrl.length > 0) {
-        
-        UIImage *image = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:room.coverPictureUrl];
-        if (!image) {
-            __weak typeof(self) weakSelf = self;
-            [[SDWebImageDownloader sharedDownloader] downloadImageWithURL:[NSURL URLWithString:room.coverPictureUrl]
-                                                                  options:SDWebImageDownloaderUseNSURLCache
-                                                                 progress:NULL
-                                                                completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
-                                                                    UIImage *backimage = nil;
-                                                                    NSString *key = nil;
-                                                                    if (image) {
-                                                                        backimage = image;
-                                                                        key = room.coverPictureUrl;
-                                                                    } else {
-                                                                        backimage = [UIImage imageNamed:@"default_back_image"];
-                                                                        key = @"default_back_image";
-                                                                    }
-                                                                    [[SDImageCache sharedImageCache] storeImage:backimage forKey:key toDisk:NO completion:^{
-                                                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                                                            weakSelf.liveImageView.image = backimage;
-                                                                        });
-                                                                    }];
-                                                                }];
-        } else {
-            _liveImageView.image = image;
-        }
-    } else {
-        _liveImageView.image = [UIImage imageNamed:@"default_back_image"];
-    }
-    self.watchCountLabel.text  = [NSString stringWithFormat:@"%ld",(long)room.currentUserCount];
-    
-    //判断房间状态
-    if (liveBehavior == kTabbarItemTag_Live) {
-        self.studioOccupancy.hidden = YES;
-        self.broadcastView.hidden = YES;
-    } else if (liveBehavior == kTabbarItemTag_Broadcast) {
-        self.liveHeader.hidden = YES;
-        if (room.status == ongoing) {
-            self.studioOccupancy.hidden = NO;
-            self.broadcastView.hidden = YES;
-            self.liveFooter.hidden = NO;
-            self.userInteractionEnabled = YES;
-        } else if (room.status == offline) {
-            self.studioOccupancy.hidden = YES;
-            self.broadcastView.hidden = NO;
-            self.liveFooter.hidden = YES;
-            self.userInteractionEnabled = YES;
-        }
-    }
-}
-
 
 @end

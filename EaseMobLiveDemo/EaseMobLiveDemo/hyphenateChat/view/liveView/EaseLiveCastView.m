@@ -71,7 +71,7 @@
         make.centerY.equalTo(self.nameLabel);
         make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
         make.right.equalTo(self).offset(-8.0);
-        make.width.equalTo(@(30));
+        make.width.equalTo(@(kGenderViewWidth));
         make.height.equalTo(@(kGenderViewHeight));
     }];
 

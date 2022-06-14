@@ -7,7 +7,6 @@
 //
 
 #import "ELDUserInfoView.h"
-#import "ELDGenderView.h"
 #import "ELDTitleSwitchCell.h"
 #import "ELDUserInfoHeaderView.h"
 #import "ELDTitleDetailCell.h"
