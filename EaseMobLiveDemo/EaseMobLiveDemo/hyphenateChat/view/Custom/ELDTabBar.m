@@ -28,24 +28,13 @@
         _image = image;
         _selectedImage = selectedImage;
         _selected = NO;
+        self.iconImageView.image = image;
         
-        _titleLabel = UILabel.new;
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.font = NFont(11.0f);
-        _titleLabel.textColor = COLOR_HEX(0xC9CFCF);
-        _titleLabel.text = title;
-        
-        _iconImageView = UIImageView.new;
-        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _iconImageView.clipsToBounds = YES;
-        _iconImageView.image = image;
-        
-        [self addSubview:_titleLabel];
-        [self addSubview:_iconImageView];
+        [self addSubview:self.iconImageView];
         [self addSubview:self.iconCoverView];
         
         [self.iconImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self).offset(7.0f);
+            make.top.equalTo(self).offset(11.0f);
             make.centerX.equalTo(self);
             make.size.equalTo(@(kAvatarImageViewHeight));
         }];
@@ -53,13 +42,7 @@
         [self.iconCoverView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.iconImageView);
         }];
-        
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.iconImageView.mas_bottom).offset(2.0);
-            make.centerX.equalTo(self);
-            make.bottom.equalTo(self).offset(-7.0f);
-        }];
-        
+                
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSelf)]];
     }
     return self;
@@ -95,6 +78,26 @@
 }
 
 #pragma mark getter and setter
+- (UILabel *)titleLabel {
+    if (_titleLabel == nil) {
+        _titleLabel = UILabel.new;
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.font = NFont(11.0f);
+        _titleLabel.textColor = COLOR_HEX(0xC9CFCF);
+    }
+    return _titleLabel;
+}
+
+- (UIImageView *)iconImageView {
+    if (_iconImageView == nil) {
+        _iconImageView = UIImageView.new;
+        _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _iconImageView.clipsToBounds = YES;
+    }
+    return _iconImageView;
+}
+
+
 - (UIView *)iconCoverView {
     if (_iconCoverView == nil) {
         _iconCoverView = [[UIView alloc] init];
@@ -247,7 +250,7 @@
         alphaView.alpha = 0.0;
         
         UIView *bottomView = [[UIView alloc] init];
-        bottomView.backgroundColor = UIColor.blackColor;
+        bottomView.backgroundColor = COLOR_HEX(0x212226);
 
         if (@available(iOS 11.0, *)) {
             [_bottomBarBgView addSubview:alphaView];

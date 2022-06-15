@@ -14,11 +14,15 @@
     
     self.contentView.backgroundColor = ViewControllerBgBlackColor;
     self.backgroundColor = ViewControllerBgBlackColor;
-    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+//    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+    self.selectionStyle = UITableViewCellSelectionStyleDefault;
+    
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
     [self.contentView addSubview:self.bottomLine];
-
+    
+    UIView *selectView = [[UIView alloc] init];
+    
 }
 
 - (void)placeSubViews {
@@ -54,5 +58,17 @@
     }
     return _detailLabel;
 }
+
+- (void)setSelected:(BOOL)selected {
+    if (selected) {
+        self.contentView.backgroundColor = COLOR_HEX(0x333333);
+        self.backgroundColor = COLOR_HEX(0x333333);
+    }else {
+        self.contentView.backgroundColor = ViewControllerBgBlackColor;
+        self.backgroundColor = ViewControllerBgBlackColor;
+    }
+
+}
+
 
 @end

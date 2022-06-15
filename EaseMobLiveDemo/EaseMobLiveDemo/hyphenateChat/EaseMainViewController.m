@@ -126,7 +126,7 @@
     
     [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@(kBroadCastBtnHeight));
-        make.top.equalTo(_bottomBar.mas_top).offset(-kBroadCastBtnHeight *0.5-3.0);
+        make.centerY.equalTo(self.bottomBar.mas_top).offset(3.0);
         make.centerX.equalTo(self.view);
     }];
 

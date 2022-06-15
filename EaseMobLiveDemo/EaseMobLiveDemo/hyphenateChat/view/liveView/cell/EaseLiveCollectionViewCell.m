@@ -93,9 +93,6 @@
     CGFloat countLabelWidth = [self.watchCountLabel.text sizeWithAttributes:@{
         NSFontAttributeName:self.watchCountLabel.font}].width;
 
-    CGFloat percent = countLabelWidth/self.frame.size.width;
-    NSLog(@"%s self.frame.size.width:%@ percent:%@",__func__,@(self.frame.size.width),@(percent));
-    
     CGRect frame = self.liveWatcherCountBgView.frame;
     frame.size.width = countLabelWidth + 5.0 + 6.0 + 8.0 + 4.0;
     self.liveWatcherCountBgView.frame = frame;

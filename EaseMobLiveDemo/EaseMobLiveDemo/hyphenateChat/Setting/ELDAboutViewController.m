@@ -53,6 +53,7 @@
     if (!cell) {
         cell = [[ELDSettingTitleValueCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDSettingTitleValueCell reuseIdentifier]];
     }
+    
     if (indexPath.row == 0) {
         cell.nameLabel.attributedText = [self titleAttribute:@"SDK Version"];
         NSString *detailContent = [NSString stringWithFormat:@"V:%@",[[AgoraChatClient sharedClient] version]];
@@ -72,13 +73,22 @@
         cell.detailLabel.attributedText = attributeString;
         ELD_WS
         cell.tapCellBlock = ^{
-            [weakSelf goAgoraOffical];
+            [self goAgoraOffical];
         };
     }
     
     return cell;
 }
 
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView reloadData];
+//
+//    if (indexPath.row == 2) {
+//        [self goAgoraOffical];
+//    }
+//}
 
 - (void)goAgoraOffical {
     NSString *urlString = @"https://www.agora.io/en";

@@ -19,9 +19,11 @@
 
 #define kBottomButtonPadding 20.0
 
+#define kGradientBgViewHeight 20.0
 
 @interface ELDChatView ()<EaseChatViewDelegate>
 
+@property (nonatomic, strong) UIView *gradientBgView;
 
 @property (nonatomic, strong) UIView *functionAreaView;
 
@@ -33,7 +35,6 @@
 
 @property (nonatomic, strong) UIButton *exitButton;
 @property (nonatomic, strong) UIView *exitBgView;
-
 @property (nonatomic, strong) UIButton *giftButton;
 
 
@@ -74,8 +75,7 @@
         }
         
         [self placeAndLayoutBottomView];
-    
-        
+
     }
     return self;
 }
@@ -87,7 +87,7 @@
         
     [self.functionAreaView addSubview:self.chatListShowBgView];
     [self.functionAreaView addSubview:self.chatListShowButton];
-
+    
     [self.easeChatView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
         make.left.equalTo(self);
@@ -95,7 +95,7 @@
         make.bottom.equalTo(self);
     }];
 
-    
+
     [self.functionAreaView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.easeChatView.sendTextButton);
         make.left.lessThanOrEqualTo(self.easeChatView.sendTextButton.mas_right);
@@ -334,6 +334,15 @@
 
 
 #pragma mark getter and setter
+- (UIView *)gradientBgView {
+    if (_gradientBgView == nil) {
+        _gradientBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        
+        [_gradientBgView addTransitionColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] endColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1] startPoint:CGPointMake(0, 0) endPoint:CGPointMake(0, 1)];
+    }
+    return _gradientBgView;
+}
+
 - (UIView*)functionAreaView
 {
     if (_functionAreaView == nil) {
@@ -424,3 +433,4 @@
 #undef kExitButtonHeight
 #undef kExitBgViewHeight
 #undef kBottomButtonPadding
+#undef kGradientBgViewHeight
