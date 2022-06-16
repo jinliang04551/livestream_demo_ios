@@ -120,13 +120,18 @@
         if (@available(iOS 11.0, *)) {
             [wkView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor constant:0].active = YES;
         }
+        
         make.bottom.equalTo(self.view);
 
     }];
     
     [self.broadCastBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@(kBroadCastBtnHeight));
-        make.centerY.equalTo(self.bottomBar.mas_top);
+        if (kIs_iPhoneX) {
+            make.centerY.equalTo(self.bottomBar.mas_top);
+        }else {
+            make.centerY.equalTo(self.bottomBar.mas_top).offset(-5.0);
+        }
         make.centerX.equalTo(self.view);
     }];
 

@@ -142,7 +142,7 @@ typedef enum : NSUInteger {
 
 #define kLiveNotifacationViewHeight 30.0
 
-#define kGenderViewWidth 36.0
+#define kGenderViewWidth 38.0
 #define kGenderViewHeight 16.0
 
 #define kCustomTabbarHeight  49.0

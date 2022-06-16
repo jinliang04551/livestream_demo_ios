@@ -86,14 +86,15 @@
 - (UIView *)bgView {
     if (_bgView == nil) {
         _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = GenderSecretBgColor;
+        _bgView.backgroundColor = GenderMaleBgColor;
         
         [_bgView addSubview:self.genderImageView];
         [_bgView addSubview:self.ageLabel];
-        
+
         [self.genderImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_bgView);
-            make.left.equalTo(_bgView).offset(2.0);
+//            make.left.equalTo(_bgView).offset(2.0);
+            make.width.equalTo(@(10.0));
             make.right.equalTo(self.ageLabel.mas_left);
         }];
         

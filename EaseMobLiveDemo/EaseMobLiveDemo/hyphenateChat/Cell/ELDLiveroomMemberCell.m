@@ -116,13 +116,13 @@
         [self.nameLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.iconImageView);
             make.left.equalTo(self.iconImageView.mas_right).offset(16.0);
-            make.right.equalTo(self.muteImageView.mas_left).offset(-8.0);
         }];
         
         [self.muteImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.mas_equalTo(self.iconImageView);
             make.size.equalTo(@(20.0));
-            make.right.equalTo(self.contentView).offset(-12.0);
+            make.left.equalTo(self.nameLabel.mas_right).offset(8.0);
+            make.right.lessThanOrEqualTo(self.contentView).offset(-12.0);
         }];
         
     }else {

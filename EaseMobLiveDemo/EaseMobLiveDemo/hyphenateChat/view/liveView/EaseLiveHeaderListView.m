@@ -183,7 +183,7 @@
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:aChatroom.adminList];
     [self.dataArray addObjectsFromArray:aChatroom.memberList];
-    [self.numberBtn setTitle:[NSString stringWithFormat:@"%@ %@",@(self.dataArray.count) ,NSLocalizedString(@"profile.people", @"")] forState:UIControlStateNormal];
+    [self.numberBtn setTitle:[NSString stringWithFormat:@"%@",@(self.dataArray.count)] forState:UIControlStateNormal];
     [self fetchAllUserInfoWithChatroom:aChatroom];
 }
 

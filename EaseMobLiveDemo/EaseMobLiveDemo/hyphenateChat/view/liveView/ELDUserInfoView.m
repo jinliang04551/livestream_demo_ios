@@ -15,6 +15,8 @@
 #define kUserInfoCellActionType @"kUserInfoCellActionType"
 #define kUserInfoAlertTitle @"kUserInfoAlertTitle"
 
+#define kMuteAll @"All timed out"
+
 #define kUserInfoCellHeight 44.0
 #define kHeaderViewHeight 154.0
 
@@ -159,13 +161,13 @@
     NSMutableArray *tempArray = NSMutableArray.new;
 
     if (self.ownerSelf) {
-        [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+        [tempArray addObject:@{kUserInfoCellTitle:kMuteAll}];
     }else {
         //owner check oneself
         if (self.chatroom.permissionType == AgoraChatroomPermissionTypeOwner) {
             if (self.beOperationedMemberRoleType == ELDMemberRoleTypeOwner) {
                 self.ownerSelf = YES;
-                [tempArray addObject:@{kUserInfoCellTitle:@"Ban All"}];
+                [tempArray addObject:@{kUserInfoCellTitle:kMuteAll}];
             }else if(self.beOperationedMemberRoleType == ELDMemberRoleTypeAdmin){
                 
                 if (self.memberVCType == ELDMemberVCTypeAll) {
@@ -599,3 +601,5 @@
 #undef kUserInfoAlertTitle
 #undef kUserInfoCellHeight
 #undef kHeaderViewHeight
+#undef kMuteAll
+

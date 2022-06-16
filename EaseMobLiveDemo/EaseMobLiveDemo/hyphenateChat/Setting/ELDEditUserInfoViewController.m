@@ -65,7 +65,6 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Change Nick Name" message:@"" preferredStyle:UIAlertControllerStyleAlert];
 
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-//        textField.delegate = self;
         [textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }];
     
@@ -88,6 +87,8 @@
 
 - (void)updateMyNickname:(NSString *)newName
 {
+    newName = [newName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     if (newName.length > 0 && ![_myNickName isEqualToString:newName])
     {
         self.myNickName = newName;
