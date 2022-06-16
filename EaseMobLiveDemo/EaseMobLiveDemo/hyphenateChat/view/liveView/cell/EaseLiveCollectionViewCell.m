@@ -266,7 +266,7 @@
         [self.watchCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_liveWatcherCountBgView);
             make.left.equalTo(self.iconImageView.mas_right).offset(4.f);
-            make.right.equalTo(_liveWatcherCountBgView).offset(-8.0);
+            make.right.equalTo(_liveWatcherCountBgView).offset(-7.0);
         }];
         
     }

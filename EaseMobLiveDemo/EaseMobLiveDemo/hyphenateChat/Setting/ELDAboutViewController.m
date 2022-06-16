@@ -71,24 +71,19 @@
         
         NSAttributedString *attributeString = [ELDUtil attributeContent:@"Agora.io" color:COLOR_HEX(0x2F80ED) font:Font(@"PingFang SC",16.0)];
         cell.detailLabel.attributedText = attributeString;
-        ELD_WS
-        cell.tapCellBlock = ^{
-            [self goAgoraOffical];
-        };
     }
     
     return cell;
 }
 
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    [tableView reloadData];
-//
-//    if (indexPath.row == 2) {
-//        [self goAgoraOffical];
-//    }
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    if (indexPath.row == 2) {
+        [self goAgoraOffical];
+    }
+}
 
 - (void)goAgoraOffical {
     NSString *urlString = @"https://www.agora.io/en";

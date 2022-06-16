@@ -761,8 +761,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
             
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
 
-            NSString *message = @"is set as a Moderator.";
-            [self showNotifactionMessage:message userId:aAdmin displayAllTime:NO];
+            NSString *message = @"You are set as a Moderator.";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
         }
     }
 }
@@ -776,8 +776,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
                           
             [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
             
-            NSString *message = @"is remove as a Moderator.";
-            [self showNotifactionMessage:message userId:aAdmin displayAllTime:NO];
+            NSString *message = @"You are removed as a Moderator.";
+            [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
         }
     }
 }
@@ -818,8 +818,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
 
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
    
-        NSString *message = @"have been remove timed out.";
-        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+        NSString *message = @"You have been remove timed out.";
+        [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
     }
 }
 
@@ -832,8 +832,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         }
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
         
-        NSString *message = @"has been add to whitelist.";
-        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+        NSString *message = @"You has been add to whitelist.";
+        [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
 
     }
 }
@@ -848,8 +848,8 @@ remoteVideoStateChangedOfUid:(NSUInteger)uid state:(AgoraVideoRemoteState)state 
         
         [self fetchChatroomSpecificationWithRoomId:aChatroom.chatroomId];
                 
-        NSString *message = @"has been remove from whitelist.";
-        [self showNotifactionMessage:message userId:text displayAllTime:NO];
+        NSString *message = @"You has been remove from whitelist.";
+        [self showNotifactionMessage:message userId:@"" displayAllTime:NO];
 
     }
 }

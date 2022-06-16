@@ -17,7 +17,6 @@
 
 - (void)prepare {
     self.contentView.backgroundColor = ViewControllerBgBlackColor;
-    self.backgroundColor = ViewControllerBgBlackColor;
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
@@ -81,4 +80,13 @@
     }
     return _accessoryImageView;
 }
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (highlighted) {
+        self.contentView.backgroundColor = COLOR_HEX(0x333333);
+    }else {
+        self.contentView.backgroundColor = ViewControllerBgBlackColor;
+    }
+}
+
 @end

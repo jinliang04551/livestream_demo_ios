@@ -12,11 +12,14 @@
 
 - (void)prepare {
     
-    self.contentView.backgroundColor = ViewControllerBgBlackColor;
-    self.backgroundColor = ViewControllerBgBlackColor;
+    self.nameLabel.font = NFont(14.0);
+    self.nameLabel.textColor = TextLabelBlackColor;
+
+    self.contentView.backgroundColor = ViewControllerBgWhiteColor;
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
+    
 }
 
 - (void)placeSubViews {
@@ -43,6 +46,14 @@
         _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _detailLabel;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (highlighted) {
+        self.contentView.backgroundColor = COLOR_HEX(0xF5F5F5);
+    }else {
+        self.contentView.backgroundColor = ViewControllerBgWhiteColor;
+    }
 }
 
 @end

@@ -43,11 +43,11 @@
       [self addSubview:self.roleImageView];
       [self addSubview:self.muteImageView];
 
-        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.avatarBgView.mas_centerY);
-            make.left.right.equalTo(self);
-            make.bottom.equalTo(self).offset(20.0);
-        }];
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.avatarBgView.mas_centerY);
+        make.left.right.equalTo(self);
+        make.bottom.equalTo(self).offset(20.0);
+    }];
     
       [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self);
@@ -58,7 +58,8 @@
       [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
           make.top.equalTo(self.avatarBgView.mas_bottom).offset(15.0f);
           make.centerX.equalTo(self.avatarBgView).offset(-kEaseLiveDemoPadding);
-          make.width.mas_lessThanOrEqualTo(300.0);
+          
+          make.width.mas_lessThanOrEqualTo(self.frame.size.width *0.4);
           make.height.equalTo(@(kGenderViewHeight));
       }];
 

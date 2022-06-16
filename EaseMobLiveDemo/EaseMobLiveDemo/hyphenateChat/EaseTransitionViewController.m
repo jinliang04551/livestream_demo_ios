@@ -72,7 +72,7 @@ NSString *defaultPwd = @"000000";//默认密码
     [self uploadUserAvatarcompletion:^(NSString *url, BOOL success) {
         AgoraChatUserInfo *userInfo = [[AgoraChatUserInfo alloc] init];
         userInfo.userId = [AgoraChatClient sharedClient].currentUsername;
-        userInfo.gender = 4;
+        userInfo.gender = 1;
         userInfo.birth = @"2004-01-01";
 
         if (success) {

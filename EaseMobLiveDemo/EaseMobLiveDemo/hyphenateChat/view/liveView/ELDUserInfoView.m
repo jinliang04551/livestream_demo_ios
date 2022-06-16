@@ -461,11 +461,6 @@
     ELDTitleDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:[ELDTitleDetailCell reuseIdentifier]];
     if (cell == nil) {
         cell = [[ELDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ELDTitleDetailCell reuseIdentifier]];
-        cell.contentView.backgroundColor = ViewControllerBgWhiteColor;
-        cell.backgroundColor = ViewControllerBgWhiteColor;
-
-        cell.nameLabel.font = NFont(14.0);
-        cell.nameLabel.textColor = TextLabelBlackColor;
     }
 
     NSDictionary *dic = self.dataArray[indexPath.row];
