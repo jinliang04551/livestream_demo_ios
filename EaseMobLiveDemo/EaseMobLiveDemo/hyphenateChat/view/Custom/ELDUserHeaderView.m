@@ -32,6 +32,7 @@
 
 - (void)placeAndLayoutSubviews {
     self.backgroundColor = ViewControllerBgBlackColor;
+    
     [self addSubview:self.avatarImageView];
     [self addSubview:self.nameLabel];
         
@@ -45,6 +46,7 @@
         make.top.equalTo(self.avatarImageView.mas_bottom).offset(kEaseLiveDemoPadding * 1.2);
         make.left.equalTo(self).offset(kEaseLiveDemoPadding * 10);
         make.right.equalTo(self).offset(-kEaseLiveDemoPadding * 10);
+        make.bottom.equalTo(self).offset(-kEaseLiveDemoPadding);
     }];
     
     if (self.isEditable) {

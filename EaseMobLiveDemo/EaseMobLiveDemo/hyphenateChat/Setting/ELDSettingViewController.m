@@ -12,8 +12,8 @@
 #import "ELDUserHeaderView.h"
 
 
-#define kInfoHeaderViewHeight 170.0
-#define kHeaderInSection  30.0
+#define kInfoHeaderViewHeight 150.0
+#define kHeaderInSectionHeight  20.0
 
 
 @interface ELDSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -144,12 +144,12 @@
 
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kHeaderInSection;
+    return kHeaderInSectionHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kHeaderInSection)];
+    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kHeaderInSectionHeight)];
     
     UILabel *label = [self sectionTitleLabel];
     label.text = @"Settings";
@@ -244,7 +244,7 @@
 
 @end
 #undef kInfoHeaderViewHeight
-#undef kHeaderInSection
+#undef kHeaderInSectionHeight
 
 
 
