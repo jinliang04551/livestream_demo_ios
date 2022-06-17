@@ -1,17 +1,17 @@
 # 简介 #
-本demo演示了通过环信sdk以及环信appServer实现的直播聊天室
+本demo演示了通过环信SDK以及环信appServer实现的直播聊天室
 
 ## 怎么使用本demo ##
-- 首先在EaseMobLiveDemo文件夹下执行pod install,集成环信sdk
+- 首先在EaseMobLiveDemo文件夹下执行pod install,集成环信SDK
 - 初次进入app时会自动注册一个UUID游客账号，默认密码000000，注册成功自动登录，自动登录完成跳转到主页面
-- 点击主页底部“我要直播”蓝色按钮，可创建一个直播间，键入封面图以及本次直播主题后，点击“开始直播”开启一场直播，直播间即出现在“直播大厅”列表，其他游客即可从“直播大厅”进入直播间
-- 游客点击直播大厅任一直播间即可进入该直播间观看直播，直播间内目前可以发聊天消息、给主播点赞，给主播刷礼物，发弹幕消息等，当前直播间聊天室观众均可收到消息动画
+- 点击主页底部红色按钮，可创建一个直播间，键入封面图以及本次直播主题后，点击“开始直播”开启一场直播，直播间即出现在“直播大厅”列表，其他游客即可从“直播大厅”进入直播间
+- 游客点击直播大厅任一直播间即可进入该直播间观看直播，直播间内目前可以发聊天消息给主播刷礼物，当前直播间聊天室观众均可收到消息动画
 
 ## 功能实现 ##
 
 
 ### 创建直播聊天室
-**具体演示代码见EaseLiveTVListViewController,EaseCreateLiveViewController,EasePublishViewController,EaseHttpManager**
+**具体演示代码见EaseLiveTVListViewController,ELDPreLivingViewController,ELDPublishLiveViewController,EaseHttpManager**
 
 1、创建直播聊天室
 ```
@@ -95,18 +95,36 @@ message.chatType = EMChatTypeChatRoom;
 7、获取直播聊天室禁言列表
 
 ```
-/*!
- *  获取聊天室被禁言列表
+/**
+ *  \~chinese
+ *  将一组成员禁言。
+ * 
+ *  仅聊天室所有者和管理员可调用此方法。
+ * 
+ *  异步方法。
  *
- *  @param aChatroomId      聊天室ID
- *  @param aPageNum         获取第几页
- *  @param aPageSize        获取多少条
- *  @param aCompletionBlock 完成的回调
+ *  @param aMuteMembers         要禁言的成员列表。
+ *  @param aMuteMilliseconds    禁言时长
+ *  @param aChatroomId          聊天室 ID。
+ *  @param aCompletionBlock     该方法完成调用的回调。如果该方法调用失败，会包含调用失败的原因。
+ *
+ *  \~english
+ *  Mutes chatroom members.
+ * 
+ *  Only the chatroom owner or admin can call this method.
+ *
+ *  This is an asynchronous method.
+ *
+ *  @param aMuteMembers         The list of mute.
+ *  @param aMuteMilliseconds    Muted time duration in millisecond
+ *  @param aChatroomId          The chatroom ID.
+ *  @param aCompletionBlock     The completion block, which contains the error message if the method call fails.
+ *
  */
-- (void)getChatroomMuteListFromServerWithId:(NSString *)aChatroomId
-                                 pageNumber:(NSInteger)aPageNum
-                                   pageSize:(NSInteger)aPageSize
-                                   completion:(void (^)(NSArray *aList, EMError *aError))aCompletionBlock;
+- (void)muteMembers:(NSArray<NSString *> *_Nonnull)aMuteMembers
+   muteMilliseconds:(NSInteger)aMuteMilliseconds
+       fromChatroom:(NSString *_Nonnull)aChatroomId
+         completion:(void (^_Nullable )(AgoraChatroom *_Nullable aChatroom, AgoraChatError *_Nullable aError))aCompletionBlock;
 ```
 8、直播聊天室某观众解除禁言
 
@@ -206,7 +224,7 @@ message.chatType = EMChatTypeChatRoom;
 ```
 
 ### 观看直播
-**具体代码参考demo EaseLiveViewController，EaseLiveTVListViewController**
+**具体代码参考demo EaseLiveViewController，ELDLiveListViewController**
 
 1、获取当前正直播的直播聊天室列表（包含点播房间和直播房间）
 
@@ -226,139 +244,121 @@ message.chatType = EMChatTypeChatRoom;
 ```
 - 进入某个直播间加入聊天室并且设置消息监听接收消息通知，观看直播
 
+### 聊天室消息列表
+聊天室消息列表及输入框为 UIKit中的功能，详情参考 chat-uikit 聊天室部分
+
 ## 新特性：自定义消息体 ##
 
-- 本demo所实现的‘礼物’，‘弹幕’，‘点赞’等功能均通过“自定义消息体”构建传输消息
+- 本demo所实现的‘礼物’功能通过“自定义消息体”构建传输消息
 
 **具体功能演示代码请参见 EaseCustomMessageHelper**
 
 1、实现自定义消息帮助类接口协议再创建该类实例
 
 ```
-- 实现该接口并重写如下方法
 @protocol EaseCustomMessageHelperDelegate <NSObject>
 
 @optional
 
 //观众点赞消息
-- (void)didReceivePraiseMessage:(EMMessage *)message;
+- (void)didReceivePraiseMessage:(AgoraChatMessage *)message;
+
 //弹幕消息
-- (void)didSelectedBarrageSwitch:(EMMessage*)msg;
+- (void)didSelectedBarrageSwitch:(AgoraChatMessage*)msg;
+
 //观众刷礼物
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count;//观众送礼物
+- (void)steamerReceiveGiftId:(NSString *)giftId giftNum:(NSInteger )giftNum fromUser:(NSString *)userId ;
 
 @end
 
+
 - 创建实例
+/// create a EaseCustomMessageHelper Instance
+/// @param customMsgImp a delegate which implment EaseCustomMessageHelperDelegate
+/// @param chatId a chatroom Id
 - (instancetype)initWithCustomMsgImp:(id<EaseCustomMessageHelperDelegate>)customMsgImp chatId:(NSString*)chatId;
 ```
 2、发送包含自定义消息体的消息
 
 ```
 /*
- 发送自定义消息 （礼物，点赞，弹幕）
- @param text                 消息内容
- @param num                  消息内容数量
- @param messageType          聊天类型
- @param customMsgType        自定义消息类型
- @param aCompletionBlock     发送完成回调block
+ send custom message (gift,like,Barrage)
+ @param text                 Message content
+ @param num                  Number of message content
+ @param messageType          chat type
+ @param customMsgType        custom message type
+ @param aCompletionBlock     send completion callback
 */
-
 - (void)sendCustomMessage:(NSString*)text
                       num:(NSInteger)num
                        to:(NSString*)toUser
-              messageType:(EMChatType)messageType
+              messageType:(AgoraChatType)messageType
             customMsgType:(customMessageType)customMsgType
-               completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+               completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 
 /*
- 发送自定义消息（礼物，点赞，弹幕）（有扩展参数）
- @param text             消息内容
- @param num              消息内容数量
- @param messageType      聊天类型
- @param customMsgType    自定义消息类型
- @param ext              消息扩展
- @param aCompletionBlock 发送完成回调block
+ send custom message (gift,like,Barrage) (with extended parameters)
+ @param text                 Message content
+ @param num                  Number of message content
+ @param messageType          chat type
+ @param customMsgType        custom message type
+ @param ext              message extension
+ @param aCompletionBlock     send completion callback
 */
-
 - (void)sendCustomMessage:(NSString*)text
-                              num:(NSInteger)num
-                               to:(NSString*)toUser
-                      messageType:(EMChatType)messageType
-                    customMsgType:(customMessageType)customMsgType
-                            ext:(NSDictionary*)ext
-                       completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                      num:(NSInteger)num
+                       to:(NSString*)toUser
+              messageType:(AgoraChatType)messageType
+            customMsgType:(customMessageType)customMsgType
+                      ext:(NSDictionary*)ext
+               completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 ```
+
 3、发送用户自定义消息体事件（其他自定义消息体事件）
+
 ```
 /*
-发送用户自定义消息体事件（其他自定义消息体事件）
-@param event                自定义消息体事件
-@param customMsgBodyExt     自定义消息体事件参数
-@param to                   消息发送对象
-@param messageType          聊天类型
-@param aCompletionBlock     发送完成回调block
+ send user custom message (Other custom message body events)
+ 
+@param event                custom message body event
+@param customMsgBodyExt     custom message body event parameters
+@param to                   message receiver
+@param messageType          chat type
+@param aCompletionBlock     send completion callback
 */
 - (void)sendUserCustomMessage:(NSString*)event
-                customMsgBodyExt:(NSDictionary*)customMsgBodyExt
-                            to:(NSString*)toUser
-                        messageType:(EMChatType)messageType
-                   completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
-                   
-/*
-发送用户自定义消息体事件（其他自定义消息体事件）
-@param event                自定义消息体事件
-@param customMsgBodyExt     自定义消息体事件参数
-@param to                   消息发送对象
-@param messageType          聊天类型
-@param aCompletionBlock     发送完成回调block
-*/
-- (void)sendUserCustomMessage:(NSString*)event
-               customMsgBodyExt:(NSDictionary*)customMsgBodyExt
+             customMsgBodyExt:(NSDictionary*)customMsgBodyExt
                            to:(NSString*)toUser
-                       messageType:(EMChatType)messageType
-                  completion:(void (^)(EMMessage *message, EMError *error))aCompletionBlock;
+                  messageType:(AgoraChatType)messageType
+                   completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
+
+/*
+ send user custom message (Other custom message body events) (extension parameters)
+ 
+@param event                custom message body event
+@param customMsgBodyExt     custom message body event parameters
+@param to                   message receiver
+@param messageType          chat type
+@param ext                  message extension
+@param aCompletionBlock     send completion callback
+*/
+- (void)sendUserCustomMessage:(NSString*)event
+             customMsgBodyExt:(NSDictionary*)customMsgBodyExt
+                           to:(NSString*)toUser
+                  messageType:(AgoraChatType)messageType
+                          ext:(NSDictionary*)ext
+                   completion:(void (^)(AgoraChatMessage *message, AgoraChatError *error))aCompletionBlock;
 ```
 
-3、解析消息内容
 
-```
-//解析消息内容
-+ (NSString*)getMsgContent:(EMMessageBody*)messageBody;
-```
 4、直播聊天室礼物消息展示
 
 ```
-/*
- @param msg             接收的消息
- @param count           礼物数量
- @param backView        展示在哪个页面
- */
- 
-- (void)userSendGifts:(EMMessage*)msg count:(NSInteger)count backView:(UIView*)backView;
-```
-5、弹幕消息展示
-
-```
-/*
- @param msg             接收的消息
- @param backView        展示在哪个页面
- */
- 
-- (void)barrageAction:(EMMessage*)msg backView:(UIView*)backView;
-```
-6、点赞消息展示
-
-```
-/*
- @param backView        展示在哪个页面
- */
-
-- (void)praiseAction:(UIView*)backView;
+//有观众送礼物
+- (void)userSendGiftId:(NSString *)giftId
+               giftNum:(NSInteger)giftNum
+                userId:(NSString *)userId
+              backView:(UIView*)backView;
 ```
 
-## 文档
-- 环信文档地址：[环信文档](http://docs-im.easemob.com/im/extensions/live/intro)</br>
-- 集成视频直播SDK：[集成视频直播SDK](https://github.com/easemob/livestream_demo_ios/blob/master/EaseMobLiveDemo/直播聊天室集成第三方视频推拉流介绍.md)</br>
-- 安卓直播聊天室：[安卓直播聊天室](https://github.com/easemob/livestream_demo_android)
-- 环信直播聊天室app-server：[app-sever](https://github.com/easemob/easemob-im-app-server)
+
