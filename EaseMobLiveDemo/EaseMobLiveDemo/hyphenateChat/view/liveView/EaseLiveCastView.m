@@ -105,13 +105,14 @@
     if (_headImageView == nil) {
         _headImageView = [[UIImageView alloc] init];
         _headImageView.frame = CGRectMake(2, 2, self.height - 4, self.height - 4);
-        _headImageView.image = [UIImage imageNamed:@"Logo"];
+        _headImageView.image = kDefultUserImage;
         _headImageView.layer.masksToBounds = YES;
         _headImageView.layer.cornerRadius = (self.height - 4)/2;
         _headImageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return _headImageView;
 }
+
 
 - (UILabel*)nameLabel
 {

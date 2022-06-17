@@ -104,24 +104,15 @@
     }];
 }
 
+
 - (void)placeAndlayoutSubviews {
     self.backgroundColor = UIColor.clearColor;
 
     UIView *alphaBgView = UIView.alloc.init;
     alphaBgView.alpha = 0.0;
 
-    UIView *contentView = UIView.alloc.init;
-    contentView.backgroundColor = UIColor.whiteColor;
-
-    
-    UIView *headerBgView = UIView.alloc.init;
-    headerBgView.backgroundColor = UIColor.whiteColor;
-    headerBgView.layer.cornerRadius = 10.0f;
-    
     
     [self addSubview:alphaBgView];
-    [self addSubview:contentView];
-    [self addSubview:headerBgView];
     [self addSubview:self.headerView];
     [self addSubview:self.table];
 
@@ -132,17 +123,7 @@
         make.edges.equalTo(self);
     }];
 
-    [contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(headerBgView);
-        make.left.right.equalTo(self);
-        make.bottom.equalTo(self);
-    }];
-
-    
-    [headerBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.headerView).insets(UIEdgeInsetsMake(topPadding, 0, 0, 0));
-    }];
-    
+        
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(@(kHeaderViewHeight));
         make.left.right.equalTo(self);
@@ -155,6 +136,7 @@
         make.bottom.equalTo(self).offset(-[self bottomPadding]);
     }];
 }
+
 
 
 - (void)buildCells {

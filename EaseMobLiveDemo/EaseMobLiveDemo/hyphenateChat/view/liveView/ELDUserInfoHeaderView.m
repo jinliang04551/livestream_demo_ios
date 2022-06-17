@@ -16,12 +16,13 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
     ELDImageLayoutStyleRoleAndMute
 };
 
+#define kBgImageViewHeight  (kUserInfoHeaderImageHeight + 2 * 2)
 
 
 @interface ELDUserInfoHeaderView ()
 @property (nonatomic, strong) UIImageView *topBgImageView;
-@property (nonatomic, strong) UIView *bgView;
-@property (nonatomic, strong) UIView *bgAlphaView;
+@property (nonatomic, strong) UIView *alphaView;
+@property (nonatomic, strong) UIView *bgContentView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *avatarBgView;
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -48,37 +49,18 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
       self.backgroundColor = UIColor.clearColor;
 //      self.backgroundColor = UIColor.blueColor;
 
-      [self addSubview:self.bgAlphaView];
-      [self addSubview:self.avatarBgView];
-      [self addSubview:self.nameLabel];
-      [self addSubview:self.genderView];
+        [self addSubview:self.alphaView];
+        [self addSubview:self.bgContentView];
 
-    [self.bgAlphaView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.avatarBgView.mas_centerY);
-        make.left.right.equalTo(self);
-        make.bottom.equalTo(self).offset(20.0);
-    }];
-    
-      [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.top.equalTo(self);
-          make.centerX.equalTo(self);
-          make.size.equalTo(@(kUserInfoHeaderImageHeight + 2 * 2));
-      }];
+        [self.alphaView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
 
-      [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.top.equalTo(self.avatarBgView.mas_bottom).offset(15.0f);
-          make.centerX.equalTo(self.avatarBgView).offset(-kEaseLiveDemoPadding);
-          make.width.mas_lessThanOrEqualTo(self.frame.size.width *0.4);
-          make.height.equalTo(@(kGenderViewHeight));
-      }];
-
-      [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
-          make.centerY.equalTo(self.nameLabel);
-          make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
-          make.width.equalTo(@(kGenderViewWidth));
-          make.height.equalTo(@(kGenderViewHeight));
-      }];
-
+        [self.bgContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self).offset(kBgImageViewHeight * 0.5);
+            make.left.right.equalTo(self);
+            make.bottom.equalTo(self).offset(20.0);
+        }];
     
 }
 
@@ -122,8 +104,8 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
     
     
     if (self.imageLayoutStyle == ELDImageLayoutStyleRoleAndMute) {
-        [self addSubview:self.roleImageView];
-        [self addSubview:self.muteImageView];
+        [self.bgContentView addSubview:self.roleImageView];
+        [self.bgContentView addSubview:self.muteImageView];
 
         [self.roleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
@@ -139,7 +121,7 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
         }];
         
     }else if(self.imageLayoutStyle == ELDImageLayoutStyleRole) {
-        [self addSubview:self.roleImageView];
+        [self.bgContentView addSubview:self.roleImageView];
 
         [self.roleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
@@ -148,7 +130,7 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
             make.height.equalTo(@(16.0));
         }];
     }else if(self.imageLayoutStyle == ELDImageLayoutStyleMute){
-        [self addSubview:self.muteImageView];
+        [self.bgContentView addSubview:self.muteImageView];
 
         [self.muteImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.nameLabel.mas_bottom).offset(5.0);
@@ -239,34 +221,56 @@ typedef NS_ENUM(NSInteger, ELDImageLayoutStyle) {
     if (_roleImageView == nil) {
         _roleImageView = [[UIImageView alloc] init];
         _roleImageView.contentMode = UIViewContentModeScaleAspectFit;
-        _roleImageView.backgroundColor = UIColor.redColor;
     }
     return _roleImageView;
 }
 
-- (UIView *)bgView {
-    if (_bgView == nil) {
-        _bgView = [[UIView alloc] init];
-        _bgView.backgroundColor = [UIColor whiteColor];
-        _bgView.layer.cornerRadius = 12.0f;
-        _bgView.clipsToBounds = YES;
+
+- (UIView *)bgContentView {
+    if (_bgContentView == nil) {
+        _bgContentView = [[UIView alloc] init];
+        _bgContentView.backgroundColor = UIColor.whiteColor;
+//        _bgContentView.backgroundColor = UIColor.yellowColor;
+        _bgContentView.layer.cornerRadius = 12.0;
+        
+        [_bgContentView addSubview:self.avatarBgView];
+        [_bgContentView addSubview:self.nameLabel];
+        [_bgContentView addSubview:self.genderView];
+      
+        [self.avatarBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_bgContentView).offset(-kBgImageViewHeight*0.5);
+            make.centerX.equalTo(_bgContentView);
+            make.size.equalTo(@(kBgImageViewHeight));
+        }];
+
+        [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.avatarBgView.mas_bottom).offset(15.0f);
+            make.centerX.equalTo(self.avatarBgView).offset(-kEaseLiveDemoPadding);
+            make.width.mas_lessThanOrEqualTo(self.frame.size.width *0.4);
+            make.height.equalTo(@(kGenderViewHeight));
+        }];
+
+        [self.genderView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.nameLabel);
+            make.left.equalTo(self.nameLabel.mas_right).offset(5.0);
+            make.width.equalTo(@(kGenderViewWidth));
+            make.height.equalTo(@(kGenderViewHeight));
+        }];
+
     }
-    return _bgView;
+    return _bgContentView;
 }
 
-- (UIView *)bgAlphaView {
-    if (_bgAlphaView == nil) {
-        _bgAlphaView = [[UIView alloc] init];
-        _bgAlphaView.backgroundColor = UIColor.clearColor;
-        _bgAlphaView.layer.cornerRadius = 12.0f;
-
-        [_bgAlphaView addSubview:self.bgView];
-        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_bgAlphaView).insets(UIEdgeInsetsMake(0, 0, -20.0, 0));
-        }];
+- (UIView *)alphaView {
+    if (_alphaView == nil) {
+        _alphaView = [[UIView alloc] init];
+        _alphaView.backgroundColor = UIColor.blackColor;
+        _alphaView.alpha = 0.01;
     }
-    return _bgAlphaView;
+    return _alphaView;
 }
 
 @end
 
+
+#undef kBgImageViewHeight
